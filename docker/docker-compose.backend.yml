@@ -1,0 +1,17 @@
+version: "3.5"
+
+services: 
+    backend:
+        image: developmentmaven
+        container_name: uniApp_backend
+        build: 
+            context: ../backend
+            dockerfile: ./.docker/Dockerfile
+            target: developmentmaven
+        expose: 
+            - "8080"
+        ports: 
+            - "8080:8080"
+        command: mvn spring-boot:run
+        volumes: 
+            - ./../backend:/usr/src/mymaven/
