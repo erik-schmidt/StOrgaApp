@@ -1,6 +1,4 @@
-package com.group3.backend;
-
-import java.util.*;
+package com.group3.backend.model;
 
 public class Grade {
 

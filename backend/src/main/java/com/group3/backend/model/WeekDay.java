@@ -1,4 +1,4 @@
-package com.group3.backend;
+package com.group3.backend.model;
 
 public enum WeekDay
 {

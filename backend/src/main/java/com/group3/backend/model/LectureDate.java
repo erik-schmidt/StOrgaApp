@@ -1,8 +1,7 @@
-package com.group3.backend;
+package com.group3.backend.model;
 
 
 import java.time.LocalTime;
-import java.util.HashMap;
 
 public class LectureDate {
 

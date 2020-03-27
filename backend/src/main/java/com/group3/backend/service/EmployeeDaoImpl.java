@@ -1,4 +1,4 @@
-package com.group3.backend;
+package com.group3.backend.service;
 
 
 import java.sql.PreparedStatement;
@@ -11,6 +11,8 @@ import java.util.List;
 
 import java.util.Map;
 
+import com.group3.backend.model.Student;
+import com.group3.backend.service.studentService.StudentDao;
 import org.springframework.dao.DataAccessException;
 
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -29,7 +31,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 
-public class EmployeeDaoImpl implements EmployeeDao{
+public class EmployeeDaoImpl implements StudentDao {
 
     public EmployeeDaoImpl(NamedParameterJdbcTemplate template) {
 
