@@ -1,24 +1,8 @@
 package com.group3.backend;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-
-import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.PostMapping;
-
-import org.springframework.web.bind.annotation.PutMapping;
-
-import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import com.group3.backend.Employee;
 
 //import com.group3.backend.EmployeeService;
 
@@ -34,7 +18,7 @@ public class ApplicationController {
 
     @GetMapping(value = "/employeeList")
 
-    public List<Employee> getEmployees() {
+    public List<Student> getEmployees() {
 
         return employeeService.findAll();
 
@@ -42,7 +26,7 @@ public class ApplicationController {
 
     @PostMapping(value = "/createEmp")
 
-    public void createEmployee(@RequestBody Employee emp) {
+    public void createEmployee(@RequestBody Student emp) {
 
         employeeService.insertEmployee(emp);
 
@@ -50,7 +34,7 @@ public class ApplicationController {
 
     @PutMapping(value = "/updateEmp")
 
-    public void updateEmployee(@RequestBody Employee emp) {
+    public void updateEmployee(@RequestBody Student emp) {
 
         employeeService.updateEmployee(emp);
 
@@ -58,7 +42,7 @@ public class ApplicationController {
 
     @PutMapping(value = "/executeUpdateEmp")
 
-    public void executeUpdateEmployee(@RequestBody Employee emp) {
+    public void executeUpdateEmployee(@RequestBody Student emp) {
 
         employeeService.executeUpdateEmployee(emp);
 
@@ -66,7 +50,7 @@ public class ApplicationController {
 
     @DeleteMapping(value = "/deleteEmpById")
 
-    public void deleteEmployee(@RequestBody Employee emp) {
+    public void deleteEmployee(@RequestBody Student emp) {
 
         employeeService.deleteEmployee(emp);
 

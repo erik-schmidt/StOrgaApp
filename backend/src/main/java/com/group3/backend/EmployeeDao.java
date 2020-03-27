@@ -3,18 +3,16 @@ package com.group3.backend;
 
 import java.util.List;
 
-import com.group3.backend.Employee;
-
 public interface EmployeeDao {
 
-    List<Employee> findAll();
+    List<Student> findAll();
 
-    void insertEmployee(Employee emp);
+    void insertEmployee(Student emp);
 
-    void updateEmployee(Employee emp);
+    void updateEmployee(Student emp);
 
-    void executeUpdateEmployee(Employee emp);
+    void executeUpdateEmployee(Student emp);
 
-    public void deleteEmployee(Employee emp);
+    public void deleteEmployee(Student emp);
 
 }

@@ -27,9 +27,6 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import org.springframework.stereotype.Repository;
 
-
-import com.group3.backend.EmployeeRowMapper;
-
 @Repository
 
 public class EmployeeDaoImpl implements EmployeeDao{
@@ -44,7 +41,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
 
-    public List<Employee> findAll() {
+    public List<Student> findAll() {
 
         return template.query("select * from employee", new EmployeeRowMapper());
 
@@ -52,7 +49,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
 
-    public void insertEmployee(Employee emp) {
+    public void insertEmployee(Student emp) {
 
         final String sql = "insert into employee(employeeId, employeeName , employeeAddress,employeeEmail) values(:employeeId,:employeeName,:employeeEmail,:employeeAddress)";
 
@@ -60,9 +57,9 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
         SqlParameterSource param = new MapSqlParameterSource()
 
-                .addValue("employeeId", emp.getEmployeeId())
+                .addValue("employeeId", emp.getMatrNr())
 
-                .addValue("employeeName", emp.getEmployeeName())
+                .addValue("employeeName", emp.getStudentPrename())
 
                 .addValue("employeeEmail", emp.getEmployeeEmail())
 
@@ -74,7 +71,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
 
-    public void updateEmployee(Employee emp) {
+    public void updateEmployee(Student emp) {
 
         final String sql = "update employee set employeeName=:employeeName, employeeAddress=:employeeAddress, employeeEmail=:employeeEmail where employeeId=:employeeId";
 
@@ -82,9 +79,9 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
         SqlParameterSource param = new MapSqlParameterSource()
 
-                .addValue("employeeId", emp.getEmployeeId())
+                .addValue("employeeId", emp.getMatrNr())
 
-                .addValue("employeeName", emp.getEmployeeName())
+                .addValue("employeeName", emp.getStudentPrename())
 
                 .addValue("employeeEmail", emp.getEmployeeEmail())
 
@@ -96,15 +93,15 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
 
-    public void executeUpdateEmployee(Employee emp) {
+    public void executeUpdateEmployee(Student emp) {
 
         final String sql = "update employee set employeeName=:employeeName, employeeAddress=:employeeAddress, employeeEmail=:employeeEmail where employeeId=:employeeId";
 
         Map<String,Object> map=new HashMap<String,Object>();
 
-        map.put("employeeId", emp.getEmployeeId());
+        map.put("employeeId", emp.getMatrNr());
 
-        map.put("employeeName", emp.getEmployeeName());
+        map.put("employeeName", emp.getStudentPrename());
 
         map.put("employeeEmail", emp.getEmployeeEmail());
 
@@ -128,13 +125,13 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
 
-    public void deleteEmployee(Employee emp) {
+    public void deleteEmployee(Student emp) {
 
         final String sql = "delete from employee where employeeId=:employeeId";
 
         Map<String,Object> map=new HashMap<String,Object>();
 
-        map.put("employeeId", emp.getEmployeeId());
+        map.put("employeeId", emp.getMatrNr());
 
         template.execute(sql,map,new PreparedStatementCallback<Object>() {
 

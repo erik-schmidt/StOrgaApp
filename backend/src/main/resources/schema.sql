@@ -1,9 +1,9 @@
 CREATE TABLE employee
 (
- employeeName varchar(100) NOT NULL,
-employeeId varchar(11) NOT NULL ,
+ studentPrename varchar(100) NOT NULL,
+matrNr varchar(11) NOT NULL ,
  employeeAddress varchar(100) DEFAULT NULL,
  employeeEmail varchar(100) DEFAULT NULL,
 
- PRIMARY KEY (employeeId)
+ PRIMARY KEY (matrNr)
 );
