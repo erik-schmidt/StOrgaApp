@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Course {
 
+    private String id;
     private String description;
     private String room;
     private String professor;

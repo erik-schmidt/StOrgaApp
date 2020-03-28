@@ -3,18 +3,19 @@ package com.group3.backend.model;
 public class Grade {
 
     //todo: Wie muss ich das Studentenobjekt in der Datenbank abspeichern?
+    //todo: Braucht die Grade Klasse ein Studentenobjekt?
 
-    private String Id;
+    private String id;
     private Student student;
     private double grade;
     private Course course;
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        id = id;
     }
 
     public Student getStudent() {
