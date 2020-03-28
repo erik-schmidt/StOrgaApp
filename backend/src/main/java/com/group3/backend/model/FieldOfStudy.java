@@ -2,7 +2,7 @@ package com.group3.backend.model;
 
 import java.util.*;
 
-public class DegreeCourse{
+public class FieldOfStudy {
 
     private String description;
     private String name;

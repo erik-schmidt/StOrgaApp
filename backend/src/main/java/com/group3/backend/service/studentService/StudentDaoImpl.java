@@ -2,7 +2,6 @@ package com.group3.backend.service.studentService;
 
 
 import com.group3.backend.model.Student;
-import com.group3.backend.service.studentService.StudentDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -49,7 +48,7 @@ public class StudentDaoImpl implements StudentDao {
 
                 .addValue("studentFamilyname", stud.getStudentFamilyname())
 
-                .addValue("degreeCourse", stud.getDegreeCourse())
+                .addValue("degreeCourse", stud.getFieldOfStudy())
 
                 .addValue("courseList", stud.getCourseList())
 
@@ -80,7 +79,7 @@ public class StudentDaoImpl implements StudentDao {
 
                 .addValue("studentFamilyname", stud.getStudentFamilyname())
 
-                .addValue("degreeCourse", stud.getDegreeCourse())
+                .addValue("degreeCourse", stud.getFieldOfStudy())
 
                 .addValue("courseList", stud.getCourseList())
 
@@ -106,7 +105,7 @@ public class StudentDaoImpl implements StudentDao {
 
         map.put("studentFamilyname", stud.getStudentFamilyname());
 
-        map.put("degreeCourse", stud.getDegreeCourse());
+        map.put("degreeCourse", stud.getFieldOfStudy());
 
         map.put("courseList", stud.getCourseList());
 
