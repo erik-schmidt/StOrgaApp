@@ -1,11 +1,21 @@
 package com.group3.backend.model;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Task {
 
+    private int id;
     private String description;
-    private Date deadline;
+    private LocalDate deadline;
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -15,11 +25,11 @@ public class Task {
         this.description = description;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 }
