@@ -6,7 +6,7 @@ public class Student {
     private String matrNr;
     private String studentPrename;
     private String studentFamilyname;
-    private DegreeCourse degreeCourse;
+    private FieldOfStudy fieldOfStudy;
     private ArrayList<Course> courseList;
     private ArrayList<Task> taskList;
     private Grade grade;
@@ -39,12 +39,12 @@ public class Student {
         this.studentFamilyname = studentFamilyname;
     }
 
-    public DegreeCourse getDegreeCourse() {
-        return degreeCourse;
+    public FieldOfStudy getFieldOfStudy() {
+        return fieldOfStudy;
     }
 
-    public void setDegreeCourse(DegreeCourse degreeCourse) {
-        this.degreeCourse = degreeCourse;
+    public void setFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
     }
 
     public ArrayList<Course> getCourseList() {

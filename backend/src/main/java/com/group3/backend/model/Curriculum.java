@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Curriculum {
 
+    private String id;
     private String description;
     private String notes;
     private LocalDate milestone;

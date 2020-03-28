@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class News {
 
+    private String id;
     private String title;
     private String text;
     private LocalDateTime dateTime;
