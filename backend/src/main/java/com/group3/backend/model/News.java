@@ -4,13 +4,21 @@ import java.time.LocalDateTime;
 
 public class News {
 
-    private String id;
+    private int id;
     private String title;
     private String text;
     private LocalDateTime dateTime;
     private String creator;
 
     public News() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
