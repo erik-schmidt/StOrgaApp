@@ -1,7 +1,6 @@
 package com.group3.backend.service.taskService;
 
 
-import com.group3.backend.model.Course;
 import com.group3.backend.model.Task;
 import org.springframework.jdbc.core.RowMapper;
 

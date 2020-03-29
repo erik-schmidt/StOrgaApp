@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.group3.backend.model.LectureDate;
+import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,25 +18,20 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class LectureDateDaoImpl implements LectureDateDao {
+public class LectureDateDaoImpl implements GenericDao<LectureDate> {
 
     public LectureDateDaoImpl(NamedParameterJdbcTemplate template) {
-
         this.template = template;
-
     }
-
     NamedParameterJdbcTemplate template;
 
     @Override
     public List<LectureDate> findAll() {
-
         return template.query("select * from lectureDate", new LectureDateRowMapper());
-
     }
 
     @Override
-    public void insertLectureDate(LectureDate lectureDate) {
+    public void insert(LectureDate lectureDate) {
 
         final String sql = "insert into lectureDate (lectureDateId, lectureDateWeekDay , lectureDateStartTime, lectureDateFinishTime)" +
                 " values(:lectureDateId,:lectureDateWeekDay,:lectureDateStartTime,:lectureDateFinishTime)";
@@ -48,11 +44,10 @@ public class LectureDateDaoImpl implements LectureDateDao {
                 .addValue("lectureStartTime", lectureDate.getStartTime())
                 .addValue("lectureFinishTime", lectureDate.getFinishTime());
         template.update(sql,param, holder);
-
     }
 
     @Override
-    public void updateLectureDate(LectureDate lectureDate) {
+    public void update(LectureDate lectureDate) {
 
         final String sql = "update lectureDate set lectureDateId=:lectureDateId, lectureDateWeekDay=:lectureDateWeekDay," +
                 " lectureDateStartTime=:lectureDateStartTime, lectureDateFinishTime=:lectureDateFinishTime" +
@@ -66,11 +61,10 @@ public class LectureDateDaoImpl implements LectureDateDao {
                 .addValue("lectureStartTime", lectureDate.getStartTime())
                 .addValue("lectureFinishTime", lectureDate.getFinishTime());
         template.update(sql,param, holder);
-
     }
 
     @Override
-    public void executeUpdateLectureDate(LectureDate lectureDate) {
+    public void executeUpdate(LectureDate lectureDate) {
 
         final String sql = "update lectureDate set lectureDateId=:lectureDateId, lectureDateWeekDay=:lectureDateWeekDay," +
                 " lectureDateStartTime=:lectureDateStartTime, lectureDateFinishTime=:lectureDateFinishTime" +
@@ -90,11 +84,10 @@ public class LectureDateDaoImpl implements LectureDateDao {
 
             }
         });
-
     }
 
     @Override
-    public void deleteLectureDate(LectureDate lectureDate) {
+    public void delete(LectureDate lectureDate) {
         final String sql = "delete from lectureDate where lectureDateId=:lectureDateId";
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("lectureDateId", lectureDate.getId());

@@ -4,12 +4,20 @@ import java.time.LocalDate;
 
 public class Curriculum {
 
-    private String id;
+    private int id;
     private String description;
     private String notes;
     private LocalDate milestone;
 
     public Curriculum() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {

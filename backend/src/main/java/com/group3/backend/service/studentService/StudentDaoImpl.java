@@ -2,6 +2,7 @@ package com.group3.backend.service.studentService;
 
 
 import com.group3.backend.model.Student;
+import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @Repository
 
-public class StudentDaoImpl implements StudentDao {
+public class StudentDaoImpl implements GenericDao<Student> {
 
     //ToDo : JdbcTemplate, überprüfen was anstelle des Templates rein kommt
     public StudentDaoImpl (NamedParameterJdbcTemplate template) {
@@ -29,132 +30,83 @@ public class StudentDaoImpl implements StudentDao {
     NamedParameterJdbcTemplate template;
 
     @Override
-    public List<Student> findAll {
+    public List<Student> findAll() {
         return template.query("select * from student", new StudentRowMapper());
     }
     @Override
 
-    public void insertStudent(Student stud) {
+    public void insert(Student stud) {
 
         final String sql = "insert into student(matrNr, studentPrename, studentFamilyname, degreeCourse, courseList, taskList, grade, calenderEntries) values(:matrNr, :studentPrename, :studentFamilyname, :degreeCourse, :courseList, :taskList, :grade, :calenderEntries)";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         SqlParameterSource param = new MapSqlParameterSource()
-
                 .addValue("matrNr", stud.getMatrNr())
-
                 .addValue("studentPrename", stud.getStudentPrename())
-
                 .addValue("studentFamilyname", stud.getStudentFamilyname())
-
                 .addValue("degreeCourse", stud.getFieldOfStudy())
-
                 .addValue("courseList", stud.getCourseList())
-
                 .addValue("taskList", stud.getTaskList())
-
                 .addValue("grade", stud.getGrade())
-
                 .addValue("calenderEntries", stud.getCalenderEntries());
-
         template.update(sql,param, holder);
-
     }
 
     @Override
-
-    public void updateStudent(Student stud) {
-
-
+    public void update(Student stud) {
         final String sql = "update student set studentPrename=:studentPrename, studentFamilyname=:studentFamilyname, degreeCourse=:degreeCourse, courseList=:courseList, taskList=:taskList, grade=:grade where matrNr=:matrNr";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         SqlParameterSource param = new MapSqlParameterSource()
-
                 .addValue("matrNr", stud.getMatrNr())
-
                 .addValue("studentPrename", stud.getStudentPrename())
-
                 .addValue("studentFamilyname", stud.getStudentFamilyname())
-
                 .addValue("degreeCourse", stud.getFieldOfStudy())
-
                 .addValue("courseList", stud.getCourseList())
-
                 .addValue("taskList", stud.getTaskList())
-
                 .addValue("grade", stud.getGrade())
-
                 .addValue("calenderEntries", stud.getCalenderEntries());
-
         template.update(sql,param, holder);
-
     }
 
     @Override
-
-    public void executeUpdateStudent(Student stud) {
-
+    public void executeUpdate(Student stud) {
         Map<String,Object> map=new HashMap<String,Object>();
-
         map.put("matrNr", stud.getMatrNr());
-
         map.put("studentPrename", stud.getStudentPrename());
-
         map.put("studentFamilyname", stud.getStudentFamilyname());
-
         map.put("degreeCourse", stud.getFieldOfStudy());
-
         map.put("courseList", stud.getCourseList());
-
         map.put("taskList", stud.getTaskList());
-
         map.put("grade", stud.getGrade());
-
         map.put("calenderEntries", stud.getCalenderEntries());
 
         final String sql = "update student set studentPrename=:studentPrename, studentFamilyname=:studentFamilyname, degreeCourse=:degreeCourse, courseList=:courseList, taskList=:taskList, grade=:grade where matrNr=:matrNr";
         template.execute(sql,map,new PreparedStatementCallback<Object>() {
 
             @Override
-
             public Object doInPreparedStatement(PreparedStatement ps)
-
                     throws SQLException, DataAccessException {
-
                 return ps.executeUpdate();
-
             }
 
         });
-
     }
 
     @Override
-
-    public void deleteStudent(Student stud) {
-
+    public void delete(Student stud) {
         final String sql = "delete from student where matrNr=:matrNr";
-
         Map<String,Object> map=new HashMap<String,Object>();
-
         map.put("matrNr", stud.getMatrNr());
-
         template.execute(sql,map,new PreparedStatementCallback<Object>() {
 
             @Override
-
             public Object doInPreparedStatement(PreparedStatement ps)
-
-                    throws SQLException, DataAccessException {
-
-                return ps.executeUpdate();
+                    throws SQLException, DataAccessException { return ps.executeUpdate();
 
             }
-
         });
-
     }
 }

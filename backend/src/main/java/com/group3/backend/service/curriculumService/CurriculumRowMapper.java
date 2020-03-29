@@ -6,15 +6,17 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class CurriculumRowMapper implements RowMapper<Curriculum> {
 
 
     @Override
     public Curriculum mapRow(ResultSet resultSet, int i) throws SQLException {
-        LocalDate localDate = new LocalDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-mm");
         Curriculum curriculum = new Curriculum();
         curriculum.setDescription(resultSet.getString("curriculumDescription"));
-        curriculum.setMilestone(resultSet.getString());
+        curriculum.setMilestone(LocalDate.parse(resultSet.getString("curriculumMilesone"),formatter));
+        return curriculum;
     }
 }

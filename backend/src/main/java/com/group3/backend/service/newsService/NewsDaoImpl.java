@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.group3.backend.model.News;
+import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,25 +17,20 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class NewsDaoImpl implements NewsDao {
+public class NewsDaoImpl implements GenericDao<News> {
 
     public NewsDaoImpl(NamedParameterJdbcTemplate template) {
-
         this.template = template;
-
     }
-
     NamedParameterJdbcTemplate template;
 
     @Override
     public List<News> findAll() {
-
         return template.query("select * from news", new NewsRowMapper());
-
     }
 
     @Override
-    public void insertNews(News news) {
+    public void insert(News news) {
 
         final String sql = "insert into news(newsId, newsTilte, newsText,newsDateTime, newsCreator)" +
                 " values(:newsId,:newsTitle,:newsText,:newsDateTime,:newsCreator)";
@@ -48,11 +44,10 @@ public class NewsDaoImpl implements NewsDao {
                 .addValue("newsDateTime", news.getDateTime())
                 .addValue("newsCreator", news.getCreator());
         template.update(sql,param, holder);
-
     }
 
     @Override
-    public void updateNews(News news) {
+    public void update(News news) {
 
         final String sql = "update news set newsId=:newsId, newsTitle=:newsTitle, newsText=:newsText, newsDateTime=:newsDateTime, newsCreator=:newsCreator" +
                 " where newsId=:newsId";
@@ -66,11 +61,10 @@ public class NewsDaoImpl implements NewsDao {
                 .addValue("newsDateTime", news.getDateTime())
                 .addValue("newsCreator", news.getCreator());
         template.update(sql,param, holder);
-
     }
 
     @Override
-    public void executeUpdateNews(News news) {
+    public void executeUpdate(News news) {
 
         final String sql = "update news set newsId=:newsId, newsTitle=:newsTitle, newsText=:newsText, newsDateTime=:newsDateTime, newsCreator=:newsCreator" +
                 " where newsId=:newsId";
@@ -90,11 +84,10 @@ public class NewsDaoImpl implements NewsDao {
 
             }
         });
-
     }
 
     @Override
-    public void deleteNews(News news) {
+    public void delete(News news) {
         final String sql = "delete from news where newsId:=newsId";
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("newsId", news.getId());

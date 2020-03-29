@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.group3.backend.model.Grade;
+import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,25 +18,21 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class GradeDaoImpl implements GradeDao{
+public class GradeDaoImpl implements GenericDao<Grade> {
 
-    public CourseDaoImpl(NamedParameterJdbcTemplate template) {
-
+    public GradeDaoImpl(NamedParameterJdbcTemplate template) {
         this.template = template;
 
     }
-
     NamedParameterJdbcTemplate template;
 
     @Override
     public List<Grade> findAll() {
-
         return template.query("select * from grade", new GradeRowMapper());
-
     }
 
     @Override
-    public void insertGrade(Grade grade) {
+    public void insert(Grade grade) {
 
         final String sql = "insert into grade(gradeId, gradeStudent, gradeGrade, gradeCourse)" +
                 " values(:gradeStudent,:gradeGrade,:gradeCourse)";
@@ -48,11 +45,10 @@ public class GradeDaoImpl implements GradeDao{
                 .addValue("gradeGrade", grade.getGrade())
                 .addValue("gradeCourse", grade.getCourse());
         template.update(sql,param, holder);
-
     }
 
     @Override
-    public void updateGrade(Grade grade) {
+    public void update(Grade grade) {
 
         final String sql = "update grade set gradeStudent=:gradeStudent, gradeGrade=:gradeGrade, gradeCourse=:gradeCourse" +
                 " where gradeId=:gradeId";
@@ -65,11 +61,10 @@ public class GradeDaoImpl implements GradeDao{
                 .addValue("gradeCourse", grade.getCourse())
                 .addValue("gradeId", grade.getId());
         template.update(sql,param, holder);
-
     }
 
     @Override
-    public void executeUpdateGrade(Grade grade) {
+    public void executeUpdate(Grade grade) {
 
         final String sql = "update grade set gradeStudent=:gradeStudent, gradeGrade=:gradeGrade, gradeCourse=:gradeCourse" +
                 " where gradeId=:gradeId";
@@ -88,12 +83,10 @@ public class GradeDaoImpl implements GradeDao{
 
             }
         });
-
     }
 
     @Override
-
-    public void deleteGrade(Grade grade) {
+    public void delete(Grade grade) {
         final String sql = "delete from grade where gradeId=:gradeId";
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("gradeId", grade.getId());

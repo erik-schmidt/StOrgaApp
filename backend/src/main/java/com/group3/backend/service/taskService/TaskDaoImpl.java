@@ -1,6 +1,7 @@
 package com.group3.backend.service.taskService;
 
 import com.group3.backend.model.Task;
+import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,12 +19,11 @@ import java.util.Map;
 
 
     @Repository
-    public class TaskDaoImpl implements TaskDao {
+    public class TaskDaoImpl implements GenericDao<Task> {
 
         public TaskDaoImpl(NamedParameterJdbcTemplate template) {
             this.template = template;
         }
-
         NamedParameterJdbcTemplate template;
 
         @Override
@@ -32,8 +32,7 @@ import java.util.Map;
         }
 
         @Override
-        public void insertTask(Task task) {
-
+        public void insert(Task task) {
             final String sql = "insert into task(taskId, taskDescription, taskDeadline)" +
                     " values(:taskId,:taskDescription,:taskDeadline)";
 
@@ -48,8 +47,7 @@ import java.util.Map;
         }
 
         @Override
-        public void updateTask(Task task) {
-
+        public void update(Task task) {
             final String sql = "update task set taskiId=:taskId, taskDescription=:taskDescription, taskDeadline=:taskDeadline" +
                     " where taskId=:taskId";
 
@@ -59,11 +57,10 @@ import java.util.Map;
                     .addValue("taskDescription", task.getDescription())
                     .addValue("taskDeadline", task.getDeadline());
             template.update(sql,param, holder);
-
         }
 
         @Override
-        public void executeUpdateTask(Task task) {
+        public void executeUpdate(Task task) {
 
             final String sql = "update task set taskId=:taskId, taskDescription=:taskDescription, taskDeadline=:taskDeadline" +
                     " where taskId:=taskId";
@@ -83,7 +80,7 @@ import java.util.Map;
         }
 
         @Override
-        public void deleteTask(Task task) {
+        public void delete(Task task) {
             final String sql = "delete from task where taskId=:taskId";
             Map<String,Object> map=new HashMap<String,Object>();
             map.put("taskId", task.getId());

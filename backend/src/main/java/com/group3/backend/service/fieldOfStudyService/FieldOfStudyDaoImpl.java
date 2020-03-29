@@ -1,6 +1,7 @@
 package com.group3.backend.service.fieldOfStudyService;
 
 import com.group3.backend.model.FieldOfStudy;
+import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,25 +20,21 @@ import java.util.Map;
 
 
     @Repository
-    public class FieldOfStudyDaoImpl implements FieldOfStudyDao {
+    public class FieldOfStudyDaoImpl implements GenericDao<FieldOfStudy> {
 
         public FieldOfStudyDaoImpl(NamedParameterJdbcTemplate template) {
-
             this.template = template;
-
         }
 
         NamedParameterJdbcTemplate template;
 
         @Override
         public List<FieldOfStudy> findAll() {
-
             return template.query("select * from fieldOfStudy", new FieldOfStudyRowMapper());
-
         }
 
         @Override
-        public void insertFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        public void insert(FieldOfStudy fieldOfStudy) {
 
             final String sql = "insert into fieldOfStudy(fieldOfStudyId, fieldOfStudyDescription , fieldOfStudyName)" +
                     " values(:fieldOfStudyId,:fieldOfStudyDescription,:fieldOfStudyName)";
@@ -49,11 +46,10 @@ import java.util.Map;
                     .addValue("fieldOfStudyDescription", fieldOfStudy.getDescription())
                     .addValue("fieldOfStudyName", fieldOfStudy.getName());
             template.update(sql,param, holder);
-
         }
 
         @Override
-        public void updateFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        public void update(FieldOfStudy fieldOfStudy) {
 
             final String sql = "update fieldOfStudy set fieldOfStudyId=:fieldOfStudyId, fieldOfStudyDescription=:fieldOfStudyDescription, fieldOfStudyName=:fieldOfStudyName" +
                     " where fieldOfStudyId=:fieldOfStudyId";
@@ -65,11 +61,10 @@ import java.util.Map;
                     .addValue("fieldOfStudyDescription", fieldOfStudy.getDescription())
                     .addValue("fieldOfStudyName", fieldOfStudy.getName());
             template.update(sql,param, holder);
-
         }
 
         @Override
-        public void executeUpdateFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        public void executeUpdate(FieldOfStudy fieldOfStudy) {
 
             final String sql = "update fieldOfStudy set fieldOfStudyId=:fieldOfStudyId, fieldOfStudyDescription=:fieldOfStudyDescription, fieldOfStudyName=:fieldOfStudyName" +
                     " where fieldOfStudyId=:fieldOfStudyId";
@@ -87,12 +82,11 @@ import java.util.Map;
 
                 }
             });
-
         }
 
         @Override
 
-        public void deleteFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        public void delete(FieldOfStudy fieldOfStudy) {
             final String sql = "delete from fieldOfStudy where fieldOfStudyId=:fieldOfStudyId";
             Map<String,Object> map=new HashMap<String,Object>();
             map.put("fieldOfStudyId", fieldOfStudy.getId());
