@@ -5,9 +5,43 @@ import java.time.LocalTime;
 
 public class LectureDate {
 
-    private String id;
+    private int id;
     private WeekDay weekDay;
-    private LocalTime lectureStartTime;
-    private LocalTime lectureFinishTime;
+    private LocalTime startTime;
+    private LocalTime finishTime;
 
+    public LectureDate() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public WeekDay getWeekDay() {
+        return weekDay;
+    }
+
+    public void setWeekDay(WeekDay weekDay) {
+        this.weekDay = weekDay;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(LocalTime finishTime) {
+        this.finishTime = finishTime;
+    }
 }

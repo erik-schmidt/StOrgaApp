@@ -7,8 +7,8 @@ import java.util.List;
 public interface LectureDateDao {
 
     List<LectureDate> findAll();
-    void insertCourse(LectureDate lectureDate);
-    void updateCourse(LectureDate lectureDate);
-    void executeUpdateCourse(LectureDate lectureDate);
-    void deleteCourse(LectureDate lectureDate);
+    void insertLectureDate(LectureDate lectureDate);
+    void updateLectureDate(LectureDate lectureDate);
+    void executeUpdateLectureDate(LectureDate lectureDate);
+    void deleteLectureDate(LectureDate lectureDate);
 }
