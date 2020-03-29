@@ -4,10 +4,22 @@ import java.util.*;
 
 public class FieldOfStudy {
 
-    private String id;
+    private int id;
     private String description;
     private String name;
     private ArrayList<Course> courseArrayList;
+
+    public FieldOfStudy() {
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
