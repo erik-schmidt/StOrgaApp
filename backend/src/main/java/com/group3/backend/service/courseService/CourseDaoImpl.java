@@ -21,68 +21,72 @@ import org.springframework.stereotype.Repository;
 public class CourseDaoImpl implements GenericDao<Course> {
 
     public CourseDaoImpl(NamedParameterJdbcTemplate template) {
-
         this.template = template;
-
     }
-
     NamedParameterJdbcTemplate template;
 
     @Override
     public List<Course> findAll() {
-
         return template.query("select * from course", new CourseRowMapper());
-
     }
 
     @Override
     public void insert(Course course) {
 
-        final String sql = "insert into course(courseDescription, courseRoom , courseProfessor,courseEcts)" +
-                " values(:courseDescription,:courseRoom,:courseEcts)";
+        final String sql = "insert into course(courseId, courseDescription, courseRoom , courseProfessor, courseEcts, " +
+                "courseGrade, fieldOfStudy)" +
+                " values(:courseId, :courseDescription,:courseRoom,:courseEcts, :courseGrade)";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("courseId", course.getId())
                 .addValue("courseDescription", course.getDescription())
                 .addValue("courseRoom", course.getRoom())
                 .addValue("courseProfessor", course.getProfessor())
-                .addValue("courseEcts", course.getEcts());
-        //.addValue("courseLectureDateArrayList", course.getLectureDateArrayList());
+                .addValue("courseEcts", course.getEcts())
+                .addValue("courseGrade", course.getEcts())
+                .addValue("courseFieldOfStudy", course.getFieldOfStudy());
         template.update(sql,param, holder);
-
     }
 
     @Override
     public void update(Course course) {
 
-        final String sql = "update course set courseDescription=:courseDescription, courseRoom=:courseRoom, courseProfessor=:courseProfessor, courseEcts=:courseEcts" +
-                " where courseDescription=:courseDescription";
+        final String sql = "update course set courseId=:courseId, courseDescription=:courseDescription, " +
+                "courseRoom=:courseRoom, courseProfessor=:courseProfessor, courseEcts=:courseEcts, courseGrade=:courseGrade," +
+                "courseFieldOfStudy=:courseFieldOfStudy" +
+                " where courseId=:courseId";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("courseId", course.getId())
                 .addValue("courseDescription", course.getDescription())
                 .addValue("courseRoom", course.getRoom())
                 .addValue("courseProfessor", course.getProfessor())
-                .addValue("couresEcts", course.getEcts());
-        // .addValue("courseLectureDateArrayList", course.getLectureDateArrayList());
+                .addValue("courseEcts", course.getEcts())
+                .addValue("courseGrade", course.getEcts())
+                .addValue("courseFieldOfStudy", course.getFieldOfStudy());
         template.update(sql,param, holder);
-
     }
 
     @Override
     public void executeUpdate(Course course) {
 
-        final String sql = "update course set courseDescription=:courseDescription, courseRoom=:courseRoom, courseProfessor=:courseProfessor, courseEcts=:couresEcts" +
-                " where courseDescription=:courseDescription";
+        final String sql = "update course set courseId=:courseId, courseDescription=:courseDescription, " +
+                "courseRoom=:courseRoom, courseProfessor=:courseProfessor, courseEcts=:courseEcts, courseGrade=:courseGrade," +
+                "courseFieldOfStudy=:courseFieldOfStudy" +
+                " where courseId=:courseId";
 
         Map<String,Object> map=new HashMap<String,Object>();
+        map.put("courseId", course.getId());
         map.put("courseDescription", course.getDescription());
         map.put("courseRoom", course.getRoom());
         map.put("courseProfessor", course.getProfessor());
         map.put("courseEcts", course.getEcts());
-        //    map.put("courseLectureDateArrayList", course.getLectureDateArrayList());
+        map.put("courseGrade", course.getEcts());
+        map.put("courseFieldOfStudy", course.getFieldOfStudy());
         template.execute(sql,map,new PreparedStatementCallback<Object>() {
 
             @Override
@@ -92,15 +96,13 @@ public class CourseDaoImpl implements GenericDao<Course> {
 
             }
         });
-
     }
 
     @Override
-
     public void delete(Course course) {
-        final String sql = "delete from course where courseDescription=:courseDescription";
+        final String sql = "delete from course where courseId=:courseId";
         Map<String,Object> map=new HashMap<String,Object>();
-        map.put("courseDescription", course.getDescription());
+        map.put("courseId", course.getId());
         template.execute(sql,map,new PreparedStatementCallback<Object>() {
             @Override
             public Object doInPreparedStatement(PreparedStatement ps)

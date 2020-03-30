@@ -1,18 +1,20 @@
 package com.group3.backend.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class Student {
     private String matrNr;
     private String studentPrename;
     private String studentFamilyname;
     private FieldOfStudy fieldOfStudy;
-    private ArrayList<Course> courseList;
-    private ArrayList<Task> taskList;
-    private Grade grade;
-    private ArrayList<String> calenderEntries;
+    private List<Course> courseList;
+    private List<Task> taskList;
+    private List<String> calenderEntries;
 
-    public Student() {
+    /*public Student() {
     }
 
     public String getMatrNr() {
@@ -63,19 +65,11 @@ public class Student {
         this.taskList = taskList;
     }
 
-    public Grade getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Grade grade) {
-        this.grade = grade;
-    }
-
     public ArrayList<String> getCalenderEntries() {
         return calenderEntries;
     }
 
     public void setCalenderEntries(ArrayList<String> calenderEntries) {
         this.calenderEntries = calenderEntries;
-    }
+    }*/
 }

@@ -1,7 +1,5 @@
 package com.group3.backend.service.gradeService;
 
-import com.group3.backend.model.Grade;
-
 import java.util.List;
 
 public interface GradeDao {

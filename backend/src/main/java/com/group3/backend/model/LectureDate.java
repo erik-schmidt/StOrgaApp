@@ -2,15 +2,17 @@ package com.group3.backend.model;
 
 
 import java.time.LocalTime;
+import lombok.Data;
 
+@Data
 public class LectureDate {
 
-    private int id;
+    private String id;
     private WeekDay weekDay;
     private LocalTime startTime;
     private LocalTime finishTime;
 
-    public LectureDate() {
+    /*public LectureDate() {
     }
 
     public int getId() {
@@ -43,5 +45,5 @@ public class LectureDate {
 
     public void setFinishTime(LocalTime finishTime) {
         this.finishTime = finishTime;
-    }
+    }*/
 }

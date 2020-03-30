@@ -1,16 +1,18 @@
 package com.group3.backend.model;
 
 import java.time.LocalDateTime;
+import lombok.Data;
 
+@Data
 public class News {
 
-    private int id;
+    private String id;
     private String title;
     private String text;
-    private LocalDateTime dateTime;
     private String creator;
+    private LocalDateTime dateTime;
 
-    public News() {
+    /*public News() {
     }
 
     public int getId() {
@@ -51,5 +53,5 @@ public class News {
 
     public void setCreator(String creator) {
         this.creator = creator;
-    }
+    }*/
 }

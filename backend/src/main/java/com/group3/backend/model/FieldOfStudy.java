@@ -1,15 +1,18 @@
 package com.group3.backend.model;
 
 import java.util.*;
+import lombok.Data;
 
+@Data
 public class FieldOfStudy {
 
-    private int id;
+    private String id;
     private String description;
     private String name;
-    private ArrayList<Course> courseArrayList;
+    private List<Course> courseIdList;
+    private Integer semester;
 
-    public FieldOfStudy() {
+    /*public FieldOfStudy() {
     }
 
 
@@ -43,5 +46,5 @@ public class FieldOfStudy {
 
     public void setCourseArrayList(ArrayList<Course> courseArrayList) {
         this.courseArrayList = courseArrayList;
-    }
+    }*/
 }

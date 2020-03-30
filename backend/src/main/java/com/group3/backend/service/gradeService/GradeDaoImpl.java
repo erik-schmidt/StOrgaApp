@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.group3.backend.model.Grade;
 import com.group3.backend.service.GenericDao;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementCallback;

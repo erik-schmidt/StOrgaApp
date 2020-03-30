@@ -32,16 +32,14 @@ public class CurriculumDaoImpl implements GenericDao<Curriculum> {
 
     @Override
     public void insert(Curriculum curriculum) {
-        final String sql = "insert into curriculum(curriculumId, curriculumDescription , curriculumNotes, curriculumMilestone)" +
-                " values(:curriculumId,:curriculumDescription,:curriculumNotes,:curriculumMilestone)";
+        final String sql = "insert into curriculum(curriculumId, curriculumDescription)" +
+                " values(:curriculumId,:curriculumDescription)";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("curriculumId", curriculum.getId())
-                .addValue("curriculumDescription", curriculum.getDescription())
-                .addValue("curriculumNotes", curriculum.getNotes())
-                .addValue("urriculumMilestone", curriculum.getMilestone());
+                .addValue("curriculumDescription", curriculum.getDescription());
         template.update(sql,param, holder);
 
     }
@@ -49,32 +47,26 @@ public class CurriculumDaoImpl implements GenericDao<Curriculum> {
     @Override
     public void update(Curriculum curriculum) {
 
-        final String sql = "update curriculum set curriculumId=:curriculumId, curriculumDescription=:curriculumDescription, " +
-                "curriculumNotes=:curriculumNotes, curriculumMilestone=:curriculumMilestone" +
+        final String sql = "update curriculum set curriculumId=:curriculumId, curriculumDescription=:curriculumDescription" +
                 " where curriculumId=:curriculumId";
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("curriculumId", curriculum.getId())
-                .addValue("curriculumDescription", curriculum.getDescription())
-                .addValue("curriculumNotes", curriculum.getNotes())
-                .addValue("urriculumMilestone", curriculum.getMilestone());
+                .addValue("curriculumDescription", curriculum.getDescription());
         template.update(sql,param, holder);
 
     }
 
     @Override
     public void executeUpdate(Curriculum curriculum) {
-        final String sql = "update curriculum set curriculumId=:curriculumId, curriculumDescription=:curriculumDescription, " +
-                "curriculumNotes=:curriculumNotes, curriculumMilestone=:curriculumMilestone" +
+        final String sql = "update curriculum set curriculumId=:curriculumId, curriculumDescription=:curriculumDescription"+
                 " where curriculumId=:curriculumId";
 
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("curriculumId", curriculum.getId());
         map.put("curriculumDescription", curriculum.getDescription());
-        map.put("curriculumNotes", curriculum.getNotes());
-        map.put("urriculumMilestone", curriculum.getMilestone());
         template.execute(sql,map,new PreparedStatementCallback<Object>() {
 
             @Override

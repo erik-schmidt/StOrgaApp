@@ -1,19 +1,21 @@
 package com.group3.backend.model;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
+import lombok.Data;
 
+@Data
 public class Course {
 
     private String id;
     private String description;
     private String room;
     private String professor;
-    private int ects;
-    private ArrayList<LectureDate> lectureDateArrayList;
-    private LocalDateTime[] courseAppointmentsPerWeek;
+    private Integer ects;
+    private Double grade;
+    private String fieldOfStudy;
+    private List<LectureDate> lectureDateArrayList;
 
-    public ArrayList<LectureDate> getLectureDateArrayList() {
+    /*public ArrayList<LectureDate> getLectureDateArrayList() {
         return lectureDateArrayList;
     }
 
@@ -55,5 +57,5 @@ public class Course {
 
     public void setEcts(int ects) {
         this.ects = ects;
-    }
+    }*/
 }

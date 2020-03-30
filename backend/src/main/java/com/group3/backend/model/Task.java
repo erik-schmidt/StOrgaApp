@@ -1,14 +1,16 @@
 package com.group3.backend.model;
 
 import java.time.LocalDate;
+import lombok.Data;
 
+@Data
 public class Task {
 
-    private int id;
+    private String id;
     private String description;
     private LocalDate deadline;
 
-    public int getId(){
+    /*public int getId(){
         return id;
     }
 
@@ -30,5 +32,5 @@ public class Task {
 
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
-    }
+    }*/
 }

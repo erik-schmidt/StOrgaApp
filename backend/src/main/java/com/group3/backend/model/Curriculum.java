@@ -1,15 +1,17 @@
 package com.group3.backend.model;
 
-import java.time.LocalDate;
+import java.util.List;
+import lombok.Data;
 
+@Data
 public class Curriculum {
 
-    private int id;
+    private String id;
     private String description;
-    private String notes;
-    private LocalDate milestone;
+    private List<Milestone> milestone;
+    private List<String> notes;
 
-    public Curriculum() {
+    /*public Curriculum() {
     }
 
     public int getId() {
@@ -42,5 +44,5 @@ public class Curriculum {
 
     public void setMilestone(LocalDate milestone) {
         this.milestone = milestone;
-    }
+    }*/
 }

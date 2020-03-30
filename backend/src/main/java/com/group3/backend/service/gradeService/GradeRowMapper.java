@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.group3.backend.model.Course;
-import com.group3.backend.model.Grade;
 import com.group3.backend.model.Student;
 import org.springframework.jdbc.core.RowMapper;
 
