@@ -1,0 +1,48 @@
+version: "3.5"
+
+services:
+  backend:
+    image: developmentmaven
+    container_name: uniApp-backend
+    build:
+      context: ../backend
+      dockerfile: ./.docker/Dockerfile
+      target: developmentmaven
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+    volumes:
+      - ./../backend:/usr/src/mymaven/
+    networks:
+      - uniapp
+
+  postgres:
+    image: developmentdb
+    build:
+      context: ../backend
+      dockerfile: ./.docker/Dockerfile
+      target: developmentdb
+    container_name: uniApp-postgres-db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_DB=backend
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    volumes:
+      - uniapp-db:/docker-entrypont-initd.d
+      - uniapp-db:/var/lib/postgresql/data/
+    networks:
+      - uniapp
+
+volumes:
+  uniapp-db:
+
+networks:
+  uniapp:
