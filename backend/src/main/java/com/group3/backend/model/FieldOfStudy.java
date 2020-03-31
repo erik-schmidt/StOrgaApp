@@ -1,50 +1,32 @@
 package com.group3.backend.model;
 
-import java.util.*;
-import lombok.Data;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.util.List;
+import java.util.Set;
 
-@Data
+@Entity
 public class FieldOfStudy {
-
-    private String id;
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String description;
     private String name;
-    private List<Course> courseIdList;
-    private Integer semester;
+    @Min(1)
+    @Max(15)
+    private int semester;
+    //@OneToMany(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Integer> courseIdList;
 
-    /*public FieldOfStudy() {
+    public FieldOfStudy() {
     }
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+    public FieldOfStudy(String description, String name, int semester) {
         this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        this.semester = semester;
     }
 
-    public ArrayList<Course> getCourseArrayList() {
-        return courseArrayList;
-    }
 
-    public void setCourseArrayList(ArrayList<Course> courseArrayList) {
-        this.courseArrayList = courseArrayList;
-    }*/
 }

@@ -1,11 +1,39 @@
 package com.group3.backend.model;
-import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.time.LocalDate;
 
-@Data
+@Entity
 public class Milestone {
-    private Integer id;
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String text;
     private LocalDate finishDate;
+
+    public Milestone() {
+    }
+
+    public Milestone(String text, LocalDate finishDate){
+        this.text = text;
+        this.finishDate = finishDate;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public LocalDate getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(LocalDate finishDate) {
+        this.finishDate = finishDate;
+    }
 }

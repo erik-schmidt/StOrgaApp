@@ -1,34 +1,34 @@
 package com.group3.backend.model;
 
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.time.LocalTime;
-import lombok.Data;
 
-@Data
+@Entity
 public class LectureDate {
-
-    private String id;
-    private WeekDay weekDay;
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private Weekday weekday;
     private LocalTime startTime;
     private LocalTime finishTime;
 
-    /*public LectureDate() {
+    public LectureDate() {
     }
 
-    public int getId() {
-        return id;
+    public LectureDate(Weekday weekday, LocalTime startTime, LocalTime finishTime){
+        this.weekday = weekday;
+        this.startTime = startTime;
+        this.finishTime = finishTime;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Weekday getWeekday() {
+        return weekday;
     }
 
-    public WeekDay getWeekDay() {
-        return weekDay;
-    }
-
-    public void setWeekDay(WeekDay weekDay) {
-        this.weekDay = weekDay;
+    public void setWeekday(Weekday weekday) {
+        this.weekday = weekday;
     }
 
     public LocalTime getStartTime() {
@@ -45,5 +45,5 @@ public class LectureDate {
 
     public void setFinishTime(LocalTime finishTime) {
         this.finishTime = finishTime;
-    }*/
+    }
 }

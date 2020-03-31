@@ -1,25 +1,23 @@
 package com.group3.backend.model;
 
+import javax.persistence.*;
 import java.util.List;
-import lombok.Data;
 
-@Data
+@Entity
 public class Curriculum {
-
-    private String id;
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String description;
-    private List<Milestone> milestone;
-    private List<String> notes;
+    private List<String>notesList;
+    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Milestone> milestoneList;
 
-    /*public Curriculum() {
+    public Curriculum() {
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Curriculum(String description) {
+        this.description = description;
     }
 
     public String getDescription() {
@@ -30,19 +28,19 @@ public class Curriculum {
         this.description = description;
     }
 
-    public String getNotes() {
-        return notes;
+    public List<String> getNotesList() {
+        return notesList;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNotesList(List<String> notesList) {
+        this.notesList = notesList;
     }
 
-    public LocalDate getMilestone() {
-        return milestone;
+    public List<Milestone> getMilestoneList() {
+        return milestoneList;
     }
 
-    public void setMilestone(LocalDate milestone) {
-        this.milestone = milestone;
-    }*/
+    public void setMilestoneList(List<Milestone> milestoneList) {
+        this.milestoneList = milestoneList;
+    }
 }

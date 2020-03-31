@@ -1,20 +1,30 @@
 package com.group3.backend.model;
 
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
-import lombok.Data;
-
-@Data
+@Entity
 public class Student {
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @Size(min = 6)
     private String matrNr;
     private String studentPrename;
     private String studentFamilyname;
-    private FieldOfStudy fieldOfStudy;
-    private List<Course> courseList;
-    private List<Task> taskList;
-    private List<String> calenderEntries;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<TaskList> taskLists;
 
-    /*public Student() {
+    public Student(String matrNr, String studentPrename, String studentFamilyname){
+        this.matrNr = matrNr;
+        this.studentPrename = studentPrename;
+        this.studentFamilyname = studentFamilyname;
+    }
+
+    public Student() {
     }
 
     public String getMatrNr() {
@@ -41,35 +51,11 @@ public class Student {
         this.studentFamilyname = studentFamilyname;
     }
 
-    public FieldOfStudy getFieldOfStudy() {
-        return fieldOfStudy;
+    public Set<TaskList> getTaskLists() {
+        return taskLists;
     }
 
-    public void setFieldOfStudy(FieldOfStudy fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
+    public void setTaskLists(Set<TaskList> taskLists) {
+        this.taskLists = taskLists;
     }
-
-    public ArrayList<Course> getCourseList() {
-        return courseList;
-    }
-
-    public void setCourseList(ArrayList<Course> courseList) {
-        this.courseList = courseList;
-    }
-
-    public ArrayList<Task> getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(ArrayList<Task> taskList) {
-        this.taskList = taskList;
-    }
-
-    public ArrayList<String> getCalenderEntries() {
-        return calenderEntries;
-    }
-
-    public void setCalenderEntries(ArrayList<String> calenderEntries) {
-        this.calenderEntries = calenderEntries;
-    }*/
 }

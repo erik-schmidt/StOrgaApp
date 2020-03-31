@@ -1,30 +1,41 @@
 package com.group3.backend.model;
 
+import javax.persistence.*;
+import javax.persistence.GenerationType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
-import lombok.Data;
+import java.util.Set;
 
-@Data
+@Entity
 public class Course {
-
-    private String id;
+    @javax.persistence.Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String description;
     private String room;
     private String professor;
-    private Integer ects;
-    private Double grade;
+    @Min(1)
+    @Max(50)
+    private int ects;
+    @Min(1)
+    @Max(5)
+    private double grade;
     private String fieldOfStudy;
-    private List<LectureDate> lectureDateArrayList;
-
-    /*public ArrayList<LectureDate> getLectureDateArrayList() {
-        return lectureDateArrayList;
-    }
-
-    public void setLectureDateArrayList(ArrayList<LectureDate> lectureDateArrayList) {
-        this.lectureDateArrayList = lectureDateArrayList;
-    }
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LectureDate> lectureDateList;
 
     public Course() {
-        LocalDateTime[]localDateTimes = new LocalDateTime[5];
+    }
+
+    public Course(String description, String room, String professor, int ects, double grade, String fieldOfStudy){
+        this.description = description;
+        this.room = room;
+        this.professor = professor;
+        this.ects = ects;
+        this.grade = grade;
+        this.fieldOfStudy = fieldOfStudy;
     }
 
     public String getDescription() {
@@ -57,5 +68,29 @@ public class Course {
 
     public void setEcts(int ects) {
         this.ects = ects;
-    }*/
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public String getFieldOfStudy() {
+        return fieldOfStudy;
+    }
+
+    public void setFieldOfStudy(String fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public List<LectureDate> getLectureDateList() {
+        return lectureDateList;
+    }
+
+    public void setLectureDateList(List<LectureDate> lectureDateList) {
+        this.lectureDateList = lectureDateList;
+    }
 }
