@@ -11,7 +11,7 @@ public class Curriculum {
     private int id;
     private String description;
 
-    // TODO: 01.04.2020 how to save primitive lists
+    // TODO: 01.04.2020 how to save primitive lists https://stackoverflow.com/questions/287201/how-to-persist-a-property-of-type-liststring-in-jpa
 
     //private List<String>notesList;
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
