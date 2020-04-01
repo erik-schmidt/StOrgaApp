@@ -1,8 +1,6 @@
 package com.group3.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -12,6 +10,9 @@ public class Milestone {
     private int id;
     private String text;
     private LocalDate finishDate;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "curriculumid", nullable = false)
+    private Curriculum curriculum;
 
     public Milestone() {
     }

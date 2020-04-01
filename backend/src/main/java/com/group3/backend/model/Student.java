@@ -3,7 +3,6 @@ package com.group3.backend.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,7 +15,7 @@ public class Student {
     private String studentPrename;
     private String studentFamilyname;
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<TaskList> taskLists;
+    private Set<Task> taskLists;
 
     public Student(String matrNr, String studentPrename, String studentFamilyname){
         this.matrNr = matrNr;
@@ -51,11 +50,11 @@ public class Student {
         this.studentFamilyname = studentFamilyname;
     }
 
-    public Set<TaskList> getTaskLists() {
+    public Set<Task> getTaskLists() {
         return taskLists;
     }
 
-    public void setTaskLists(Set<TaskList> taskLists) {
+    public void setTaskLists(Set<Task> taskLists) {
         this.taskLists = taskLists;
     }
 }

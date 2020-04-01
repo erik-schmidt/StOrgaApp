@@ -2,17 +2,15 @@ package com.group3.backend.controller;
 
 
 import com.group3.backend.model.Student;
-import com.group3.backend.model.TaskList;
+import com.group3.backend.model.Task;
 import com.group3.backend.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Student
@@ -43,8 +41,8 @@ public class StudentController {
 
     @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        List<TaskList> taskLists = new ArrayList<>();
-        TaskList task1 = new TaskList("Test Desc");
+        List<Task> taskLists = new ArrayList<>();
+        Task task1 = new Task("Test Desc");
         taskLists.add(task1);
 
         Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname());

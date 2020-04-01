@@ -3,7 +3,7 @@ package com.group3.backend.model;
 import javax.persistence.*;
 
 @Entity
-public class TaskList {
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -13,11 +13,11 @@ public class TaskList {
     @JoinColumn(name = "studentid", nullable = false)
     private Student student;
 
-    public TaskList(String description){
+    public Task(String description){
         this.description = description;
     }
 
-    public TaskList() {
+    public Task() {
     }
 
     public String getDescription() {

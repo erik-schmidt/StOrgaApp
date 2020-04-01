@@ -24,7 +24,10 @@ public class Course {
     private double grade;
     private String fieldOfStudy;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LectureDate> lectureDateList;
+
+    // TODO: 01.04.2020 can save list or need Set
+
+    private Set<LectureDate> lectureDateList;
 
     public Course() {
     }
@@ -86,11 +89,11 @@ public class Course {
         this.fieldOfStudy = fieldOfStudy;
     }
 
-    public List<LectureDate> getLectureDateList() {
+    public Set<LectureDate> getLectureDateList() {
         return lectureDateList;
     }
 
-    public void setLectureDateList(List<LectureDate> lectureDateList) {
+    public void setLectureDateList(Set<LectureDate> lectureDateList) {
         this.lectureDateList = lectureDateList;
     }
 }

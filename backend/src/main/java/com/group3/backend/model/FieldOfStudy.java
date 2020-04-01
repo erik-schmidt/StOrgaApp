@@ -17,7 +17,7 @@ public class FieldOfStudy {
     @Max(15)
     private int semester;
     //@OneToMany(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Integer> courseIdList;
+    //private Set<Integer> courseIdList;
 
     public FieldOfStudy() {
     }

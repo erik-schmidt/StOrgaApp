@@ -1,8 +1,6 @@
 package com.group3.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
@@ -13,6 +11,9 @@ public class LectureDate {
     private Weekday weekday;
     private LocalTime startTime;
     private LocalTime finishTime;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "courseid", nullable = false)
+    private Course course;
 
     public LectureDate() {
     }
