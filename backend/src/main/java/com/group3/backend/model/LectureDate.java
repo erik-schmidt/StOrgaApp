@@ -44,7 +44,11 @@ public class LectureDate {
         return finishTime;
     }
 
-    public void setFinishTime(LocalTime finishTime) {
+    public void setFinishTime(LocalTime finishTime){
         this.finishTime = finishTime;
+    }
+
+    private enum Weekday {
+        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     }
 }
