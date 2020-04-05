@@ -12,7 +12,7 @@ public class LectureDate {
     private LocalTime startTime;
     private LocalTime finishTime;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "courseid", nullable = false)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     public LectureDate() {

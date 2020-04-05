@@ -5,5 +5,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/milestone")
-public class Milestone {
+public class MilestoneController {
 }
