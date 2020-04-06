@@ -36,8 +36,8 @@ public class StudentController {
      * @return String "Test successfull"
      */
     @GetMapping("/ping")
-    public String reachabilityTest(){
-        return "Test successfull";
+    public String ping(){
+        return "reachable";
     }
 
     @GetMapping("/get")
