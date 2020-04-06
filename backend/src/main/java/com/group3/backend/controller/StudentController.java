@@ -30,6 +30,16 @@ public class StudentController {
         this.studentRepository = studentRepository;
     }
 
+    /**
+     * reachabilityTest()
+     * return a String with a successfull message if backend reachable
+     * @return String "Test successfull"
+     */
+    @GetMapping("/ping")
+    public String reachabilityTest(){
+        return "Test successfull";
+    }
+
     @GetMapping("/get")
     public List<Student> getAllStudents(){
         //assert != null
