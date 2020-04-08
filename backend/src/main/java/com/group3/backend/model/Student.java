@@ -3,10 +3,13 @@ package com.group3.backend.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Student {
+public class Student implements Serializable {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -14,13 +17,14 @@ public class Student {
     private String matrNr;
     private String studentPrename;
     private String studentFamilyname;
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Task> taskLists;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
+    private Set<Task> taskLists = new HashSet<>();
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname){
+    public Student(String matrNr, String studentPrename, String studentFamilyname, Set<Task> taskLists){
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
+        this.taskLists = taskLists;
     }
 
     public Student() {

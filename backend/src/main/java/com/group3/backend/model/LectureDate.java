@@ -12,7 +12,7 @@ public class LectureDate {
     private LocalTime startTime;
     private LocalTime finishTime;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "courseid", nullable = false)
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
     public LectureDate() {
@@ -44,7 +44,11 @@ public class LectureDate {
         return finishTime;
     }
 
-    public void setFinishTime(LocalTime finishTime) {
+    public void setFinishTime(LocalTime finishTime){
         this.finishTime = finishTime;
+    }
+
+    private enum Weekday {
+        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     }
 }

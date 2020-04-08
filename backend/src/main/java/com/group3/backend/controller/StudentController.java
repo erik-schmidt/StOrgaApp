@@ -10,15 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Student
  *
  */
-
 @RestController
 @RequestMapping("/student")
+@CrossOrigin()
 public class StudentController {
 
     private StudentRepository studentRepository;
@@ -26,6 +28,16 @@ public class StudentController {
     @Autowired
     public StudentController(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
+    }
+
+    /**
+     * reachabilityTest()
+     * return a String with a successfull message if backend reachable
+     * @return String "Test successfull"
+     */
+    @GetMapping("/ping")
+    public String ping(){
+        return "reachable";
     }
 
     @GetMapping("/get")
@@ -41,11 +53,14 @@ public class StudentController {
 
     @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        List<Task> taskLists = new ArrayList<>();
-        Task task1 = new Task("Test Desc");
-        taskLists.add(task1);
+        Set<Task> taskLists = new HashSet<>();
 
-        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname());
+
+        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(), null);
+
+        Task task1 = new Task("Test Desc", st);
+        taskLists.add(task1);
+        st.setTaskLists(taskLists);
         studentRepository.save(st);
         return new ResponseEntity<>(HttpStatus.OK);
     }
