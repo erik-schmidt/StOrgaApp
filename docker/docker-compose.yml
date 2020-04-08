@@ -3,7 +3,7 @@ version: "3.5"
 services:
   backend:
     image: developmentmaven
-    container_name: uniApp-backend
+    container_name: storga-backend
     build:
       context: ../backend
       dockerfile: ./.docker/Dockerfile
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./../backend:/usr/src/mymaven/
     networks:
-      - uniapp
+      - storga
 
   postgres:
     image: developmentdb
@@ -26,21 +26,24 @@ services:
       context: ../backend
       dockerfile: ./.docker/Dockerfile
       target: developmentdb
-    container_name: postgres
+    container_name: storga-postgres
     restart: always
     environment:
       - POSTGRES_DB=backend
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     expose:
       - "5432"
     ports:
       - "5432:5432"
     volumes:
-      - uniapp-db:/var/lib/postgresql/data/
+      - storga-db:/var/lib/postgresql/data/
+      - storga-db:/docker-entrypoint-initdb.d
     networks:
-      - uniapp
+      - storga
 
 volumes:
-  uniapp-db:
+  storga-db:
 
 networks:
-  uniapp:
+  storga:

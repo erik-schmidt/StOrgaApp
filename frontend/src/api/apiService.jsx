@@ -2,7 +2,7 @@ import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
 const axios = Axios.create({
   baseURL: "http://localhost:8080/api/",
-  responseType: "json",
+  responseType: "application/json",
 });
 
 export async function fetch(apiPath, param = "") {
@@ -15,7 +15,7 @@ export async function fetch(apiPath, param = "") {
       return undefined;
     })
     .catch((error) => {
-      if (error.response.status !== undefined) {
+      if (error.response !== undefined) {
         console.log(
           `An Error occured doing a REST-Request ${error.response.status}`
         );
@@ -34,9 +34,9 @@ export async function post(apiPath, param = "") {
       return undefined;
     })
     .catch((error) => {
-      if (error.res.status !== undefined) {
+      if (error.response !== undefined) {
         console.log(
-          `An Error occured doing a REST-Request ${error.ressponse.status}`
+          `An Error occured doing a REST-Request ${error.response.status}`
         );
       }
       return undefined;
@@ -53,7 +53,7 @@ export async function put(apiPath, param = "") {
       return undefined;
     })
     .catch((error) => {
-      if (error.response.status !== undefined) {
+      if (error.response !== undefined) {
         console.log(
           `An Error occured doing a REST-Request ${error.response.status}`
         );
@@ -72,7 +72,7 @@ export async function del(apiPath, param = "") {
       return undefined;
     })
     .catch((error) => {
-      if (error.response.status) {
+      if (error.response !== undefined) {
         console.log(
           `An Error occured doing a REST-Request ${error.response.status}`
         );
