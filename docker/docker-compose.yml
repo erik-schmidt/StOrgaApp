@@ -10,6 +10,8 @@ services:
       target: developmentmaven
     expose:
       - "8080"
+    depends_on: 
+      - postgres
     ports:
       - "8080:8080"
     command: mvn spring-boot:run
@@ -24,19 +26,15 @@ services:
       context: ../backend
       dockerfile: ./.docker/Dockerfile
       target: developmentdb
-    container_name: uniApp-postgres-db
+    container_name: postgres
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - PGDATA=/var/lib/postgresql/data
       - POSTGRES_DB=backend
     expose:
       - "5432"
     ports:
       - "5432:5432"
     volumes:
-      - uniapp-db:/docker-entrypont-initd.d
       - uniapp-db:/var/lib/postgresql/data/
     networks:
       - uniapp

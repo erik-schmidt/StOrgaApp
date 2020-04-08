@@ -1,79 +1,82 @@
-import axios from "axios";
+import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
-const config = require("../../config");
-const axios = axios.create({
-  baseURL: config.api.baseURL,
+const axios = Axios.create({
+  baseURL: "http://localhost:8080/api/",
   responseType: "json",
 });
 
-export async function get(apiPath, param = "") {
-  return await axios
+export async function fetch(apiPath, param = "") {
+  return axios
     .get(apiPath, param)
-    .then((response) => {
-      if (response.status === HttpStatus.OK) {
-        return response.data;
-      } else {
-        return undefined;
+    .then((res) => {
+      if (res !== undefined && res.status === HttpStatus.OK) {
+        return res;
       }
+      return undefined;
     })
     .catch((error) => {
-      console.log(
-        `An Error occured doing a REST-Request ${error.response.status}`
-      );
+      if (error.response.status !== undefined) {
+        console.log(
+          `An Error occured doing a REST-Request ${error.response.status}`
+        );
+      }
       return undefined;
     });
 }
 
-export async function post(apiPath, value) {
-  return await axios
-    .post(apiPath, value)
-    .then((response) => {
-      if (response.status === HttpStatus.OK) {
-        return response.data;
-      } else {
-        return undefined;
-      }
-    })
-    .catch((error) => {
-      console.log(
-        `An Error occured doing a REST-Request ${error.response.status}`
-      );
-      return undefined;
-    });
-}
-
-export async function put(apiPath, value) {
+export async function post(apiPath, param = "") {
   return axios
-    .put(apiPath, value)
-    .then((response) => {
-      if (response.status === HttpStatus.OK) {
-        return response.data;
-      } else {
-        return undefined;
+    .post(apiPath, param)
+    .then((res) => {
+      if (res !== undefined && res.status === HttpStatus.OK) {
+        return res;
       }
+      return undefined;
     })
     .catch((error) => {
-      console.log(
-        `An Error occured doing a REST-Request ${error.response.status}`
-      );
+      if (error.res.status !== undefined) {
+        console.log(
+          `An Error occured doing a REST-Request ${error.ressponse.status}`
+        );
+      }
       return undefined;
     });
 }
 
-export async function del(apiPath, value) {
+export async function put(apiPath, param = "") {
   return axios
-    .delete(apiPath, value)
-    .then((response) => {
-      if (response.status === HttpStatus.OK) {
-        return response.data;
-      } else {
-        return undefined;
+    .put(apiPath, param)
+    .then((res) => {
+      if (res !== undefined && res.status === HttpStatus.OK) {
+        return res;
       }
+      return undefined;
     })
     .catch((error) => {
-      console.log(
-        `An Error occured doing a REST-Request ${error.response.status}`
-      );
+      if (error.response.status !== undefined) {
+        console.log(
+          `An Error occured doing a REST-Request ${error.response.status}`
+        );
+      }
+      return undefined;
+    });
+}
+
+export async function del(apiPath, param = "") {
+  return axios
+    .delete(apiPath, param)
+    .then((res) => {
+      if (res !== undefined && res.status === HttpStatus.OK) {
+        return res.data;
+      }
+      return undefined;
+    })
+    .catch((error) => {
+      if (error.response.status) {
+        console.log(
+          `An Error occured doing a REST-Request ${error.response.status}`
+        );
+      }
       return undefined;
     });
 }

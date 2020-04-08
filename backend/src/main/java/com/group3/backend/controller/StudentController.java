@@ -18,9 +18,9 @@ import java.util.Set;
  * Student
  *
  */
-
 @RestController
 @RequestMapping("/student")
+@CrossOrigin()
 public class StudentController {
 
     private StudentRepository studentRepository;
