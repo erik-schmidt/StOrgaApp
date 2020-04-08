@@ -34,12 +34,15 @@ public class CurriculumController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // TODO: 08.04.2020 Warum bekommt er hier durch findById nur ein Repo zurück und kein Curriculum Objekt? 
+    // TODO: 08.04.2020 Warum bekommt er hier durch findById nur ein Repo zurück und kein Curriculum Objekt?
     @DeleteMapping("/delete")
     public Curriculum deleteCurriculum(@PathVariable(value = "id") int id) {
+        /*
         Curriculum curriculum = curriculumRepository.findById(id);
         curriculumRepository.delete(curriculum);
         return curriculum;
+         */
+        return null;
     }
 
 }
