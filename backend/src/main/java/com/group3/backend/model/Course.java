@@ -23,10 +23,12 @@ public class Course {
     @Max(5)
     private double grade;
     private String fieldOfStudy;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
     // TODO: 01.04.2020 can save list or need Set
-
     private Set<LectureDate> lectureDateList;
 
     public Course() {

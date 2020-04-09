@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Student
- *
+ * //assert != null
+ * // Get => Daten holen
+ * // POST => Daten erstellen/Eintragen
+ * // PUT => Hinzufügen von relations
+ * // PATCH => Updaten von einzelnen feldern
  */
 
 @RestController
@@ -42,24 +43,18 @@ public class StudentController {
 
     @GetMapping("/get")
     public List<Student> getAllStudents(){
-        //assert != null
-        // Get => Daten holen
-        // POST => Daten erstellen/Eintragen
-        // PUT => Hinzufügen von relations
-        // PATCH => Updaten von einzelnen feldern
+
         List<Student> studentList = studentRepository.findAll();
         return studentList;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/post")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Set<Task> taskLists = new HashSet<>();
-
-
-        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(), null);
-
-        Task task1 = new Task("Test Desc", st);
-        taskLists.add(task1);
+        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(), student.getTaskLists());
+        Set<Task> taskLists = st.getTaskLists();
+        for(Task t: taskLists){
+            t.setStudent(st);
+        }
         st.setTaskLists(taskLists);
         studentRepository.save(st);
         return new ResponseEntity<>(HttpStatus.OK);
