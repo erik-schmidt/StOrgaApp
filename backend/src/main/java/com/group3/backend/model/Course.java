@@ -4,8 +4,6 @@ import javax.persistence.*;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,13 +21,12 @@ public class Course {
     @Max(5)
     private double grade;
     private String fieldOfStudy;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // TODO: 01.04.2020 can save list or need Set
     private Set<LectureDate> lectureDateList;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade=CascadeType.ALL)
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 
     public Course() {
     }
@@ -97,5 +94,13 @@ public class Course {
 
     public void setLectureDateList(Set<LectureDate> lectureDateList) {
         this.lectureDateList = lectureDateList;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

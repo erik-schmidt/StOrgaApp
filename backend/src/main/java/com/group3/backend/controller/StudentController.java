@@ -1,6 +1,7 @@
 package com.group3.backend.controller;
 
 
+import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import com.group3.backend.model.Task;
 import com.group3.backend.repository.StudentRepository;
@@ -43,22 +44,40 @@ public class StudentController {
 
     @GetMapping("/get")
     public List<Student> getAllStudents(){
-
         List<Student> studentList = studentRepository.findAll();
         return studentList;
     }
 
+    @GetMapping("/get/{matNr}")
+    public Student getStudentByNumber(@PathVariable(value = "matNr") String matNr){
+        Student st = studentRepository.findByMatrNr(matNr);
+        return st;
+    }
+
     @PostMapping("/post")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(), student.getTaskLists());
+        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(),
+                student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(), student.getFieldOfStudy());
+
         Set<Task> taskLists = st.getTaskLists();
         for(Task t: taskLists){
             t.setStudent(st);
         }
         st.setTaskLists(taskLists);
+
+
+        Set<Course> coursesList = st.getCourseList();
+        for(Course c: coursesList){
+            c.setStudent(st);
+        }
+        st.setCourseList(coursesList);
+
+
+
         studentRepository.save(st);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @DeleteMapping("/delete/{matNr}")
     public Student deleteStudent(@PathVariable(value = "matNr") String matNr){

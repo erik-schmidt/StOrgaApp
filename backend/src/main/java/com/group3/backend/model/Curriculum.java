@@ -14,9 +14,9 @@ public class Curriculum {
     private String description;
     ///https://stackoverflow.com/questions/287201/how-to-persist-a-property-of-type-liststring-in-jpa
     @Convert(converter = StringListConverter.class)
-    private Set<String>notesList;
+    private Set<String>notesSet;
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Milestone> milestoneList;
+    private Set<Milestone> milestoneSet;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
@@ -24,8 +24,11 @@ public class Curriculum {
     public Curriculum() {
     }
 
-    public Curriculum(String description) {
+    public Curriculum(String description, Set<String> notesSet, Set<Milestone> milestoneSet, Student student) {
         this.description = description;
+        this.notesSet = notesSet;
+        this.milestoneSet = milestoneSet;
+        this.student = student;
     }
 
     public String getDescription() {
@@ -36,19 +39,27 @@ public class Curriculum {
         this.description = description;
     }
 
-    /*public List<String> getNotesList() {
-        return notesList;
+    public Set<String> getNotesSet() {
+        return notesSet;
     }
 
-    public void setNotesList(List<String> notesList) {
-        this.notesList = notesList;
-    }*/
+    public void setNotesSet(Set<String> notesSet) {
+        this.notesSet = notesSet;
+    }
 
     public Set<Milestone> getMilestoneList() {
-        return milestoneList;
+        return milestoneSet;
     }
 
-    public void setMilestoneList(Set<Milestone> milestoneList) {
-        this.milestoneList = milestoneList;
+    public void setMilestoneList(Set<Milestone> milestoneSet) {
+        this.milestoneSet = milestoneSet;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

@@ -31,7 +31,7 @@ public class NewsController {
         return newsList;
     }
 
-    @PostMapping("create")
+    @PostMapping("post")
     public ResponseEntity<News> createNews(@RequestBody News news){
         News nw = new News(news.getTitle(), news.getText(), news.getCreator(), news.getDateTime());
         //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM:ss");

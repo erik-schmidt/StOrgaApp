@@ -1,14 +1,9 @@
 package com.group3.backend.model;
 
-
-import org.hibernate.validator.constraints.UniqueElements;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,23 +17,22 @@ public class Student implements Serializable {
     private String studentFamilyname;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Task> taskLists = new HashSet<>();
-   /* @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
-    private Set<Course> courseList = new HashSet<>();;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
-    private Set<Curriculum> calenderEntries = new HashSet<>();*/
-    //@OneToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "fieldOfStudy_id")
-    //private FieldOfStudy fieldOfStudy;;
+    private Set<Course> courseList = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
+    private Set<Curriculum> calenderEntries = new HashSet<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    private FieldOfStudy fieldOfStudy;;
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname, Set<Task> taskLists) {
+    public Student(String matrNr, String studentPrename, String studentFamilyname, Set<Task> taskLists,
+                   Set<Course> courseList, Set<Curriculum> curriculumSet, FieldOfStudy fieldOfStudy) {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
         this.taskLists = taskLists;
-        //this.courseList = courseList;
-       // this.calenderEntries = calenderEntries;
-        //this.fieldOfStudy = new FieldOfStudy();
-       // this.fieldOfStudy = fieldOfStudy;
+        this.courseList = courseList;
+        this.calenderEntries = calenderEntries;
+        this.fieldOfStudy = fieldOfStudy;
     }
 
     public Student() {
@@ -74,5 +68,29 @@ public class Student implements Serializable {
 
     public void setTaskLists(Set<Task> taskLists) {
         this.taskLists = taskLists;
+    }
+
+    public Set<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(Set<Course> courseList) {
+        this.courseList = courseList;
+    }
+
+    public Set<Curriculum> getCalenderEntries() {
+        return calenderEntries;
+    }
+
+    public void setCalenderEntries(Set<Curriculum> calenderEntries) {
+        this.calenderEntries = calenderEntries;
+    }
+
+    public FieldOfStudy getFieldOfStudy() {
+        return fieldOfStudy;
+    }
+
+    public void setFieldOfStudy(FieldOfStudy fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
     }
 }

@@ -26,7 +26,7 @@ public class CourseController {
         return courseList;
     }
 
-    @PutMapping("/create")
+    @PutMapping("/post")
     public ResponseEntity<Course> createCourse(@RequestBody Course course){
         Course cs = new Course(course.getDescription(), course.getRoom(), course.getProfessor(), course.getEcts(), course.getGrade(), course.getFieldOfStudy());
         courseRepository.save(cs);
