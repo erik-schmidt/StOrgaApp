@@ -1,51 +1,46 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styles from "./CourseScreen.style";
-import { View, Text, Button, Modal } from "react-native";
-import CourseScreenNavigator from "../../navigation/CourseScreenNavigator";
-import AddButton from "../../components/AddButton";
+import { Modal, TouchableHighlight, Text, View, Alert } from "react-native";
+import BottomButton from "../../components/BottomButton/BottomButton";
+import InputModal from "../../components/InputModal/InputModal";
 
 const CourseScreen = ({ navigation }) => {
-  navigation.setParams({ onPress: onClick });
   const [courses, setCourses] = useState([]);
   const [course, setCourse] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const onClick = () => {
-    return (
-      <Modal
-        visible={true}
-        onTouchOutside={() => {
-          visible: false;
-        }}
-      />
-    );
-  };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <AddButton onPress={() => onClick} />,
-    });
-  })
+  useLayoutEffect(() => {}, []);
 
   useEffect(() => {
     console.log("Current Courses", courses);
   }, [courses]);
 
+  const saveContent = (content) => {
+    setCourse(content);
+    const addCourse = [...courses];
+    addCourse.push(course);
+    setCourses(addCourse);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.container}>
-        <table>
-          <tr>
-            <th>Kurs</th>
-          </tr>
-          {courses.map((course) => {
-            return (
-              <tr>
-                <td>{course}</td>
-              </tr>
-            );
-          })}
-        </table>
+      {modalVisible ? (
+        <InputModal
+          isOpen={modalVisible}
+          closeModal={() => setModalVisible(false)}
+          saveContent={saveContent}
+          heading="Kurs hinzufügen"
+        />
+      ) : null}
+      <View style={styles.centeredView}>
+        {courses.map((course) => {
+          return <Text>{course}</Text>;
+        })}
       </View>
+      <BottomButton
+        onPress={() => setModalVisible(true)}
+        text="Kurs hinzufügen"
+      />
     </View>
   );
 };

@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import DrawerButton from "../components/DrawerButton";
-import AddButton from '../components/AddButton';
+import DrawerButton from "../components/DrawerButton/DrawerButton";
 import CourseScreen from "../screens/course/CourseScreen";
 
 const CourseScreenNavigator = ({navigation}) => {
@@ -12,8 +11,7 @@ const CourseScreenNavigator = ({navigation}) => {
         name="Fächer"
         component={CourseScreen}
         options={{
-          headerLeft: () => <DrawerButton />,
-          headerRight: (screenProps) => <AddButton onPress={}/>
+          headerLeft: () => <DrawerButton />
         }}
       />
     </CourseStack.Navigator>
