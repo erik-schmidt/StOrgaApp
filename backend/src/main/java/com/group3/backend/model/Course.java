@@ -20,6 +20,7 @@ public class Course {
     @Min(1)
     @Max(5)
     private double grade;
+    // TODO: 13.04.2020 field of Study change to object 
     private String fieldOfStudy;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // TODO: 01.04.2020 can save list or need Set
@@ -31,13 +32,16 @@ public class Course {
     public Course() {
     }
 
-    public Course(String description, String room, String professor, int ects, double grade, String fieldOfStudy){
+    public Course(String description, String room, String professor, int ects, double grade, String fieldOfStudy,
+                  Set<LectureDate> lectureDateList, Student student){
         this.description = description;
         this.room = room;
         this.professor = professor;
         this.ects = ects;
         this.grade = grade;
         this.fieldOfStudy = fieldOfStudy;
+        this.lectureDateList = lectureDateList;
+        this.student = student;
     }
 
     public String getDescription() {

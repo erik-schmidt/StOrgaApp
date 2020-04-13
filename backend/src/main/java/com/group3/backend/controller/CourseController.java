@@ -35,7 +35,8 @@ public class CourseController {
 
     @PutMapping("/post")
     public ResponseEntity<Course> createCourse(@RequestBody Course course){
-        Course cs = new Course(course.getDescription(), course.getRoom(), course.getProfessor(), course.getEcts(), course.getGrade(), course.getFieldOfStudy());
+        Course cs = new Course(course.getDescription(), course.getRoom(), course.getProfessor(), course.getEcts(),
+                course.getGrade(), course.getFieldOfStudy(), course.getLectureDateList(), course.getStudent());
         courseRepository.save(cs);
         return new ResponseEntity<>(HttpStatus.OK);
     }
