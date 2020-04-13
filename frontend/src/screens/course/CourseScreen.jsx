@@ -1,46 +1,23 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./CourseScreen.style";
-import { Modal, TouchableHighlight, Text, View, Alert } from "react-native";
-import BottomButton from "../../components/BottomButton/BottomButton";
-import InputModal from "../../components/InputModal/InputModal";
+import { Text, View } from "react-native";
+import AddButton from "../../components/AddButton/AddButton";
 
-const CourseScreen = ({ navigation }) => {
+const CourseScreen = ({ route }) => {
   const [courses, setCourses] = useState([]);
-  const [course, setCourse] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [course, setCourse] = useState(route.params?.courseName);
 
-  useLayoutEffect(() => {}, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     console.log("Current Courses", courses);
-  }, [courses]);
-
-  const saveContent = (content) => {
-    setCourse(content);
-    const addCourse = [...courses];
-    addCourse.push(course);
-    setCourses(addCourse);
-  };
+  }, [courses, route.params?.courseName]);
 
   return (
     <View style={styles.container}>
-      {modalVisible ? (
-        <InputModal
-          isOpen={modalVisible}
-          closeModal={() => setModalVisible(false)}
-          saveContent={saveContent}
-          heading="Kurs hinzufügen"
-        />
-      ) : null}
       <View style={styles.centeredView}>
-        {courses.map((course) => {
-          return <Text>{course}</Text>;
-        })}
+        <Text>{route.params?.courseName}</Text>
       </View>
-      <BottomButton
-        onPress={() => setModalVisible(true)}
-        text="Kurs hinzufügen"
-      />
     </View>
   );
 };
