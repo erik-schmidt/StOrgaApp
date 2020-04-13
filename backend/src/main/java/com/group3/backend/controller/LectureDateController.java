@@ -28,6 +28,12 @@ public class LectureDateController {
         return lectureDateList;
     }
 
+    @GetMapping("/get/{id}")
+    public LectureDate getLectureDateByNumber(@PathVariable(value = "id") int id){
+        LectureDate ld = lectureDateRepository.findById(id);
+        return ld;
+    }
+
     @PutMapping("/post")
     public ResponseEntity<LectureDate> createLectureDate(@RequestBody LectureDate lectureDate){
         LectureDate ld = new LectureDate(lectureDate.getWeekday(), lectureDate.getStartTime(),
@@ -36,7 +42,7 @@ public class LectureDateController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public LectureDate deleteLectureDate(@PathVariable(value = "id") int id){
         LectureDate lectureDate = lectureDateRepository.findById(id);
         lectureDateRepository.delete(lectureDate);

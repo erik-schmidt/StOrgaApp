@@ -1,6 +1,7 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.LocalDateTimeConverter;
+import com.group3.backend.model.Milestone;
 import com.group3.backend.model.News;
 import com.group3.backend.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,15 @@ public class NewsController {
     }
 
     @GetMapping("/get")
-    public List<News> getAllStudents(){
+    public List<News> getAllNews(){
         List<News> newsList = newsRepository.findAll();
         return newsList;
+    }
+
+    @GetMapping("/get/{id}")
+    public News getNewsByNumber(@PathVariable(value = "id") int id){
+        News nws = newsRepository.findById(id);
+        return nws;
     }
 
     @PostMapping("post")

@@ -28,6 +28,12 @@ public class MilestoneController {
         return milestoneList;
     }
 
+    @GetMapping("/get/{id}")
+    public Milestone getMilestoneByNumber(@PathVariable(value = "id") int id){
+        Milestone ms = milestoneRepository.findById(id);
+        return ms;
+    }
+
     @PutMapping("/post")
     public ResponseEntity<Milestone> createMilestone(@RequestBody Milestone milestone){
         Milestone ms = new Milestone(milestone.getText(), milestone.getFinishDate(), milestone.getCurriculum());
@@ -35,7 +41,7 @@ public class MilestoneController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public Milestone deleteMilestone(@PathVariable(value = "id") int id){
         Milestone milestone = milestoneRepository.findById(id);
         milestoneRepository.delete(milestone);

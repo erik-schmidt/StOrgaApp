@@ -59,7 +59,7 @@ public class StudentController {
         Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(),
                 student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(), student.getFieldOfStudy());
 
-        Set<Task> taskLists = st.getTaskLists();
+        /*Set<Task> taskLists = st.getTaskLists();
         for(Task t: taskLists){
             t.setStudent(st);
         }
@@ -70,7 +70,7 @@ public class StudentController {
         for(Course c: coursesList){
             c.setStudent(st);
         }
-        st.setCourseList(coursesList);
+        st.setCourseList(coursesList);*/
 
 
 

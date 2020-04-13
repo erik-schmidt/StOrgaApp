@@ -28,6 +28,12 @@ public class FieldOfStudyController {
         return fieldOfStudyList;
     }
 
+    @GetMapping("/get/{id}")
+    public FieldOfStudy getFieldOfStudyByNumber(@PathVariable(value = "id") int id){
+        FieldOfStudy fos = fieldOfStudyRepository.findById(id);
+        return fos;
+    }
+
     @PutMapping("/post")
     public ResponseEntity<FieldOfStudy> createFieldOfStudy(@RequestBody FieldOfStudy fieldOfStudy){
         FieldOfStudy fos = new FieldOfStudy(fieldOfStudy.getDescription(), fieldOfStudy.getName(),
@@ -36,7 +42,7 @@ public class FieldOfStudyController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public FieldOfStudy deleteCurriculum(@PathVariable(value = "id") int id){
         FieldOfStudy fieldOfStudy = fieldOfStudyRepository.findById(id);
         fieldOfStudyRepository.delete(fieldOfStudy);

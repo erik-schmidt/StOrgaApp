@@ -28,6 +28,12 @@ public class CurriculumController {
         return curriculumList;
     }
 
+    @GetMapping("/get/{id}")
+    public Curriculum getCurriculumByNumber(@PathVariable(value = "id") int id){
+        Curriculum cur = curriculumRepository.findById(id);
+        return cur;
+    }
+
     @PutMapping("/post")
     public ResponseEntity<Curriculum> createCurriculum(@RequestBody Curriculum curriculum){
         Curriculum cur = new Curriculum(curriculum.getDescription(), curriculum.getNotesSet(),
@@ -36,7 +42,7 @@ public class CurriculumController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public Curriculum deleteCurriculum(@PathVariable(value = "id") int id){
         Curriculum curriculum = curriculumRepository.findById(id);
         curriculumRepository.delete(curriculum);

@@ -1,6 +1,7 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
+import com.group3.backend.model.Milestone;
 import com.group3.backend.model.Task;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.TaskRepository;
@@ -27,6 +28,12 @@ public class TaskController {
         return taskList;
     }
 
+    @GetMapping("/get/{id}")
+    public Task getTaskByNumber(@PathVariable(value = "id") int id){
+        Task ts = taskRepository.findById(id);
+        return ts;
+    }
+
     @PutMapping("/post")
     public ResponseEntity<Course> createCourse(@RequestBody Task task){
         Task tsk = new Task(task.getDescription(), task.getStudent());
@@ -34,7 +41,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public Task deleteTask(@PathVariable(value = "id") int id){
         Task task = taskRepository.findById(id);
         taskRepository.delete(task);
