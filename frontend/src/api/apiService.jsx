@@ -5,6 +5,7 @@ const axios = Axios.create({
   responseType: "application/json",
 });
 
+//Objekt anfragen
 export async function fetch(apiPath, param = "") {
   return axios
     .get(apiPath, param)
@@ -24,6 +25,7 @@ export async function fetch(apiPath, param = "") {
     });
 }
 
+// Objekt übergeben 
 export async function post(apiPath, param = "") {
   return axios
     .post(apiPath, param)
@@ -43,6 +45,7 @@ export async function post(apiPath, param = "") {
     });
 }
 
+//Objekt updaten (bearbeiten)
 export async function put(apiPath, param = "") {
   return axios
     .put(apiPath, param)
@@ -62,6 +65,8 @@ export async function put(apiPath, param = "") {
     });
 }
 
+// Objekt löschen 
+// matrikelnummer als parameter
 export async function del(apiPath, param = "") {
   return axios
     .delete(apiPath, param)
