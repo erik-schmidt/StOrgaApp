@@ -4,8 +4,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
   centeredView: {
     flex: 1,
@@ -13,6 +11,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
+  headerContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  headerText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    margin: 10
+  }
 });
 
 export default styles;
