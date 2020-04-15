@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import java.util.Set;
 
 @Entity
+// TODO: 15.04.2020 Course im Student nur als String und Note speichern?  
 public class Course {
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)

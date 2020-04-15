@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import java.util.Set;
 
 @Entity
+// TODO: 15.04.2020 SChwerpunkte eintragen?  
 public class InitDataCourse {
 
     @javax.persistence.Id

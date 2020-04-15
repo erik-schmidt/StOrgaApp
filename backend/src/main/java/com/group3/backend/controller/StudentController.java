@@ -57,7 +57,8 @@ public class StudentController {
     @PostMapping("/post")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(),
-                student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(), student.getFieldOfStudy());
+                student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(),
+                student.getFieldOfStudy(), student.getCurrentSemester());
 
         /*Set<Task> taskLists = st.getTaskLists();
         for(Task t: taskLists){
