@@ -20,19 +20,19 @@ public class FieldOfStudy {
     //@OneToMany(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Convert(converter = StringListConverter.class)
     private Set<Integer> courseIdSet;
-    @OneToOne(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+   /* @OneToOne(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "student_id")
-    private Student student;
+    private Student student;*/
 
     public FieldOfStudy() {
     }
 
-    public FieldOfStudy(String description, String name, int semester, Set<Integer> courseIdSet, Student student) {
+    public FieldOfStudy(String description, String name, int semester, Set<Integer> courseIdSet) {
         this.description = description;
         this.name = name;
         this.semester = semester;
         this.courseIdSet = courseIdSet;
-        this.student = student;
+        //this.student = student;
     }
 
     public String getDescription() {
@@ -67,11 +67,11 @@ public class FieldOfStudy {
         this.courseIdSet = courseIdSet;
     }
 
-    public Student getStudent() {
+    /*public Student getStudent() {
         return student;
     }
 
     public void setStudent(Student student) {
         this.student = student;
-    }
+    }*/
 }

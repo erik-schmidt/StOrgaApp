@@ -28,7 +28,7 @@ public class DataHandler {
 
     private Set<InitDataFieldOfStudy> loadFieldOfStudy() {
         Set<InitDataFieldOfStudy> fieldOfStudySet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader("FieldsOfStudy.txt"))){
+        try(BufferedReader reader = new BufferedReader(new FileReader("backend/FieldsOfStudy.txt"))){
             String line = null;
             while(!(line = reader.readLine()).equals("")) {
                 String[] k = line.split("#");
@@ -53,7 +53,7 @@ public class DataHandler {
 
     private Set<InitDataCourse> loadCourses(String fieldOfStudyPref, InitDataFieldOfStudy initDatafieldOfStudy){
         Set<InitDataCourse> courseSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(fieldOfStudyPref+"Courses.txt"))){
+        try(BufferedReader reader = new BufferedReader(new FileReader("backend/" + fieldOfStudyPref+"Courses.txt"))){
             String line = null;
             while(!(line = reader.readLine()).equals("")) {
                 String[] k = line.split("#");
@@ -74,7 +74,7 @@ public class DataHandler {
 
     private Set<InitDataLectureDate> loadCLectureDates(String fieldOfStudy, String course, InitDataCourse initDataCourse){
         Set<InitDataLectureDate> lectureDateSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(fieldOfStudy+"_"+course+"_"+"LectureDates.txt"))){
+        try(BufferedReader reader = new BufferedReader(new FileReader("backend/" + fieldOfStudy+"_"+course+"_"+"LectureDates.txt"))){
             String line = null;
             while(!(line = reader.readLine()).equals("")) {
                 String[] k = line.split("#");

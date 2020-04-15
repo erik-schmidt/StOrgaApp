@@ -37,7 +37,7 @@ public class FieldOfStudyController {
     @PutMapping("/post")
     public ResponseEntity<FieldOfStudy> createFieldOfStudy(@RequestBody FieldOfStudy fieldOfStudy){
         FieldOfStudy fos = new FieldOfStudy(fieldOfStudy.getDescription(), fieldOfStudy.getName(),
-                fieldOfStudy.getSemester(), fieldOfStudy.getCourseIdSet(), fieldOfStudy.getStudent());
+                fieldOfStudy.getSemester(), fieldOfStudy.getCourseIdSet());
         fieldOfStudyRepository.save(fos);
         return new ResponseEntity<>(HttpStatus.OK);
     }
