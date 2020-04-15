@@ -3,6 +3,7 @@ package com.group3.backend.dataHandling;
 import com.group3.backend.model.InitDataCourse;
 import com.group3.backend.model.InitDataFieldOfStudy;
 import com.group3.backend.model.InitDataLectureDate;
+import java.sql.Time;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -82,7 +83,7 @@ public class DataHandler {
                 LocalTime startTime = LocalTime.of(Integer.parseInt(startTimeString[0]),Integer.parseInt(startTimeString[1]),00,00);
                 String[] finishTimeString = k[2].split(":");
                 LocalTime finishTime = LocalTime.of(Integer.parseInt(startTimeString[0]),Integer.parseInt(startTimeString[1]),00,00);
-                lectureDate = new InitDataLectureDate(lectureDate.getWeekdayByName(k[0]),LocalTime.now(), LocalTime.now(), initDataCourse);
+                lectureDate = new InitDataLectureDate(lectureDate.getWeekdayByName(k[0]), Time.valueOf(startTime), Time.valueOf(finishTime), initDataCourse);
                 lectureDateSet.add(lectureDate);
             }
         }

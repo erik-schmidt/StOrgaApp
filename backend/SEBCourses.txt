@@ -1,2 +1,2 @@
 SWLAb 17018 Softwarelabor#A200#Prof. Martin Haag#11#
-DB2 17019 Datenbanken 2#B230#Prof. Daniel Pfeifer#
+DB2 17019 Datenbanken 2#B230#Prof. Daniel Pfeifer#3#

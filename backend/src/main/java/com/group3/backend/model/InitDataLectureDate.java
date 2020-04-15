@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.sql.Time;
 
 @Entity
 public class InitDataLectureDate {
@@ -12,14 +13,14 @@ public class InitDataLectureDate {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private Weekday weekday;
-    @Column(columnDefinition = "TIMESTAMP")
-    @Type(type="org.hibernate.type.LocalTimeType")
+    @Column(columnDefinition = "TIME")
+    @Type(type="org.hibernate.type.TimeType")
     @Convert(disableConversion = true)
-    private LocalTime startTime;
-    @Column(columnDefinition = "TIMESTAMP")
-    @Type(type="org.hibernate.type.LocalTimeType")
+    private Time startTime;
+    @Column(columnDefinition = "TIME")
+    @Type(type="org.hibernate.type.TimeType")
     @Convert(disableConversion = true)
-    private LocalTime finishTime;
+    private Time finishTime;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
     private InitDataCourse course;
@@ -27,7 +28,7 @@ public class InitDataLectureDate {
     public InitDataLectureDate() {
     }
 
-    public InitDataLectureDate(Weekday weekday, LocalTime startTime, LocalTime finishTime, InitDataCourse course){
+    public InitDataLectureDate(Weekday weekday, Time startTime, Time finishTime, InitDataCourse course){
         this.weekday = weekday;
         this.startTime = startTime;
         this.finishTime = finishTime;
@@ -42,19 +43,19 @@ public class InitDataLectureDate {
         this.weekday = weekday;
     }
 
-    public LocalTime getStartTime() {
+    public Time getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getFinishTime() {
+    public Time getFinishTime() {
         return finishTime;
     }
 
-    public void setFinishTime(LocalTime finishTime){
+    public void setFinishTime(Time finishTime){
         this.finishTime = finishTime;
     }
 
