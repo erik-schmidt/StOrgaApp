@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import styles from "./CourseScreen.style";
 import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import Card from '../../components/CardList/Card'
+import Card from "../../components/CardList/Card";
 import SeperatedText from "../../components/SeperatedText/SeperatedText";
+import { getAllCourses } from "../../api/services/courseService";
 
 const CourseScreen = ({ route }) => {
   const [courses, setCourses] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+     
+  }, []);
 
   useEffect(() => {
     console.log("Current Courses", courses);
@@ -16,18 +19,18 @@ const CourseScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-        <FlatList
-          data={courses}
-          renderItem={({ item }) => (
-            <Card>
-              <SeperatedText title="Name:" content={item.name}/>
-              <SeperatedText title="Raum:" content={item.raum}/>
-              <SeperatedText title="Professor:" content={item.professor}/>
-              <SeperatedText title="ECTS:" content={item.etcs}/>
-            </Card>
-          )}
-          keyExtractor={item => item.id}
-        />
+      <FlatList
+        data={courses}
+        renderItem={({ item }) => (
+          <Card>
+            <SeperatedText title="Name:" content={item.name} />
+            <SeperatedText title="Raum:" content={item.raum} />
+            <SeperatedText title="Professor:" content={item.professor} />
+            <SeperatedText title="ECTS:" content={item.etcs} />
+          </Card>
+        )}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
