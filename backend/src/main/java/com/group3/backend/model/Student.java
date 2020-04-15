@@ -22,7 +22,7 @@ public class Student implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Curriculum> calenderEntries = new HashSet<>();
     @OneToOne(fetch = FetchType.LAZY)
-    private FieldOfStudy fieldOfStudy;;
+    private FieldOfStudy fieldOfStudy;
 
     public Student(String matrNr, String studentPrename, String studentFamilyname, Set<Task> taskLists,
                    Set<Course> courseList, Set<Curriculum> curriculumSet, FieldOfStudy fieldOfStudy) {
