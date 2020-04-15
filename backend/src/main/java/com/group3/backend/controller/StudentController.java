@@ -20,9 +20,9 @@ import java.util.Set;
  * // PUT => Hinzufügen von relations
  * // PATCH => Updaten von einzelnen feldern
  */
-
 @RestController
 @RequestMapping("/student")
+@CrossOrigin()
 public class StudentController {
 
     private StudentRepository studentRepository;
