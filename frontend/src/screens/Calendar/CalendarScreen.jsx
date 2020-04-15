@@ -4,7 +4,14 @@ import styles from "./CalendarScreen.style";
 import {CalendarList, LocaleConfig, Agenda} from 'react-native-calendars';
 
 
-const CalendarScreen = ({ navigation }) => {
+const CalendarScreen = () => {
+
+  //const [appointments, setAppointments] = useState(0);
+
+  /* useEffect(() => {
+    console.log("Current Appointments", appointments);
+  }, [appointments]); */
+
 
   LocaleConfig.locales['de'] = {
     monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
@@ -23,9 +30,9 @@ return(
   
   items={{
     '2020-04-22': [],
-    '2020-05-23': [{time: '9:00-10:00',name: 'appointment1',text: 'item 2 - any js object', height: 100}],
+    '2020-05-23': [{time: '9:00-10:00',name: 'appointment1',info: 'item 2 - any js object', height: 100}],
     '2020-05-24': [],
-    '2020-05-25': [{name: 'info',text: 'item 3 - any js object'}, {text: 'any js object'}]
+    '2020-05-25': [{name: 'info',name:'appointment2',info: 'item 3 - any js object'}, {info: 'any js object'}]
   }}
   markedDates={{
     '2020-05-23': {dots: [appointment]},
@@ -45,14 +52,16 @@ return(
   renderItem={(item) => {
     return (
       <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.time}</Text><Text>{item.name}</Text><Text>{item.text}</Text>
+        <Text>{item.time}</Text>
+        <Text>{item.name}</Text>
+        <Text>{item.info}</Text>
         </View>);}}
 
   renderEmptyData = {() => {
     return ( 
-  <View style={styles.emptyDate}>
-    <Text>No Appointments saved </Text>
-  </View>);}}
+      <View style={styles.emptyDate}>
+        <Text>No Appointments saved </Text>
+      </View>);}}
 
 /> 
 

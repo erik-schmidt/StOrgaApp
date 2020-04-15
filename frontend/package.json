@@ -22,6 +22,7 @@
     "react-native-calendar-picker": "^6.0.6",
     "react-native-calendars": "^1.265.0",
     "react-native-gesture-handler": "~1.5.0",
+    "react-native-modals": "^0.19.9",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",
     "react-native-screens": "2.0.0-alpha.12",
