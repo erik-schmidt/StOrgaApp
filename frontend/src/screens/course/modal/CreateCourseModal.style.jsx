@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     padding: 3,
     margin: 3,
     borderRadius: 7,
-    width: 250,
+    width: Math.round(Dimensions.get('window').width) - 50,
   },
 });
 

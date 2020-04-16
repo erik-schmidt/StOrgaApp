@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CourseScreen.style";
-import { Text, View } from "react-native";
+import { Text, View, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../components/CardList/Card";
 import SeperatedText from "../../components/SeperatedText/SeperatedText";
@@ -10,12 +10,15 @@ const CourseScreen = ({ route }) => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-     
+    getAllCourses().then(res => {
+      setCourses(res.data);
+      console.log(res);
+    })
   }, []);
 
   useEffect(() => {
     console.log("Current Courses", courses);
-  }, [courses]);
+  }, [courses, route.params?.request]);
 
   return (
     <View style={styles.container}>
@@ -23,10 +26,10 @@ const CourseScreen = ({ route }) => {
         data={courses}
         renderItem={({ item }) => (
           <Card>
-            <SeperatedText title="Name:" content={item.name} />
-            <SeperatedText title="Raum:" content={item.raum} />
+            <SeperatedText title="Name:" content={item.description} />
+            <SeperatedText title="Raum:" content={item.room} />
             <SeperatedText title="Professor:" content={item.professor} />
-            <SeperatedText title="ECTS:" content={item.etcs} />
+            <SeperatedText title="ECTS:" content={item.ects} />
           </Card>
         )}
         keyExtractor={(item) => item.id}
