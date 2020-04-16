@@ -1,14 +1,14 @@
 package com.group3.backend.model;
 
 import javax.persistence.*;
-import javax.persistence.GenerationType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.Set;
 
 @Entity
-// TODO: 15.04.2020 Course im Student nur als String und Note speichern?  
-public class Course {
+// TODO: 15.04.2020 SChwerpunkte eintragen?  
+public class InitDataCourse {
+
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -18,31 +18,23 @@ public class Course {
     @Min(1)
     @Max(50)
     private int ects;
-    @Min(1)
-    @Max(5)
-    private double grade;
-    // TODO: 13.04.2020 field of Study change to object
-    private String fieldOfStudy;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // TODO: 01.04.2020 can save list or need Set
-    private Set<LectureDate> lectureDateList;
+    private Set<InitDataLectureDate> lectureDateList;
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade=CascadeType.ALL)
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @JoinColumn(name = "initDataFieldOfStudy_id", nullable = false)
+    private InitDataFieldOfStudy initDataFieldOfStudy;
 
-    public Course() {
-    }
-
-    public Course(String description, String room, String professor, int ects, double grade, String fieldOfStudy,
-                  Set<LectureDate> lectureDateList, Student student){
+    public InitDataCourse(String description, String room, String professor, int ects, InitDataFieldOfStudy initDataFieldOfStudy, Set<InitDataLectureDate> lectureDateList) {
         this.description = description;
         this.room = room;
         this.professor = professor;
         this.ects = ects;
-        this.grade = grade;
-        this.fieldOfStudy = fieldOfStudy;
+        this.initDataFieldOfStudy = initDataFieldOfStudy;
         this.lectureDateList = lectureDateList;
-        this.student = student;
+    }
+
+    public InitDataCourse() {
     }
 
     public String getDescription() {
@@ -77,35 +69,19 @@ public class Course {
         this.ects = ects;
     }
 
-    public double getGrade() {
-        return grade;
+    public InitDataFieldOfStudy getInitDataFieldOfStudy() {
+        return initDataFieldOfStudy;
     }
 
-    public void setGrade(double grade) {
-        this.grade = grade;
+    public void setInitDataFieldOfStudy(InitDataFieldOfStudy initDataFieldOfStudy) {
+        this.initDataFieldOfStudy = initDataFieldOfStudy;
     }
 
-    public String getFieldOfStudy() {
-        return fieldOfStudy;
-    }
-
-    public void setFieldOfStudy(String fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
-    }
-
-    public Set<LectureDate> getLectureDateList() {
+    public Set<InitDataLectureDate> getLectureDateList() {
         return lectureDateList;
     }
 
-    public void setLectureDateList(Set<LectureDate> lectureDateList) {
+    public void setLectureDateList(Set<InitDataLectureDate> lectureDateList) {
         this.lectureDateList = lectureDateList;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 }

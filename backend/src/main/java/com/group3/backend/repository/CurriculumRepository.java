@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CurriculumRepository extends JpaRepository<Curriculum, Integer> {
-    CurriculumRepository findById(int id);
+    Curriculum findById(int id);
 }

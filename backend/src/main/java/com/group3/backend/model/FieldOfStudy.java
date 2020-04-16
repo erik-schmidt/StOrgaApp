@@ -1,9 +1,10 @@
 package com.group3.backend.model;
 
+import com.group3.backend.StringListConverter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,17 +18,21 @@ public class FieldOfStudy {
     @Max(15)
     private int semester;
     //@OneToMany(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //private Set<Integer> courseIdList;
-    //@OneToOne(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    //private Student student;
+    @Convert(converter = StringListConverter.class)
+    private Set<Integer> courseIdSet;
+   /* @OneToOne(mappedBy = "fieldOfStudy", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "student_id")
+    private Student student;*/
 
     public FieldOfStudy() {
     }
 
-    public FieldOfStudy(String description, String name, int semester) {
+    public FieldOfStudy(String description, String name, int semester, Set<Integer> courseIdSet) {
         this.description = description;
         this.name = name;
         this.semester = semester;
+        this.courseIdSet = courseIdSet;
+        //this.student = student;
     }
 
     public String getDescription() {
@@ -54,5 +59,19 @@ public class FieldOfStudy {
         this.semester = semester;
     }
 
+    public Set<Integer> getCourseIdSet() {
+        return courseIdSet;
+    }
 
+    public void setCourseIdSet(Set<Integer> courseIdSet) {
+        this.courseIdSet = courseIdSet;
+    }
+
+    /*public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }*/
 }

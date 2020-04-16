@@ -1,5 +1,7 @@
 package com.group3.backend.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -9,6 +11,9 @@ public class Milestone {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String text;
+    @Column(columnDefinition = "TIMESTAMP")
+    @Type(type="org.hibernate.type.LocalDateTimeType")
+    @Convert(disableConversion = true)
     private LocalDate finishDate;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "curriculumid", nullable = false)
@@ -17,9 +22,10 @@ public class Milestone {
     public Milestone() {
     }
 
-    public Milestone(String text, LocalDate finishDate){
+    public Milestone(String text, LocalDate finishDate, Curriculum curriculum){
         this.text = text;
         this.finishDate = finishDate;
+        this.curriculum = curriculum;
     }
 
     public String getText() {
@@ -36,5 +42,13 @@ public class Milestone {
 
     public void setFinishDate(LocalDate finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public Curriculum getCurriculum() {
+        return curriculum;
+    }
+
+    public void setCurriculum(Curriculum curriculum) {
+        this.curriculum = curriculum;
     }
 }

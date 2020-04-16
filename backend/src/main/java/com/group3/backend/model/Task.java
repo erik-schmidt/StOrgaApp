@@ -1,9 +1,6 @@
 package com.group3.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 @Entity
@@ -21,8 +18,9 @@ public class Task implements Serializable {
     }
 
 
-    public Task(String description){
+    public Task(String description, Student student){
         this.description = description;
+        this.student = student;
     }
 
 
