@@ -1,8 +1,6 @@
 package com.group3.backend.model;
 
-import com.group3.backend.LocalDateTimeConverter;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -1,5 +1,7 @@
 package com.group3.backend.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 
@@ -9,7 +11,13 @@ public class LectureDate {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private Weekday weekday;
+    @Column(columnDefinition = "TIMESTAMP")
+    @Type(type="org.hibernate.type.LocalDateTimeType")
+    @Convert(disableConversion = true)
     private LocalTime startTime;
+    @Column(columnDefinition = "TIMESTAMP")
+    @Type(type="org.hibernate.type.LocalDateTimeType")
+    @Convert(disableConversion = true)
     private LocalTime finishTime;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
@@ -18,10 +26,11 @@ public class LectureDate {
     public LectureDate() {
     }
 
-    public LectureDate(Weekday weekday, LocalTime startTime, LocalTime finishTime){
+    public LectureDate(Weekday weekday, LocalTime startTime, LocalTime finishTime, Course course){
         this.weekday = weekday;
         this.startTime = startTime;
         this.finishTime = finishTime;
+        this.course = course;
     }
 
     public Weekday getWeekday() {
@@ -46,6 +55,14 @@ public class LectureDate {
 
     public void setFinishTime(LocalTime finishTime){
         this.finishTime = finishTime;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     private enum Weekday {

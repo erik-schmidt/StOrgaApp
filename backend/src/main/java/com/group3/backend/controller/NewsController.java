@@ -1,6 +1,7 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.LocalDateTimeConverter;
+import com.group3.backend.model.Milestone;
 import com.group3.backend.model.News;
 import com.group3.backend.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,18 @@ public class NewsController {
     }
 
     @GetMapping("/get")
-    public List<News> getAllStudents(){
+    public List<News> getAllNews(){
         List<News> newsList = newsRepository.findAll();
         return newsList;
     }
 
-    @PostMapping("create")
+    @GetMapping("/get/{id}")
+    public News getNewsByNumber(@PathVariable(value = "id") int id){
+        News nws = newsRepository.findById(id);
+        return nws;
+    }
+
+    @PostMapping("post")
     public ResponseEntity<News> createNews(@RequestBody News news){
         News nw = new News(news.getTitle(), news.getText(), news.getCreator(), news.getDateTime());
         //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM:ss");

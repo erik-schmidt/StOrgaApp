@@ -1,6 +1,7 @@
 package com.group3.backend.controller;
 
 
+import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import com.group3.backend.model.Task;
 import com.group3.backend.repository.StudentRepository;
@@ -8,15 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Student
- *
+ * //assert != null
+ * // Get => Daten holen
+ * // POST => Daten erstellen/Eintragen
+ * // PUT => Hinzufügen von relations
+ * // PATCH => Updaten von einzelnen feldern
  */
 @RestController
 @RequestMapping("/student")
@@ -42,28 +44,41 @@ public class StudentController {
 
     @GetMapping("/get")
     public List<Student> getAllStudents(){
-        //assert != null
-        // Get => Daten holen
-        // POST => Daten erstellen/Eintragen
-        // PUT => Hinzufügen von relations
-        // PATCH => Updaten von einzelnen feldern
         List<Student> studentList = studentRepository.findAll();
         return studentList;
     }
 
-    @PostMapping("/create")
+    @GetMapping("/get/{matNr}")
+    public Student getStudentByNumber(@PathVariable(value = "matNr") String matNr){
+        Student st = studentRepository.findByMatrNr(matNr);
+        return st;
+    }
+
+    @PostMapping("/post")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Set<Task> taskLists = new HashSet<>();
+        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(),
+                student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(),
+                student.getFieldOfStudy(), student.getCurrentSemester());
 
-
-        Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(), null);
-
-        Task task1 = new Task("Test Desc", st);
-        taskLists.add(task1);
+        /*Set<Task> taskLists = st.getTaskLists();
+        for(Task t: taskLists){
+            t.setStudent(st);
+        }
         st.setTaskLists(taskLists);
+
+
+        Set<Course> coursesList = st.getCourseList();
+        for(Course c: coursesList){
+            c.setStudent(st);
+        }
+        st.setCourseList(coursesList);*/
+
+
+
         studentRepository.save(st);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @DeleteMapping("/delete/{matNr}")
     public Student deleteStudent(@PathVariable(value = "matNr") String matNr){
