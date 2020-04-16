@@ -34,8 +34,8 @@ public class StudentController {
 
     /**
      * reachabilityTest()
-     * return a String with a successfull message if backend reachable
-     * @return String "Test successfull"
+     * return a String with a successful message if backend reachable
+     * @return String "Test successful"
      */
     @GetMapping("/ping")
     public String ping(){

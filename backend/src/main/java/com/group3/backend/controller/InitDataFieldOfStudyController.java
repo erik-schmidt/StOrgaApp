@@ -20,6 +20,15 @@ public class InitDataFieldOfStudyController {
         this.fieldOfStudyRepository = fieldOfStudyRepository;
     }
 
+    /**
+     * reachabilityTest()
+     * return a String with a successful message if backend reachable
+     * @return String "Test successful"
+     */
+    @GetMapping("/ping")
+    public String ping(){
+        return "reachable";}
+
     @GetMapping("/get")
     public List<InitDataFieldOfStudy> getAllFieldOfStudy(){
         List<InitDataFieldOfStudy> fieldOfStudyList = fieldOfStudyRepository.findAll();

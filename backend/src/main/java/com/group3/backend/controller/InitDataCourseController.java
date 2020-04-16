@@ -20,6 +20,15 @@ public class InitDataCourseController {
         this.courseRepository = courseRepository;
     }
 
+    /**
+     * reachabilityTest()
+     * return a String with a successful message if backend reachable
+     * @return String "Test successful"
+     */
+    @GetMapping("/ping")
+    public String ping(){
+        return "reachable";}
+
     @GetMapping("/get")
     public List<InitDataCourse> getAllCourses(){
         List<InitDataCourse> courseList = courseRepository.findAll();

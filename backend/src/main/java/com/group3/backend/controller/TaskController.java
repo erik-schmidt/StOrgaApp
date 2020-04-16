@@ -22,6 +22,15 @@ public class TaskController {
         this.taskRepository = taskRepository;
     }
 
+    /**
+     * reachabilityTest()
+     * return a String with a successful message if backend reachable
+     * @return String "Test successful"
+     */
+    @GetMapping("/ping")
+    public String ping(){
+        return "reachable";}
+
     @GetMapping("/get")
     public List<Task> getAllTasks(){
         List<Task> taskList = taskRepository.findAll();
