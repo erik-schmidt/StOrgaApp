@@ -41,7 +41,7 @@ public class MilestoneController {
         return ms;
     }
 
-    @PutMapping("/post")
+    @PutMapping("/create")
     public ResponseEntity<Milestone> createMilestone(@RequestBody Milestone milestone){
         Milestone ms = new Milestone(milestone.getText(), milestone.getFinishDate(), milestone.getCurriculum());
         milestoneRepository.save(ms);

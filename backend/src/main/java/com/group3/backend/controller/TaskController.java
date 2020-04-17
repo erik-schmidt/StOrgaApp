@@ -31,7 +31,7 @@ public class TaskController {
     public String ping(){
         return "reachable";}
 
-    @GetMapping("/get")
+    @GetMapping("/create")
     public List<Task> getAllTasks(){
         List<Task> taskList = taskRepository.findAll();
         return taskList;

@@ -1,6 +1,7 @@
 package com.group3.backend.model;
 
 import com.group3.backend.StringListConverter;
+import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,8 +14,10 @@ public class Curriculum {
     private int id;
     private String description;
     ///https://stackoverflow.com/questions/287201/how-to-persist-a-property-of-type-liststring-in-jpa
+    @Nullable
     @Convert(converter = StringListConverter.class)
     private Set<String>notesSet;
+    @Nullable
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Milestone> milestoneSet;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

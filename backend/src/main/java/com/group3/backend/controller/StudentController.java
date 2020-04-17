@@ -54,7 +54,7 @@ public class StudentController {
         return st;
     }
 
-    @PostMapping("/post")
+    @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(),
                 student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(),

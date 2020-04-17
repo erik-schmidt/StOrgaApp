@@ -1,5 +1,7 @@
 package com.group3.backend.model;
 
+import com.sun.istack.Nullable;
+
 import javax.persistence.*;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.Max;
@@ -15,6 +17,7 @@ public class Course {
     private String description;
     @Min(1)
     @Max(5)
+    @Nullable
     private double grade;
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade=CascadeType.ALL)
     @JoinColumn(name = "student_id", nullable = false)

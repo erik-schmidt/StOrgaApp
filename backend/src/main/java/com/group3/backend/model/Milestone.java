@@ -1,5 +1,6 @@
 package com.group3.backend.model;
 
+import com.sun.istack.Nullable;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;

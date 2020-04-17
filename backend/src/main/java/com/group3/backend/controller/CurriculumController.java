@@ -43,7 +43,7 @@ public class CurriculumController {
         return cur;
     }
 
-    @PutMapping("/post")
+    @PutMapping("/create")
     public ResponseEntity<Curriculum> createCurriculum(@RequestBody Curriculum curriculum){
         Curriculum cur = new Curriculum(curriculum.getDescription(), curriculum.getNotesSet(),
                 curriculum.getMilestoneList(), curriculum.getStudent());
