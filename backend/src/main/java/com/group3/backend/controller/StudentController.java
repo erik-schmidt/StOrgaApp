@@ -1,16 +1,13 @@
 package com.group3.backend.controller;
 
 
-import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
-import com.group3.backend.model.Task;
 import com.group3.backend.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Student
@@ -57,7 +54,7 @@ public class StudentController {
     @PostMapping("/create")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         Student st = new Student(student.getMatrNr(), student.getStudentPrename(), student.getStudentFamilyname(),
-                student.getTaskLists(), student.getCourseList(), student.getCalenderEntries(),
+                student.getCourseList(), student.getCalenderEntries(),
                 student.getFieldOfStudy(), student.getCurrentSemester());
 
         /*Set<Task> taskLists = st.getTaskLists();

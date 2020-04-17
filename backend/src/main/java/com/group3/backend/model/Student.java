@@ -22,20 +22,15 @@ public class Student implements Serializable {
     @Max(15)
     private int currentSemester;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
-    private Set<Task> taskLists = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Course> courseList = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Curriculum> calenderEntries = new HashSet<>();
-    //@OneToOne(fetch = FetchType.LAZY)
-    //private FieldOfStudy fieldOfStudy;
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname, Set<Task> taskLists,
-                   Set<Course> courseList, Set<Curriculum> curriculumSet, String fieldOfStudy, int currentSemester) {
+    public Student(String matrNr, String studentPrename, String studentFamilyname,
+                   Set<Course> courseList, Set<Curriculum> calenderEntries, String fieldOfStudy, int currentSemester) {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
-        this.taskLists = taskLists;
         this.courseList = courseList;
         this.calenderEntries = calenderEntries;
         this.fieldOfStudy = fieldOfStudy;
@@ -69,14 +64,6 @@ public class Student implements Serializable {
         this.studentFamilyname = studentFamilyname;
     }
 
-    public Set<Task> getTaskLists() {
-        return taskLists;
-    }
-
-    public void setTaskLists(Set<Task> taskLists) {
-        this.taskLists = taskLists;
-    }
-
     public Set<Course> getCourseList() {
         return courseList;
     }
@@ -92,14 +79,6 @@ public class Student implements Serializable {
     public void setCalenderEntries(Set<Curriculum> calenderEntries) {
         this.calenderEntries = calenderEntries;
     }
-
-    /*public FieldOfStudy getFieldOfStudy() {
-        return fieldOfStudy;
-    }*/
-
-    /*public void setFieldOfStudy(FieldOfStudy fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
-    }*/
 
     public String getFieldOfStudy() {
         return fieldOfStudy;
