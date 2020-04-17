@@ -1,8 +1,6 @@
 package com.group3.backend.controller;
 
-import com.group3.backend.model.LectureDate;
 import com.group3.backend.model.Milestone;
-import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.MilestoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
