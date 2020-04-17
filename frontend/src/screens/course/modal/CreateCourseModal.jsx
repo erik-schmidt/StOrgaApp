@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, Button } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { View, Button, Platform, Picker } from "react-native";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import styles from "./CreateCourseModal.style";
 import Course from "../../../models/course";
 import { createCourse } from "../../../api/services/courseService";
 
-const CourseModal = ({ navigation }) => {
+const CreateCourseModal = ({ navigation }) => {
   const [description, setDescription] = useState("");
   const [professor, setProfessor] = useState("");
   const [room, setRoom] = useState("");
@@ -35,6 +35,20 @@ const CourseModal = ({ navigation }) => {
       });
     } else {
       alert("Bitte fülle alle Felder aus");
+    }
+  };
+
+  const onStartTimeChange = (event, selectedTime) => {
+    setShowStart(Platform.OS === "ios") && setShowEnd(Platform.OS === "ios");
+    if (event.type === "set") {
+      setStartTime(selectedTime.toLocaleTimeString("de-DE").slice(0, 5));
+    }
+  };
+
+  const onEndTimeChange = (event, selectedTime) => {
+    setShowEnd(Platform.OS === "ios") && setShowStart(Platform.OS === "ios");
+    if (event.type === "set") {
+      setEndTime(selectedTime.toLocaleTimeString("de-DE").slice(0, 5));
     }
   };
 
@@ -89,4 +103,4 @@ const CourseModal = ({ navigation }) => {
   );
 };
 
-export default CourseModal;
+export default CreateCourseModal;

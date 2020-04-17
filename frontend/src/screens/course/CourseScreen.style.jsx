@@ -5,20 +5,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  headerContainer: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  headerText: {
-    fontSize: 15,
+  boldText: {
     fontWeight: "bold",
-    margin: 10
+  },
+  courseHeader: {
+    fontWeight: "bold",
+    fontSize: 20
   }
 });
 
