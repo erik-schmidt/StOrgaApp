@@ -1,5 +1,9 @@
 package com.group3.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,16 +18,25 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Size(min = 6)
+    @Size(max = 6)
     private String matrNr;
+    @Size(min = 2)
+    @Size(max = 50)
     private String studentPrename;
+    @Size(min = 2)
+    @Size(max = 50)
     private String studentFamilyname;
     private String fieldOfStudy;
     @Min(1)
     @Max(15)
     private int currentSemester;
+    @Nullable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
+    @JsonIgnore
     private Set<Course> courseList = new HashSet<>();
+    @Nullable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
+    @JsonIgnore
     private Set<Curriculum> calenderEntries = new HashSet<>();
 
     public Student(String matrNr, String studentPrename, String studentFamilyname,
@@ -94,5 +107,15 @@ public class Student implements Serializable {
 
     public void setCurrentSemester(int currentSemester) {
         this.currentSemester = currentSemester;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(matrNr + " ");
+        sb.append(studentPrename + " ");
+        sb.append(studentFamilyname + " ");
+        sb.append(fieldOfStudy + " ");
+        sb.append("Semester: " + currentSemester);
+        return sb.toString();
     }
 }

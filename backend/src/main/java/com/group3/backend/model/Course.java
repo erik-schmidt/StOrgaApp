@@ -1,5 +1,6 @@
 package com.group3.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
 
 import javax.persistence.*;
