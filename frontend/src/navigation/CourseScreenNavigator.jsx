@@ -4,6 +4,7 @@ import DrawerButton from "../components/DrawerButton/DrawerButton";
 import CourseScreen from "../screens/course/CourseScreen";
 import CreateCourseModal from "../screens/course/modal/CreateCourseModal";
 import AddButton from "../components/AddButton/AddButton";
+import CourseInfoModal from "../screens/course/modal/CourseInfoModal";
 
 const CourseScreenNavigator = ({ navigation }) => {
   const CourseStack = createStackNavigator();
@@ -14,16 +15,27 @@ const CourseScreenNavigator = ({ navigation }) => {
         component={CourseScreen}
         options={{
           headerLeft: () => <DrawerButton />,
-          headerRight: () => <AddButton onPress={() => navigation.navigate("CourseModal")} />
+          headerRight: () => (
+            <AddButton
+              onPress={() => navigation.navigate("CreateCourseModal")}
+            />
+          ),
         }}
       />
       <CourseStack.Screen
-        name="CourseModal"
+        name="CreateCourseModal"
         component={CreateCourseModal}
         options={{
           headerTitle: "Kurs hinzufügen",
           cardStyle: { backgroundColor: "#ffff" },
-          
+        }}
+      />
+      <CourseStack.Screen
+        name="CourseInfoModal"
+        component={CourseInfoModal}
+        options={{
+          headerTitle: "Kursinfo",
+          cardStyle: { backgroundColor: "#ffff" },
         }}
       />
     </CourseStack.Navigator>

@@ -4,10 +4,11 @@ import { Text, View, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../components/CardList/Card";
 import { getAllCourses } from "../../api/services/courseService";
+import { FontAwesome } from "@expo/vector-icons";
 
-const CourseScreen = ({ route }) => {
+const CourseScreen = ({ navigation, route }) => {
   const [courses, setCourses] = useState([
-    { description: "Mathe", professor: "Haag", ects: 3, requiredSemester: 4 },
+    { description: "Test", professor: "Haag", ects: 5, requiredSemester: 4 },
   ]);
 
   useEffect(() => {
@@ -26,7 +27,10 @@ const CourseScreen = ({ route }) => {
         <FlatList
           data={courses}
           renderItem={({ item }) => (
-            <Card key={courses.length}>
+            <Card
+              key={courses.length}
+              onPress={() => navigation.navigate("CourseInfoModal")}
+            >
               <Text style={styles.courseHeader}>Veranstaltung:</Text>
               <Text style={{ fontSize: 20, marginBottom: 15 }}>
                 {item.description}
@@ -37,6 +41,12 @@ const CourseScreen = ({ route }) => {
               <Text>{item.ects}</Text>
               <Text style={styles.boldText}>Empfohlenes Semester:</Text>
               <Text>{item.requiredSemester}</Text>
+              <FontAwesome.Button
+                name="ellipsis-h"
+                style={{ justifyContent: "center" }}
+                color="grey"
+                backgroundColor="#ffff"
+              />
             </Card>
           )}
           keyExtractor={(item) => item.id}
