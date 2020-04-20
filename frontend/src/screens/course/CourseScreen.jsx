@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CourseScreen.style";
-import { Text, View, Platform } from "react-native";
+import { Text, View, Platform, Alert } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../components/CardList/Card";
 import { getAllCourses } from "../../api/services/courseService";
@@ -21,16 +21,33 @@ const CourseScreen = ({ navigation, route }) => {
 
   useEffect(() => {}, [courses, route.params?.request]);
 
+  const showAlert = () => {
+    Alert.alert(
+      "Veranstaltung: " + courses[0].description,
+      "Wähle eine Aktion aus",
+      [
+        {
+          text: "Abbrechen",
+          onPress: () => {},
+          style: "cancel",
+        },
+        { text: "Löschen", onPress: () => console.log("Gelöscht") },
+        {
+          text: "Ändern",
+          onPress: () => navigation.navigate("CourseInfoModal"),
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <View style={styles.container}>
       {Platform.OS !== "web" ? (
         <FlatList
           data={courses}
           renderItem={({ item }) => (
-            <Card
-              key={courses.length}
-              onPress={() => navigation.navigate("CourseInfoModal")}
-            >
+            <Card key={courses.length} onLongPress={() => showAlert()}>
               <Text style={styles.courseHeader}>Veranstaltung:</Text>
               <Text style={{ fontSize: 20, marginBottom: 15 }}>
                 {item.description}
@@ -41,12 +58,6 @@ const CourseScreen = ({ navigation, route }) => {
               <Text>{item.ects}</Text>
               <Text style={styles.boldText}>Empfohlenes Semester:</Text>
               <Text>{item.requiredSemester}</Text>
-              <FontAwesome.Button
-                name="ellipsis-h"
-                style={{ justifyContent: "center" }}
-                color="grey"
-                backgroundColor="#ffff"
-              />
             </Card>
           )}
           keyExtractor={(item) => item.id}

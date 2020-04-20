@@ -11,15 +11,13 @@ const CourseInfoModal = () => {
   });
 
   return (
-    <View>
-      <Text>Veranstaltung:</Text>
-      <Text>{course.description}</Text>
-      <Text>Professor:</Text>
-      <Text>{course.professor}</Text>
-      <Text>ECTS:</Text>
-      <Text>{course.ects}</Text>
-      <Text>Empfohlenes Semester</Text>
-      <Text>{course.requiredSemester}</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Veranstaltung: {course.description}</Text>
+      <Text style={styles.text}>Professor: {course.professor}</Text>
+      <Text style={styles.text}>ECTS: {course.ects}</Text>
+      <Text style={styles.text}>
+        Empfohlenes Semester: {course.requiredSemester}
+      </Text>
       <Button title="Delete Course" onPress={() => alert("Kurs gelöscht")} />
     </View>
   );
