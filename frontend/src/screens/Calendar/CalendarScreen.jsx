@@ -1,10 +1,12 @@
-import React, { useEffect, Component } from "react";
+import React,{useState,useEffect} from "react";
 import { Text, View, Button, ScrollView } from "react-native";
 import styles from "./CalendarScreen.style";
-import {CalendarList, LocaleConfig, Agenda} from 'react-native-calendars';
+import {LocaleConfig, Agenda} from 'react-native-calendars';
 
 
-const CalendarScreen = () => {
+const CalendarScreen = ({navigation, route}) => {
+
+  route.params?.appointmentParam;
 
   //const [appointments, setAppointments] = useState(0);
 
@@ -62,7 +64,7 @@ return(
       <View style={styles.emptyDate}>
         <Text>No Appointments saved </Text>
       </View>);}}
-
+//Longpress
 /> 
 
 );
