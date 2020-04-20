@@ -1,5 +1,6 @@
 package com.group3.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.group3.backend.dataHandling.DataHandler;
 import org.hibernate.annotations.Type;
 
@@ -21,6 +22,7 @@ public class InitDataLectureDate {
     @Type(type="org.hibernate.type.TimeType")
     @Convert(disableConversion = true)
     private Time finishTime;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
     private InitDataCourse course;

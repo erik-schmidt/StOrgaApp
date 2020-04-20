@@ -37,6 +37,7 @@ public class StudentController {
     private StudentRepository studentRepository;
     private InitDataFieldOfStudyRepository initDataFieldOfStudyRepository;
     private static final Logger LOGGER=LoggerFactory.getLogger(StudentController.class);
+    private Student student;
 
     @Autowired
     public StudentController(StudentRepository studentRepository, InitDataFieldOfStudyRepository initDataFieldOfStudyRepository) {
@@ -92,22 +93,21 @@ public class StudentController {
             st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
             st.setFieldOfStudy(checkFieldOfStudy(student.getFieldOfStudy()));
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
-            st.setCourseList(student.getCourseList());
-            //set Student to coureses
+            /*st.setCourseList(student.getCourseList());
             Set<Course> courseSet = new HashSet<>();
             for (Course c : student.getCourseList()) {
-                c.setStudent(st);
+                //c.setStudent(st);
                 courseSet.add(c);
             }
-            st.setCourseList(courseSet);
-            st.setCalenderEntries(student.getCalenderEntries());
+            st.setCourseList(student.getCourseList());*/
+            //st.setCalenderEntries(student.getCalenderEntries());
         } catch (Exception e){
             LOGGER.error(e.getClass() +" " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
         }
 
         try {
-            studentRepository.save(st);
+            studentRepository.saveAndFlush(st);
             LOGGER.info("Student: " + st.toString() + " successfully saved in Database");
         } catch (Exception e){
             LOGGER.error(e.getClass() +" " + e.getMessage());

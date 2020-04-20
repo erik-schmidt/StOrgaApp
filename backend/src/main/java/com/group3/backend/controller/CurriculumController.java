@@ -45,8 +45,7 @@ public class CurriculumController {
 
     @PutMapping("/create")
     public ResponseEntity<Curriculum> createCurriculum(@RequestBody Curriculum curriculum){
-        Curriculum cur = new Curriculum(curriculum.getDescription(), curriculum.getNotesSet(),
-                curriculum.getMilestoneList(), curriculum.getStudent());
+        Curriculum cur = new Curriculum(curriculum.getDescription(), curriculum.getNotesSet());
         curriculumRepository.save(cur);
         return new ResponseEntity<>(HttpStatus.OK);
     }

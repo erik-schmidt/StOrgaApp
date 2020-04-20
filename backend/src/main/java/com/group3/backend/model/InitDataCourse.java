@@ -1,5 +1,7 @@
 package com.group3.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -21,6 +23,7 @@ public class InitDataCourse {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // TODO: 01.04.2020 can save list or need Set
     private Set<InitDataLectureDate> lectureDateList;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade=CascadeType.ALL)
     @JoinColumn(name = "initDataFieldOfStudy_id", nullable = false)
     private InitDataFieldOfStudy initDataFieldOfStudy;

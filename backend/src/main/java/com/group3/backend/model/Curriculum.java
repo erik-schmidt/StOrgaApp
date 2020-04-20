@@ -17,21 +17,21 @@ public class Curriculum {
     @Nullable
     @Convert(converter = StringListConverter.class)
     private Set<String>notesSet;
-    @Nullable
+    /*@Nullable
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Milestone> milestoneSet;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    private Student student;*/
 
     public Curriculum() {
     }
 
-    public Curriculum(String description, Set<String> notesSet, Set<Milestone> milestoneSet, Student student) {
+    public Curriculum(String description, Set<String> notesSet) {
         this.description = description;
         this.notesSet = notesSet;
-        this.milestoneSet = milestoneSet;
-        this.student = student;
+        //this.milestoneSet = milestoneSet;
+        //this.student = student;
     }
 
     public String getDescription() {
@@ -50,7 +50,7 @@ public class Curriculum {
         this.notesSet = notesSet;
     }
 
-    public Set<Milestone> getMilestoneList() {
+    /*public Set<Milestone> getMilestoneList() {
         return milestoneSet;
     }
 
@@ -64,5 +64,5 @@ public class Curriculum {
 
     public void setStudent(Student student) {
         this.student = student;
-    }
+    }*/
 }
