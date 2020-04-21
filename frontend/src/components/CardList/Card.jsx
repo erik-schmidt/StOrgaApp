@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Card = (props) => {
   return (
-    <TouchableOpacity onLongPress={props.onLongPress}>
+    <TouchableOpacity onLongPress={props.onLongPress} onPress={props.onPress}>
       <View style={styles.container}>
         <View style={styles.item}>{props.children}</View>
       </View>

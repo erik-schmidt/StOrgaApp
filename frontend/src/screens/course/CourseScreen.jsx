@@ -6,7 +6,7 @@ import Card from "../../components/CardList/Card";
 import { getAllCourses } from "../../api/services/courseService";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const CourseScreen = ({ route }) => {
+const CourseScreen = ({ navigation, route }) => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -46,17 +46,25 @@ const CourseScreen = ({ route }) => {
         <FlatList
           data={courses}
           renderItem={({ item }) => (
-            <Card key={courses.length} onLongPress={() => showAlert()}>
-              <Text style={styles.courseHeader}>Veranstaltung:</Text>
-              <Text style={{ fontSize: 20, marginBottom: 15 }}>
-                {item.description}
-              </Text>
-              <Text style={styles.boldText}>Professor:</Text>
-              <Text>{item.professor}</Text>
-              <Text style={styles.boldText}>ECTS:</Text>
-              <Text>{item.ects}</Text>
-              <Text style={styles.boldText}>Empfohlenes Semester:</Text>
-              <Text>{item.requiredSemester}</Text>
+            <Card
+              key={courses.length}
+              onLongPress={() => showAlert()}
+              onPress={() => navigation.navigate("CourseInfoModal")}
+            >
+              <View style={styles.cardText}>
+                <Text style={styles.courseHeader}>Veranstaltung: </Text>
+                <Text style={{ fontSize: 20, marginBottom: 5 }}>
+                  {item.description}
+                </Text>
+              </View>
+              <View style={styles.cardText}>
+                <Text style={styles.boldText}>ECTS: </Text>
+                <Text>{item.ects}</Text>
+              </View>
+              <View style={styles.cardText}>
+                <Text style={styles.boldText}>Empfohlenes Semester: </Text>
+                <Text>{item.requiredSemester}</Text>
+              </View>
             </Card>
           )}
           keyExtractor={(item) => item.id}

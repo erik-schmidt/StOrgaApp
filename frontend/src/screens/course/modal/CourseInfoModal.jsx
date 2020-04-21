@@ -1,8 +1,25 @@
 import React, { useState } from "react";
 import styles from "./CourseInfoModal.style";
 import { View, Text, Button } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
-const CourseInfoModal = () => {
+const CourseInfoModal = ({ navigation }) => {
+  navigation.setOptions({
+    headerRight: () => (
+      <View style={{ flexDirection: "row" }}>
+        <FontAwesome5.Button
+          name="trash"
+          color="black"
+          backgroundColor="#ffff"
+        />
+        <FontAwesome5.Button
+          name="edit"
+          color="black"
+          backgroundColor="#ffff"
+        />
+      </View>
+    ),
+  });
   const [course, setCourse] = useState({
     description: "Test",
     professor: "Haag",
@@ -18,7 +35,6 @@ const CourseInfoModal = () => {
       <Text style={styles.text}>
         Empfohlenes Semester: {course.requiredSemester}
       </Text>
-      <Button title="Delete Course" onPress={() => alert("Kurs gelöscht")} />
     </View>
   );
 };

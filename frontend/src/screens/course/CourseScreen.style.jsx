@@ -10,8 +10,12 @@ const styles = StyleSheet.create({
   },
   courseHeader: {
     fontWeight: "bold",
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
+  cardText: {
+    flexDirection: "row",
+    flex: 1,
+  },
 });
 
 export default styles;
