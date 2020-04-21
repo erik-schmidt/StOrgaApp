@@ -3,12 +3,15 @@ package com.group3.backend.controller;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
+import com.group3.backend.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/course")
@@ -17,8 +20,10 @@ public class CourseController {
 
     private CourseRepository courseRepository;
 
+
+
     @Autowired
-    public CourseController(CourseRepository courseRepository){
+    public CourseController(CourseRepository courseRepository, StudentRepository studentRepository){
         this.courseRepository = courseRepository;
     }
 
@@ -43,10 +48,10 @@ public class CourseController {
         return cs;
     }
 
-    @PutMapping("/post")
+    @PutMapping("/create")
     public ResponseEntity<Course> createCourse(@RequestBody Course course){
         Course cs = new Course(course.getDescription(), course.getRoom(), course.getProfessor(), course.getEcts(),
-                course.getGrade(), course.getFieldOfStudy(), course.getLectureDateList(), course.getStudent());
+                course.getFieldOfStudy(), course.getGrade());
         courseRepository.save(cs);
         return new ResponseEntity<>(HttpStatus.OK);
     }

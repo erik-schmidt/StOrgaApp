@@ -41,7 +41,7 @@ public class InitDataCourseController {
         return cs;
     }
 
-    @PutMapping("/post")
+    @PutMapping("/create")
     public ResponseEntity<InitDataCourse> createCourse(@RequestBody InitDataCourse course){
         InitDataCourse cs = new InitDataCourse(course.getDescription(), course.getRoom(), course.getProfessor(),
                 course.getEcts(), course.getInitDataFieldOfStudy(), course.getLectureDateList());
