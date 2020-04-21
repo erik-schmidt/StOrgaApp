@@ -19,6 +19,12 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String description;
+    private String room;
+    private String professor;
+    @Min(1)
+    @Max(50)
+    private int ects;
+    private String fieldOfStudy;
     @Nullable
     private double grade;
     //@JsonIgnore
@@ -34,8 +40,12 @@ public class Course {
     public Course() {
     }
 
-    public Course(String description, double grade){
+    public Course(String description, String room, String professor, int ects, String fieldOfStudy, double grade){
         this.description = description;
+        this.room = room;
+        this.professor = professor;
+        this.ects = ects;
+        this.fieldOfStudy = fieldOfStudy;
         this.grade = grade;
         //this.student = student;
     }
@@ -54,6 +64,38 @@ public class Course {
 
     public void setGrade(double grade) {
         this.grade = grade;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
+    }
+
+    public int getEcts() {
+        return ects;
+    }
+
+    public void setEcts(int ects) {
+        this.ects = ects;
+    }
+
+    public String getFieldOfStudy() {
+        return fieldOfStudy;
+    }
+
+    public void setFieldOfStudy(String fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
     }
 
     /*public Student getStudent() {
