@@ -41,7 +41,7 @@ public class InitDataFieldOfStudyController {
         return fos;
     }
 
-    @PutMapping("/post")
+    @PutMapping("/create")
     public ResponseEntity<InitDataFieldOfStudy> createFieldOfStudy(@RequestBody InitDataFieldOfStudy fieldOfStudy){
         InitDataFieldOfStudy fos = new InitDataFieldOfStudy(fieldOfStudy.getDescription(), fieldOfStudy.getName(),
                 fieldOfStudy.getSemester(), fieldOfStudy.getCourseList());

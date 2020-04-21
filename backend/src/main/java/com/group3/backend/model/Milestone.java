@@ -1,5 +1,6 @@
 package com.group3.backend.model;
 
+import com.sun.istack.Nullable;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -15,17 +16,17 @@ public class Milestone {
     @Type(type="org.hibernate.type.LocalDateTimeType")
     @Convert(disableConversion = true)
     private LocalDate finishDate;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   /* @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "curriculumid", nullable = false)
-    private Curriculum curriculum;
+    private Curriculum curriculum;*/
 
     public Milestone() {
     }
 
-    public Milestone(String text, LocalDate finishDate, Curriculum curriculum){
+    public Milestone(String text, LocalDate finishDate){
         this.text = text;
         this.finishDate = finishDate;
-        this.curriculum = curriculum;
+        //this.curriculum = curriculum;
     }
 
     public String getText() {
@@ -44,11 +45,11 @@ public class Milestone {
         this.finishDate = finishDate;
     }
 
-    public Curriculum getCurriculum() {
+    /*public Curriculum getCurriculum() {
         return curriculum;
     }
 
     public void setCurriculum(Curriculum curriculum) {
         this.curriculum = curriculum;
-    }
+    }*/
 }

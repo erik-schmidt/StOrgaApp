@@ -1,5 +1,6 @@
 package com.group3.backend.model;
 
+import com.sun.istack.Nullable;
 import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class News implements Serializable {
 
     private String title;
     private String text;
+    @Nullable
     private String creator;
     @Column(columnDefinition = "TIMESTAMP")
     @Type(type="org.hibernate.type.LocalDateTimeType")

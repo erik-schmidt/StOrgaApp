@@ -1,6 +1,7 @@
 package com.group3.backend.model;
 
 import com.group3.backend.StringListConverter;
+import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,22 +14,24 @@ public class Curriculum {
     private int id;
     private String description;
     ///https://stackoverflow.com/questions/287201/how-to-persist-a-property-of-type-liststring-in-jpa
+    @Nullable
     @Convert(converter = StringListConverter.class)
     private Set<String>notesSet;
+    /*@Nullable
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Milestone> milestoneSet;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    private Student student;*/
 
     public Curriculum() {
     }
 
-    public Curriculum(String description, Set<String> notesSet, Set<Milestone> milestoneSet, Student student) {
+    public Curriculum(String description, Set<String> notesSet) {
         this.description = description;
         this.notesSet = notesSet;
-        this.milestoneSet = milestoneSet;
-        this.student = student;
+        //this.milestoneSet = milestoneSet;
+        //this.student = student;
     }
 
     public String getDescription() {
@@ -47,7 +50,7 @@ public class Curriculum {
         this.notesSet = notesSet;
     }
 
-    public Set<Milestone> getMilestoneList() {
+    /*public Set<Milestone> getMilestoneList() {
         return milestoneSet;
     }
 
@@ -61,5 +64,5 @@ public class Curriculum {
 
     public void setStudent(Student student) {
         this.student = student;
-    }
+    }*/
 }

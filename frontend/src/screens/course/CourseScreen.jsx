@@ -6,13 +6,12 @@ import Card from "../../components/CardList/Card";
 import { getAllCourses } from "../../api/services/courseService";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const CourseScreen = ({ navigation, route }) => {
-  const [courses, setCourses] = useState([
-    { description: "Test", professor: "Haag", ects: 5, requiredSemester: 4 },
-  ]);
+const CourseScreen = ({ route }) => {
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     getAllCourses().then((res) => {
+      console.log(res);
       if (res !== undefined) {
         setCourses(res.data);
       }

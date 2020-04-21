@@ -41,7 +41,7 @@ public class InitDataLectureDateController {
         return ld;
     }
 
-    @PutMapping("/post")
+    @PutMapping("/create")
     public ResponseEntity<InitDataLectureDate> createInitDataLectureDate(@RequestBody InitDataLectureDate lectureDate){
         InitDataLectureDate ld = new InitDataLectureDate(lectureDate.getWeekday(), lectureDate.getStartTime(),
                 lectureDate.getFinishTime(), lectureDate.getCourse());

@@ -1,10 +1,15 @@
 package com.group3.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.Nullable;
+
 import javax.persistence.*;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.Set;
+import javax.validation.constraints.Null;
+import java.util.*;
 
 @Entity
 // TODO: 15.04.2020 Course im Student nur als String und Note speichern?  
@@ -18,31 +23,30 @@ public class Course {
     @Min(1)
     @Max(50)
     private int ects;
-    @Min(1)
-    @Max(5)
-    private double grade;
-    // TODO: 13.04.2020 field of Study change to object
     private String fieldOfStudy;
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // TODO: 01.04.2020 can save list or need Set
-    private Set<LectureDate> lectureDateList;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade=CascadeType.ALL)
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @Nullable
+    private double grade;
+    //@JsonIgnore
+    //@ManyToOne(fetch = FetchType.LAZY,  cascade=CascadeType.ALL, optional =  false)
+    //@JoinColumn(name = "student_id", nullable = false)
+
+    //@JsonIgnore
+    //@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+   // }, optional = false)
+    //@JoinColumn(name = "student_id", nullable = false)
+    //private Student student;
 
     public Course() {
     }
 
-    public Course(String description, String room, String professor, int ects, double grade, String fieldOfStudy,
-                  Set<LectureDate> lectureDateList, Student student){
+    public Course(String description, String room, String professor, int ects, String fieldOfStudy, double grade){
         this.description = description;
         this.room = room;
         this.professor = professor;
         this.ects = ects;
-        this.grade = grade;
         this.fieldOfStudy = fieldOfStudy;
-        this.lectureDateList = lectureDateList;
-        this.student = student;
+        this.grade = grade;
+        //this.student = student;
     }
 
     public String getDescription() {
@@ -51,6 +55,14 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 
     public String getRoom() {
@@ -77,14 +89,6 @@ public class Course {
         this.ects = ects;
     }
 
-    public double getGrade() {
-        return grade;
-    }
-
-    public void setGrade(double grade) {
-        this.grade = grade;
-    }
-
     public String getFieldOfStudy() {
         return fieldOfStudy;
     }
@@ -93,19 +97,19 @@ public class Course {
         this.fieldOfStudy = fieldOfStudy;
     }
 
-    public Set<LectureDate> getLectureDateList() {
-        return lectureDateList;
-    }
-
-    public void setLectureDateList(Set<LectureDate> lectureDateList) {
-        this.lectureDateList = lectureDateList;
-    }
-
-    public Student getStudent() {
+    /*public Student getStudent() {
         return student;
     }
 
     public void setStudent(Student student) {
         this.student = student;
+    }*/
+
+    /*public void setStudent(List<Student> student) {
+        this.student = student;
     }
+
+    public List<Student> getStudent() {
+        return student;
+    }*/
 }
