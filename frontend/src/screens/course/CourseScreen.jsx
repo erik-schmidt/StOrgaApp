@@ -4,7 +4,7 @@ import { Text, View, Platform, Alert } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../components/CardList/Card";
 import { getAllCourses } from "../../api/services/courseService";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const CourseScreen = ({ navigation, route }) => {
   const [courses, setCourses] = useState([
@@ -64,11 +64,11 @@ const CourseScreen = ({ navigation, route }) => {
         />
       ) : (
         <table>
-          <tr>
-            <th>Veranstaltung</th>
-            <th>Professor</th>
+          <tr style={{ fontSize: 16 }}>
+            <th>VERANSTALTUNG</th>
+            <th>PROFESSOR</th>
             <th>ECTS</th>
-            <th>Empfohlenes Semester</th>
+            <th>EMPFOHLENES SEMESTER</th>
           </tr>
           {courses.map((course) => {
             return (
@@ -77,6 +77,20 @@ const CourseScreen = ({ navigation, route }) => {
                 <td>{course.professor}</td>
                 <td>{course.ects}</td>
                 <td>{course.requiredSemester}</td>
+                <td>
+                  <FontAwesome5.Button
+                    name="edit"
+                    color="black"
+                    backgroundColor="#ffff"
+                  />
+                </td>
+                <td>
+                  <FontAwesome5.Button
+                    name="trash-alt"
+                    color="black"
+                    backgroundColor="#ffff"
+                  />
+                </td>
               </tr>
             );
           })}
