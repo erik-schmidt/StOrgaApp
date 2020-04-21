@@ -2,13 +2,9 @@ package com.group3.backend.controller;
 
 
 import com.group3.backend.exceptions.CurrentSemesterException;
-import com.group3.backend.exceptions.FieldOfStudyException;
 import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
-import com.group3.backend.model.Course;
-import com.group3.backend.model.InitDataFieldOfStudy;
 import com.group3.backend.model.Student;
-import com.group3.backend.repository.InitDataFieldOfStudyRepository;
 import com.group3.backend.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Student
@@ -35,14 +29,12 @@ import java.util.Set;
 public class StudentController {
 
     private StudentRepository studentRepository;
-    private InitDataFieldOfStudyRepository initDataFieldOfStudyRepository;
     private static final Logger LOGGER=LoggerFactory.getLogger(StudentController.class);
     private Student student;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository, InitDataFieldOfStudyRepository initDataFieldOfStudyRepository) {
+    public StudentController(StudentRepository studentRepository) {
          this.studentRepository = studentRepository;
-         this.initDataFieldOfStudyRepository = initDataFieldOfStudyRepository;
     }
 
     /**
@@ -91,16 +83,8 @@ public class StudentController {
             st.setMatrNr(checkMatriculationNumber(student.getMatrNr()));
             st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
             st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
-            st.setFieldOfStudy(checkFieldOfStudy(student.getFieldOfStudy()));
+            st.setFieldOfStudy(student.getFieldOfStudy());
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
-            /*st.setCourseList(student.getCourseList());
-            Set<Course> courseSet = new HashSet<>();
-            for (Course c : student.getCourseList()) {
-                //c.setStudent(st);
-                courseSet.add(c);
-            }
-            st.setCourseList(student.getCourseList());*/
-            //st.setCalenderEntries(student.getCalenderEntries());
         } catch (Exception e){
             LOGGER.error(e.getClass() +" " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
@@ -176,23 +160,6 @@ public class StudentController {
             }
         }
         return name;
-    }
-
-    /**
-     * checkFieldOfStudy
-     * checks if the given fieldOfStudy is known of the system and saved in the initDataFieldOfStudies
-     * @param fieldOfStudy
-     * @return string fieldOfStudy
-     * @throws FieldOfStudyException
-     */
-    private String checkFieldOfStudy(String fieldOfStudy) throws Exception{
-        List<InitDataFieldOfStudy> initDataFieldOfStudySet = initDataFieldOfStudyRepository.findAll();
-        for(InitDataFieldOfStudy initDataFieldOfStudy : initDataFieldOfStudySet){
-            if(initDataFieldOfStudy.getName().equals(fieldOfStudy)){
-                return initDataFieldOfStudy.getName();
-            }
-        }
-        throw new FieldOfStudyException("Field of Study unknown");
     }
 
     /**
