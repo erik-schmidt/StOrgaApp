@@ -6,12 +6,11 @@ import Card from "../../components/CardList/Card";
 import { getAllCourses } from "../../api/services/courseService";
 
 const CourseScreen = ({ route }) => {
-  const [courses, setCourses] = useState([
-    { description: "Mathe", professor: "Haag", ects: 3, requiredSemester: 4 },
-  ]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     getAllCourses().then((res) => {
+      console.log(res);
       if (res !== undefined) {
         setCourses(res.data);
       }

@@ -3,7 +3,6 @@ package com.group3.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.Nullable;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import javax.persistence.*;
 import javax.persistence.GenerationType;
