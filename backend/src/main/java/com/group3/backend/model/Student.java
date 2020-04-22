@@ -31,6 +31,12 @@ public class Student implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
     public Student(String matrNr, String studentPrename, String studentFamilyname,
                    String fieldOfStudy, int currentSemester) {
@@ -90,6 +96,14 @@ public class Student implements Serializable {
 
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
+    }
+
+    public Set<GradeCourseMapping> getGradeCourseMappings() {
+        return gradeCourseMappings;
+    }
+
+    public void setGradeCourseMappings(Set<GradeCourseMapping> gradeCourseMappings) {
+        this.gradeCourseMappings = gradeCourseMappings;
     }
 
     public String toString(){

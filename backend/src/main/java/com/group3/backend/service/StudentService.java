@@ -3,7 +3,9 @@ package com.group3.backend.service;
 import com.group3.backend.exceptions.CurrentSemesterException;
 import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
+import com.group3.backend.repository.GradeCourseMappingRepository;
 import com.group3.backend.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StudentService {
@@ -100,7 +103,6 @@ public class StudentService {
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
         }
-
     }
 
     /**
@@ -143,6 +145,21 @@ public class StudentService {
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
         }
+    }
+
+    public ResponseEntity<?> addGradeToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
+        Student st = studentRepository.findByMatrNr(matrNr);
+        Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
+        gradeCourseMappingSet.add(gradeCourseMapping);
+        st.setGradeCourseMappings(gradeCourseMappingSet);
+        studentRepository.save(st);
+        return null;
+    }
+
+    public ResponseEntity<?> getGradeToStudent(String matrNr){
+        Student st = studentRepository.findByMatrNr(matrNr);
+        Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
+        return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
     }
 
     /**

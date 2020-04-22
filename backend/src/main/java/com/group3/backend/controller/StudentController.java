@@ -1,5 +1,6 @@
 package com.group3.backend.controller;
 
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
 import org.slf4j.Logger;
@@ -78,9 +79,9 @@ public class StudentController {
      * @param matNr
      * @return Student object
      */
-    @DeleteMapping("/delete/{matNr}")
-    public ResponseEntity<?> deleteStudent(@PathVariable(value = "matNr") String matNr){
-        ResponseEntity<?> responseEntity = studentService.deleteStudent(matNr);
+    @DeleteMapping("/delete/{matrNr}")
+    public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr){
+        ResponseEntity<?> responseEntity = studentService.deleteStudent(matrNr);
         return responseEntity;
     }
 
@@ -95,6 +96,18 @@ public class StudentController {
     @PutMapping("/update")
     public ResponseEntity<?> updateStudent(@RequestBody Student student){
         ResponseEntity<?> responseEntity = studentService.updateStudent(student);
+        return responseEntity;
+    }
+
+    @PutMapping("/setCourses/{matrNr}")
+    public ResponseEntity<?> addGradeToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping){
+        ResponseEntity<?> responseEntity = studentService.addGradeToStudent(matrNr, gradeCourseMapping);
+        return responseEntity;
+    }
+
+    @GetMapping("/getCourses/{matrNr}")
+    public ResponseEntity<?> addGradeToStudent(@PathVariable(value = "matrNr") String matrNr){
+        ResponseEntity<?> responseEntity = studentService.getGradeToStudent(matrNr);
         return responseEntity;
     }
 }
