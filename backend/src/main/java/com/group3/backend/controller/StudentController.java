@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- * Student
+ * StudentController
+ * implemetns the Rest Api
  * //assert != null
  * // Get => Daten holen
  * // POST => Daten erstellen/Eintragen
@@ -47,7 +46,7 @@ public class StudentController {
      * @return List<Student>
      */
     @GetMapping("/get")
-    public List<Student> getAllStudents(){
+    public ResponseEntity<?> getAllStudents(){
         return studentService.getAllStudents();
     }
 
@@ -58,7 +57,7 @@ public class StudentController {
      * @return Student
      */
     @GetMapping("/get/{matNr}")
-    public Student getStudentByNumber(@PathVariable(value = "matNr") String matNr){
+    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr){
         return studentService.getStudentByNumber(matNr);
     }
 
@@ -69,7 +68,7 @@ public class StudentController {
      * @return ResponseEntity<String> if succesfull return id of student
      */
     @PostMapping("/create")
-    public ResponseEntity<String> createStudent(@RequestBody Student student) throws Exception{
+    public ResponseEntity<?> createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
@@ -80,17 +79,22 @@ public class StudentController {
      * @return Student object
      */
     @DeleteMapping("/delete/{matNr}")
-    public Student deleteStudent(@PathVariable(value = "matNr") String matNr){
-        return studentService.deleteStudent(matNr);
+    public ResponseEntity<?> deleteStudent(@PathVariable(value = "matNr") String matNr){
+        ResponseEntity<?> responseEntity = studentService.deleteStudent(matNr);
+        return responseEntity;
     }
 
+    /**
+     * updateStudent
+     * update a student which is already saved in the database
+     * all attributes can be changed
+     * REturn a response entity at success of fault
+     * @param student object with the parameters for update
+     * @return ResoponesEntity return String if fault, return sutdent object if successfull
+     */
     @PutMapping("/update")
-    public Student updateStudent(@RequestBody Student student) throws Exception{
-        try{
-            return studentService.updateStudent(student);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
+    public ResponseEntity<?> updateStudent(@RequestBody Student student){
+        ResponseEntity<?> responseEntity = studentService.updateStudent(student);
+        return responseEntity;
     }
 }
