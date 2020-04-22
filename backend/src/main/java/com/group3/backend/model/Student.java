@@ -7,6 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +32,10 @@ public class Student implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
     public Student(String matrNr, String studentPrename, String studentFamilyname,
                    String fieldOfStudy, int currentSemester) {
@@ -92,6 +97,24 @@ public class Student implements Serializable {
 
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
+    }
+
+    public Set<CalendarEntry> getCalendarEntries() {
+        return calendarEntries;
+    }
+
+    public void setCalendarEntries(Set<CalendarEntry> calendarEntries) {
+        this.calendarEntries = calendarEntries;
+    }
+
+    public void addCalendarEntry(CalendarEntry calendarEntry) {
+        calendarEntries.add(calendarEntry);
+        calendarEntry.setStudent(this);
+    }
+
+    public void removeCalendarEntry(CalendarEntry calendarEntry) {
+        calendarEntries.remove(calendarEntry);
+        calendarEntry.setStudent(null);
     }
 
     public String toString(){
