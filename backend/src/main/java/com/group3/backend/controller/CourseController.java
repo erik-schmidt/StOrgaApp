@@ -1,17 +1,11 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
-import com.group3.backend.model.Student;
-import com.group3.backend.repository.CourseRepository;
-import com.group3.backend.repository.StudentRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.group3.backend.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,70 +14,45 @@ import java.util.Set;
 @CrossOrigin()
 public class CourseController {
 
-    private CourseRepository courseRepository;
-    private StudentRepository studentRepository;
-    private Logger logger = LoggerFactory.getLogger(CourseController.class);
+    private CourseService courseService;
 
     @Autowired
-    public CourseController(CourseRepository courseRepository, StudentRepository studentRepository){
-        this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;
+    public CourseController(CourseService courseService){
+        this.courseService = courseService;
     }
 
-    /**
-     * reachabilityTest()
-     * return a String with a successful message if backend reachable
-     * @return String "Test successful"
-     */
+
     @GetMapping("/ping")
     public String ping(){
-        return "reachable";}
+        return courseService.ping();}
 
     @GetMapping("/get")
     public List<Course> getAllCourses(){
-        List<Course> courseList = courseRepository.findAll();
-        return courseList;
+        return courseService.getAllCourses();
     }
 
     @GetMapping("/{matrNr}/get")
     public Set<Course> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
-        Student student = studentRepository.findByMatrNr(matrNr);
-        return student.getCourses();
+        return courseService.getStudentsCourses(matrNr);
     }
 
     @GetMapping("/get/{description}")
     public Course getCourseByNumber(@PathVariable(value = "description") String description){
-        Course cs = courseRepository.findByDescription(description);
-        return cs;
+        return courseService.getCourseByNumber(description);
     }
 
     @PutMapping("/{matrNr}/addCourseToStudent")
     public ResponseEntity<Course> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
-        try {
-            Student student = studentRepository.findByMatrNr(matrNr);
-            Course course1 = courseRepository.findByDescription(course.getDescription());
-            Set<Student> studentSet = new HashSet<>();
-            studentSet.add(student);
-            course1.setStudents(studentSet);
-            courseRepository.save(course1);
-            courseRepository.saveAndFlush(course1);
-        }catch (Exception e){
-            logger.error(e.getClass() + " " + e.getMessage());
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return courseService.addCourseToStudent(matrNr, course);
     }
 
-    @PutMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<Course> createCourse(@RequestBody Course course){
-        Course cs = new Course(course.getDescription(), course.getProfessor());
-        courseRepository.save(cs);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return courseService.createCourse(course);
     }
 
     @DeleteMapping("/delete/{description}")
     public Course deleteCourse(@PathVariable(value = "description") String description){
-        Course course = courseRepository.findByDescription(description);
-        courseRepository.delete(course);
-        return course;
+        return courseService.deleteCourse(description);
     }
 }
