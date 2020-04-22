@@ -1,6 +1,7 @@
 package com.group3.backend.service;
 
 import com.group3.backend.exceptions.CurrentSemesterException;
+import com.group3.backend.exceptions.GradeCourseException;
 import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.GradeCourseMapping;
@@ -147,19 +148,39 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<?> addGradeToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
-        Student st = studentRepository.findByMatrNr(matrNr);
-        Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
-        gradeCourseMappingSet.add(gradeCourseMapping);
-        st.setGradeCourseMappings(gradeCourseMappingSet);
-        studentRepository.save(st);
-        return null;
+    // TODO: 22.04.2020 error handling
+    public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
+        try {
+            Student st = studentRepository.findByMatrNr(matrNr);
+            Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
+            gradeCourseMappingSet.add(checkGradeCourse(gradeCourseMapping));
+            st.setGradeCourseMappings(gradeCourseMappingSet);
+            studentRepository.save(st);
+            logger.info("New Grade to cours successfully added");
+            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
     }
 
-    public ResponseEntity<?> getGradeToStudent(String matrNr){
+    // TODO: 22.04.2020 error handling
+    public ResponseEntity<?> getGradeCourseToStudent(String matrNr){
         Student st = studentRepository.findByMatrNr(matrNr);
         Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
         return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
+    }
+
+    // TODO: 22.04.2020 check if student ist in course for set the grade
+
+    public GradeCourseMapping checkGradeCourse(GradeCourseMapping gradeCourseMapping) throws Exception{
+        if(gradeCourseMapping.getCourseNumber() == null){
+            throw new GradeCourseException("Error: Course number can not be null");
+        }
+        if(gradeCourseMapping.getGrade()<1.0||gradeCourseMapping.getGrade()>5.0){
+            throw new GradeCourseException("Error: Grade must be between 1 and 5");
+        }
+        return gradeCourseMapping;
     }
 
     /**

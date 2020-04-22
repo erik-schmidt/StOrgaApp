@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class GradeCourseMapping {
@@ -11,7 +14,10 @@ public class GradeCourseMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @NotNull
     private String courseNumber;
+    @Min(1)
+    @Max(5)
     private double grade;
 
     public GradeCourseMapping() {

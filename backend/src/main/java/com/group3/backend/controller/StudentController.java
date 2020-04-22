@@ -99,15 +99,28 @@ public class StudentController {
         return responseEntity;
     }
 
-    @PutMapping("/setCourses/{matrNr}")
-    public ResponseEntity<?> addGradeToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping){
-        ResponseEntity<?> responseEntity = studentService.addGradeToStudent(matrNr, gradeCourseMapping);
+    /**
+     * addGradeToStudent
+     * add a grade of a course to student
+     * @param matrNr String
+     * @param gradeCourseMapping GradeCourseMapping
+     * @return ResoponesEntity
+     */
+    @PutMapping("/addGradeToCourse/{matrNr}")
+    public ResponseEntity<?> addGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping){
+        ResponseEntity<?> responseEntity = studentService.addGradeCourseToStudent(matrNr, gradeCourseMapping);
         return responseEntity;
     }
 
-    @GetMapping("/getCourses/{matrNr}")
-    public ResponseEntity<?> addGradeToStudent(@PathVariable(value = "matrNr") String matrNr){
-        ResponseEntity<?> responseEntity = studentService.getGradeToStudent(matrNr);
+    /**
+     * addGradeCourseToStudent
+     * get a grade course object of a studetn
+     * @param matrNr String
+     * @return ResoponesEntity
+     */
+    @GetMapping("/getGradesOfCourses/{matrNr}")
+    public ResponseEntity<?> getGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
+        ResponseEntity<?> responseEntity = studentService.getGradeCourseToStudent(matrNr);
         return responseEntity;
     }
 }
