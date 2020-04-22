@@ -37,8 +37,6 @@ public class Student implements Serializable {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
-        //this.courseList = courseList;
-        //this.calenderEntries = calenderEntries;
         this.fieldOfStudy = fieldOfStudy;
         this.currentSemester = currentSemester;
     }

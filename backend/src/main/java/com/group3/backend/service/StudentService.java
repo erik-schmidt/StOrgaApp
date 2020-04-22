@@ -63,9 +63,13 @@ public class StudentService {
      * @param student
      * @return ResponseEntity<String> if succesfull return id of student
      */
-    public ResponseEntity<String> createStudent(@RequestBody Student student){
+    public ResponseEntity<String> createStudent(Student student) throws Exception{
         Student st = new Student();
         try {
+            if(!(checkMatricularNumberIsFree(student.getMatrNr()))){
+                throw new MatriculationNumberException("Matricular number " + student.getMatrNr() + "already used");
+            }
+            checkMatricularNumberIsFree(student.getMatrNr());
             st.setMatrNr(checkMatriculationNumber(student.getMatrNr()));
             st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
             st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
@@ -83,8 +87,7 @@ public class StudentService {
             logger.error(e.getClass() +" " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(st.getMatrNr());
-        //return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body("Student with number: " + st.getMatrNr() +" successfully created");
     }
 
     /**
@@ -93,10 +96,43 @@ public class StudentService {
      * @param matNr
      * @return Student object
      */
-    public Student deleteStudent(@PathVariable(value = "matNr") String matNr){
+    public Student deleteStudent(String matNr){
         Student st = studentRepository.findByMatrNr(matNr);
         studentRepository.delete(st);
         return st;
+    }
+
+    public Student updateStudent(Student student) throws Exception{
+        try {
+            if(checkMatricularNumberIsFree(student.getMatrNr())){
+                throw new MatriculationNumberException("There is no student with matriculation number: " + student.getMatrNr());
+            }
+            Student st = studentRepository.findByMatrNr(student.getMatrNr());
+            st.setMatrNr(student.getMatrNr());
+            st.setStudentPrename(student.getStudentPrename());
+            st.setStudentFamilyname(student.getStudentFamilyname());
+            st.setFieldOfStudy(student.getFieldOfStudy());
+            st.setCurrentSemester(student.getCurrentSemester());
+            studentRepository.save(st);
+            return st;
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    /**
+     * checkMatricularNumberIsFree
+     * checks if a given Matriculation number is free or already used by another student
+     * @param matrNr number to check
+     * @return String available matriculation number
+     * @throws Exception matriculation number Exception
+     */
+    private boolean checkMatricularNumberIsFree(String matrNr) throws Exception{
+        Student st = studentRepository.findByMatrNr(matrNr);
+       if(st == null){
+           return true;
+       }
+       return false;
     }
 
     /**

@@ -69,7 +69,7 @@ public class StudentController {
      * @return ResponseEntity<String> if succesfull return id of student
      */
     @PostMapping("/create")
-    public ResponseEntity<String> createStudent(@RequestBody Student student){
+    public ResponseEntity<String> createStudent(@RequestBody Student student) throws Exception{
         return studentService.createStudent(student);
     }
 
@@ -82,5 +82,15 @@ public class StudentController {
     @DeleteMapping("/delete/{matNr}")
     public Student deleteStudent(@PathVariable(value = "matNr") String matNr){
         return studentService.deleteStudent(matNr);
+    }
+
+    @PutMapping("/update")
+    public Student updateStudent(@RequestBody Student student) throws Exception{
+        try{
+            return studentService.updateStudent(student);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
     }
 }
