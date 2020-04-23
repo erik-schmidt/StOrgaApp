@@ -1,9 +1,8 @@
 package com.group3.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,6 +18,9 @@ public class GradeCourseMapping {
     @Min(1)
     @Max(5)
     private double grade;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
 
     public GradeCourseMapping() {
     }
@@ -42,6 +44,14 @@ public class GradeCourseMapping {
 
     public void setGrade(double grade) {
         this.grade = grade;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public String toString(){

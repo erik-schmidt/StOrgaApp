@@ -106,7 +106,7 @@ public class StudentController {
      * @param gradeCourseMapping GradeCourseMapping
      * @return ResoponesEntity
      */
-    @PutMapping("/addGradeToCourse/{matrNr}")
+    @PutMapping("/addGradeCourseMapping/{matrNr}")
     public ResponseEntity<?> addGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping){
         ResponseEntity<?> responseEntity = studentService.addGradeCourseToStudent(matrNr, gradeCourseMapping);
         return responseEntity;
@@ -118,7 +118,7 @@ public class StudentController {
      * @param matrNr String
      * @return ResoponesEntity
      */
-    @GetMapping("/getAllGradesOfCourses/{matrNr}")
+    @GetMapping("/getAllGradeCourseMappings/{matrNr}")
     public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
         ResponseEntity<?> responseEntity = studentService.getAllGradeCourseOfStudent(matrNr);
         return responseEntity;
@@ -144,7 +144,7 @@ public class StudentController {
      * @param number grade course mapping json
      * @return ResoponesEntity
      */
-    @DeleteMapping("/deleteGradesOfCourses/{matrNr}/{number}")
+    @DeleteMapping("/deleteGradesCourseMapping/{matrNr}/{number}")
     public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
         ResponseEntity<?> responseEntity = studentService.deleteGradeCourseOfStudent(matrNr, number);
         return responseEntity;

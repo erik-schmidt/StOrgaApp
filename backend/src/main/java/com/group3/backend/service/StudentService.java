@@ -125,7 +125,7 @@ public class StudentService {
             }
             Student st = studentRepository.findByMatrNr(matNr);
             studentRepository.delete(st);
-            logger.info("Student: " + matNr + " successffully updated");
+            logger.info("Student: " + matNr + " successffully deleted");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -162,7 +162,12 @@ public class StudentService {
      */
     public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
         try {
+
             Student st = studentRepository.findByMatrNr(matrNr);
+            if(st==null){
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no student with the number " + matrNr);
+            }
+            gradeCourseMapping.setStudent(st);
             if(checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The curse with number "+
                         gradeCourseMapping.getCourseNumber() + " already has a grade and is mapped for Student " + matrNr);
@@ -172,7 +177,7 @@ public class StudentService {
             st.setGradeCourseMappings(gradeCourseMappingSet);
             studentRepository.save(st);
             logger.info("New Grade to cours successfully added");
-            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
+            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
@@ -186,28 +191,12 @@ public class StudentService {
      * @return ResponseEntity<?>
      */
     public ResponseEntity<?> getAllGradeCourseOfStudent(String matrNr){
+        // TODO: 23.04.2020 exception handling and REfactor
         try {
             Student st = studentRepository.findByMatrNr(matrNr);
-            Set<GradeCourseMapping> gradeCourseMappingSet = checkIfStudentHasMappedGradeCourses(st);
+            Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(st);
             logger.info("Grade to course of student "+ matrNr + " successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
-        }catch (Exception e){
-            logger.error(e.getClass() +" "+e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
-        }
-    }
-
-    /**
-     * deleteGradeCourseOfStudent
-     * delete GradeCourse mapping of a student if exists
-     * @param matrNr String of students matricuatlation number
-     * @return ResponseEntity<?>
-     */
-    public ResponseEntity<?> deleteGradeCourseOfStudent(String matrNr, String number){
-        // TODO: 23.04.2020 delete geht nicht
-        try {
-
-            return ResponseEntity.status(HttpStatus.OK).body("HI");
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
@@ -222,6 +211,7 @@ public class StudentService {
      * @return ResponseEntity<?>
      */
     public ResponseEntity<?> getGradeCourseOfStudent(String matrNr, String number){
+        // TODO: 23.04.2020 Exception handling and refactor
         try {
             checkMatriculationNumber(matrNr);
             if(checkMatricularNumberIsFree(matrNr)){
@@ -229,10 +219,9 @@ public class StudentService {
             }
             checkIfCourseExists(number);
             Student st = studentRepository.findByMatrNr(matrNr);
-            Set<GradeCourseMapping> gradeCourseMappingSet = checkIfStudentHasMappedGradeCourses(st);
-            for(GradeCourseMapping gradeCourseMapping: gradeCourseMappingSet){
+            Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(st);
+            for(GradeCourseMapping gradeCourseMapping : gradeCourseMappingSet){
                 if(gradeCourseMapping.getCourseNumber().equals(number)){
-                    logger.info("Grade to course of student "+ matrNr + " successfully read");
                     return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
                 }
             }
@@ -243,6 +232,32 @@ public class StudentService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
         }
     }
+
+    /**
+     * deleteGradeCourseOfStudent
+     * delete GradeCourse mapping of a student if exists
+     * @param matrNr String of students matricuatlation number
+     * @return ResponseEntity<?>
+     */
+    public ResponseEntity<?> deleteGradeCourseOfStudent(String matrNr, String number) {
+        // TODO: 23.04.2020 Exception handling and refactor
+        try {
+            Student student = studentRepository.findByMatrNr(matrNr);
+            Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(student);
+            for (GradeCourseMapping gradeCourseMapping : gradeCourseMappingSet) {
+                if (gradeCourseMapping.getCourseNumber().equals(number)) {
+                    gradeCourseMappingRepository.delete(gradeCourseMapping);
+                    return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
+                }
+            }
+            logger.error("No grade for course number " + number + " in student "+ matrNr+ " saved");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No grade for course number " + number + " in student "+ matrNr+ " saved");
+        } catch (Exception e) {
+            logger.error(e.getClass() + " " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+    }
+
 
     /**
      * checkIfStudentHasMappedGradeCourses
