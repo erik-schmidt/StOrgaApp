@@ -36,9 +36,9 @@ public class CourseController {
         return courseService.getStudentsCourses(matrNr);
     }
 
-    @GetMapping("/get/{description}")
-    public Course getCourseByNumber(@PathVariable(value = "description") String description){
-        return courseService.getCourseByNumber(description);
+    @GetMapping("/get/{number}")
+    public Course getCourseByNumber(@PathVariable(value = "number") String number){
+        return courseService.getCourseByNumber(number);
     }
 
     @PutMapping("/{matrNr}/addCourseToStudent")
@@ -51,8 +51,8 @@ public class CourseController {
         return courseService.createCourse(course);
     }
 
-    @DeleteMapping("/delete/{description}")
-    public Course deleteCourse(@PathVariable(value = "description") String description){
-        return courseService.deleteCourse(description);
+    @DeleteMapping("/delete/{number}")
+    public Course deleteCourse(@PathVariable(value = "number") String number){
+        return courseService.deleteCourse(number);
     }
 }

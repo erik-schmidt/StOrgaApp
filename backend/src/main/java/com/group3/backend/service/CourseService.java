@@ -41,15 +41,15 @@ public class CourseService {
         return student.getCourses();
     }
 
-    public Course getCourseByNumber( String description){
-        Course cs = courseRepository.findByDescription(description);
+    public Course getCourseByNumber( String number){
+        Course cs = courseRepository.findByNumber(number);
         return cs;
     }
 
     public ResponseEntity<Course> addCourseToStudent(String matrNr,  Course course){
         try {
             Student student = studentRepository.findByMatrNr(matrNr);
-            Course course1 = courseRepository.findByDescription(course.getDescription());
+            Course course1 = courseRepository.findByNumber(course.getNumber());
             Set<Student> studentSet = new HashSet<>();
             studentSet.add(student);
             course1.setStudents(studentSet);
@@ -69,8 +69,8 @@ public class CourseService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public Course deleteCourse(String description){
-        Course course = courseRepository.findByDescription(description);
+    public Course deleteCourse(String number){
+        Course course = courseRepository.findByNumber(number);
         courseRepository.delete(course);
         return course;
     }

@@ -120,7 +120,7 @@ public class StudentController {
      */
     @GetMapping("/getGradesOfCourses/{matrNr}")
     public ResponseEntity<?> getGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
-        ResponseEntity<?> responseEntity = studentService.getGradeCourseToStudent(matrNr);
+        ResponseEntity<?> responseEntity = studentService.getGradeCourseOfStudent(matrNr);
         return responseEntity;
     }
 }

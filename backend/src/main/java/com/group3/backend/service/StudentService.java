@@ -6,7 +6,7 @@ import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
-import com.group3.backend.repository.GradeCourseMappingRepository;
+import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +22,13 @@ import java.util.Set;
 public class StudentService {
 
     private StudentRepository studentRepository;
+    private CourseRepository courseRepository;
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     /**
@@ -148,7 +150,13 @@ public class StudentService {
         }
     }
 
-    // TODO: 22.04.2020 error handling
+    /**
+     * addGradeCourseToStudent
+     * add a Grade course mapping to a student to identify his grades in the given subjects
+     * @param matrNr string matricuatlion number of student
+     * @param gradeCourseMapping GradeCourseMApping object
+     * @return ResponseEntity<?>
+     */
     public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
         try {
             Student st = studentRepository.findByMatrNr(matrNr);
@@ -164,21 +172,51 @@ public class StudentService {
         }
     }
 
-    // TODO: 22.04.2020 error handling
-    public ResponseEntity<?> getGradeCourseToStudent(String matrNr){
+    /**
+     * getGradeCourseofStudent
+     * get the grade course mapping of a student
+     * @param matrNr string matricuatlion number of student
+     * @return ResponseEntity<?>
+     */
+    public ResponseEntity<?> getGradeCourseOfStudent(String matrNr){
         Student st = studentRepository.findByMatrNr(matrNr);
         Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
         return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
     }
 
-    // TODO: 22.04.2020 check if student ist in course for set the grade
-
-    public GradeCourseMapping checkGradeCourse(GradeCourseMapping gradeCourseMapping) throws Exception{
-        if(gradeCourseMapping.getCourseNumber() == null){
+    /**
+     * checkGradeCourse
+     * check the object that the mapping fields are not null or empty and check if the grade is in the
+     * range of 1 to 5
+     * @param gradeCourseMapping Object
+     * @return acceptable gradeCourseMapping object
+     * @throws Exception
+     */
+    private GradeCourseMapping checkGradeCourse(GradeCourseMapping gradeCourseMapping) throws Exception{
+        if(gradeCourseMapping.getCourseNumber() == null||gradeCourseMapping.getCourseNumber().equals("")){
             throw new GradeCourseException("Error: Course number can not be null");
         }
         if(gradeCourseMapping.getGrade()<1.0||gradeCourseMapping.getGrade()>5.0){
             throw new GradeCourseException("Error: Grade must be between 1 and 5");
+        }
+        try {
+            checkIfCourseExists(gradeCourseMapping);
+        }catch (Exception e){
+            throw  e;
+        }
+        return gradeCourseMapping;
+    }
+
+    /**
+     * checkIfCourseExists
+     * check if there is a course with the given number in the database
+     * @param gradeCourseMapping
+     * @return acceptable gradeCourseMapping object
+     * @throws Exception
+     */
+    private GradeCourseMapping checkIfCourseExists(GradeCourseMapping gradeCourseMapping) throws Exception{
+        if(courseRepository.findByNumber(gradeCourseMapping.getCourseNumber())==null){
+            throw new GradeCourseException("There is no course with this number");
         }
         return gradeCourseMapping;
     }
