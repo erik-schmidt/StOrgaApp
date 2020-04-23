@@ -76,7 +76,7 @@ public class StudentController {
     /**
      * deleteStudent
      * delete a Student with the giben matriculation number out of the database
-     * @param matNr
+     * @param matrNr
      * @return Student object
      */
     @DeleteMapping("/delete/{matrNr}")
@@ -118,9 +118,35 @@ public class StudentController {
      * @param matrNr String
      * @return ResoponesEntity
      */
-    @GetMapping("/getGradesOfCourses/{matrNr}")
-    public ResponseEntity<?> getGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
-        ResponseEntity<?> responseEntity = studentService.getGradeCourseOfStudent(matrNr);
+    @GetMapping("/getAllGradesOfCourses/{matrNr}")
+    public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
+        ResponseEntity<?> responseEntity = studentService.getAllGradeCourseOfStudent(matrNr);
+        return responseEntity;
+    }
+
+    /**
+     * getGradeCourseOFStudent
+     * get the grade course mapping of a stundent and a specific couse
+     * @param matrNr String matriculation number o Student
+     * @param number String number of the curse
+     * @return  ResponseEntity<?>
+     */
+    @GetMapping("/getGradeCourseMapping/{matrNr}/{number}")
+    public ResponseEntity<?> getGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+        ResponseEntity<?> responseEntity = studentService.getGradeCourseOfStudent(matrNr, number);
+        return responseEntity;
+    }
+
+    /**
+     * deleteGradeCourseOfStudent
+     * delete Grade Course Mapping of a student
+     * @param matrNr String matriculation number of student
+     * @param number grade course mapping json
+     * @return ResoponesEntity
+     */
+    @DeleteMapping("/deleteGradesOfCourses/{matrNr}/{number}")
+    public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+        ResponseEntity<?> responseEntity = studentService.deleteGradeCourseOfStudent(matrNr, number);
         return responseEntity;
     }
 }

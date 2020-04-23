@@ -7,6 +7,7 @@ import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
+import com.group3.backend.repository.GradeCourseMappingRepository;
 import com.group3.backend.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +24,14 @@ public class StudentService {
 
     private StudentRepository studentRepository;
     private CourseRepository courseRepository;
+    private GradeCourseMappingRepository gradeCourseMappingRepository;
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository, GradeCourseMappingRepository gradeCourseMappingRepository) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
+        this.gradeCourseMappingRepository = gradeCourseMappingRepository;
     }
 
     /**
@@ -160,6 +163,10 @@ public class StudentService {
     public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
         try {
             Student st = studentRepository.findByMatrNr(matrNr);
+            if(checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The curse with number "+
+                        gradeCourseMapping.getCourseNumber() + " already has a grade and is mapped for Student " + matrNr);
+            }
             Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
             gradeCourseMappingSet.add(checkGradeCourse(gradeCourseMapping));
             st.setGradeCourseMappings(gradeCourseMappingSet);
@@ -178,10 +185,79 @@ public class StudentService {
      * @param matrNr string matricuatlion number of student
      * @return ResponseEntity<?>
      */
-    public ResponseEntity<?> getGradeCourseOfStudent(String matrNr){
-        Student st = studentRepository.findByMatrNr(matrNr);
-        Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
-        return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
+    public ResponseEntity<?> getAllGradeCourseOfStudent(String matrNr){
+        try {
+            Student st = studentRepository.findByMatrNr(matrNr);
+            Set<GradeCourseMapping> gradeCourseMappingSet = checkIfStudentHasMappedGradeCourses(st);
+            logger.info("Grade to course of student "+ matrNr + " successfully read");
+            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
+
+    /**
+     * deleteGradeCourseOfStudent
+     * delete GradeCourse mapping of a student if exists
+     * @param matrNr String of students matricuatlation number
+     * @return ResponseEntity<?>
+     */
+    public ResponseEntity<?> deleteGradeCourseOfStudent(String matrNr, String number){
+        // TODO: 23.04.2020 delete geht nicht
+        try {
+
+            return ResponseEntity.status(HttpStatus.OK).body("HI");
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
+
+    /**
+     * getGradeCourseOfStudent
+     * get the grade course mapping of a student. Get back only one course with the given number
+     * @param matrNr String Matriculation number of Student
+     * @param number String number of the curse wich should be searched for
+     * @return ResponseEntity<?>
+     */
+    public ResponseEntity<?> getGradeCourseOfStudent(String matrNr, String number){
+        try {
+            checkMatriculationNumber(matrNr);
+            if(checkMatricularNumberIsFree(matrNr)){
+                throw new MatriculationNumberException("There is no student with matriculation number: " + matrNr);
+            }
+            checkIfCourseExists(number);
+            Student st = studentRepository.findByMatrNr(matrNr);
+            Set<GradeCourseMapping> gradeCourseMappingSet = checkIfStudentHasMappedGradeCourses(st);
+            for(GradeCourseMapping gradeCourseMapping: gradeCourseMappingSet){
+                if(gradeCourseMapping.getCourseNumber().equals(number)){
+                    logger.info("Grade to course of student "+ matrNr + " successfully read");
+                    return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
+                }
+            }
+            logger.error("No grade for course number " + number + " in student "+ matrNr+ " saved");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No grade for course number " + number + " in student "+ matrNr+ " saved");
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
+
+    /**
+     * checkIfStudentHasMappedGradeCourses
+     * check if the student has mapped any courses for read them
+     * @param student Student
+     * @return Set<GradeCourseMapping>
+     * @throws Exception
+     */
+    private Set<GradeCourseMapping> checkIfStudentHasMappedGradeCourses(Student student) throws Exception{
+        Set<GradeCourseMapping> gradeCourseMappingSet = student.getGradeCourseMappings();
+        if(gradeCourseMappingSet.isEmpty()){
+            logger.error("The student " + student.getMatrNr() + " has grades to courses mapped");
+            throw  new GradeCourseException("The student "+ student.getMatrNr() + " has no mapped grades to courses");
+        }
+        return gradeCourseMappingSet;
     }
 
     /**
@@ -200,7 +276,9 @@ public class StudentService {
             throw new GradeCourseException("Error: Grade must be between 1 and 5");
         }
         try {
-            checkIfCourseExists(gradeCourseMapping);
+            if(!(checkIfCourseExists(gradeCourseMapping.getCourseNumber()))){
+                throw new GradeCourseException("There is no course with this number" + gradeCourseMapping.getCourseNumber());
+            }
         }catch (Exception e){
             throw  e;
         }
@@ -210,15 +288,15 @@ public class StudentService {
     /**
      * checkIfCourseExists
      * check if there is a course with the given number in the database
-     * @param gradeCourseMapping
+     * @param number String
      * @return acceptable gradeCourseMapping object
      * @throws Exception
      */
-    private GradeCourseMapping checkIfCourseExists(GradeCourseMapping gradeCourseMapping) throws Exception{
-        if(courseRepository.findByNumber(gradeCourseMapping.getCourseNumber())==null){
-            throw new GradeCourseException("There is no course with this number");
+    private boolean checkIfCourseExists(String number){
+        if(courseRepository.findByNumber(number)==null){
+            return false;
         }
-        return gradeCourseMapping;
+        return true;
     }
 
     /**
@@ -228,7 +306,7 @@ public class StudentService {
      * @return String available matriculation number
      * @throws Exception matriculation number Exception
      */
-    private boolean checkMatricularNumberIsFree(String matrNr) throws Exception{
+    private boolean checkMatricularNumberIsFree(String matrNr){
         Student st = studentRepository.findByMatrNr(matrNr);
         if(st == null){
            return true;
