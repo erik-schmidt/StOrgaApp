@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./CourseInfoModal.style";
+import styles from "./CourseInformationModal.style";
 import { View, Text, Button } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 

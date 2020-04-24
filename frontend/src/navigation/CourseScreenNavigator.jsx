@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
-import CourseScreen from "../screens/course/CourseScreen";
-import CreateCourseModal from "../screens/course/modal/CreateCourseModal";
+import CourseScreen from "../screens/course";
+import CreateCourseModal from "../screens/course/AddCourse/CreateCourseModal";
 import AddButton from "../components/AddButton/AddButton";
-import CourseInfoModal from "../screens/course/modal/CourseInfoModal";
+import CourseInformationModal from "../screens/course/CourseInformationModal/CourseInformationModal";
 
 const CourseScreenNavigator = ({ navigation }) => {
   const CourseStack = createStackNavigator();
@@ -31,8 +31,8 @@ const CourseScreenNavigator = ({ navigation }) => {
         }}
       />
       <CourseStack.Screen
-        name="CourseInfoModal"
-        component={CourseInfoModal}
+        name="CourseInformationModal"
+        component={CourseInformationModal}
         options={{
           headerTitle: "Kursinfo",
           cardStyle: { backgroundColor: "#ffff" },

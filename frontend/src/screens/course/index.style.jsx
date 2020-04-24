@@ -5,17 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  boldText: {
-    fontWeight: "bold",
-  },
-  courseHeader: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  cardText: {
-    flexDirection: "row",
-    flex: 1,
-  },
 });
 
 export default styles;
