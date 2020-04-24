@@ -14,11 +14,11 @@ const CalendarScreenNavigator = ({navigation}) => {
         component={CalendarScreen}
         options={{
           headerLeft: () => <DrawerButton />,
-          headerRight: () => <AddButton onPress={() => navigation.navigate("CalendarModal")} />
+          headerRight: () => <AddButton onPress={() => navigation.navigate("CreateCalendarModal")} />
         }}
       />
       <CalendarStack.Screen
-        name="CalendarModal"
+        name="CreateCalendarModal"
         component={CreateCalendarModal}
         options={{
           headerTitle: "Termin hinzufügen",

@@ -6,14 +6,18 @@ import {LocaleConfig, Agenda} from 'react-native-calendars';
 
 const CalendarScreen = ({navigation, route}) => {
 
-  route.params?.appointmentParam;
-
-  //const [appointments, setAppointments] = useState(0);
-
-  /* useEffect(() => {
+  //const [appointments, setAppointments] = useState([]);
+/*
+  useEffect(() => {
+    getAppointments().then((res)=>{
+      if(res!==undefined){
+        setAppointments(res.data)
+      }
+    })
     console.log("Current Appointments", appointments);
-  }, [appointments]); */
-
+  }, []); 
+  useEffect(() => {}, [appointments, route.params?.request]);
+*/
 
   LocaleConfig.locales['de'] = {
     monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
@@ -24,27 +28,27 @@ const CalendarScreen = ({navigation, route}) => {
   };
   LocaleConfig.defaultLocale = 'de';
 
-const appointment = {key:'appointment', color: 'red', };
-const info = {key:'info', color: 'green',selectedColor: 'blue'};
+  const termin = {key:'termin', color:'red',selectedDotColor: 'blue'};
 
 return(
   <Agenda
   
-  items={{
-    '2020-04-22': [],
-    '2020-05-23': [{time: '9:00-10:00',name: 'appointment1',info: 'item 2 - any js object', height: 100}],
-    '2020-05-24': [],
-    '2020-05-25': [{name: 'info',name:'appointment2',info: 'item 3 - any js object'}, {info: 'any js object'}]
+  items={{ 
+    '2020-04-22':[{timeStart: '8:00',timeEnd:'11:00',name: 'appointment1',info: 'das ist hard gecodet'}],
+    '2020-04-23':[{timeStart: '10:00',timeEnd:'12:30',name: 'appointment2',info: 'das ist hard gecodet'}],
+    '2020-04-22':[{timeStart: '9:00',timeEnd:'11:00',name: 'appointment3',info: 'das ist hard gecodet'}],
   }}
+  //Termin markieren 
   markedDates={{
-    '2020-05-23': {dots: [appointment]},
-    '2020-05-25': {dots: [info]}
+    '2020-04-22': {dots: [termin], color: 'red'},
+    '2020-04-23': {dots: [termin], color: 'red'},
   }}
   markingType={'multi-dot'}
 
-  loadItemsForMonth={(month) => {console.log('trigger items loading')}}
-  onDayPress={(day)=>{console.log('day pressed',day)}}
-  onDayChange={(day)=>{console.log('day changed',day)}}
+  loadItemsForMonth={(month) => {console.log('month loading')}}
+  onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
+  onDayPress={(day)=>{console.log('day pressed')}}
+  onDayChange={(day)=>{console.log('day changed')}}
   
   minDate={'2020-01-01'}
   maxDate={'2020-12-31'}
@@ -54,17 +58,18 @@ return(
   renderItem={(item) => {
     return (
       <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.time}</Text>
+        <Text>{item.timeStart+" - "+ item.timeEnd}</Text>
         <Text>{item.name}</Text>
         <Text>{item.info}</Text>
-        </View>);}}
+        </View>);
+        }}
 
   renderEmptyData = {() => {
     return ( 
       <View style={styles.emptyDate}>
         <Text>No Appointments saved </Text>
       </View>);}}
-//Longpress
+//Longpress für bearbeiten und löschen evtl. Toast bei onClick dazu 
 /> 
 
 );

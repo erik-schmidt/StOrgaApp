@@ -7,11 +7,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textInput: {
+    width:200,
     borderWidth: 1,
     padding: 3,
     margin: 3,
     borderRadius: 7,
-    width: Math.round(Dimension.get('window').width)-50,
+    //width: Math.round(Dimension.get('window').width)-50,
     
   },
 });
