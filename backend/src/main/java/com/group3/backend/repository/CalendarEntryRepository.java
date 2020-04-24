@@ -9,6 +9,6 @@ import java.util.Set;
 @Repository
 public interface CalendarEntryRepository extends JpaRepository<CalendarEntry, String> {
     //CalendarEntry findById(int id);
-    CalendarEntry findByDescription(String description);
+    CalendarEntry findByDescription(String matrNr, String description);
     Set<CalendarEntry> findAllByDescription(String description);
 }

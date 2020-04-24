@@ -36,23 +36,23 @@ public class CalendarEntryController {
         return calendarEntryService.getStudentCalendarEntries(matrNr);
     }
 
-    @GetMapping("/get/{description}")
-    public CalendarEntry getCalendarEntryByNumber(@PathVariable(value = "description") String description){
-        return calendarEntryService.getCalendarEntryByNumber(description);
+    @GetMapping("/{matrNr}/get/{description}")
+    public CalendarEntry getCalendarEntryByDescription(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "description") String description){
+        return calendarEntryService.getCalendarEntryByDescription(matrNr, description);
     }
 
     @PutMapping("/{matrNr}/addCalendarEntryToStudent")
-    public ResponseEntity<CalendarEntry> addCalendarEntryToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
+    public ResponseEntity<CalendarEntry> addEntry(@PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
         return calendarEntryService.addCalendarEntryToStudent(matrNr, calendarEntry);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<CalendarEntry> createCalendarEntry(@RequestBody CalendarEntry calendarEntry){
+    @PostMapping("/{matrNr}/create")
+    public ResponseEntity<CalendarEntry> createCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
         return calendarEntryService.createCalendarEntry(calendarEntry);
     }
 
-    @DeleteMapping("/delete/{description}")
-    public CalendarEntry deleteCalendarEntry(@PathVariable(value = "description") String description){
-        return calendarEntryService.deleteCalendarEntry(description);
+    @DeleteMapping("/{matrNr}/delete/{description}")
+    public ResponseEntity<CalendarEntry> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @PathVariable(value = "description") String description){
+        return calendarEntryService.deleteCalendarEntry(matrNr, description);
     }
 }

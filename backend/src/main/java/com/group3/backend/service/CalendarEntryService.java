@@ -43,15 +43,15 @@ public class CalendarEntryService {
         return student.getCalendarEntries();
     }
 
-    public CalendarEntry getCalendarEntryByNumber(String description){
-        CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(description);
+    public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){
+        CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(matrNr, description);
         return calendarEntry;
     }
 
     public ResponseEntity<CalendarEntry> addCalendarEntryToStudent(String matrNr, CalendarEntry calendarEntry){
         try {
             Student student = studentRepository.findByMatrNr(matrNr);
-            CalendarEntry calendarEntry1 = calendarEntryRepository.findByDescription(calendarEntry.getDescription());
+            CalendarEntry calendarEntry1 = calendarEntryRepository.findByDescription(matrNr, calendarEntry.getDescription());
             calendarEntry1.setStudent(student);
             calendarEntryRepository.save(calendarEntry1);
             calendarEntryRepository.saveAndFlush(calendarEntry1);
@@ -67,11 +67,10 @@ public class CalendarEntryService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public CalendarEntry deleteCalendarEntry(String description){
-        CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(description);
+    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, String description){
+        CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(matrNr, description);
         calendarEntryRepository.delete(calendarEntry);
-        return calendarEntry;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }
