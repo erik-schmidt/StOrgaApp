@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +40,11 @@ public class CalendarEntryController {
     @GetMapping("/{matrNr}/get/{description}")
     public CalendarEntry getCalendarEntryByDescription(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "description") String description){
         return calendarEntryService.getCalendarEntryByDescription(matrNr, description);
+    }
+
+    @GetMapping("/{matrNr}/get/{date}")
+    public List<CalendarEntry> getCalendarEntriesByDate(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "date") Date date){
+        return calendarEntryService.getCalendarEntryByDate(matrNr, date);
     }
 
     @PutMapping("/{matrNr}/add")

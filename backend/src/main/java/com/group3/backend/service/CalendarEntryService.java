@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -48,6 +49,16 @@ public class CalendarEntryService {
         return calendarEntry;
     }
 
+    public List<CalendarEntry> getCalendarEntryByDate(String matrNr, Date entryDate){
+        List<CalendarEntry> calendarEntriesByDate = calendarEntryRepository.findByDate(matrNr, entryDate);
+        return calendarEntriesByDate;
+    }
+
+    // TODO: 24.04.2020 Monthly CalendarEntries
+    public List<CalendarEntry> getCalendarEntryByMonth(String matrNr, Date entryDate){
+        return null;
+    }
+
     public ResponseEntity<CalendarEntry> addCalendarEntryToStudent(String matrNr, CalendarEntry calendarEntry){
         try {
             Student student = studentRepository.findByMatrNr(matrNr);
@@ -62,7 +73,7 @@ public class CalendarEntryService {
     }
 
     public ResponseEntity<CalendarEntry> createCalendarEntry(CalendarEntry calendarEntry) {
-        CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getDateOfEntry(), calendarEntry.getDescription());
+        CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
         calendarEntryRepository.save(calendarEntry1);
         return new ResponseEntity<>(HttpStatus.OK);
     }
