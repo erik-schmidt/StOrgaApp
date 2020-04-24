@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.sql.Date;
 import java.util.List;
@@ -78,8 +79,8 @@ public class CalendarEntryService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, String description){
-        CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(matrNr, description);
+    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, int id){
+        CalendarEntry calendarEntry = calendarEntryRepository.findByStudAndId(matrNr, id);
         calendarEntryRepository.delete(calendarEntry);
         return new ResponseEntity<>(HttpStatus.OK);
     }

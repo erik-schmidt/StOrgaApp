@@ -16,6 +16,7 @@ public class CalendarEntry {
 
     private String name;
 
+    // TODO: 24.04.2020 Eventuell stimmen die Datentypen für die folgenden 3 Attribute nicht.
     @Column(columnDefinition = "TIME")
     @Type(type="org.hibernate.type.TIME")
     @Convert(disableConversion = true)
