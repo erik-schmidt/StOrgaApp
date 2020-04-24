@@ -12,6 +12,6 @@ public interface CalendarEntryRepository extends JpaRepository<CalendarEntry, St
     CalendarEntry findByDescription(String matrNr, String description);
     Set<CalendarEntry> findAllByDescription(String description);
 
-    // TODO: 24.04.2020 : getAllEntriesOfWeek und getAllEntriesOfMonth damit die DB nicht überlastet wird 
+    // TODO: 24.04.2020 : getAllEntriesOfWeek und getAllEntriesOfMonth damit die DB nicht überlastet wird. Dementsprechend wird dateOfEntry zu einem Datumsobjekt
     // TODO: 24.04.2020 : Tests schreiben
 }
