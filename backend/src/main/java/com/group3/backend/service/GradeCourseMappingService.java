@@ -40,7 +40,6 @@ public class GradeCourseMappingService {
      */
     public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
         try {
-
             Student st = studentRepository.findByMatrNr(matrNr);
             if(st==null){
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no student with the number " + matrNr);
@@ -69,9 +68,9 @@ public class GradeCourseMappingService {
      * @return ResponseEntity<?>
      */
     public ResponseEntity<?> getAllGradeCourseOfStudent(String matrNr){
-        // TODO: 23.04.2020 exception handling and REfactor
         try {
             Student st = studentRepository.findByMatrNr(matrNr);
+            checkIfStudentHasMappedGradeCourses(st);
             Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(st);
             logger.info("Grade to course of student "+ matrNr + " successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
@@ -89,7 +88,6 @@ public class GradeCourseMappingService {
      * @return ResponseEntity<?>
      */
     public ResponseEntity<?> getGradeCourseOfStudent(String matrNr, String number){
-        // TODO: 23.04.2020 Exception handling and refactor
         try {
             checkMatriculationNumber(matrNr);
             if(checkMatricularNumberIsFree(matrNr)){
@@ -118,7 +116,6 @@ public class GradeCourseMappingService {
      * @return ResponseEntity<?>
      */
     public ResponseEntity<?> deleteGradeCourseOfStudent(String matrNr, String number) {
-        // TODO: 23.04.2020 Exception handling and refactor
         try {
             Student student = studentRepository.findByMatrNr(matrNr);
             Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(student);
@@ -168,13 +165,12 @@ public class GradeCourseMappingService {
      * @return Set<GradeCourseMapping>
      * @throws Exception
      */
-    private Set<GradeCourseMapping> checkIfStudentHasMappedGradeCourses(Student student) throws Exception{
+    private void checkIfStudentHasMappedGradeCourses(Student student) throws Exception{
         Set<GradeCourseMapping> gradeCourseMappingSet = student.getGradeCourseMappings();
         if(gradeCourseMappingSet.isEmpty()){
             logger.error("The student " + student.getMatrNr() + " has grades to courses mapped");
             throw  new GradeCourseException("The student "+ student.getMatrNr() + " has no mapped grades to courses");
         }
-        return gradeCourseMappingSet;
     }
 
     /**

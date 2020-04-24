@@ -36,7 +36,7 @@ public class StudentService {
     /**
      * reachabilityTest()
      * return a String with a successful message if backend reachable
-     * @return String "Test successful"
+     * @return String "reachable"
      */
     public String ping(){
         return "reachable";
@@ -132,12 +132,19 @@ public class StudentService {
         }
     }
 
+    /**
+     * updateStudent
+     * update the students attributes
+     * @param student Student
+     * @return ResponseEntity<?>
+     */
     public ResponseEntity<?> updateStudent(Student student) {
         try {
             if(checkMatricularNumberIsFree(student.getMatrNr())){
                 throw new MatriculationNumberException("There is no student with matriculation number: " + student.getMatrNr());
             }
             Student st = studentRepository.findByMatrNr(student.getMatrNr());
+            //Matriculation number should not be changed form student -> only set
             //st.setMatrNr(student.getMatrNr());
             st.setStudentPrename(student.getStudentPrename());
             st.setStudentFamilyname(student.getStudentFamilyname());
