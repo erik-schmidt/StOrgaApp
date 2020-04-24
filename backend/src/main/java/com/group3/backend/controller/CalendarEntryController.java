@@ -41,7 +41,7 @@ public class CalendarEntryController {
         return calendarEntryService.getCalendarEntryByDescription(matrNr, description);
     }
 
-    @PutMapping("/{matrNr}/addCalendarEntryToStudent")
+    @PutMapping("/{matrNr}/add")
     public ResponseEntity<CalendarEntry> addEntry(@PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
         return calendarEntryService.addCalendarEntryToStudent(matrNr, calendarEntry);
     }
