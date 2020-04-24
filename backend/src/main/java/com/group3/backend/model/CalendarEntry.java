@@ -27,7 +27,6 @@ public class CalendarEntry {
         this.description = description;
     }
 
-
     public String getName() {
         return name;
     }
@@ -59,13 +58,4 @@ public class CalendarEntry {
     public void setStudent(Student student) {
         this.student = student;
     }
-
-    /*
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CalendarEntry )) return false;
-        return id != null && id.equals((CalendarEntry) o).getId();
-    }
-     */
 }
