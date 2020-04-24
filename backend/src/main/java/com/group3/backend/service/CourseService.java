@@ -18,11 +18,13 @@ import java.util.Set;
 @Service
 public class CourseService {
 
+//    @Autowired
     private CourseRepository courseRepository;
+//    @Autowired
     private StudentRepository studentRepository;
     private Logger logger = LoggerFactory.getLogger(CourseService.class);
 
-    @Autowired
+
     public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
