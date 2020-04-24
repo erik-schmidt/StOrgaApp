@@ -99,54 +99,5 @@ public class StudentController {
         return responseEntity;
     }
 
-    /**
-     * addGradeToStudent
-     * add a grade of a course to student
-     * @param matrNr String
-     * @param gradeCourseMapping GradeCourseMapping
-     * @return ResoponesEntity
-     */
-    @PutMapping("/addGradeCourseMapping/{matrNr}")
-    public ResponseEntity<?> addGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping){
-        ResponseEntity<?> responseEntity = studentService.addGradeCourseToStudent(matrNr, gradeCourseMapping);
-        return responseEntity;
-    }
 
-    /**
-     * addGradeCourseToStudent
-     * get a grade course object of a studetn
-     * @param matrNr String
-     * @return ResoponesEntity
-     */
-    @GetMapping("/getAllGradeCourseMappings/{matrNr}")
-    public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
-        ResponseEntity<?> responseEntity = studentService.getAllGradeCourseOfStudent(matrNr);
-        return responseEntity;
-    }
-
-    /**
-     * getGradeCourseOFStudent
-     * get the grade course mapping of a stundent and a specific couse
-     * @param matrNr String matriculation number o Student
-     * @param number String number of the curse
-     * @return  ResponseEntity<?>
-     */
-    @GetMapping("/getGradeCourseMapping/{matrNr}/{number}")
-    public ResponseEntity<?> getGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-        ResponseEntity<?> responseEntity = studentService.getGradeCourseOfStudent(matrNr, number);
-        return responseEntity;
-    }
-
-    /**
-     * deleteGradeCourseOfStudent
-     * delete Grade Course Mapping of a student
-     * @param matrNr String matriculation number of student
-     * @param number grade course mapping json
-     * @return ResoponesEntity
-     */
-    @DeleteMapping("/deleteGradesCourseMapping/{matrNr}/{number}")
-    public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-        ResponseEntity<?> responseEntity = studentService.deleteGradeCourseOfStudent(matrNr, number);
-        return responseEntity;
-    }
 }
