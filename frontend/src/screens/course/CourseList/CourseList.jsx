@@ -1,42 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  Modal,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
-import {
-  getAllCourses,
-  deleteCourse,
-} from "../../../api/services/courseService";
+import { Text, View } from "react-native";
+import { getAllCourses } from "../../../api/services/courseService";
 import { FlatList } from "react-native-gesture-handler";
-import Card from "../../../components/CardList/Card";
+import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
+import { useNavigation } from "@react-navigation/native";
 
 const CourseList = (props) => {
   const [courses, setCourses] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState("");
-
-  const openModal = (description) => {
-    setVisible(!visible);
-    setSelectedCourse(description);
-  };
-
-  const closeModal = () => {
-    setVisible(!visible);
-  };
-
-  const onDeletePress = () => {
-    const id = courses.findIndex(
-      (course) => course.description === selectedCourse
-    );
-    deleteCourse(id).then((res) => {
-      const deletedCourse = res;
-      setCourses(courses.filter((course) => course !== deletedCourse));
-    });
-  };
+  const navigation = useNavigation();
 
   useEffect(() => {
     getAllCourses().then((res) => {
@@ -53,9 +25,10 @@ const CourseList = (props) => {
         renderItem={({ item }) => (
           <Card
             key={courses.length}
-            onLongPress={() => openModal(item.description)}
+            onLongPress={() =>
+              navigation.navigate("CourseMenu", { course: item })
+            }
             onPress={props.onPress}
-            modal={visible}
           >
             <View style={styles.cardText}>
               <Text style={styles.courseHeader}>Veranstaltung: </Text>
@@ -73,42 +46,6 @@ const CourseList = (props) => {
         )}
         keyExtractor={(item) => item.description}
       />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={visible}
-        onRequestClose={() => {
-          setVisible(!visible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text
-              style={{ ...styles.modalText, fontWeight: "bold", fontSize: 20 }}
-            >
-              Veranstaltung: {selectedCourse}
-            </Text>
-            <TouchableHighlight
-              style={styles.modalButton}
-              onPress={() => console.log("Ändern wurde ausgewählt")}
-            >
-              <Text style={styles.textStyle}>Note ändern</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={{ ...styles.modalButton, backgroundColor: "#f00" }}
-              onPress={() => onDeletePress()}
-            >
-              <Text style={styles.textStyle}>Löschen</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={{ ...styles.modalButton, marginTop: 25 }}
-              onPress={() => closeModal()}
-            >
-              <Text style={styles.textStyle}>Abbrechen</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };

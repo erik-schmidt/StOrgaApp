@@ -6,15 +6,7 @@ const Card = (props) => {
   return (
     <TouchableOpacity onLongPress={props.onLongPress} onPress={props.onPress}>
       <View style={styles.container}>
-        <View
-          style={
-            props.modal === true
-              ? { ...styles.item, backgroundColor: "rgba(0,0,0,0)" }
-              : styles.item
-          }
-        >
-          {props.children}
-        </View>
+        <View style={styles.item}>{props.children}</View>
       </View>
     </TouchableOpacity>
   );
