@@ -1,6 +1,8 @@
 package com.group3.backend;
 
+import com.group3.backend.exceptions.CurrentSemesterException;
 import com.group3.backend.exceptions.MatriculationNumberException;
+import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
 import org.junit.jupiter.api.Assertions;
@@ -9,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,12 +42,70 @@ class StudentTests {
      * Add one student to repository and check its attributes
      */
     @Test
-    void testAddStudent() {
-        Student student = createDefaultStudentAndAddToRepo();
+    void testCreateStudent() {
+        Student student = getNeverUsedStudentObject();
+        String oldMatrNr = student.getMatrNr();
+        //check to short matriculation number exception
+        student.setMatrNr(oldMatrNr.substring(0,4));
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                        "It must be exactly 6 units long. Only numbers are allowed");
+        //check to long matriculation number exception
+        student.setMatrNr(oldMatrNr+"0");
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                        "It must be exactly 6 units long. Only numbers are allowed");
+        //check letters in matriculation number exception
+        student.setMatrNr(oldMatrNr.substring(0,5)+"A");
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                MatriculationNumberException.class + " In matricular number are no letters allowed. " +
+                        " Take care of the allowed length of 6 units");
+        //set right matriculation number again
+        student.setMatrNr(oldMatrNr);
+
+        //check name not to small exception
+        student.setStudentPrename("A");
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+        //check name not to big exception
+        student.setStudentPrename("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+        //check that no numbers are in prename
+        student.setStudentPrename("Max 1");
+        Assertions.assertEquals(
+                StudentNameException.class +  " Numbers are not allowed in Prename", studentService.createStudent(student).getBody());
+        student.setStudentPrename("Max");
+        //check name not to small exception
+        student.setStudentFamilyname("A");
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+        //check name not to big exception
+        student.setStudentFamilyname("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+        //check that no numbers are in prename
+        student.setStudentFamilyname("Musterm1ann");
+        Assertions.assertEquals(
+                StudentNameException.class +  " Numbers are not allowed in Familyname", studentService.createStudent(student).getBody());
+        student.setStudentFamilyname("Mustermann");
+
+        //check current semester is greater than 1
+        student.setCurrentSemester(0);
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+        //check current semester is lowert than 15
+        student.setCurrentSemester(16);
+        Assertions.assertEquals(studentService.createStudent(student).getBody(),
+                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+        student.setCurrentSemester(1);
+
+        //check successful create of valid student
+        Student student1 = createDefaultStudentAndAddToRepo();
         List<Student> studentSet = (List<Student>)studentService.getAllStudents().getBody();
         Assertions.assertFalse(studentSet.isEmpty());
-        Student student1 = (Student)studentService.getStudentByNumber(student.getMatrNr()).getBody();
-        checkStudentsAreSame(student, student1);
+        Student student2 = (Student)studentService.getStudentByNumber(student1.getMatrNr()).getBody();
+        checkStudentsAreSame(student1, student2);
     }
 
     /**
@@ -57,6 +115,26 @@ class StudentTests {
     @Test
     void testGetStudentByNumber(){
         Student student = createDefaultStudentAndAddToRepo();
+        String oldMatrNr = student.getMatrNr();
+        String oldPrename = student.getStudentPrename();
+        //check to short matriculation number exception
+        student.setMatrNr(oldMatrNr.substring(0,4));
+        Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
+                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                "It must be exactly 6 units long. Only numbers are allowed");
+        //check to long matriculation number exception
+        student.setMatrNr(oldMatrNr+"0");
+        Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
+                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                        "It must be exactly 6 units long. Only numbers are allowed");
+        //check letters in matriculation number exception
+        student.setMatrNr(oldMatrNr.substring(0,5)+"A");
+        Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
+                MatriculationNumberException.class + " In matricular number are no letters allowed. " +
+                        " Take care of the allowed length of 6 units");
+        //set right matriculation number again
+        student.setMatrNr(oldMatrNr);
+
         Student student1 = (Student)studentService.getStudentByNumber(student.getMatrNr()).getBody();
         checkStudentsAreSame(student, student1);
     }
@@ -68,6 +146,7 @@ class StudentTests {
      */
     @Test
     void testGetAllStudents(){
+        Assertions.assertEquals(studentService.getAllStudents().getBody(),"Error: There are no students saved");
         List<Student> studentList = createDefaultStudentsAndAddToRepo();
         List<Student> studentList1 = (List<Student>)studentService.getAllStudents().getBody();
         for(int i = 0;  i < studentList.size(); i++){
@@ -126,7 +205,7 @@ class StudentTests {
     void testDoubleInsertionOfStudent(){
         Student student = createDefaultStudentAndAddToRepo();
         Assertions.assertEquals(studentService.createStudent(student).getBody(), MatriculationNumberException.class
-                +" : Matriculation number "+student.getMatrNr()+" already used");
+                +" Matriculation number "+student.getMatrNr()+" already used");
     }
 
     /**

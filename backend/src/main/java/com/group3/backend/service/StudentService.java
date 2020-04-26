@@ -106,7 +106,7 @@ public class StudentService {
                     st.getStudentFamilyname() + " successfully saved");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " "+ e.getMessage());
         }
     }
 
@@ -193,7 +193,7 @@ public class StudentService {
                         " Take care of the allowed length of 6 units");
             } else {
                 throw new MatriculationNumberException("Matriculation Number has not the right length. " +
-                        "It must be exactly 6 units long. Only numbers are allowes");
+                        "It must be exactly 6 units long. Only numbers are allowed");
             }
         }
         return matrNr;
@@ -215,8 +215,9 @@ public class StudentService {
         for (char c : name.toCharArray()) {
             if (Character.isDigit(c)) {
                 found = true;
-            } else if (found) {
-                throw new StudentNameException(" Numbers are not allowed in " + kindOfname );
+            }
+            if (found) {
+                throw new StudentNameException("Numbers are not allowed in " + kindOfname );
             }
         }
         return name;
@@ -231,7 +232,7 @@ public class StudentService {
      */
     private int checkCurrentSemester(int currentSemester)throws Exception{
         if(currentSemester<1||currentSemester>15){
-            throw new CurrentSemesterException("Semester can not be smaller then zero and not be bigger than 15");
+            throw new CurrentSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
         }
         return currentSemester;
     }
