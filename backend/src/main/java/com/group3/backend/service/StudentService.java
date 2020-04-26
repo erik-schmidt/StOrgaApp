@@ -93,7 +93,7 @@ public class StudentService {
         Student st = new Student();
         try {
             if(!(checkMatricularNumberIsFree(student.getMatrNr()))){
-                throw new MatriculationNumberException("Matricular number " + student.getMatrNr() + "already used");
+                throw new MatriculationNumberException("Matriculation number " + student.getMatrNr() + " already used");
             }
             checkMatricularNumberIsFree(student.getMatrNr());
             st.setMatrNr(checkMatriculationNumber(student.getMatrNr()));
