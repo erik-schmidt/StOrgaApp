@@ -1,30 +1,51 @@
 package com.group3.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Student implements Serializable {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Size(min = 6)
+    @Size(max = 6)
     private String matrNr;
+    @Size(min = 2)
+    @Size(max = 50)
     private String studentPrename;
+    @Size(min = 2)
+    @Size(max = 50)
     private String studentFamilyname;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
-    private Set<Task> taskLists = new HashSet<>();
+    private String fieldOfStudy;
+    @Min(1)
+    @Max(15)
+    private int currentSemester;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Course> courses = new HashSet<>();
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname, Set<Task> taskLists){
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<CalendarEntry> calendarEntries = new HashSet<>();
+
+    public Student(String matrNr, String studentPrename, String studentFamilyname,
+                   String fieldOfStudy, int currentSemester) {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
-        this.taskLists = taskLists;
+        //this.courseList = courseList;
+        //this.calenderEntries = calenderEntries;
+        this.fieldOfStudy = fieldOfStudy;
+        this.currentSemester = currentSemester;
     }
 
     public Student() {
@@ -54,11 +75,55 @@ public class Student implements Serializable {
         this.studentFamilyname = studentFamilyname;
     }
 
-    public Set<Task> getTaskLists() {
-        return taskLists;
+    public String getFieldOfStudy() {
+        return fieldOfStudy;
     }
 
-    public void setTaskLists(Set<Task> taskLists) {
-        this.taskLists = taskLists;
+    public void setFieldOfStudy(String fieldOfStudy) {
+        this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public int getCurrentSemester() {
+        return currentSemester;
+    }
+
+    public void setCurrentSemester(int currentSemester) {
+        this.currentSemester = currentSemester;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    public Set<CalendarEntry> getCalendarEntries() {
+        return calendarEntries;
+    }
+
+    public void setCalendarEntries(Set<CalendarEntry> calendarEntries) {
+        this.calendarEntries = calendarEntries;
+    }
+
+    public void addCalendarEntry(CalendarEntry calendarEntry) {
+        calendarEntries.add(calendarEntry);
+        calendarEntry.setStudent(this);
+    }
+
+    public void removeCalendarEntry(CalendarEntry calendarEntry) {
+        calendarEntries.remove(calendarEntry);
+        calendarEntry.setStudent(null);
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(matrNr + " ");
+        sb.append(studentPrename + " ");
+        sb.append(studentFamilyname + " ");
+        sb.append(fieldOfStudy + " ");
+        sb.append("Semester: " + currentSemester);
+        return sb.toString();
     }
 }

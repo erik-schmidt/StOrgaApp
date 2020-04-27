@@ -1,43 +1,58 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
-import com.group3.backend.repository.CourseRepository;
+import com.group3.backend.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/course")
 @CrossOrigin()
 public class CourseController {
 
-    private CourseRepository courseRepository;
+    private CourseService courseService;
 
     @Autowired
-    public CourseController(CourseRepository courseRepository){
-        this.courseRepository = courseRepository;
+    public CourseController(CourseService courseService){
+        this.courseService = courseService;
     }
+
+
+    @GetMapping("/ping")
+    public String ping(){
+        return courseService.ping();}
 
     @GetMapping("/get")
     public List<Course> getAllCourses(){
-        List<Course> courseList = courseRepository.findAll();
-        return courseList;
+        return courseService.getAllCourses();
     }
 
-    @PutMapping("/create")
+    @GetMapping("/{matrNr}/get")
+    public Set<Course> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
+        return courseService.getStudentsCourses(matrNr);
+    }
+
+    @GetMapping("/get/{description}")
+    public Course getCourseByNumber(@PathVariable(value = "description") String description){
+        return courseService.getCourseByNumber(description);
+    }
+
+    @PutMapping("/{matrNr}/addCourseToStudent")
+    public ResponseEntity<Course> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
+        return courseService.addCourseToStudent(matrNr, course);
+    }
+
+    @PostMapping("/create")
     public ResponseEntity<Course> createCourse(@RequestBody Course course){
-        Course cs = new Course(course.getDescription(), course.getRoom(), course.getProfessor(), course.getEcts(), course.getGrade(), course.getFieldOfStudy());
-        courseRepository.save(cs);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return courseService.createCourse(course);
     }
 
-    @DeleteMapping("/delete")
-    public Course deleteCourse(@PathVariable(value = "id") int id){
-        Course course = courseRepository.findById(id);
-        courseRepository.delete(course);
-        return course;
+    @DeleteMapping("/delete/{description}")
+    public Course deleteCourse(@PathVariable(value = "description") String description){
+        return courseService.deleteCourse(description);
     }
 }
