@@ -2,12 +2,16 @@ import React,{useState,useEffect} from "react";
 import { Text, View, Button, ScrollView } from "react-native";
 import styles from "./CalendarScreen.style";
 import {LocaleConfig, Agenda} from 'react-native-calendars';
+import Appointment from '../../models/appointment';
+import { getAppointments } from "../../api/services/CalendarService";
 
 
 const CalendarScreen = ({navigation, route}) => {
 
-  //const [appointments, setAppointments] = useState([]);
-/*
+  const [appointments, setAppointments] = useState([
+    {'2020-04-24':[{timeStart: '8:00',timeEnd:'11:00',name: 'appointmentTest',info: 'das ist hard gecodet'}]},
+  ]);
+
   useEffect(() => {
     getAppointments().then((res)=>{
       if(res!==undefined){
@@ -17,7 +21,7 @@ const CalendarScreen = ({navigation, route}) => {
     console.log("Current Appointments", appointments);
   }, []); 
   useEffect(() => {}, [appointments, route.params?.request]);
-*/
+
 
   LocaleConfig.locales['de'] = {
     monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
@@ -34,6 +38,7 @@ return(
   <Agenda
   
   items={{ 
+    appointments,
     '2020-04-22':[{timeStart: '8:00',timeEnd:'11:00',name: 'appointment1',info: 'das ist hard gecodet'}],
     '2020-04-23':[{timeStart: '10:00',timeEnd:'12:30',name: 'appointment2',info: 'das ist hard gecodet'}],
     '2020-04-22':[{timeStart: '9:00',timeEnd:'11:00',name: 'appointment3',info: 'das ist hard gecodet'}],
@@ -58,9 +63,9 @@ return(
   renderItem={(item) => {
     return (
       <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.timeStart+" - "+ item.timeEnd}</Text>
-        <Text>{item.name}</Text>
-        <Text>{item.info}</Text>
+        <Text style={styles.time}>{item.timeStart+" - "+ item.timeEnd}</Text>
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.info}>{item.info}</Text>
         </View>);
         }}
 

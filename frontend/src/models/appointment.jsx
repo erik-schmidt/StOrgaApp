@@ -1,4 +1,4 @@
-function Appointment(date,timeStart,timeEnd,name, info) {
+function Appointment(date,timeStart,timeEnd,name,info) {
     this.date = date;
     this.timeStart = timeStart; 
     this.timeEnd = timeEnd;

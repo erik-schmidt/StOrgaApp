@@ -21,7 +21,29 @@ const styles = StyleSheet.create({
       height: 15,
       flex:1,
       paddingTop: 30
-    }
+    },
+    time: {
+      backgroundColor: 'white',
+      flex: 1,
+      marginRight: 10,
+      fontSize: 25,
+      color: 'steelblue'
+    },
+    name: {
+      backgroundColor: 'white',
+      flex: 1,
+      marginRight: 10,
+      marginTop: 17,
+      fontSize: 20,
+      color: 'dimgrey'
+    },
+    info: {
+      backgroundColor: 'white',
+      flex: 1,
+      marginRight: 10,
+      marginTop: 17,
+      color: 'slategrey'
+    },
 });
 
 

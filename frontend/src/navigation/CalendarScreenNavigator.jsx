@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import CalendarScreen from "../screens/Calendar/CalendarScreen";
-import DrawerButton from "../components/DrawerButton";
+import DrawerButton from "../components/DrawerButton/DrawerButton";
 import AddButton from "../components/AddButton/AddButton";
 import CreateCalendarModal from "../screens/Calendar/modal/CreateCalendarModal";
 
