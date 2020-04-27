@@ -1,7 +1,9 @@
 package com.group3.backend;
 
+import com.group3.backend.controller.CourseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,6 +15,7 @@ public class BackendApplication {
 
         try {
             SpringApplication.run(BackendApplication.class, args);
+
         }
         catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());

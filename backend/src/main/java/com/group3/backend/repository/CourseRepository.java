@@ -12,4 +12,5 @@ public interface CourseRepository extends JpaRepository<Course, String> {
     //Course findByDescription(String description);
     Set<Course> findAllByDescription(String description);
     Course findByNumber(String number);
+//    Set<Course> findByMatrNr(String matrNr, String courseID);
 }
