@@ -1,11 +1,8 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreenNavigator from './HomeScreenNavigator';
-<<<<<<< HEAD
-import CalendarScreenNavigator from './CalendarScreenNavigator';
-=======
 import CourseScreenNavigator from "./CourseScreenNavigator";
->>>>>>> 672d6ace6751dfb074a31fc7438bddac126f1627
+import CalendarScreenNavigator from './CalendarScreenNavigator';
 
 const DrawerNavigation = () => {
   const Drawer = createDrawerNavigator();

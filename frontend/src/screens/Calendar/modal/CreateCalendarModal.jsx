@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { View, Button, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import styles from "./CreateCalendarModal.style";
-import Appointment from "../../../model/appointment";
+import Appointment from "../../../models/appointment";
 import createAppointment from "../../../api/services/CalendarService";
 //import Moment from "moment";
 import DatePicker from 'react-native-datepicker';
