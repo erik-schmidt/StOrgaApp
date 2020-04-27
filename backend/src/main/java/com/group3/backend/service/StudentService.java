@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class StudentService {
@@ -37,7 +36,7 @@ public class StudentService {
     /**
      * reachabilityTest()
      * return a String with a successful message if backend reachable
-     * @return String "Test successful"
+     * @return String "reachable"
      */
     public String ping(){
         return "reachable";
@@ -94,7 +93,7 @@ public class StudentService {
         Student st = new Student();
         try {
             if(!(checkMatricularNumberIsFree(student.getMatrNr()))){
-                throw new MatriculationNumberException("Matricular number " + student.getMatrNr() + "already used");
+                throw new MatriculationNumberException("Matriculation number " + student.getMatrNr() + " already used");
             }
             checkMatricularNumberIsFree(student.getMatrNr());
             st.setMatrNr(checkMatriculationNumber(student.getMatrNr()));
@@ -107,7 +106,7 @@ public class StudentService {
                     st.getStudentFamilyname() + " successfully saved");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " "+ e.getMessage());
         }
     }
 
@@ -133,17 +132,24 @@ public class StudentService {
         }
     }
 
+    /**
+     * updateStudent
+     * update the students attributes
+     * @param student Student
+     * @return ResponseEntity<?>
+     */
     public ResponseEntity<?> updateStudent(Student student) {
         try {
             if(checkMatricularNumberIsFree(student.getMatrNr())){
                 throw new MatriculationNumberException("There is no student with matriculation number: " + student.getMatrNr());
             }
             Student st = studentRepository.findByMatrNr(student.getMatrNr());
+            //Matriculation number should not be changed form student -> only set
             //st.setMatrNr(student.getMatrNr());
-            st.setStudentPrename(student.getStudentPrename());
-            st.setStudentFamilyname(student.getStudentFamilyname());
+            st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
+            st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
             st.setFieldOfStudy(student.getFieldOfStudy());
-            st.setCurrentSemester(student.getCurrentSemester());
+            st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             studentRepository.save(st);
             logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successffully updated");
             return ResponseEntity.status(HttpStatus.OK).body(st);
@@ -151,167 +157,6 @@ public class StudentService {
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
         }
-    }
-
-    /**
-     * addGradeCourseToStudent
-     * add a Grade course mapping to a student to identify his grades in the given subjects
-     * @param matrNr string matricuatlion number of student
-     * @param gradeCourseMapping GradeCourseMApping object
-     * @return ResponseEntity<?>
-     */
-    public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
-        try {
-
-            Student st = studentRepository.findByMatrNr(matrNr);
-            if(st==null){
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no student with the number " + matrNr);
-            }
-            gradeCourseMapping.setStudent(st);
-            if(checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The curse with number "+
-                        gradeCourseMapping.getCourseNumber() + " already has a grade and is mapped for Student " + matrNr);
-            }
-            Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
-            gradeCourseMappingSet.add(checkGradeCourse(gradeCourseMapping));
-            st.setGradeCourseMappings(gradeCourseMappingSet);
-            studentRepository.save(st);
-            logger.info("New Grade to cours successfully added");
-            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
-        }catch (Exception e){
-            logger.error(e.getClass() +" "+e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
-        }
-    }
-
-    /**
-     * getGradeCourseofStudent
-     * get the grade course mapping of a student
-     * @param matrNr string matricuatlion number of student
-     * @return ResponseEntity<?>
-     */
-    public ResponseEntity<?> getAllGradeCourseOfStudent(String matrNr){
-        // TODO: 23.04.2020 exception handling and REfactor
-        try {
-            Student st = studentRepository.findByMatrNr(matrNr);
-            Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(st);
-            logger.info("Grade to course of student "+ matrNr + " successfully read");
-            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
-        }catch (Exception e){
-            logger.error(e.getClass() +" "+e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
-        }
-    }
-
-    /**
-     * getGradeCourseOfStudent
-     * get the grade course mapping of a student. Get back only one course with the given number
-     * @param matrNr String Matriculation number of Student
-     * @param number String number of the curse wich should be searched for
-     * @return ResponseEntity<?>
-     */
-    public ResponseEntity<?> getGradeCourseOfStudent(String matrNr, String number){
-        // TODO: 23.04.2020 Exception handling and refactor
-        try {
-            checkMatriculationNumber(matrNr);
-            if(checkMatricularNumberIsFree(matrNr)){
-                throw new MatriculationNumberException("There is no student with matriculation number: " + matrNr);
-            }
-            checkIfCourseExists(number);
-            Student st = studentRepository.findByMatrNr(matrNr);
-            Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(st);
-            for(GradeCourseMapping gradeCourseMapping : gradeCourseMappingSet){
-                if(gradeCourseMapping.getCourseNumber().equals(number)){
-                    return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
-                }
-            }
-            logger.error("No grade for course number " + number + " in student "+ matrNr+ " saved");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No grade for course number " + number + " in student "+ matrNr+ " saved");
-        }catch (Exception e){
-            logger.error(e.getClass() +" "+e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
-        }
-    }
-
-    /**
-     * deleteGradeCourseOfStudent
-     * delete GradeCourse mapping of a student if exists
-     * @param matrNr String of students matricuatlation number
-     * @return ResponseEntity<?>
-     */
-    public ResponseEntity<?> deleteGradeCourseOfStudent(String matrNr, String number) {
-        // TODO: 23.04.2020 Exception handling and refactor
-        try {
-            Student student = studentRepository.findByMatrNr(matrNr);
-            Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(student);
-            for (GradeCourseMapping gradeCourseMapping : gradeCourseMappingSet) {
-                if (gradeCourseMapping.getCourseNumber().equals(number)) {
-                    gradeCourseMappingRepository.delete(gradeCourseMapping);
-                    return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
-                }
-            }
-            logger.error("No grade for course number " + number + " in student "+ matrNr+ " saved");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No grade for course number " + number + " in student "+ matrNr+ " saved");
-        } catch (Exception e) {
-            logger.error(e.getClass() + " " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
-        }
-    }
-
-
-    /**
-     * checkIfStudentHasMappedGradeCourses
-     * check if the student has mapped any courses for read them
-     * @param student Student
-     * @return Set<GradeCourseMapping>
-     * @throws Exception
-     */
-    private Set<GradeCourseMapping> checkIfStudentHasMappedGradeCourses(Student student) throws Exception{
-        Set<GradeCourseMapping> gradeCourseMappingSet = student.getGradeCourseMappings();
-        if(gradeCourseMappingSet.isEmpty()){
-            logger.error("The student " + student.getMatrNr() + " has grades to courses mapped");
-            throw  new GradeCourseException("The student "+ student.getMatrNr() + " has no mapped grades to courses");
-        }
-        return gradeCourseMappingSet;
-    }
-
-    /**
-     * checkGradeCourse
-     * check the object that the mapping fields are not null or empty and check if the grade is in the
-     * range of 1 to 5
-     * @param gradeCourseMapping Object
-     * @return acceptable gradeCourseMapping object
-     * @throws Exception
-     */
-    private GradeCourseMapping checkGradeCourse(GradeCourseMapping gradeCourseMapping) throws Exception{
-        if(gradeCourseMapping.getCourseNumber() == null||gradeCourseMapping.getCourseNumber().equals("")){
-            throw new GradeCourseException("Error: Course number can not be null");
-        }
-        if(gradeCourseMapping.getGrade()<1.0||gradeCourseMapping.getGrade()>5.0){
-            throw new GradeCourseException("Error: Grade must be between 1 and 5");
-        }
-        try {
-            if(!(checkIfCourseExists(gradeCourseMapping.getCourseNumber()))){
-                throw new GradeCourseException("There is no course with this number" + gradeCourseMapping.getCourseNumber());
-            }
-        }catch (Exception e){
-            throw  e;
-        }
-        return gradeCourseMapping;
-    }
-
-    /**
-     * checkIfCourseExists
-     * check if there is a course with the given number in the database
-     * @param number String
-     * @return acceptable gradeCourseMapping object
-     * @throws Exception
-     */
-    private boolean checkIfCourseExists(String number){
-        if(courseRepository.findByNumber(number)==null){
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -348,7 +193,7 @@ public class StudentService {
                         " Take care of the allowed length of 6 units");
             } else {
                 throw new MatriculationNumberException("Matriculation Number has not the right length. " +
-                        "It must be exactly 6 units long. Only numbers are allowes");
+                        "It must be exactly 6 units long. Only numbers are allowed");
             }
         }
         return matrNr;
@@ -370,8 +215,9 @@ public class StudentService {
         for (char c : name.toCharArray()) {
             if (Character.isDigit(c)) {
                 found = true;
-            } else if (found) {
-                throw new StudentNameException(" Numbers are not allowed in " + kindOfname );
+            }
+            if (found) {
+                throw new StudentNameException("Numbers are not allowed in " + kindOfname );
             }
         }
         return name;
@@ -386,7 +232,7 @@ public class StudentService {
      */
     private int checkCurrentSemester(int currentSemester)throws Exception{
         if(currentSemester<1||currentSemester>15){
-            throw new CurrentSemesterException("Semester can not be smaller then zero and not be bigger than 15");
+            throw new CurrentSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
         }
         return currentSemester;
     }
