@@ -1,11 +1,11 @@
-import React, {useState} from "./node_modules/react";
+import React, {useState} from "react";
 import { View, Button, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import styles from "./AddCalendarModal.style";
 import Appointment from "../../../models/appointment";
 import createAppointment from "../../../api/services/CalendarService";
 //import Moment from "moment";
-import DatePicker from './node_modules/react-native-datepicker';
+import DatePicker from 'react-native-datepicker';
 
 const AddCalendarModal = ({ navigation }) => {
   const [timeStart, setTimeStart] = useState("");
@@ -25,7 +25,6 @@ const AddCalendarModal = ({ navigation }) => {
   }
 
   return (
-    
     <View style={styles.container}>
       
       <Text style={styles.description}> 

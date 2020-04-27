@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import { Text, View, Button, ScrollView } from "react-native";
+import { Text, View} from "react-native";
 import styles from "./CalendarScreen.style";
 import {LocaleConfig, Agenda} from 'react-native-calendars';
 import Appointment from '../../models/appointment';

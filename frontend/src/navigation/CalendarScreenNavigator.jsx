@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CalendarScreen from "../screens/Calendar/CalendarScreen";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
 import AddButton from "../components/AddButton/AddButton";
-import AddCalendarModal from "../screens/Calendar/AddCalendar/AddCalendarModal";
+import AddCalendarModal from "../screens/Calendar/addCalendar/AddCalendarModal";
 
 const CalendarScreenNavigator = ({navigation}) => {
   const CalendarStack = createStackNavigator();
