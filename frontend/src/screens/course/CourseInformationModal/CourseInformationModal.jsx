@@ -3,7 +3,7 @@ import styles from "./CourseInformationModal.style";
 import { View, Text, Button } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const CourseInfoModal = ({ navigation }) => {
+const CourseInfoModal = ({ navigation, route }) => {
   navigation.setOptions({
     headerRight: () => (
       <View style={{ flexDirection: "row" }}>
@@ -20,12 +20,7 @@ const CourseInfoModal = ({ navigation }) => {
       </View>
     ),
   });
-  const [course, setCourse] = useState({
-    description: "Test",
-    professor: "Haag",
-    ects: 5,
-    requiredSemester: 4,
-  });
+  const [course, setCourse] = useState(route.params?.course);
 
   return (
     <View style={styles.container}>

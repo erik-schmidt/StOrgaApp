@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: "100%",
+  },
   cardText: {
     flexDirection: "row",
     flex: 1,
@@ -20,12 +24,15 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    margin: 25,
+    borderRadius: 5,
+    height: 1,
+    justifyContent: "center",
     backgroundColor: "white",
-    borderRadius: 20,
-    borderColor: "#000",
-    borderWidth: 0.7,
-    padding: 35,
+    borderLeftColor: "red",
+    borderWidth: 0.5,
+    borderLeftWidth: 10,
+    padding: 29,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

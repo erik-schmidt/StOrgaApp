@@ -7,13 +7,7 @@ import CourseList from "./CourseList/CourseList";
 const CourseScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {Platform.OS !== "web" ? (
-        <CourseList
-          onPress={() => navigation.navigate("CourseInformationModal")}
-        />
-      ) : (
-        <CourseTable />
-      )}
+      {Platform.OS !== "web" ? <CourseList /> : <CourseTable />}
     </View>
   );
 };
