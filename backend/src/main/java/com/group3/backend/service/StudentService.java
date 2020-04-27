@@ -146,10 +146,10 @@ public class StudentService {
             Student st = studentRepository.findByMatrNr(student.getMatrNr());
             //Matriculation number should not be changed form student -> only set
             //st.setMatrNr(student.getMatrNr());
-            st.setStudentPrename(student.getStudentPrename());
-            st.setStudentFamilyname(student.getStudentFamilyname());
+            st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
+            st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
             st.setFieldOfStudy(student.getFieldOfStudy());
-            st.setCurrentSemester(student.getCurrentSemester());
+            st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             studentRepository.save(st);
             logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successffully updated");
             return ResponseEntity.status(HttpStatus.OK).body(st);

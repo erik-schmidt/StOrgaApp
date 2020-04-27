@@ -114,9 +114,8 @@ class StudentTests {
      */
     @Test
     void testGetStudentByNumber(){
-        Student student = createDefaultStudentAndAddToRepo();
+        Student student = getNeverUsedStudentObject();
         String oldMatrNr = student.getMatrNr();
-        String oldPrename = student.getStudentPrename();
         //check to short matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,4));
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
@@ -134,9 +133,13 @@ class StudentTests {
                         " Take care of the allowed length of 6 units");
         //set right matriculation number again
         student.setMatrNr(oldMatrNr);
-
-        Student student1 = (Student)studentService.getStudentByNumber(student.getMatrNr()).getBody();
-        checkStudentsAreSame(student, student1);
+        //check read an matriculation number which not exists Exception
+        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+                + student.getMatrNr(), studentService.getStudentByNumber(student.getMatrNr()).getBody());
+        //check successful read
+        Student student1 = createDefaultStudentAndAddToRepo();
+        Student student2 = (Student)studentService.getStudentByNumber(student1.getMatrNr()).getBody();
+        checkStudentsAreSame(student1, student2);
     }
 
     /**
@@ -146,6 +149,7 @@ class StudentTests {
      */
     @Test
     void testGetAllStudents(){
+        //check error message read empty db
         Assertions.assertEquals(studentService.getAllStudents().getBody(),"Error: There are no students saved");
         List<Student> studentList = createDefaultStudentsAndAddToRepo();
         List<Student> studentList1 = (List<Student>)studentService.getAllStudents().getBody();
@@ -161,6 +165,47 @@ class StudentTests {
      */
     @Test
     void testUpdateStudent(){
+        Student studentNu = getNeverUsedStudentObject();
+        //check read an matriculation number which not exists Exception
+        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+                + studentNu.getMatrNr(), studentService.updateStudent(studentNu).getBody());
+        Student studentU = createDefaultStudentAndAddToRepo();
+        //check name not to small exception
+        studentU.setStudentPrename("A");
+        Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
+                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+        //check name not to big exception
+        studentU.setStudentPrename("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
+                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+        //check that no numbers are in prename
+        studentU.setStudentPrename("Max 1");
+        Assertions.assertEquals(
+                StudentNameException.class +  " Numbers are not allowed in Prename", studentService.updateStudent(studentU).getBody());
+        studentU.setStudentPrename("Max");
+        //check name not to small exception
+        studentU.setStudentFamilyname("A");
+        Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
+                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+        //check name not to big exception
+        studentU.setStudentFamilyname("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
+                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+        //check that no numbers are in prename
+        studentU.setStudentFamilyname("Musterm1ann");
+        Assertions.assertEquals(
+                StudentNameException.class +  " Numbers are not allowed in Familyname", studentService.updateStudent(studentU).getBody());
+        studentU.setStudentFamilyname("Mustermann");
+        //check current semester is greater than 1
+        studentU.setCurrentSemester(0);
+        Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
+                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+        //check current semester is lowert than 15
+        studentU.setCurrentSemester(16);
+        Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
+                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+        studentU.setCurrentSemester(1);
+
         List<Student> studentListBeforeUpdate = createDefaultStudentsAndAddToRepo();
         //Student which should be updated;
         Student student = studentListBeforeUpdate.get(random.nextInt(studentListBeforeUpdate.size()));
@@ -186,6 +231,10 @@ class StudentTests {
      */
     @Test
     void testDeleteStudent(){
+        Student studentNu = getNeverUsedStudentObject();
+        //check read an matriculation number which not exists Exception
+        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+                + studentNu.getMatrNr(), studentService.deleteStudent(studentNu.getMatrNr()).getBody());
         List<Student> studentListBeforeDelete = createDefaultStudentsAndAddToRepo();
         Student student = studentListBeforeDelete.get(random.nextInt(studentListBeforeDelete.size()));
         studentService.deleteStudent(student.getMatrNr());
@@ -236,7 +285,7 @@ class StudentTests {
      * @return Student
      */
     private Student createDefaultStudentAndAddToRepo(){
-        Student student = new Student("202481", "Liyan", "Fu-Wacker",
+        Student student = new Student("202479", "John", "Doe",
                 "AIB", 7);
         studentService.createStudent(student);
         return student;
