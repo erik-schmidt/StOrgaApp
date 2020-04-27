@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     padding:10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
   },
   textInput: {
     width:200,

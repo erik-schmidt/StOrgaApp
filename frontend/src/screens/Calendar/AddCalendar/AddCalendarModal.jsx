@@ -1,13 +1,13 @@
-import React, {useState} from "react";
+import React, {useState} from "./node_modules/react";
 import { View, Button, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import styles from "./CreateCalendarModal.style";
+import styles from "./AddCalendarModal.style";
 import Appointment from "../../../models/appointment";
 import createAppointment from "../../../api/services/CalendarService";
 //import Moment from "moment";
-import DatePicker from 'react-native-datepicker';
+import DatePicker from './node_modules/react-native-datepicker';
 
-const CalendarModal = ({ navigation }) => {
+const AddCalendarModal = ({ navigation }) => {
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [name, setName] = useState("");
@@ -96,4 +96,4 @@ const CalendarModal = ({ navigation }) => {
   );
 };
 
-export default CalendarModal;
+export default AddCalendarModal;
