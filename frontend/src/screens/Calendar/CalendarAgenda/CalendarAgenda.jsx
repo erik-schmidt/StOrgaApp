@@ -1,16 +1,13 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import styles from './CalendarAgenda.style';
 import { Text, View} from "react-native";
-import styles from "./CalendarScreen.style";
 import {LocaleConfig, Agenda} from 'react-native-calendars';
-import Appointment from '../../models/appointment';
-import { getAppointments } from "../../api/services/CalendarService";
+import Appointment from '../../../models/appointment';
+import { getAppointments } from "../../../api/services/CalendarService";
 
+const CalendarAgenda = () => {
 
-const CalendarScreen = ({navigation, route}) => {
-
-  const [appointments, setAppointments] = useState([
-    {'2020-04-24':[{timeStart: '8:00',timeEnd:'11:00',name: 'appointmentTest',info: 'das ist hard gecodet'}]},
-  ]);
+const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     getAppointments().then((res)=>{
@@ -20,7 +17,8 @@ const CalendarScreen = ({navigation, route}) => {
     })
     console.log("Current Appointments", appointments);
   }, []); 
-  useEffect(() => {}, [appointments, route.params?.request]);
+  
+  useEffect(() => {}, [appointments]);
 
 
   LocaleConfig.locales['de'] = {
@@ -35,7 +33,7 @@ const CalendarScreen = ({navigation, route}) => {
   const termin = {key:'termin', color:'red',selectedDotColor: 'blue'};
 
 return(
-  <Agenda
+<Agenda
   
   items={{ 
     appointments,
@@ -76,8 +74,6 @@ return(
       </View>);}}
 //Longpress für bearbeiten und löschen evtl. Toast bei onClick dazu 
 /> 
-
 );
 };
-
-export default CalendarScreen;
+    export default CalendarAgenda;

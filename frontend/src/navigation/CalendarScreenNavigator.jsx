@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import CalendarScreen from "../screens/Calendar/CalendarScreen";
+import index from "../screens/Calendar/index";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
 import AddButton from "../components/AddButton/AddButton";
 import AddCalendarModal from "../screens/Calendar/addCalendar/AddCalendarModal";
@@ -11,7 +11,7 @@ const CalendarScreenNavigator = ({navigation}) => {
     <CalendarStack.Navigator>
       <CalendarStack.Screen
         name="Kalender"
-        component={CalendarScreen}
+        component={index}
         options={{
           headerLeft: () => <DrawerButton />,
           headerRight: () => <AddButton onPress={() => navigation.navigate("AddCalendarModal")} />
