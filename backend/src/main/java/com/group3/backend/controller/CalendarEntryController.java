@@ -57,6 +57,11 @@ public class CalendarEntryController {
         return calendarEntryService.createCalendarEntry(calendarEntry);
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<CalendarEntry> createCalendarEntry(@RequestBody CalendarEntry calendarEntry){
+        return calendarEntryService.createCalendarEntry(calendarEntry);
+    }
+
     @DeleteMapping("/{matrNr}/delete/{id}")
     public ResponseEntity<CalendarEntry> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @PathVariable(value = "id") int id){
         return calendarEntryService.deleteCalendarEntry(matrNr, id);
