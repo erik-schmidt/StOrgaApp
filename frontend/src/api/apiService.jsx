@@ -26,7 +26,7 @@ export async function fetch(apiPath, param = "") {
     });
 }
 
-// Objekt übergeben 
+// Objekt übergeben
 export async function post(apiPath, param = "") {
   return axios
     .post(apiPath, param)
@@ -66,7 +66,7 @@ export async function put(apiPath, param = "") {
     });
 }
 
-// Objekt löschen 
+// Objekt löschen
 // matrikelnummer als parameter
 export async function del(apiPath, param = "") {
   return axios

@@ -5,16 +5,7 @@ import { View, Platform } from "react-native";
 import WebCalendar from "./WebCalendar/WebCalendar";
 
 const CalendarScreen = () => {
-
-    const test =()=>{
-        return(
-        Platform.OS !== "web" ? <CalendarAgenda /> : <WebCalendar />
-        )
-    }
-
-  return (
-    Platform.OS !== "web" ? <CalendarAgenda /> : <WebCalendar />
-  );
+  return Platform.OS !== "web" ? <CalendarAgenda /> : <WebCalendar />;
 };
 
 export default CalendarScreen;
