@@ -5,7 +5,10 @@ import { View, Platform } from "react-native";
 import WebCalendar from "./WebCalendar/WebCalendar";
 
 const CalendarScreen = () => {
-  return Platform.OS !== "web" ? <CalendarAgenda /> : <WebCalendar />;
+  return (
+    //return Platform.OS !== "web" ? <CalendarAgenda /> : <WebCalendar />;
+    <CalendarAgenda />
+  );
 };
 
 export default CalendarScreen;

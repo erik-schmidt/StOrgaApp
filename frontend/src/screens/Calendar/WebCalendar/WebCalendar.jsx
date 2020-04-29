@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { View } from "react-native";
 import moment from "moment";
-//import styles from "react-big-calendar/lib/css/react-big-calendar.css";
+import styles from "./WebCalendar.style";
 
 const WebCalendar = () => {
   const [event, setEvent] = useState([]);
@@ -15,7 +15,7 @@ const WebCalendar = () => {
         localizer={localizer}
         onView={() => console.log()}
         events={event}
-        style={{ ...styles, height: 600, backgroundColor: "white" }}
+        style={{ ...styles, height: 400, backgroundColor: "white" }}
       />
     </View>
   );
