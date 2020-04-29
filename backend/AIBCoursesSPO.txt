@@ -1,0 +1,28 @@
+﻿AIB#173001#AI1.1 Arbeitstechniken#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Pflichtfach#1#Allgemein#
+AIB#173002#AI1.2 Englisch für IT#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Allgemein#
+AIB#173003#AI1.3 Grundlagen betriebswirtschaftlicher Prozesse#A000#Prof. Dr. Christian Fegeler#4#Pflichtfach#1#Allgemein#
+AIB#173004#AI1.4 Recht in der IT#A000#Prof. Dr. Sabine Boos#2#Pflichtfach#2#Allgemein#
+
+AIB#173011#AI2.1 Multimediatechnologie#A000#Prof. Dr. Martin Haag#2#Pflichtfach#1#Allgemein#
+AIB#173012#AI2.2 Grundlagen der Mensch-ComputerInteraktion#A000#Prof. Dr.-Ing. Gerrit Meixner#3#Pflichtfach#2#Allgemein#
+
+AIB#173021#AI3.1 Programmieren 1#A000#Prof. Dr. Martin Haag#8#Pflichtfach#1#Allgemein#
+AIB#173022#AI3.2 Programmieren 2#A000#Prof. Dr. Martin Haag#6#Pflichtfach#2#Allgemein#
+
+AIB#173031#AI4.1 Rechnernetze#A000#Prof. Dr. Jörg Winckler#3#Pflichtfach#1#Allgemein#
+AIB#173032#AI4.2 Mathematische Grundlagen der Informatik 1#A000#Prof. Dr. Oliver Kalthoff#5#Pflichtfach#2#Allgemein#
+AIB#173033#AI4.3 Technische Informatik#A000#Prof. Dr.-Ing. Wolfgang Heß#2#Pflichtfach#2#Allgemein#
+AIB#173034#AI4.4 Algorithmen und Datenstrukturen#A000#Prof. Dr. Tim Reichert#5#Pflichtfach#2#Allgemein#
+
+AIB#173041#AI5.1 Software Engineering#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#4#Pflichtfach#1#Allgemein#
+AIB#173042#AI5.2 Software Engineering 2#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#2#Pflichtfach#2#Allgemein#
+AIB#173043#AI5.3 Software Engineering Ergänzungen#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#2#Pflichtfach#2#Allgemein#
+
+AIB#173121#VPI1.1 Grundlagen von Psychologie und Informatik#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#1#Psychologie#
+AIB#173122#VPI1.2 Grundlagen empirischer Forschung#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#2#Psychologie#
+
+AIB#173161#VMC1.1 Grundlagen mobiler Lebenswelte#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Mobile Computig#
+AIB#173162#VMC1.2 Grundlagen der Sensorik#A000#Prof. Dr. Oliver Kalthoff#3#Pflichtfach#2#Mobile Computig#
+
+AIB#173051#AI6.1 Mathematische Grundlagen der Informatik 2#A000#Prof. Dr. Oliver Kalthoff#5#Pflichtfach#3#Allgemein#
+###

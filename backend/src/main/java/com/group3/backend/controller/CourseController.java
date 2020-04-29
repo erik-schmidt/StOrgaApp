@@ -1,15 +1,11 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
-import com.group3.backend.model.Student;
-import com.group3.backend.repository.CourseRepository;
-import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,48 +14,100 @@ import java.util.Set;
 @CrossOrigin()
 public class CourseController {
 
-    private CourseRepository courseRepository;
-
-
+    private CourseService courseService;
 
     @Autowired
-    public CourseController(CourseRepository courseRepository, StudentRepository studentRepository){
-        this.courseRepository = courseRepository;
+    public CourseController(CourseService courseService){
+        this.courseService = courseService;
     }
 
+    // TODO: 24.04.2020 search by course number not by description
+
     /**
-     * reachabilityTest()
+     * ping()
      * return a String with a successful message if backend reachable
      * @return String "Test successful"
      */
     @GetMapping("/ping")
     public String ping(){
-        return "reachable";}
+        return courseService.ping();
+    }
 
+    /**
+     * getAllCourses
+     * get all available courses in the database
+     * @return List<Course> </Course>
+     */
     @GetMapping("/get")
     public List<Course> getAllCourses(){
-        List<Course> courseList = courseRepository.findAll();
-        return courseList;
+        return courseService.getAllCourses();
     }
 
-    @GetMapping("/get/{id}")
-    public Course getCourseByNumber(@PathVariable(value = "id") int id){
-        Course cs = courseRepository.findById(id);
-        return cs;
+    /**
+     * getCourseByNumger
+     * get course information by search with the course number
+     * @param number String
+     * @return Course
+     */
+    @GetMapping("/get/{number}")
+    public Course getCourseByNumber(@PathVariable(value = "number") String number){
+        return courseService.getCourseByNumber(number);
     }
 
-    @PutMapping("/create")
+    /**
+     * getStudentCourses
+     * get all courses which the student is signed in
+     * @param matrNr String
+     * @return Set<Course>
+     */
+    @GetMapping("/get/{matrNr}")
+    public Set<Course> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
+        return courseService.getStudentsCourses(matrNr);
+    }
+
+    /**
+     * getStudentCourses
+     * get all courses which the student is signed in
+     * @param matrNr String Matriculation number
+     * @param number String Course number
+     * @return Course
+     */
+    // TODO: 24.04.2020 get one course objcet from student by search with matrnr, coursenr
+
+
+    /**
+     * addCourseToStudent
+     * add a course to a student
+     * @param matrNr String matriculation number
+     * @param course Course object
+     * @return
+     */
+    @PutMapping("/addCourseToStudent/{matrNr}")
+    public ResponseEntity<Course> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
+        return courseService.addCourseToStudent(matrNr, course);
+    }
+
+    /**
+     * createCourse
+     * add a new course to the database
+     * @param course Course
+     * @return ResponseEntity<Course>
+     */
+    // TODO: 24.04.2020 not available for frontend
+    @PostMapping("/create")
     public ResponseEntity<Course> createCourse(@RequestBody Course course){
-        Course cs = new Course(course.getDescription(), course.getRoom(), course.getProfessor(), course.getEcts(),
-                course.getFieldOfStudy(), course.getGrade());
-        courseRepository.save(cs);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return courseService.createCourse(course);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public Course deleteCourse(@PathVariable(value = "id") int id){
-        Course course = courseRepository.findById(id);
-        courseRepository.delete(course);
-        return course;
+    /**
+     * deleteCourse
+     * delete a course mapping of a student
+     * @param number String matricuatlion number
+     * @return Course
+     */
+    // TODO: 24.04.2020 add student matricualtion number for delete mapping
+    @DeleteMapping("/delete/{number}")
+    public Course deleteCourse(@PathVariable(value = "number") String number){
+        return courseService.deleteCourse(number);
     }
 }

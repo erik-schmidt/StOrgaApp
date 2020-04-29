@@ -1,52 +1,60 @@
 package com.group3.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sun.istack.Nullable;
 
 import javax.persistence.*;
-import javax.persistence.GenerationType;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Null;
-import java.util.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-// TODO: 15.04.2020 Course im Student nur als String und Note speichern?  
-public class Course {
-    @javax.persistence.Id
+public class Course implements Serializable {
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String description;
-    private String room;
-    private String professor;
-    @Min(1)
-    @Max(50)
-    private int ects;
+    @NotNull
     private String fieldOfStudy;
-    @Nullable
-    private double grade;
-    //@JsonIgnore
-    //@ManyToOne(fetch = FetchType.LAZY,  cascade=CascadeType.ALL, optional =  false)
-    //@JoinColumn(name = "student_id", nullable = false)
+    @NotNull
+    private String number;
+    @NotNull
+    private String description;
+    @NotNull
+    private String room;
+    @NotNull
+    private String professor;
+    @NotNull
+    private int ects;
+    @NotNull
+    private String kindOfSubject;
+    @NotNull
+    private int reccomendedSemester;
+    @NotNull
+    private String studyFocus;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "Courses_Students",
+            joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "student_id")}
+    )
+    private Set<Student> students = new HashSet<>();
 
-    //@JsonIgnore
-    //@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
-   // }, optional = false)
-    //@JoinColumn(name = "student_id", nullable = false)
-    //private Student student;
 
     public Course() {
     }
 
-    public Course(String description, String room, String professor, int ects, String fieldOfStudy, double grade){
+    public Course(String fieldOfStudy, String number, String description, String room, String professor, int ects,
+                  String kindOfSubject, int reccomendedSemester, String studyFocus){
+        this.fieldOfStudy = fieldOfStudy;
+        this.number = number;
         this.description = description;
         this.room = room;
         this.professor = professor;
         this.ects = ects;
-        this.fieldOfStudy = fieldOfStudy;
-        this.grade = grade;
-        //this.student = student;
+        this.kindOfSubject  = kindOfSubject;
+        this.reccomendedSemester = reccomendedSemester;
+        this.studyFocus = studyFocus;
     }
 
     public String getDescription() {
@@ -57,12 +65,28 @@ public class Course {
         this.description = description;
     }
 
-    public double getGrade() {
-        return grade;
+    public String getProfessor() {
+        return professor;
     }
 
-    public void setGrade(double grade) {
-        this.grade = grade;
+    public void setProfessor(String professor) {
+        this.professor = professor;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getRoom() {
@@ -73,20 +97,36 @@ public class Course {
         this.room = room;
     }
 
-    public String getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(String professor) {
-        this.professor = professor;
-    }
-
     public int getEcts() {
         return ects;
     }
 
     public void setEcts(int ects) {
         this.ects = ects;
+    }
+
+    public String getKindOfSubject() {
+        return kindOfSubject;
+    }
+
+    public void setKindOfSubject(String kindOfSubject) {
+        this.kindOfSubject = kindOfSubject;
+    }
+
+    public int getReccomendedSemester() {
+        return reccomendedSemester;
+    }
+
+    public void setReccomendedSemester(int reccomendedSemester) {
+        this.reccomendedSemester = reccomendedSemester;
+    }
+
+    public String getStudyFocus() {
+        return studyFocus;
+    }
+
+    public void setStudyFocus(String studyFocus) {
+        this.studyFocus = studyFocus;
     }
 
     public String getFieldOfStudy() {
@@ -97,19 +137,17 @@ public class Course {
         this.fieldOfStudy = fieldOfStudy;
     }
 
-    /*public Student getStudent() {
-        return student;
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(fieldOfStudy + " ");
+        sb.append(number + " ");
+        sb.append(description + " ");
+        sb.append(room + " ");
+        sb.append(professor+ " ");
+        sb.append("ECTS: " + ects + " ");
+        sb.append(kindOfSubject + " ");
+        sb.append("Reccomended Semester: " + reccomendedSemester + " ");
+        sb.append(studyFocus);
+        return sb.toString();
     }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }*/
-
-    /*public void setStudent(List<Student> student) {
-        this.student = student;
-    }
-
-    public List<Student> getStudent() {
-        return student;
-    }*/
 }
