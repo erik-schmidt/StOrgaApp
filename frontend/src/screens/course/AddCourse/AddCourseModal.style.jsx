@@ -29,6 +29,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  headerText: {
+    fontWeight: "bold",
+    alignSelf: "center",
+    fontSize: 18,
+    marginBottom: 15,
+  },
+  picker: {
+    width: 200,
+    height: 50,
+    alignSelf: "center",
+  },
 });
 
 export default styles;

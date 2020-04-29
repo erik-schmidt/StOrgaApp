@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styles from "./CourseInformationModal.style";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { deleteCourse } from "../../../api/services/courseService";
+import Toast from "../../../components/Toast/Toast";
 
 const CourseInfoModal = ({ navigation, route }) => {
   navigation.setOptions({
@@ -11,6 +13,7 @@ const CourseInfoModal = ({ navigation, route }) => {
           name="trash"
           color="black"
           backgroundColor="#ffff"
+          onPress={() => onDeleteCourse()}
         />
         <FontAwesome5.Button
           name="edit"
@@ -21,6 +24,17 @@ const CourseInfoModal = ({ navigation, route }) => {
     ),
   });
   const [course, setCourse] = useState(route.params?.course);
+  const [visible, setVisible] = useState(false);
+
+  const onDeleteCourse = () => {
+    deleteCourse().then((res) => {
+      setVisible(true);
+      setTimeout(() => {
+        setVisible(false);
+        navigation.navigate("Fächer", { deleteCourse: true });
+      }, 3000);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -30,6 +44,11 @@ const CourseInfoModal = ({ navigation, route }) => {
       <Text style={styles.text}>
         Empfohlenes Semester: {course.requiredSemester}
       </Text>
+      <Toast
+        color="green"
+        text="Kurs wurde erfolgreich gelöscht"
+        showModal={visible}
+      />
     </View>
   );
 };

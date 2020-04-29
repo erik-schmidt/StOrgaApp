@@ -19,25 +19,13 @@ const AddCourseModal = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.modalView}>
-        <Text
-          style={{
-            fontWeight: "bold",
-            alignSelf: "center",
-            fontSize: 18,
-            marginBottom: 15,
-          }}
-        >
+        <Text style={styles.headerText}>
           Füge ein Kurs in deine Liste hinzu:
         </Text>
         <Picker
           selectedValue={""}
-          style={{
-            width: 200,
-            height: 50,
-            alignSelf: "center",
-          }}
+          style={styles.picker}
           onValueChange={(itemValue, itemIndex) => {
-            console.log("Selected: ", itemValue);
             setSelectedCourse(itemValue);
           }}
         >

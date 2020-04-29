@@ -4,12 +4,13 @@ import { getAllCourses } from "../../../api/services/courseService";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Toast from "../../../components/Toast/Toast";
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const navigation = useNavigation();
+  const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -20,6 +21,7 @@ const CourseList = () => {
         console.log(res);
         if (res != undefined) {
           setCourses(res.data);
+          setRefreshing(false);
         } else {
           throw new Error();
         }
@@ -41,6 +43,14 @@ const CourseList = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    getAllCourses().then((res) => {
+      if (res != undefined) {
+        setCourses(res.data);
+      }
+    });
+  }, [route.params?.delteCourse]);
 
   return (
     <View style={styles.container}>
