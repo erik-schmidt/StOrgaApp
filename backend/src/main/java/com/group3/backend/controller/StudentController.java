@@ -1,5 +1,6 @@
 package com.group3.backend.controller;
 
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
 import org.slf4j.Logger;
@@ -8,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- * Student
+ * StudentController
+ * implemetns the Rest Api
  * //assert != null
  * // Get => Daten holen
  * // POST => Daten erstellen/Eintragen
@@ -32,9 +32,9 @@ public class StudentController {
     }
 
     /**
-     * reachabilityTest()
+     * ping()
      * return a String with a successful message if backend reachable
-     * @return String "Test successful"
+     * @return String "reachable"
      */
     @GetMapping("/ping")
     public String ping(){
@@ -47,7 +47,7 @@ public class StudentController {
      * @return List<Student>
      */
     @GetMapping("/get")
-    public List<Student> getAllStudents(){
+    public ResponseEntity<?> getAllStudents(){
         return studentService.getAllStudents();
     }
 
@@ -58,7 +58,7 @@ public class StudentController {
      * @return Student
      */
     @GetMapping("/get/{matNr}")
-    public Student getStudentByNumber(@PathVariable(value = "matNr") String matNr){
+    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr){
         return studentService.getStudentByNumber(matNr);
     }
 
@@ -69,18 +69,35 @@ public class StudentController {
      * @return ResponseEntity<String> if succesfull return id of student
      */
     @PostMapping("/create")
-    public ResponseEntity<String> createStudent(@RequestBody Student student){
+    public ResponseEntity<?> createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
     /**
      * deleteStudent
      * delete a Student with the giben matriculation number out of the database
-     * @param matNr
+     * @param matrNr
      * @return Student object
      */
-    @DeleteMapping("/delete/{matNr}")
-    public Student deleteStudent(@PathVariable(value = "matNr") String matNr){
-        return studentService.deleteStudent(matNr);
+    @DeleteMapping("/delete/{matrNr}")
+    public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr){
+        ResponseEntity<?> responseEntity = studentService.deleteStudent(matrNr);
+        return responseEntity;
     }
+
+    /**
+     * updateStudent
+     * update a student which is already saved in the database
+     * all attributes can be changed
+     * REturn a response entity at success of fault
+     * @param student object with the parameters for update
+     * @return ResoponesEntity return String if fault, return sutdent object if successfull
+     */
+    @PutMapping("/update")
+    public ResponseEntity<?> updateStudent(@RequestBody Student student){
+        ResponseEntity<?> responseEntity = studentService.updateStudent(student);
+        return responseEntity;
+    }
+
+
 }

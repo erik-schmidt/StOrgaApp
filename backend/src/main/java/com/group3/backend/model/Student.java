@@ -32,18 +32,24 @@ public class Student implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
+    /*
+     * @JsonIgnore
+     * 
+     * @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
+     */
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname,
-                   String fieldOfStudy, int currentSemester) {
+    public Student(String matrNr, String studentPrename, String studentFamilyname, String fieldOfStudy,
+            int currentSemester) {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
-        //this.courseList = courseList;
-        //this.calenderEntries = calenderEntries;
         this.fieldOfStudy = fieldOfStudy;
         this.currentSemester = currentSemester;
     }
@@ -99,25 +105,15 @@ public class Student implements Serializable {
         this.courses = courses;
     }
 
-    public Set<CalendarEntry> getCalendarEntries() {
-        return calendarEntries;
+    public Set<GradeCourseMapping> getGradeCourseMappings() {
+        return gradeCourseMappings;
     }
 
-    public void setCalendarEntries(Set<CalendarEntry> calendarEntries) {
-        this.calendarEntries = calendarEntries;
+    public void setGradeCourseMappings(Set<GradeCourseMapping> gradeCourseMappings) {
+        this.gradeCourseMappings = gradeCourseMappings;
     }
 
-    public void addCalendarEntry(CalendarEntry calendarEntry) {
-        calendarEntries.add(calendarEntry);
-        calendarEntry.setStudent(this);
-    }
-
-    public void removeCalendarEntry(CalendarEntry calendarEntry) {
-        calendarEntries.remove(calendarEntry);
-        calendarEntry.setStudent(null);
-    }
-
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(matrNr + " ");
         sb.append(studentPrename + " ");

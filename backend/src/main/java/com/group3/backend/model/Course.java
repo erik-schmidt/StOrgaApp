@@ -3,23 +3,33 @@ package com.group3.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-// TODO: 15.04.2020 Course im Student nur als String und Note speichern?  
-public class Course {
+public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @NotNull
     private String fieldOfStudy;
+    @NotNull
     private String number;
+    @NotNull
     private String description;
+    @NotNull
     private String room;
+    @NotNull
     private String professor;
+    @NotNull
     private int ects;
+    @NotNull
     private String kindOfSubject;
+    @NotNull
     private int reccomendedSemester;
+    @NotNull
     private String studyFocus;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -125,5 +135,19 @@ public class Course {
 
     public void setFieldOfStudy(String fieldOfStudy) {
         this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(fieldOfStudy + " ");
+        sb.append(number + " ");
+        sb.append(description + " ");
+        sb.append(room + " ");
+        sb.append(professor+ " ");
+        sb.append("ECTS: " + ects + " ");
+        sb.append(kindOfSubject + " ");
+        sb.append("Reccomended Semester: " + reccomendedSemester + " ");
+        sb.append(studyFocus);
+        return sb.toString();
     }
 }

@@ -1,9 +1,13 @@
 package com.group3.backend.service;
 
 import com.group3.backend.exceptions.CurrentSemesterException;
+import com.group3.backend.exceptions.GradeCourseException;
 import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
+import com.group3.backend.repository.CourseRepository;
+import com.group3.backend.repository.GradeCourseMappingRepository;
 import com.group3.backend.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,25 +16,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Service
 public class StudentService {
 
-
     private StudentRepository studentRepository;
+    private CourseRepository courseRepository;
+    private GradeCourseMappingRepository gradeCourseMappingRepository;
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository, GradeCourseMappingRepository gradeCourseMappingRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
+        this.gradeCourseMappingRepository = gradeCourseMappingRepository;
     }
 
     /**
      * reachabilityTest()
      * return a String with a successful message if backend reachable
-     * @return String "Test successful"
+     * @return String "reachable"
      */
     public String ping(){
         return "reachable";
@@ -41,9 +47,19 @@ public class StudentService {
      * return a List of all Students saved in the Database
      * @return List<Student>
      */
-    public List<Student> getAllStudents(){
-        List<Student> studentList = studentRepository.findAll();
-        return studentList;
+    public ResponseEntity<?> getAllStudents(){
+        try{
+            List<Student> studentList = studentRepository.findAll();
+            if(studentList.isEmpty()){
+                logger.error("Error while reading all Students: There are no students saved");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no students saved");
+            }
+            logger.info("Students successffully read");
+            return ResponseEntity.status(HttpStatus.OK).body(studentList);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
     }
 
     /**
@@ -52,9 +68,19 @@ public class StudentService {
      * @param matNr
      * @return Student
      */
-    public Student getStudentByNumber(@PathVariable(value = "matNr") String matNr){
-        Student st = studentRepository.findByMatrNr(matNr);
-        return st;
+    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr){
+        try{
+            checkMatriculationNumber(matNr);
+            if(checkMatricularNumberIsFree(matNr)){
+                throw new MatriculationNumberException("There is no student with matriculation number: " + matNr);
+            }
+            Student st = studentRepository.findByMatrNr(matNr);
+            logger.info("Student: " + matNr + " successffully read");
+            return ResponseEntity.status(HttpStatus.OK).body(st);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
     }
 
     /**
@@ -63,28 +89,25 @@ public class StudentService {
      * @param student
      * @return ResponseEntity<String> if succesfull return id of student
      */
-    public ResponseEntity<String> createStudent(@RequestBody Student student){
+    public ResponseEntity<?> createStudent(Student student){
         Student st = new Student();
         try {
+            if(!(checkMatricularNumberIsFree(student.getMatrNr()))){
+                throw new MatriculationNumberException("Matriculation number " + student.getMatrNr() + " already used");
+            }
+            checkMatricularNumberIsFree(student.getMatrNr());
             st.setMatrNr(checkMatriculationNumber(student.getMatrNr()));
             st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
             st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
             st.setFieldOfStudy(student.getFieldOfStudy());
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
-        } catch (Exception e){
-            logger.error(e.getClass() +" " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
-        }
-
-        try {
             studentRepository.saveAndFlush(st);
-            logger.info("Student: " + st.toString() + " successfully saved in Database");
+            logger.info("Student: " + st.getMatrNr() + " " + st.getStudentPrename() + " " +
+                    st.getStudentFamilyname() + " successfully saved");
+            return ResponseEntity.status(HttpStatus.OK).body(st);
         } catch (Exception e){
-            logger.error(e.getClass() +" " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " : "+ e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " "+ e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(st.getMatrNr());
-        //return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -93,10 +116,62 @@ public class StudentService {
      * @param matNr
      * @return Student object
      */
-    public Student deleteStudent(@PathVariable(value = "matNr") String matNr){
-        Student st = studentRepository.findByMatrNr(matNr);
-        studentRepository.delete(st);
-        return st;
+    public ResponseEntity<?> deleteStudent(String matNr){
+        try{
+            checkMatriculationNumber(matNr);
+            if(checkMatricularNumberIsFree(matNr)){
+                throw new MatriculationNumberException("There is no student with matriculation number: " + matNr);
+            }
+            Student st = studentRepository.findByMatrNr(matNr);
+            studentRepository.delete(st);
+            logger.info("Student: " + matNr + " successffully deleted");
+            return ResponseEntity.status(HttpStatus.OK).body(st);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
+
+    /**
+     * updateStudent
+     * update the students attributes
+     * @param student Student
+     * @return ResponseEntity<?>
+     */
+    public ResponseEntity<?> updateStudent(Student student) {
+        try {
+            if(checkMatricularNumberIsFree(student.getMatrNr())){
+                throw new MatriculationNumberException("There is no student with matriculation number: " + student.getMatrNr());
+            }
+            Student st = studentRepository.findByMatrNr(student.getMatrNr());
+            //Matriculation number should not be changed form student -> only set
+            //st.setMatrNr(student.getMatrNr());
+            st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
+            st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
+            st.setFieldOfStudy(student.getFieldOfStudy());
+            st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
+            studentRepository.save(st);
+            logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successffully updated");
+            return ResponseEntity.status(HttpStatus.OK).body(st);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
+
+    /**
+     * checkMatricularNumberIsFree
+     * checks if a given Matriculation number is free or already used by another student
+     * @param matrNr number to check
+     * @return String available matriculation number
+     * @throws Exception matriculation number Exception
+     */
+    private boolean checkMatricularNumberIsFree(String matrNr){
+        Student st = studentRepository.findByMatrNr(matrNr);
+        if(st == null){
+           return true;
+         }
+        return false;
     }
 
     /**
@@ -118,7 +193,7 @@ public class StudentService {
                         " Take care of the allowed length of 6 units");
             } else {
                 throw new MatriculationNumberException("Matriculation Number has not the right length. " +
-                        "It must be exactly 6 units long. Only numbers are allowes");
+                        "It must be exactly 6 units long. Only numbers are allowed");
             }
         }
         return matrNr;
@@ -140,8 +215,9 @@ public class StudentService {
         for (char c : name.toCharArray()) {
             if (Character.isDigit(c)) {
                 found = true;
-            } else if (found) {
-                throw new StudentNameException(" Numbers are not allowed in " + kindOfname );
+            }
+            if (found) {
+                throw new StudentNameException("Numbers are not allowed in " + kindOfname );
             }
         }
         return name;
@@ -156,9 +232,8 @@ public class StudentService {
      */
     private int checkCurrentSemester(int currentSemester)throws Exception{
         if(currentSemester<1||currentSemester>15){
-            throw new CurrentSemesterException("Semester can not be smaller then zero and not be bigger than 15");
+            throw new CurrentSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
         }
         return currentSemester;
     }
-
 }
