@@ -3,17 +3,29 @@ import { View, Text, TouchableHighlight } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { getAllCourses } from "../../../api/services/courseService";
 import styles from "./AddCourseModal.style";
+import Toast from "../../../components/Toast/Toast";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    getAllCourses().then((res) => {
-      if (res != undefined) {
-        setCourses(res.data);
-      }
-    });
+    getAllCourses()
+      .then((res) => {
+        console.log(res);
+        if (res != undefined) {
+          setCourses(res.data);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+        }, 5000);
+      });
   }, []);
 
   return (
@@ -46,6 +58,11 @@ const AddCourseModal = ({ navigation }) => {
           <Text style={styles.textStyle}>Abbrechen</Text>
         </TouchableHighlight>
       </View>
+      <Toast
+        color="red"
+        showModal={visible}
+        text="Keine Verbindung zum Server"
+      />
     </View>
   );
 };

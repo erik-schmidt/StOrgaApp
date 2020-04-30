@@ -36,20 +36,39 @@ const CourseList = () => {
   };
 
   useEffect(() => {
-    getAllCourses().then((res) => {
-      console.log(res);
-      if (res != undefined) {
-        setCourses(res.data);
-      }
-    });
+    getAllCourses()
+      .then((res) => {
+        console.log(res);
+        if (res != undefined) {
+          setCourses(res.data);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+        }, 5000);
+      });
   }, []);
 
   useEffect(() => {
-    getAllCourses().then((res) => {
-      if (res != undefined) {
-        setCourses(res.data);
-      }
-    });
+    getAllCourses()
+      .then((res) => {
+        console.log(res);
+        if (res != undefined) {
+          setCourses(res.data);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+        }, 5000);
+      });
   }, [route.params?.delteCourse]);
 
   return (
@@ -85,7 +104,11 @@ const CourseList = () => {
         )}
         keyExtractor={(item) => item.description}
       />
-      <Toast showModal={showModal} color="red" text="Kein Internet" />
+      <Toast
+        showModal={showModal}
+        color="red"
+        text="Keine Verbindung zum Server"
+      />
     </View>
   );
 };

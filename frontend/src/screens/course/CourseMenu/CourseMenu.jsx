@@ -1,9 +1,34 @@
 import React, { useState } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import styles from "./CourseMenu.style";
+import { deleteCourse } from "../../../api/services/courseService";
+import Toast from "../../../components/Toast/Toast";
 
 const CourseMenu = ({ navigation, route }) => {
   const [course, setCourse] = useState(route.params?.course);
+  const [error, setError] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const onDeleteCourse = () => {
+    deleteCourse()
+      .then((res) => {
+        if (res != undefined) {
+          setVisible(true);
+          setTimeout(() => {
+            setVisible(false);
+            navigation.navigate("Fächer", { deleteCourse: true });
+          }, 3000);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 3000);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -19,7 +44,7 @@ const CourseMenu = ({ navigation, route }) => {
         </TouchableHighlight>
         <TouchableHighlight
           style={{ ...styles.modalButton, backgroundColor: "#f00" }}
-          onPress={() => console.log("Delete pressed")}
+          onPress={() => onDeleteCourse()}
         >
           <Text style={styles.textStyle}>Löschen</Text>
         </TouchableHighlight>
@@ -30,6 +55,12 @@ const CourseMenu = ({ navigation, route }) => {
           <Text style={styles.textStyle}>Abbrechen</Text>
         </TouchableHighlight>
       </View>
+      <Toast
+        color="green"
+        showModal={visible}
+        text="Kurs erfolgreich gelöscht"
+      />
+      <Toast color="red" showModal={error} text="Keine Verbindung zum Server" />
     </View>
   );
 };

@@ -5,7 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { deleteCourse } from "../../../api/services/courseService";
 import Toast from "../../../components/Toast/Toast";
 
-const CourseInfoModal = ({ navigation, route }) => {
+const CourseInformationModal = ({ navigation, route }) => {
   navigation.setOptions({
     headerRight: () => (
       <View style={{ flexDirection: "row" }}>
@@ -25,21 +25,39 @@ const CourseInfoModal = ({ navigation, route }) => {
   });
   const [course, setCourse] = useState(route.params?.course);
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState(false);
 
   const onDeleteCourse = () => {
-    deleteCourse().then((res) => {
-      setVisible(true);
-      setTimeout(() => {
-        setVisible(false);
-        navigation.navigate("Fächer", { deleteCourse: true });
-      }, 3000);
-    });
+    deleteCourse()
+      .then((res) => {
+        if (res != undefined) {
+          setVisible(true);
+          setTimeout(() => {
+            setVisible(false);
+            navigation.navigate("Fächer", { deleteCourse: true });
+          }, 3000);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 3000);
+      });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Veranstaltung: {course.description}</Text>
+      <Text style={styles.text}>Studiengang: {course.fieldOfStudy}</Text>
       <Text style={styles.text}>Professor: {course.professor}</Text>
+      <Text style={styles.text}>Raum: {course.room}</Text>
+      <Text style={styles.text}>
+        Wahlpflicht-/Pflichtfach: {course.kindOfSubject}
+      </Text>
+      <Text style={styles.text}>Vertiefungsrichtung {course.studyFocus}</Text>
       <Text style={styles.text}>ECTS: {course.ects}</Text>
       <Text style={styles.text}>
         Empfohlenes Semester: {course.requiredSemester}
@@ -49,8 +67,9 @@ const CourseInfoModal = ({ navigation, route }) => {
         text="Kurs wurde erfolgreich gelöscht"
         showModal={visible}
       />
+      <Toast color="red" text="Keine Verbindung zum Server" showModal={error} />
     </View>
   );
 };
 
-export default CourseInfoModal;
+export default CourseInformationModal;
