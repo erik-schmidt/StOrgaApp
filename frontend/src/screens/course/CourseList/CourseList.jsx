@@ -8,7 +8,19 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Toast from "../../../components/Toast/Toast";
 
 const CourseList = () => {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([
+    {
+      description: "Mathe",
+      professor: "Kalthoff",
+      ects: 5,
+      examNumber: 173001,
+      room: "A130",
+      kindOfSubject: "Pflichtfach",
+      studyFocus: "Psychologie",
+      fieldOfStudy: "AIB",
+      requiredSemester: 3,
+    },
+  ]);
   const navigation = useNavigation();
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);

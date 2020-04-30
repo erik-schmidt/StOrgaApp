@@ -8,45 +8,22 @@ import Toast from "../../../components/Toast/Toast";
 const CourseInformationModal = ({ navigation, route }) => {
   navigation.setOptions({
     headerRight: () => (
-      <View style={{ flexDirection: "row" }}>
-        <FontAwesome5.Button
-          name="trash"
-          color="black"
-          backgroundColor="#ffff"
-          onPress={() => onDeleteCourse()}
-        />
-        <FontAwesome5.Button
-          name="edit"
-          color="black"
-          backgroundColor="#ffff"
-        />
-      </View>
+      <FontAwesome5.Button
+        name="edit"
+        color="black"
+        backgroundColor="#ffff"
+        onPress={() =>
+          navigation.navigate("CourseMenu", {
+            editMode: true,
+            course: course,
+          })
+        }
+      />
     ),
   });
   const [course, setCourse] = useState(route.params?.course);
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState(false);
-
-  const onDeleteCourse = () => {
-    deleteCourse()
-      .then((res) => {
-        if (res != undefined) {
-          setVisible(true);
-          setTimeout(() => {
-            setVisible(false);
-            navigation.navigate("Fächer", { deleteCourse: true });
-          }, 3000);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-        }, 3000);
-      });
-  };
 
   return (
     <View style={styles.container}>
