@@ -12,15 +12,15 @@ const CalendarAgenda = () => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    pingCalendar().then((res) => {
+    /*pingCalendar().then((res) => {
       console.log(res);
-    });
-    /*getAppointments().then((res) => {
+    });*/
+    getAppointments().then((res) => {
       if (res !== undefined) {
         setAppointments(res.data);
       }
     });
-    console.log("Current Appointments", appointments);*/
+    console.log("Current Appointments", appointments);
   }, []);
 
   useEffect(() => {}, [appointments]);
@@ -29,7 +29,6 @@ const CalendarAgenda = () => {
 
   const termin = { key: "termin", color: "red", selectedDotColor: "blue" };
 
-  //TO DO: 2 Termine mit gleichem Datum speichern
   return (
     <Agenda
       items={{
@@ -92,7 +91,6 @@ const CalendarAgenda = () => {
           </View>
         );
       }}
-      //Longpress für bearbeiten und löschen evtl. Toast bei onClick dazu
     />
   );
 };

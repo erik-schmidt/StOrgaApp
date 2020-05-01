@@ -20,7 +20,7 @@ const AddCalendarModal = ({ navigation }) => {
     createAppointment(appointment).then((res) => {
       console.log(res);
       console.log("speichern war erfolgreich");
-      //navigation.navigate("Kalender");
+      navigation.navigate("Kalender");
     });
   };
 
