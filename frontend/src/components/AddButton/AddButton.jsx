@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 
 const AddButton = (props) => {
-    return (
+  return (
     <FontAwesome.Button
       name="plus"
       iconStyle={{ marginRight: 10 }}

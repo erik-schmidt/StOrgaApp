@@ -1,9 +1,14 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
-import CourseScreen from "../screens/course/CourseScreen";
-import CreateCourseModal from "../screens/course/modal/CreateCourseModal";
+import CourseScreen from "../screens/course";
+import AddCourseModal from "../screens/course/AddCourse/AddCourseModal";
 import AddButton from "../components/AddButton/AddButton";
+import CourseInformationModal from "../screens/course/CourseInformationModal/CourseInformationModal";
+import CourseMenu from "../screens/course/CourseMenu/CourseMenu";
 
 const CourseScreenNavigator = ({ navigation }) => {
   const CourseStack = createStackNavigator();
@@ -14,16 +19,38 @@ const CourseScreenNavigator = ({ navigation }) => {
         component={CourseScreen}
         options={{
           headerLeft: () => <DrawerButton />,
-          headerRight: () => <AddButton onPress={() => navigation.navigate("CourseModal")} />
+          headerRight: () => (
+            <AddButton onPress={() => navigation.navigate("AddCourseModal")} />
+          ),
         }}
       />
       <CourseStack.Screen
-        name="CourseModal"
-        component={CreateCourseModal}
+        name="AddCourseModal"
+        component={AddCourseModal}
         options={{
-          headerTitle: "Kurs hinzufügen",
+          cardStyle: { backgroundColor: "transparent" },
+          headerShown: false,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <CourseStack.Screen
+        name="CourseInformationModal"
+        component={CourseInformationModal}
+        options={{
+          headerTitle: "Kursinfo",
+          headerStatusBarHeight: 0,
           cardStyle: { backgroundColor: "#ffff" },
-          
+          gestureEnabled: true,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <CourseStack.Screen
+        name="CourseMenu"
+        component={CourseMenu}
+        options={{
+          headerShown: false,
+          cardStyle: { backgroundColor: "transparent", opacity: 1 },
+          ...TransitionPresets.ModalPresentationIOS,
         }}
       />
     </CourseStack.Navigator>
