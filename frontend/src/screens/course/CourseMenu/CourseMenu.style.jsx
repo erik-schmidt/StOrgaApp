@@ -33,6 +33,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+  textInput: {
+    height: 40,
+    width: 40,
+    marginBottom: 20,
+    alignSelf: "center",
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
+  },
 });
 
 export default styles;
