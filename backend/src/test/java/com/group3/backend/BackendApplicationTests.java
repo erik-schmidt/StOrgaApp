@@ -19,12 +19,8 @@ import java.util.Set;
 class BackendApplicationTests {
 
     @Autowired
-    private StudentService studentService;
 
     @Test
     void testAddingStudent() {
-        studentService.createStudent(new Student("202481", "Liyan", "Fu-Wacker", "AIB", 7));
-        List<Student> studentSet = (List<Student>)studentService.getAllStudents().getBody();
-        Assertions.assertFalse(studentSet.isEmpty());
     }
 }

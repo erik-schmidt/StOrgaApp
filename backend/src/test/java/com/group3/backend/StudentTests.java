@@ -5,9 +5,7 @@ import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,20 @@ class StudentTests {
      */
     @BeforeEach
     void deleteStudents(){
+        if(studentService.getAllStudents().getStatusCode().equals(HttpStatus.OK)){
+            List<Student> studentSet = (List<Student>)studentService.getAllStudents().getBody();
+            for(Student student : studentSet){
+                studentService.deleteStudent(student.getMatrNr());
+            }
+        }
+    }
+
+    /**
+     * deleteStudentsAfter
+     * After every test clean the db
+     */
+    @AfterEach
+    void deleteStudentsAfter(){
         if(studentService.getAllStudents().getStatusCode().equals(HttpStatus.OK)){
             List<Student> studentSet = (List<Student>)studentService.getAllStudents().getBody();
             for(Student student : studentSet){
