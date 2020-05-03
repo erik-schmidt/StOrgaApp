@@ -72,7 +72,10 @@ public class CourseController {
      * @param number String Course number
      * @return Course
      */
-    // TODO: 24.04.2020 get one course objcet from student by search with matrnr, coursenr
+    @GetMapping("/get/{matrNr}/{number}")
+    public double getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
+    }
 
 
     /**
@@ -82,9 +85,21 @@ public class CourseController {
      * @param course Course object
      * @return
      */
-    @PutMapping("/addCourseToStudent/{matrNr}")
+    @PutMapping("/add/{matrNr}")
     public ResponseEntity<Course> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
         return courseService.addCourseToStudent(matrNr, course);
+    }
+
+    /**
+     * Set the grade of specific course of a specific student.
+     * @param matrNr
+     * @param number
+     * @param grade
+     * @return
+     */
+    @PutMapping("/grade/{matrNr}/{number}/{grade}")
+    public double setGradeOfCourse(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @PathVariable(value = "garde") double grade){
+        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
     }
 
     /**
@@ -109,5 +124,16 @@ public class CourseController {
     @DeleteMapping("/delete/{number}")
     public Course deleteCourse(@PathVariable(value = "number") String number){
         return courseService.deleteCourse(number);
+    }
+
+    /**
+     * Method to delet a specific course of a specific student.
+     * @param matrNr
+     * @param number
+     * @return
+     */
+    @DeleteMapping("/delete/{matrNr}/{number}")
+    public Course deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+        return courseService.deleteCourseFromStudent(matrNr, number);
     }
 }

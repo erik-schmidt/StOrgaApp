@@ -21,18 +21,14 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private final CourseRepository courseRepository;
 
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        try {
-            if (courseRepository.count() > 0) {
-                return;
-            }
+        if (courseRepository.count() > 0) {
+            return;
+        }
 
-            DataHandler dataHandler = new DataHandler();
-            Set<Course> courseSet = dataHandler.loadCourses();
-            for (Course course : courseSet) {
-                courseRepository.save(course);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File couldn't been found. Maybe you have to change the path in the AIBCOURSES_FILE variable.");
+        DataHandler dataHandler = new DataHandler();
+        Set<Course> courseSet = dataHandler.loadCourses();
+        for (Course course : courseSet) {
+            courseRepository.save(course);
         }
     }
 }

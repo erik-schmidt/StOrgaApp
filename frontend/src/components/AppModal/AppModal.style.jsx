@@ -9,37 +9,22 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   modalView: {
-    width: 300,
-    height: 300,
+    width: 280,
+    height: 280,
     backgroundColor: "white",
     justifyContent: "center",
     borderRadius: 20,
   },
-  modalButton: {
-    backgroundColor: "#2196F3",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 5,
-    width: 150,
-    alignSelf: "center",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
+  modalHeader: {
+    marginBottom: 15,
     textAlign: "center",
+    marginBottom: 5,
+    fontWeight: "bold",
+    fontSize: 20,
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-  },
-  textInput: {
-    height: 40,
-    width: 40,
-    marginBottom: 20,
-    alignSelf: "center",
-    borderBottomColor: "grey",
-    borderBottomWidth: 1,
   },
 });
 

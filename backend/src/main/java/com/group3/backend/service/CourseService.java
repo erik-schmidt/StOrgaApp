@@ -28,7 +28,7 @@ public class CourseService {
     private Logger logger = LoggerFactory.getLogger(CourseService.class);
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository, GradeCourseMappingRepository gradeCourseMappingRepository) {
+    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
         this.gradeCourseMappingRepository = gradeCourseMappingRepository;
@@ -67,7 +67,6 @@ public class CourseService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // TODO: 24.04.2020 create course not available for interface
     public ResponseEntity<Course> createCourse(Course course){
         boolean courseNumberAlreadyExists = false;
         boolean courseDescriptionAlreadyExists = false;
@@ -100,7 +99,6 @@ public class CourseService {
         }
     }
 
-    // TODO: 24.04.2020 delete course student mapping
     public Course deleteCourse(String number){
         Course course = courseRepository.findByNumber(number);
         courseRepository.delete(course);
@@ -134,10 +132,3 @@ public class CourseService {
 
 
 }
-
-
-//for(Course c : courseRepository.findAll()){
-//        if(c.getNumber().equals("420")){
-//        courseRepository.delete(c);
-//        }
-//        }

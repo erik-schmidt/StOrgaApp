@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableHighlight } from "react-native";
+import { View } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { getAllCourses } from "../../../api/services/courseService";
 import styles from "./AddCourseModal.style";
 import Toast from "../../../components/Toast/Toast";
+import AppModal from "../../../components/AppModal/AppModal";
+import AppButton from "../../../components/AppButton/AppButton";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -30,10 +32,7 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.modalView}>
-        <Text style={styles.headerText}>
-          Füge ein Kurs in deine Liste hinzu:
-        </Text>
+      <AppModal header="Kurs zur Liste hinzufügen">
         <Picker
           selectedValue={""}
           style={styles.picker}
@@ -45,19 +44,12 @@ const AddCourseModal = ({ navigation }) => {
             return <Picker.Item label={course.description} value={course} />;
           })}
         </Picker>
-        <TouchableHighlight
-          style={styles.modalButton}
-          onPress={() => console.log("Speichern wurde ausgewählt")}
-        >
-          <Text style={styles.textStyle}>Speicher</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.modalButton}
-          onPress={() => navigation.pop()}
-        >
-          <Text style={styles.textStyle}>Abbrechen</Text>
-        </TouchableHighlight>
-      </View>
+        <AppButton
+          onPress={() => console.log("Speichern ausgewählt")}
+          text="Speichern"
+        />
+        <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
+      </AppModal>
       <Toast
         color="red"
         showModal={visible}
