@@ -1,5 +1,7 @@
 package com.group3.backend.service;
 
+import com.group3.backend.exceptions.CourseDescriptionAlreadyExistsException;
+import com.group3.backend.exceptions.CourseNumberAlreadyExistsException;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
