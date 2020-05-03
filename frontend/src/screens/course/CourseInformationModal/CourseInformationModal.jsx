@@ -28,14 +28,14 @@ const CourseInformationModal = ({ navigation, route }) => {
   const [error, setError] = useState(false);
 
   const onDeleteCourse = () => {
-    deleteCourse()
+    deleteCourse(course.number)
       .then((res) => {
         if (res != undefined) {
           setVisible(true);
           setTimeout(() => {
             setVisible(false);
             navigation.navigate("Fächer", { deleteCourse: true });
-          }, 3000);
+          }, 2000);
         } else {
           throw new Error();
         }
@@ -60,7 +60,7 @@ const CourseInformationModal = ({ navigation, route }) => {
       <Text style={styles.text}>Vertiefungsrichtung {course.studyFocus}</Text>
       <Text style={styles.text}>ECTS: {course.ects}</Text>
       <Text style={styles.text}>
-        Empfohlenes Semester: {course.requiredSemester}
+        Empfohlenes Semester: {course.reccomendedSemester}
       </Text>
       <Toast
         color="green"

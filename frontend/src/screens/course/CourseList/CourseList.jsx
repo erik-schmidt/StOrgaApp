@@ -18,7 +18,6 @@ const CourseList = () => {
     setRefreshing(true);
     getAllCourses()
       .then((res) => {
-        console.log(res);
         if (res != undefined) {
           setCourses(res.data);
           setRefreshing(false);
@@ -38,7 +37,6 @@ const CourseList = () => {
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        console.log(res);
         if (res != undefined) {
           setCourses(res.data);
         } else {
@@ -56,7 +54,6 @@ const CourseList = () => {
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        console.log(res);
         if (res != undefined) {
           setCourses(res.data);
         } else {
@@ -69,7 +66,7 @@ const CourseList = () => {
           setShowModal(false);
         }, 5000);
       });
-  }, [route.params?.delteCourse]);
+  }, [route]);
 
   return (
     <View style={styles.container}>
@@ -88,7 +85,7 @@ const CourseList = () => {
               navigation.navigate("CourseInformationModal", { course: item })
             }
           >
-            <View style={styles.cardText}>
+            <View>
               <Text style={styles.courseHeader}>Veranstaltung: </Text>
               <Text style={styles.courseDescription}>{item.description}</Text>
             </View>
@@ -98,7 +95,7 @@ const CourseList = () => {
             </View>
             <View style={styles.cardText}>
               <Text style={styles.boldText}>Empfohlenes Semester: </Text>
-              <Text>{item.requiredSemester}</Text>
+              <Text>{item.reccomendedSemester}</Text>
             </View>
           </Card>
         )}

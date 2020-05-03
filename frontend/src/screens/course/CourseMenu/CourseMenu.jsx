@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import styles from "./CourseMenu.style";
+import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCourse } from "../../../api/services/courseService";
 import Toast from "../../../components/Toast/Toast";
+import AppModal from "../../../components/AppModal/AppModal";
 
 const CourseMenu = ({ navigation, route }) => {
   const [course, setCourse] = useState(route.params?.course);
@@ -10,14 +12,14 @@ const CourseMenu = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
 
   const onDeleteCourse = () => {
-    deleteCourse()
+    deleteCourse(course.number)
       .then((res) => {
         if (res != undefined) {
           setVisible(true);
           setTimeout(() => {
             setVisible(false);
             navigation.navigate("Fächer", { deleteCourse: true });
-          }, 3000);
+          }, 1000);
         } else {
           throw new Error();
         }
@@ -32,35 +34,24 @@ const CourseMenu = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.modalView}>
-        <Text style={{ ...styles.modalText, fontWeight: "bold", fontSize: 20 }}>
-          Veranstaltung: {course.description}
-        </Text>
-        <TouchableHighlight
-          style={styles.modalButton}
-          onPress={() => console.log("Ändern wurde ausgewählt")}
-        >
-          <Text style={styles.textStyle}>Note ändern</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={{ ...styles.modalButton, backgroundColor: "#f00" }}
+      <AppModal header="Veranstaltung:" description={course.description}>
+        <AppButton
+          onPress={() => console.log("Ändern ausgewählt")}
+          text="Note ändern"
+        />
+        <AppButton
+          color="red"
           onPress={() => onDeleteCourse()}
-        >
-          <Text style={styles.textStyle}>Löschen</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={{ ...styles.modalButton, marginTop: 25 }}
-          onPress={() => navigation.pop()}
-        >
-          <Text style={styles.textStyle}>Abbrechen</Text>
-        </TouchableHighlight>
-      </View>
+          text="Kurs löschen"
+        />
+        <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
+      </AppModal>
+      <Toast color="red" showModal={error} text="Keine Verbindung zum Server" />
       <Toast
         color="green"
         showModal={visible}
         text="Kurs erfolgreich gelöscht"
       />
-      <Toast color="red" showModal={error} text="Keine Verbindung zum Server" />
     </View>
   );
 };

@@ -1,20 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "stretch",
-    justifyContent: "center",
-    alignSelf: "center",
-  },
-  modalView: {
-    width: 300,
-    height: 300,
-    backgroundColor: "white",
-    justifyContent: "center",
-    borderRadius: 20,
-  },
   modalButton: {
     backgroundColor: "#2196F3",
     borderRadius: 20,
@@ -27,10 +13,6 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
     textAlign: "center",
   },
 });
