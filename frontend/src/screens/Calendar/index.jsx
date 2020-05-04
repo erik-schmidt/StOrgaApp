@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import CalendarAgenda from "./CalendarAgenda/CalendarAgenda";
+import React from "react";
+import CalendarAgenda from "../calendar/calendarAgenda/CalendarAgenda";
 
 const CalendarScreen = () => {
   return <CalendarAgenda />;
