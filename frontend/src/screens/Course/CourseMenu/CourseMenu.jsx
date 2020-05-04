@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, TextInput } from "react-native";
 import styles from "./CourseMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
-import { deleteCourse } from "../../../api/services/courseService";
+import { deleteCourse } from "../../../api/services/CourseService";
 import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
 
@@ -58,26 +58,6 @@ const CourseMenu = ({ navigation, route }) => {
           </AppModal>
         </View>
       ) : (
-        // <View style={styles.modalView}>
-        //   <Text
-        //     style={{ ...styles.modalText, fontWeight: "bold", fontSize: 20 }}
-        //   >
-        //     Veranstaltung: {course.description}
-        //   </Text>
-
-        //   <TouchableHighlight
-        //     style={styles.modalButton}
-        //     onPress={() => console.log("Ändern wurde ausgewählt")}
-        //   >
-        //     <Text style={styles.textStyle}>Speichern</Text>
-        //   </TouchableHighlight>
-        //   <TouchableHighlight
-        //     style={{ ...styles.modalButton, marginTop: 10 }}
-        //     onPress={() => navigation.pop()}
-        //   >
-        //     <Text style={styles.textStyle}>Abbrechen</Text>
-        //   </TouchableHighlight>
-        // </View>
         <View>
           <AppModal header="Veranstaltung:" description={course.description}>
             <AppButton onPress={() => onChangeGrade()} text="Note ändern" />

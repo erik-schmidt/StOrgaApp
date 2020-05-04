@@ -12,15 +12,11 @@ const CalendarAgenda = () => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    /*pingCalendar().then((res) => {
-      console.log(res);
-    });*/
     getAppointments().then((res) => {
       if (res !== undefined) {
         setAppointments(res.data);
       }
     });
-    console.log("Current Appointments", appointments);
   }, []);
 
   useEffect(() => {}, [appointments]);
@@ -49,9 +45,7 @@ const CalendarAgenda = () => {
             info: "das ist hard gecodet",
           },
         ],
-        //'2020-04-22':[{timeStart: '9:00',timeEnd:'11:00',name: 'appointment3',info: 'das ist hard gecodet'}],
       }}
-      //Termin markieren
       markedDates={{
         "2020-04-22": { dots: [termin], color: "red" },
         "2020-04-23": { dots: [termin], color: "red" },
