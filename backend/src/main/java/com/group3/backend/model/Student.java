@@ -7,6 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,21 +32,21 @@ public class Student implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
-    /*@JsonIgnore
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )*/
-    @OneToMany(
-            mappedBy = "student",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    /*
+     * @JsonIgnore
+     * 
+     * @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
+     */
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname,
-                   String fieldOfStudy, int currentSemester) {
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<CalendarEntry> calendarEntries = new HashSet<>();
+
+    public Student(String matrNr, String studentPrename, String studentFamilyname, String fieldOfStudy,
+            int currentSemester) {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
         this.studentFamilyname = studentFamilyname;
@@ -112,7 +113,7 @@ public class Student implements Serializable {
         this.gradeCourseMappings = gradeCourseMappings;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(matrNr + " ");
         sb.append(studentPrename + " ");
