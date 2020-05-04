@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, RefreshControl, Modal } from "react-native";
-import { getAllCourses } from "../../../api/services/courseService";
+import { getAllCourses } from "../../../api/services/CourseService";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";

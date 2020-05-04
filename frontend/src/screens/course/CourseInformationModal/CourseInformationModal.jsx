@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./CourseInformationModal.style";
 import { View, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { deleteCourse } from "../../../api/services/courseService";
 import Toast from "../../../components/Toast/Toast";
 
 const CourseInformationModal = ({ navigation, route }) => {

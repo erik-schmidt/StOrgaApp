@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { Picker } from "@react-native-community/picker";
-import { getAllCourses } from "../../../api/services/courseService";
+import { getAllCourses } from "../../../api/services/CourseService";
 import styles from "./AddCourseModal.style";
 import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
