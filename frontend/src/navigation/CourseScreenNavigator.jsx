@@ -4,11 +4,11 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
-import CourseScreen from "../screens/course";
-import AddCourseModal from "../screens/course/AddCourse/AddCourseModal";
+import CourseScreen from "../screens/Course";
+import AddCourseModal from "../screens/Course/AddCourse/AddCourseModal";
 import AddButton from "../components/AddButton/AddButton";
-import CourseInformationModal from "../screens/course/CourseInformationModal/CourseInformationModal";
-import CourseMenu from "../screens/course/CourseMenu/CourseMenu";
+import CourseInformationModal from "../screens/Course/CourseInformationModal/CourseInformationModal";
+import CourseMenu from "../screens/Course/CourseMenu/CourseMenu";
 
 const CourseScreenNavigator = ({ navigation }) => {
   const CourseStack = createStackNavigator();

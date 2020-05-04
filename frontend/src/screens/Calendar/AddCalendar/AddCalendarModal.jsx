@@ -14,7 +14,6 @@ const AddCalendarModal = ({ navigation }) => {
   const [info, setInfo] = useState("");
   const [date, setDate] = useState("");
 
-  //speichert in Backend
   const saveContent = () => {
     const appointment = new Appointment(date, timeStart, timeEnd, name, info);
     createAppointment(appointment).then((res) => {
@@ -31,7 +30,6 @@ const AddCalendarModal = ({ navigation }) => {
         style={styles.picker}
         date={date}
         mode="date"
-        //format="YYYY-MM-DD"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         onDateChange={(date) => {
@@ -43,7 +41,6 @@ const AddCalendarModal = ({ navigation }) => {
         style={styles.picker}
         date={timeStart}
         mode="time"
-        //format="HH:mm"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         minuteInterval={10}
@@ -56,7 +53,6 @@ const AddCalendarModal = ({ navigation }) => {
         style={styles.picker}
         date={timeEnd}
         mode="time"
-        //format="HH:mm"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         minuteInterval={10}

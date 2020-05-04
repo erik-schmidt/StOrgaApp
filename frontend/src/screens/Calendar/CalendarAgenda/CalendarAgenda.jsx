@@ -9,6 +9,7 @@ import {
 import LocalConfig from "./LocalConfig";
 
 const CalendarAgenda = () => {
+  s;
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
@@ -17,7 +18,6 @@ const CalendarAgenda = () => {
         setAppointments(res.data);
       }
     });
-    console.log("Current Appointments", appointments);
   }, []);
 
   useEffect(() => {}, [appointments]);
