@@ -39,7 +39,7 @@ public class CourseController {
      * @return List<Course> </Course>
      */
     @GetMapping("/get")
-    public List<Course> getAllCourses(){
+    public ResponseEntity<?> getAllCourses(){
         return courseService.getAllCourses();
     }
 
@@ -50,7 +50,7 @@ public class CourseController {
      * @return Course
      */
     @GetMapping("/get/{number}")
-    public Course getCourseByNumber(@PathVariable(value = "number") String number){
+    public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "number") String number){
         return courseService.getCourseByNumber(number);
     }
 
@@ -61,7 +61,7 @@ public class CourseController {
      * @return Set<Course>
      */
     @GetMapping("/get/{matrNr}")
-    public Set<Course> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
+    public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
         return courseService.getStudentsCourses(matrNr);
     }
 
@@ -72,11 +72,22 @@ public class CourseController {
      * @param number String Course number
      * @return Course
      */
-    @GetMapping("/get/{matrNr}/{number}")
-    public double getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+   /* @GetMapping("/get/{matrNr}/{number}")
+    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
         return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
-    }
+    }*/
 
+    /**
+     * Set the grade of specific course of a specific student.
+     * @param matrNr
+     * @param number
+     * @param grade
+     * @return
+     */
+    /*@PutMapping("/grade/{matrNr}/{number}/{grade}")
+    public ResponseEntity<?> setGradeOfCourse(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @PathVariable(value = "garde") double grade){
+        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
+    }*/
 
     /**
      * addCourseToStudent
@@ -86,21 +97,10 @@ public class CourseController {
      * @return
      */
     @PutMapping("/add/{matrNr}")
-    public ResponseEntity<Course> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
+    public ResponseEntity<?> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
         return courseService.addCourseToStudent(matrNr, course);
     }
 
-    /**
-     * Set the grade of specific course of a specific student.
-     * @param matrNr
-     * @param number
-     * @param grade
-     * @return
-     */
-    @PutMapping("/grade/{matrNr}/{number}/{grade}")
-    public double setGradeOfCourse(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @PathVariable(value = "garde") double grade){
-        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
-    }
 
     /**
      * createCourse
@@ -110,7 +110,7 @@ public class CourseController {
      */
     // TODO: 24.04.2020 not available for frontend
     @PostMapping("/create")
-    public ResponseEntity<Course> createCourse(@RequestBody Course course){
+    public ResponseEntity<?> createCourse(@RequestBody Course course){
         return courseService.createCourse(course);
     }
 
@@ -122,7 +122,7 @@ public class CourseController {
      */
     // TODO: 24.04.2020 add student matricualtion number for delete mapping
     @DeleteMapping("/delete/{number}")
-    public Course deleteCourse(@PathVariable(value = "number") String number){
+    public ResponseEntity<?> deleteCourse(@PathVariable(value = "number") String number){
         return courseService.deleteCourse(number);
     }
 
@@ -133,7 +133,7 @@ public class CourseController {
      * @return
      */
     @DeleteMapping("/delete/{matrNr}/{number}")
-    public Course deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
         return courseService.deleteCourseFromStudent(matrNr, number);
     }
 }

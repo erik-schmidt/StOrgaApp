@@ -1,10 +1,7 @@
 package com.group3.backend.controller;
 
-import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
 
     private StudentService studentService;
-    private static final Logger LOGGER=LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     public StudentController(StudentService studentService) {
@@ -81,8 +77,7 @@ public class StudentController {
      */
     @DeleteMapping("/delete/{matrNr}")
     public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr){
-        ResponseEntity<?> responseEntity = studentService.deleteStudent(matrNr);
-        return responseEntity;
+        return studentService.deleteStudent(matrNr);
     }
 
     /**
@@ -95,8 +90,7 @@ public class StudentController {
      */
     @PutMapping("/update")
     public ResponseEntity<?> updateStudent(@RequestBody Student student){
-        ResponseEntity<?> responseEntity = studentService.updateStudent(student);
-        return responseEntity;
+        return studentService.updateStudent(student);
     }
 
 
