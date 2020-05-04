@@ -1,5 +1,5 @@
-import React from "react";
-import CalendarAgenda from "../calendar/calendarAgenda/CalendarAgenda";
+import React from "./node_modules/react";
+import CalendarAgenda from "./CalendarAgenda/CalendarAgenda";
 
 const CalendarScreen = () => {
   return <CalendarAgenda />;
