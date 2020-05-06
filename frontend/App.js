@@ -4,9 +4,10 @@ import DrawerNavigation from "./src/navigation";
 import { AsyncStorage } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
+import index from "./src/screens/Login";
+import { AuthProvider } from "./src/constants/AuthContext";
 
 const App = ({ navigation }) => {
-  const AuthContext = React.createContext();
   const Stack = createStackNavigator();
 
   const [state, dispatch] = React.useReducer(
@@ -62,7 +63,7 @@ const App = ({ navigation }) => {
         //TODO: Get token from backend
         //TODO: Handle errors if sign in failed
         //TODO: Persist the token using `AsyncStorage`
-        dispatch({ type: "SIGN_IN", token: "HERE SHOULD BE THE TOKEN!" });
+        dispatch({ type: "SIGN_IN", token: "HERE SHOULD BE THE USER TOKEN" });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
       signUp: async (data) => {
@@ -77,26 +78,32 @@ const App = ({ navigation }) => {
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthProvider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
-          {state.isLoading ? (
-            <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.userToken == null ? (
+        {state.isLoading ? (
+          <Stack.Navigator>
             <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
+              name="Splash"
+              component={SplashScreen}
+              options={{ animationEnabled: false, headerShown: false }}
+            />
+          </Stack.Navigator>
+        ) : state.userToken == null ? (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="LoginScreen"
+              component={index}
               options={{
-                title: "Sign in",
+                title: "",
                 animationTypeForReplace: state.isSignout ? "pop" : "push",
               }}
             />
-          ) : (
-            <DrawerNavigation />
-          )}
-        </Stack.Navigator>
+          </Stack.Navigator>
+        ) : (
+          <DrawerNavigation />
+        )}
       </NavigationContainer>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 };
 
