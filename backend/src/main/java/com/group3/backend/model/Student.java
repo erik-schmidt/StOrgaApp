@@ -113,6 +113,14 @@ public class Student implements Serializable {
         this.gradeCourseMappings = gradeCourseMappings;
     }
 
+    public Set<CalendarEntry> getCalendarEntries() {
+        return calendarEntries;
+    }
+
+    public void setCalendarEntries(Set<CalendarEntry> calendarEntries) {
+        this.calendarEntries = calendarEntries;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(matrNr + " ");
