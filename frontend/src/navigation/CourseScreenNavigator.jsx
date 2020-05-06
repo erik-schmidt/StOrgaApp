@@ -13,7 +13,14 @@ import CourseMenu from "../screens/Course/CourseMenu/CourseMenu";
 const CourseScreenNavigator = ({ navigation }) => {
   const CourseStack = createStackNavigator();
   return (
-    <CourseStack.Navigator mode="modal">
+    <CourseStack.Navigator
+      screenOptions={() => ({
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+        ...TransitionPresets.ModalPresentationIOS,
+      })}
+      mode="modal"
+    >
       <CourseStack.Screen
         name="Fächer"
         component={CourseScreen}

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "./node_modules/react";
+import React, { useState, useEffect } from "react";
 import styles from "./CalendarAgenda.style";
 import { Text, View } from "react-native";
-import { Agenda } from "./node_modules/react-native-calendars";
+import { Agenda } from "react-native-calendars";
 import {
   getAppointments,
   pingCalendar,
@@ -9,7 +9,6 @@ import {
 import LocalConfig from "./LocalConfig";
 
 const CalendarAgenda = () => {
-  s;
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
@@ -30,47 +29,48 @@ const CalendarAgenda = () => {
     <Agenda
       items={{
         appointments,
-        "2020-04-22": [
+        "2020-05-08": [
           {
             timeStart: "8:00",
-            timeEnd: "11:00",
-            name: "appointment1",
-            info: "das ist hard gecodet",
+            timeEnd: "11:15",
+            name: "Lab-SWP",
+            info: "Präsentationen",
           },
         ],
-        "2020-04-23": [
+        "2020-05-07": [
           {
-            timeStart: "10:00",
-            timeEnd: "12:30",
-            name: "appointment2",
-            info: "das ist hard gecodet",
+            timeStart: "09:45",
+            timeEnd: "11:15",
+            name: "SMedia",
+            info: "Vorlesung - Webex",
           },
         ],
-        "2020-04-22": [
+        "2020-05-06": [
           {
-            timeStart: "9:00",
-            timeEnd: "11:00",
-            name: "appointment3",
-            info: "das ist hard gecodet",
+            timeStart: "8:00",
+            timeEnd: "9:30",
+            name: "MLM",
+            info: "Vorlesung - BBB",
           },
         ],
       }}
       markedDates={{
-        "2020-04-22": { dots: [termin], color: "red" },
-        "2020-04-23": { dots: [termin], color: "red" },
+        "2020-05-08": { dots: [termin], color: "red" },
+        "2020-05-07": { dots: [termin], color: "red" },
+        "2020-05-06": { dots: [termin], color: "red" },
       }}
       markingType={"multi-dot"}
       loadItemsForMonth={(month) => {
-        console.log("month loading");
+        //console.log("month loading");
       }}
       onCalendarToggled={(calendarOpened) => {
-        console.log(calendarOpened);
+        //console.log(calendarOpened);
       }}
       onDayPress={(day) => {
-        console.log("day pressed"), appointments;
+        //console.log("day pressed"), appointments;
       }}
       onDayChange={(day) => {
-        console.log("day changed");
+        //console.log("day changed");
       }}
       minDate={"2020-01-01"}
       maxDate={"2020-12-31"}

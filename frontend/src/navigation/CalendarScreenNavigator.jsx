@@ -1,14 +1,24 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import index from "../screens/calendar/index";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
+import index from "../screens/Calendar/index";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
 import AddButton from "../components/AddButton/AddButton";
-import AddCalendarModal from "../screens/calendar/addCalendar/AddCalendarModal";
+import AddCalendarModal from "../screens/Calendar/AddCalendar/AddCalendarModal";
 
 const CalendarScreenNavigator = ({ navigation }) => {
   const CalendarStack = createStackNavigator();
   return (
-    <CalendarStack.Navigator>
+    <CalendarStack.Navigator
+      screenOptions={() => ({
+        gestureEnabled: true,
+        cardOverlayEnabled: true,
+        ...TransitionPresets.ModalPresentationIOS,
+      })}
+      mode="modal"
+    >
       <CalendarStack.Screen
         name="Kalender"
         component={index}
@@ -25,8 +35,8 @@ const CalendarScreenNavigator = ({ navigation }) => {
         name="AddCalendarModal"
         component={AddCalendarModal}
         options={{
-          headerTitle: "Termin hinzufügen",
-          cardStyle: { backgroundColor: "#ffff" },
+          cardStyle: { backgroundColor: "transparent" },
+          headerShown: false,
         }}
       />
     </CalendarStack.Navigator>
