@@ -28,7 +28,7 @@ class CourseTests {
     @BeforeTransaction
     void init(){
         List<Course> courseList;
-        courseList = courseService.getAllCourses();
+        courseList = (List<Course>)courseService.getAllCourses().getBody();
         System.out.println("This are the courses in the repository:");
         for(Course c:courseList){
             System.out.println(c.getNumber());
@@ -40,7 +40,7 @@ class CourseTests {
     void testAddingAndDeletingCourse() {
         courseService.createCourse(new Course("AIB", "420", "SWELab", "A007", "Prof.Haag", 7, "choose", 9, "test"));
         boolean newCourseIsInRepository = false;
-        for(Course c : courseService.getAllCourses()){
+        for(Course c : (List<Course>)courseService.getAllCourses().getBody()){
             if(c.getNumber().equals("420")){
                 newCourseIsInRepository = true;
             }
@@ -49,7 +49,7 @@ class CourseTests {
         System.out.println("Adding course works!");
         //Now test for deleting a course.
         courseService.deleteCourse("420");
-        for(Course c : courseService.getAllCourses()){
+        for(Course c : (List<Course>)courseService.getAllCourses().getBody()){
             if(c.getNumber().equals("420")){
                 newCourseIsInRepository = false;
             }
@@ -61,10 +61,10 @@ class CourseTests {
     @Test
     void testGetAndSetCoursesOfStudent(){
         studentService.createStudent(new Student("202481", "Liyan", "Fu-Wacker", "AIB", 7));
-        for (Course c: courseService.getAllCourses()){
+        for (Course c: (List<Course>)courseService.getAllCourses().getBody()){
             courseService.addCourseToStudent("202481", c);
         }
-        Assertions.assertTrue(courseService.getStudentsCourses("202481").size() == 19);
+        Assertions.assertEquals(((Set<Course>)courseService.getStudentsCourses("202481").getBody()).size(), ((List<Course>) courseService.getAllCourses().getBody()).size());
     }
 
 //    @Test
