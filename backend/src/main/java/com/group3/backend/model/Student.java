@@ -45,6 +45,10 @@ public class Student implements Serializable {
     @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Link> links = new HashSet<>();
+
     public Student(String matrNr, String studentPrename, String studentFamilyname, String fieldOfStudy,
             int currentSemester) {
         this.matrNr = matrNr;
@@ -111,6 +115,22 @@ public class Student implements Serializable {
 
     public void setGradeCourseMappings(Set<GradeCourseMapping> gradeCourseMappings) {
         this.gradeCourseMappings = gradeCourseMappings;
+    }
+
+    public Set<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(Set<Link> links) {
+        this.links = links;
+    }
+
+    public Set<CalendarEntry> getCalendarEntries() {
+        return calendarEntries;
+    }
+
+    public void setCalendarEntries(Set<CalendarEntry> calendarEntries) {
+        this.calendarEntries = calendarEntries;
     }
 
     public String toString() {
