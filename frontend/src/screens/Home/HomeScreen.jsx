@@ -5,7 +5,7 @@ import styles from "./HomeScreen.style";
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>Hello there! What uuuuuuuuuup?</Text>
+      <Text>Herzlich Willkommen beim Team StOrga! </Text>
     </View>
   );
 };
