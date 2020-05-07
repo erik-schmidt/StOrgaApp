@@ -2,55 +2,64 @@ import React, { useState, useEffect } from "react";
 import styles from "./CalendarAgenda.style";
 import { Text, View } from "react-native";
 import { Agenda } from "react-native-calendars";
-import {
-  getAppointments,
-  pingCalendar,
-} from "../../../api/services/CalendarService";
+//import { getAppointments } from "../../../api/services/CalendarService";
 import LocalConfig from "./LocalConfig";
+import { useRoute } from "@react-navigation/native";
+import Appointment from "../../../models/appointment";
 
 const CalendarAgenda = () => {
+  const route = useRoute();
   const [appointments, setAppointments] = useState([]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     getAppointments().then((res) => {
       if (res !== undefined) {
         setAppointments(res.data);
       }
     });
-  }, []);
+  }, []);*/
+
+  useEffect(() => {
+    console.log("useEffect triggered");
+    const entry = route.params?.entry;
+    if (entry !== undefined) {
+      setAppointments([...appointments, entry]);
+    }
+
+    console.log("Neuer Eintrag: -----------------------------");
+    console.log("Termin:", appointments);
+  }, [route]);
 
   useEffect(() => {}, [appointments]);
 
   LocalConfig;
-
   const termin = { key: "termin", color: "red", selectedDotColor: "blue" };
 
   return (
     <Agenda
       items={{
-        appointments,
-        "2020-05-08": [
+        "2020-05-06": [
           {
             timeStart: "8:00",
-            timeEnd: "11:15",
-            name: "Lab-SWP",
-            info: "Präsentationen",
+            timeEnd: "09:30",
+            name: "MLM",
+            info: "Vorlesung - BBB",
           },
         ],
         "2020-05-07": [
           {
-            timeStart: "09:45",
+            timeStart: "9:45",
             timeEnd: "11:15",
             name: "SMedia",
             info: "Vorlesung - Webex",
           },
         ],
-        "2020-05-06": [
+        "2020-05-08": [
           {
-            timeStart: "8:00",
-            timeEnd: "9:30",
-            name: "MLM",
-            info: "Vorlesung - BBB",
+            timeStart: "08:00",
+            timeEnd: "11:15",
+            name: "LabSWP",
+            info: "Präsentationen - Webex ",
           },
         ],
       }}
