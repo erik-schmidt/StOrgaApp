@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface LinkRepository extends JpaRepository<Link, String> {
     List<Link> findAllByStudentMatrNr(String matrNr);
-    Link findByStudentMatrNrAndLinkId(String matrNr, long linkId);
+    Link findByStudentMatrNrAndId(String matrNr, int linkId);
 }
