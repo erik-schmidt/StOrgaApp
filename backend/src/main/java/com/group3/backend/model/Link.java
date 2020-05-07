@@ -20,7 +20,7 @@ public class Link implements Serializable {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student")
+//    @JoinColumn(name = "student")
     private Student student = new Student();
 
     public Link(){
