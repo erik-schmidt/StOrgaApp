@@ -29,17 +29,35 @@ public class LinkCollectionService {
         return "reachable";
     }
 
-    public List<Link> getLinkListByMatrNr(String matrNr){
-        List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
-        return linkList;
+    public ResponseEntity<?> getLinkListByMatrNr(String matrNr){
+        try {
+            List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
+            if (linkList.isEmpty()) {
+                logger.error("There are no links for this student.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: No saved links");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(linkList);
+        }catch (Exception e){
+            logger.error(e.getClass() + " " + e.getMessage());
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
     }
 
-    public Link getLinkListByMatrNrAndNr(String matrNr, long linkId){
-        Link link = linkRepository.findByStudentMatrNrAndLinkId(matrNr, linkId);
-        return link;
+    public ResponseEntity<?> getLinkListByMatrNrAndNr(String matrNr, int linkId){
+        try{
+            Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
+            if (link == null){
+                logger.error("There are no link for this student with that linkId");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: No saved link");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(link);
+        }catch (Exception e){
+            logger.error(e.getClass() + " " + e.getMessage());
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
     }
 
-    public ResponseEntity<Link> addLinkToStudent(String matrNr, Link link){
+    public ResponseEntity<?> addLinkToStudent(String matrNr, Link link){
         try{
             link.setStudent(studentRepository.findByMatrNr(matrNr));
             linkRepository.save(link);
@@ -47,14 +65,37 @@ public class LinkCollectionService {
         }
         catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(link);
     }
 
-    public Link deleteLink(String matrNr, long linkId){
-        Link link = linkRepository.findByStudentMatrNrAndLinkId(matrNr, linkId);
-        linkRepository.delete(link);
-        return link;
+    public ResponseEntity<?> deleteLink(String matrNr, int linkId){
+        Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
+        if (link == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
+        }
+        try{
+            linkRepository.delete(link);
+            return ResponseEntity.status(HttpStatus.OK).body(link);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> changeLink(String matrNr, int linkId, Link newLink){
+        Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
+        if (link == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
+        }
+        try{
+            newLink.setId(link.getId());
+            linkRepository.delete(link);
+            linkRepository.save(newLink);
+            return ResponseEntity.status(HttpStatus.OK).body(newLink);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
     }
 
 
