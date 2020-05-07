@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./index.style";
-import { View, Platform } from "react-native";
+import { View } from "react-native";
 import CourseList from "./CourseList/CourseList";
 
 const CourseScreen = ({ navigation }) => {

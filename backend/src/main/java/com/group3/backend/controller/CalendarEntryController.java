@@ -27,17 +27,27 @@ public class CalendarEntryController {
         return calendarEntryService.ping();
     }
 
-    @GetMapping("/get")
+    @GetMapping("/getAll")
     public List<CalendarEntry> getAllCalendarEntries() {
         return calendarEntryService.getAllCalendarEntries();
     }
 
-    @GetMapping("/{matrNr}/get")
-    public Set<CalendarEntry> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr) {
+    @GetMapping("/get/{matrNr}")
+    public List<CalendarEntry> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr) {
         return calendarEntryService.getStudentCalendarEntries(matrNr);
     }
 
-    @GetMapping("/{matrNr}/get/{description}")
+    @PostMapping("/{matrNr}/create")
+    public ResponseEntity<CalendarEntry> createCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
+        return calendarEntryService.createCalendarEntry(matrNr, calendarEntry);
+    }
+
+    @DeleteMapping("/delete/{matrNr}")
+    public ResponseEntity<CalendarEntry> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
+        return calendarEntryService.deleteCalendarEntry(matrNr, calendarEntry);
+    }
+
+    /*@GetMapping("/{matrNr}/get/{description}")
     public CalendarEntry getCalendarEntryByDescription(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "description") String description){
         return calendarEntryService.getCalendarEntryByDescription(matrNr, description);
     }
@@ -50,20 +60,12 @@ public class CalendarEntryController {
     @PutMapping("/{matrNr}/add")
     public ResponseEntity<CalendarEntry> addEntry(@PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
         return calendarEntryService.addCalendarEntryToStudent(matrNr, calendarEntry);
-    }
+    }*/
 
-    @PostMapping("/{matrNr}/create")
-    public ResponseEntity<CalendarEntry> createCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
-        return calendarEntryService.createCalendarEntry(calendarEntry);
-    }
 
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public ResponseEntity<CalendarEntry> createCalendarEntry(@RequestBody CalendarEntry calendarEntry){
         return calendarEntryService.createCalendarEntry(calendarEntry);
-    }
+    }*/
 
-    @DeleteMapping("/{matrNr}/delete/{id}")
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @PathVariable(value = "id") int id){
-        return calendarEntryService.deleteCalendarEntry(matrNr, id);
-    }
 }

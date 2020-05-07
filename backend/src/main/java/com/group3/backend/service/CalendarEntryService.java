@@ -21,13 +21,15 @@ import java.util.Set;
 public class CalendarEntryService {
 
     private CalendarEntryRepository calendarEntryRepository;
+    private StudentService studentService;
     private StudentRepository studentRepository;
 
     private Logger logger = LoggerFactory.getLogger(CalendarEntryService.class);
 
     @Autowired
-    public CalendarEntryService(CalendarEntryRepository calendarEntryRepository, StudentRepository studentRepository){
+    public CalendarEntryService(CalendarEntryRepository calendarEntryRepository, StudentService studentService, StudentRepository studentRepository){
         this.calendarEntryRepository = calendarEntryRepository;
+        this.studentService = studentService;
         this.studentRepository = studentRepository;
     }
 
@@ -40,12 +42,41 @@ public class CalendarEntryService {
         return calendarEntries;
     }
 
-    public Set<CalendarEntry> getStudentCalendarEntries (String matrNr) {
-        Student student = studentRepository.findByMatrNr(matrNr);
-        return student.getCalendarEntries();
+    public List<CalendarEntry> getStudentCalendarEntries (String matrNr) {
+        Student student = (Student)studentService.getStudentByNumber(matrNr).getBody();
+        List<CalendarEntry> calendarEntries = calendarEntryRepository.findAllByStudentId(student.getId());
+        return calendarEntries;
     }
 
-    public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){
+    public ResponseEntity<CalendarEntry> createCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
+        Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+        calendarEntry.setStudent(student);
+        Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
+        calendarEntries.add(calendarEntry);
+        student.setCalendarEntries(calendarEntries);
+        studentRepository.save(student);
+        //CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
+        //calendarEntryRepository.save(calendarEntry1);
+        return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
+    }
+
+    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
+        Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+        Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
+        CalendarEntry calendarEntryDelete = null;
+        for(CalendarEntry calendarEntry1 : calendarEntries){
+            if(calendarEntry.getDescription().equals(calendarEntry1.getDescription())&&calendarEntry.getName().equals(calendarEntry1.getName())){
+                calendarEntryDelete = calendarEntry1;
+                calendarEntries.remove(calendarEntry1);
+                student.setCalendarEntries(calendarEntries);
+            }
+        }
+        //calendarEntryRepository.deleteById(calendarEntryDelete.getId());
+        calendarEntryRepository.delete(calendarEntryDelete);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+   /* public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){
         CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(matrNr, description);
         return calendarEntry;
     }
@@ -71,18 +102,9 @@ public class CalendarEntryService {
             logger.error(e.getClass() + " " + e.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.OK);
-    }
+    }*/
 
-    public ResponseEntity<CalendarEntry> createCalendarEntry(CalendarEntry calendarEntry) {
-        CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
-        calendarEntryRepository.save(calendarEntry1);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, int id){
-        CalendarEntry calendarEntry = calendarEntryRepository.findByStudAndId(matrNr, id);
-        calendarEntryRepository.delete(calendarEntry);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 
 }

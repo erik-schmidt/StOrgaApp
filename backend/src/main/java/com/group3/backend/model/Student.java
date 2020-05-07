@@ -42,7 +42,7 @@ public class Student implements Serializable {
     private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
     @JsonIgnore
@@ -117,12 +117,21 @@ public class Student implements Serializable {
         this.gradeCourseMappings = gradeCourseMappings;
     }
 
+<<<<<<< HEAD
     public Set<Link> getLinks() {
         return links;
     }
 
     public void setLinks(Set<Link> links) {
         this.links = links;
+=======
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+>>>>>>> origin/develop
     }
 
     public Set<CalendarEntry> getCalendarEntries() {
