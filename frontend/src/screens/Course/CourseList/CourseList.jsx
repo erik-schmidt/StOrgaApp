@@ -35,37 +35,40 @@ const CourseList = () => {
   };
 
   useEffect(() => {
-    getAllCourses()
-      .then((res) => {
-        if (res != undefined) {
-          setCourses(res.data);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
+    // getAllCourses()
+    //   .then((res) => {
+    //     if (res != undefined) {
+    //       setCourses(res.data);
+    //     } else {
+    //       throw new Error();
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setShowModal(true);
+    //     setTimeout(() => {
+    //       setShowModal(false);
+    //     }, 5000);
+    //   });
   }, []);
 
   useEffect(() => {
-    getAllCourses()
-      .then((res) => {
-        if (res != undefined) {
-          setCourses(res.data);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
+    // getAllCourses()
+    //   .then((res) => {
+    //     if (res != undefined) {
+    //       setCourses(res.data);
+    //     } else {
+    //       throw new Error();
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setShowModal(true);
+    //     setTimeout(() => {
+    //       setShowModal(false);
+    //     }, 5000);
+    //   });
+    if (route.params?.course != undefined) {
+      setCourses([...courses], route.params?.course);
+    }
   }, [route]);
 
   return (

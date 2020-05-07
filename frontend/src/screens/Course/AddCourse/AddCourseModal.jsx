@@ -32,21 +32,25 @@ const AddCourseModal = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AppModal header="Kurs zur Liste hinzufügen">
-        <Picker
-          selectedValue={""}
-          style={styles.picker}
-          onValueChange={(itemValue, itemIndex) => {
-            setSelectedCourse(itemValue);
-          }}
-        >
-          {courses.map((course) => {
-            return <Picker.Item label={course.description} value={course} />;
-          })}
-        </Picker>
-        <AppButton
-          onPress={() => console.log("Speichern ausgewählt")}
-          text="Speichern"
-        />
+        <View style={{ marginBottom: 25 }}>
+          <Picker
+            selectedValue={""}
+            style={styles.picker}
+            onValueChange={(itemValue, itemIndex) => {
+              setSelectedCourse(itemValue);
+            }}
+          >
+            {courses.map((course) => {
+              return <Picker.Item label={course.description} value={course} />;
+            })}
+          </Picker>
+          <AppButton
+            onPress={() =>
+              navigation.navigate("CourseList", { course: selectedCourse })
+            }
+            text="Speichern"
+          />
+        </View>
         <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
       </AppModal>
       <Toast
