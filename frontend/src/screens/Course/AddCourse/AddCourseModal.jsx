@@ -32,7 +32,7 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Kurs zur Liste hinzufügen">
+      <AppModal header="Kurs zur Liste hinzufügen" height={500} width={500}>
         <Picker
           selectedValue={""}
           style={styles.picker}
