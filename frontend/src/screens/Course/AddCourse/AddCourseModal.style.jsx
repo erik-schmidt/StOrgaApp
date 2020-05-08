@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: "center",
     marginBottom: 25,
+    justifyContent: "center",
   },
 });
 
