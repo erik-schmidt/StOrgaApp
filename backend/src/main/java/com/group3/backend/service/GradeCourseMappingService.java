@@ -53,7 +53,7 @@ public class GradeCourseMappingService {
             gradeCourseMappingSet.add(checkGradeCourse(gradeCourseMapping));
             st.setGradeCourseMappings(gradeCourseMappingSet);
             studentRepository.save(st);
-            logger.info("New Grade to cours successfully added");
+            logger.info("New Grade to curs successfully added");
             return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());

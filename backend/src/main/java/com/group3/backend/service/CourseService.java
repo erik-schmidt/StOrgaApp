@@ -161,6 +161,26 @@ public class CourseService {
         return ResponseEntity.status(HttpStatus.OK).body(course);
     }
 
+    public ResponseEntity<?> getCourseByKindOfSubject(String kindOfSubject){
+        List<Course> courses = courseRepository.findAllByKindOfSubject(kindOfSubject);
+        if (courses.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this kind of subject in the system.");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.OK).body(courses);
+        }
+    }
+
+    public ResponseEntity<?> getCourseByStudyFocus(String studyFocus){
+        List<Course> courses = courseRepository.findAllByKindOfSubject(studyFocus);
+        if (courses.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this study focus in the system.");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.OK).body(courses);
+        }
+    }
+
 
     /*
     public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(String matrNr, String number){

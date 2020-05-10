@@ -1,7 +1,9 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.service.CourseService;
+import com.group3.backend.service.GradeCourseMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +17,12 @@ import java.util.Set;
 public class CourseController {
 
     private CourseService courseService;
+    private GradeCourseMappingService gradeCourseMappingService;
 
     @Autowired
-    public CourseController(CourseService courseService){
+    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService){
         this.courseService = courseService;
+        this.gradeCourseMappingService = gradeCourseMappingService;
     }
 
     // TODO: 24.04.2020 search by course number not by description
@@ -52,6 +56,16 @@ public class CourseController {
     @GetMapping("/get/{number}")
     public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "number") String number){
         return courseService.getCourseByNumber(number);
+    }
+
+    @GetMapping("/get/{kindOfSubject}")
+    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
+        return courseService.getCourseByKindOfSubject(kindOfSubject);
+    }
+
+    @GetMapping("/get/{studyFocus}")
+    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
+        return courseService.getCourseByStudyFocus(studyFocus);
     }
 
     /**
@@ -133,7 +147,20 @@ public class CourseController {
      * @return
      */
     @DeleteMapping("/delete/{matrNr}/{number}")
-    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestBody boolean saveGrade){
+        List<Course> courseList = (List<Course>) courseService.getStudentsCourses(matrNr);
+        Course course = new Course();
+        for (Course c:courseList){
+            if (c.getNumber().equals(number)){
+                course = c;
+            }
+        }
+        if (saveGrade){
+            if (course != null){
+                gradeCourseMappingService.addGradeCourseToStudent(matrNr, new GradeCourseMapping(number, course.get));
+            }
+
+        }
         return courseService.deleteCourseFromStudent(matrNr, number);
     }
 }
