@@ -3,6 +3,7 @@ package com.group3.backend.controller;
 import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.service.GradeCourseMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,11 @@ public class GradeCourseMappingController {
     public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
         ResponseEntity<?> responseEntity = gradeCourseMappingService.getAllGradeCourseOfStudent(matrNr);
         return responseEntity;
+    }
+
+    @GetMapping("/getAverage/{matrNr}")
+    public ResponseEntity<?> getAverageByMatrNr(@PathVariable(value = "matrNr") String matrNr){
+        return gradeCourseMappingService.getAverageByMatrNr(matrNr);
     }
 
     /**

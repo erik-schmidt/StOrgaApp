@@ -133,6 +133,18 @@ public class GradeCourseMappingService {
         }
     }
 
+    public ResponseEntity<?> getAverageByMatrNr(String matrNr){
+        double average = 0;
+        int counter = 0;
+        Set<GradeCourseMapping> gradeCourseMappings = gradeCourseMappingRepository.findAllByStudentMatrNr(matrNr);
+        for (GradeCourseMapping mapping : gradeCourseMappings){
+            counter++;
+            average = average + mapping.getGrade();
+        }
+        average = Math.round((average/counter)*100)/100;
+        return ResponseEntity.status(HttpStatus.OK).body(average);
+    }
+
     /**
      * checkGradeCourse
      * check the object that the mapping fields are not null or empty and check if the grade is in the

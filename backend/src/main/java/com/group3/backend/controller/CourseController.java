@@ -147,19 +147,13 @@ public class CourseController {
      * @return
      */
     @DeleteMapping("/delete/{matrNr}/{number}")
-    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestBody boolean saveGrade){
+    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
         List<Course> courseList = (List<Course>) courseService.getStudentsCourses(matrNr);
         Course course = new Course();
         for (Course c:courseList){
             if (c.getNumber().equals(number)){
                 course = c;
             }
-        }
-        if (saveGrade){
-            if (course != null){
-                gradeCourseMappingService.addGradeCourseToStudent(matrNr, new GradeCourseMapping(number, course.get));
-            }
-
         }
         return courseService.deleteCourseFromStudent(matrNr, number);
     }
