@@ -9,14 +9,14 @@ import AppModal from "../../../components/AppModal/AppModal";
 
 const AddCalendarModal = ({ navigation, route }) => {
   const [timeStart, setTimeStart] = useState(new Date());
-  const [timeEnd, setTimeEnd] = useState(new Date());
+  const [duration, setDuration] = useState(new Date());
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
   const entry = {};
 
   const saveContent = () => {
-    const appointment = new Appointment(date, timeStart, timeEnd, name, info);
+    const appointment = new Appointment(date, timeStart, duration, name, info);
     entry[date] = [appointment];
     //console.log(entry);
     /*createAppointment(appointment).then((res) => {
@@ -55,16 +55,16 @@ const AddCalendarModal = ({ navigation, route }) => {
             setTimeStart(time);
           }}
         />
-        <Text style={styles.description}>Endzeit:</Text>
+        <Text style={styles.description}>Dauer:</Text>
         <DatePicker
           style={styles.picker}
-          date={timeEnd}
+          date={duration}
           mode="time"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           minuteInterval={10}
           onDateChange={(time) => {
-            setTimeEnd(time);
+            setDuration(time);
           }}
         />
 

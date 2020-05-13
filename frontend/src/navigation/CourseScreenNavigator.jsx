@@ -14,12 +14,12 @@ const CourseScreenNavigator = ({ navigation }) => {
   const CourseStack = createStackNavigator();
   return (
     <CourseStack.Navigator
-      screenOptions={() => ({
+      mode="modal"
+      screenOptions={({ route, navigation }) => ({
         gestureEnabled: true,
         cardOverlayEnabled: true,
         ...TransitionPresets.ModalPresentationIOS,
       })}
-      mode="modal"
     >
       <CourseStack.Screen
         name="Fächer"
@@ -57,7 +57,6 @@ const CourseScreenNavigator = ({ navigation }) => {
         options={{
           headerShown: false,
           cardStyle: { backgroundColor: "transparent", opacity: 1 },
-          ...TransitionPresets.ModalPresentationIOS,
         }}
       />
     </CourseStack.Navigator>
