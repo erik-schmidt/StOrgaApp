@@ -7,9 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const LinkList = () => {
   const navigation = useNavigation();
-  const [links, setLinks] = useState([
-    { link: "https://google.com", linkDescription: "Das ist ein Link" },
-  ]);
+  const [links, setLinks] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
