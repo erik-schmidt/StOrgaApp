@@ -73,5 +73,4 @@ const WeekCalendar = () => {
     </View>
   );
 };
-
 export default WeekCalendar;
