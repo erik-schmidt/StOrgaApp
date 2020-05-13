@@ -3,9 +3,13 @@ import { View, FlatList, Linking, Text, TouchableOpacity } from "react-native";
 import { getAllLinks } from "../../../api/services/LinkService";
 import Toast from "../../../components/Toast/Toast";
 import styles from "./LinkList.style";
+import { useNavigation } from "@react-navigation/native";
 
 const LinkList = () => {
-  const [links, setLinks] = useState([]);
+  const navigation = useNavigation();
+  const [links, setLinks] = useState([
+    { link: "https://google.com", linkDescription: "Das ist ein Link" },
+  ]);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -46,7 +50,14 @@ const LinkList = () => {
       }
     }, [url]);
     return (
-      <TouchableOpacity onPress={handlePress}>
+      <TouchableOpacity
+        onPress={handlePress}
+        onLongPress={() =>
+          navigation.navigate("LinkMenu", {
+            link: { url, description },
+          })
+        }
+      >
         <View>
           <Text style={styles.linkText}>{children}</Text>
           <Text style={styles.descriptionText}>{description}</Text>
