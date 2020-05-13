@@ -1,5 +1,5 @@
-package com.group3.authentication.authenticationserver.request;
-
+package com.group3.authentication.authenticationserver.backupThings.request;
+//https://gitlab.com/ertantoker/tutorials/spring-boot-security-jwt-example/-/tree/master
 public class AuthenticationRequest {
 
     private String username;

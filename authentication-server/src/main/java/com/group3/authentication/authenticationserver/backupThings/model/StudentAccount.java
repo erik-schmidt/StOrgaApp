@@ -1,4 +1,5 @@
-package com.group3.backend.model;
+package com.group3.authentication.authenticationserver.backupThings.model;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "student")
-public class Student implements Serializable {
+public class StudentAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -31,23 +32,8 @@ public class Student implements Serializable {
     private int currentSemester;
     private String username;
     private String password;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<Course> courses = new HashSet<>();
-    /*@JsonIgnore
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )*/
-    @OneToMany(
-            mappedBy = "student",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JsonIgnore
-    private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
-    public Student(String matrNr, String studentPrename, String studentFamilyname,
+    public StudentAccount(String matrNr, String studentPrename, String studentFamilyname,
                    String fieldOfStudy, int currentSemester) {
         this.matrNr = matrNr;
         this.studentPrename = studentPrename;
@@ -56,7 +42,7 @@ public class Student implements Serializable {
         this.currentSemester = currentSemester;
     }
 
-    public Student() {
+    public StudentAccount() {
     }
 
     public String getMatrNr() {
@@ -114,30 +100,81 @@ public class Student implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
-    public Set<GradeCourseMapping> getGradeCourseMappings() {
-        return gradeCourseMappings;
-    }
-
-    public void setGradeCourseMappings(Set<GradeCourseMapping> gradeCourseMappings) {
-        this.gradeCourseMappings = gradeCourseMappings;
-    }
-
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(matrNr + " ");
-        sb.append(studentPrename + " ");
-        sb.append(studentFamilyname + " ");
-        sb.append(fieldOfStudy + " ");
-        sb.append("Semester: " + currentSemester);
-        return sb.toString();
-    }
 }
+
+/*@Entity
+public class StudentAccount {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @NotNull
+    private String username;
+    @NotNull
+    private String password;
+    @NotNull
+    private String matriculationNumber;
+    @NotNull
+    private String firstname;
+    @NotNull
+    private String lastname;
+
+
+    public StudentAccount() {
+    }
+
+    public StudentAccount(String username, String password, String matriculationNumber, String firstname, String lastname){
+        this.username = username;
+        this.password = password;
+        this.matriculationNumber = matriculationNumber;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getMatriculationNumber() {
+        return matriculationNumber;
+    }
+
+    public void setMatriculationNumber(String matriculationNumber) {
+        this.matriculationNumber = matriculationNumber;
+    }
+}*/

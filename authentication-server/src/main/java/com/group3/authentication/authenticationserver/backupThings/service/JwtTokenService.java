@@ -1,13 +1,12 @@
-package com.group3.authentication.authenticationserver.service;
+package com.group3.authentication.authenticationserver.backupThings.service;
 
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 
 import java.util.Date;
 import java.util.HashMap;
-
+//https://gitlab.com/ertantoker/tutorials/spring-boot-security-jwt-example/-/tree/master
 @Component
 public class JwtTokenService {
 

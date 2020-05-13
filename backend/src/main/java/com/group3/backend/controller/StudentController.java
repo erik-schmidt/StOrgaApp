@@ -1,6 +1,7 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Student;
+import com.group3.backend.security.JwtAuthenticatedProfile;
 import com.group3.backend.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * // PATCH => Updaten von einzelnen feldern
  */
 @RestController
-@RequestMapping("/student")
+@RequestMapping("interface/student")
 @CrossOrigin()
 public class StudentController {
 

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
+//https://gitlab.com/ertantoker/tutorials/spring-boot-security-jwt-example/-/tree/master
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class AuthenticationServerApplication
 {

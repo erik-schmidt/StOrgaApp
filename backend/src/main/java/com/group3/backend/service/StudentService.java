@@ -1,5 +1,8 @@
 package com.group3.backend.service;
 
+import com.group3.backend.authenticationJwtService.JwtService;
+import com.group3.backend.authenticationRequest.AuthenticationRequest;
+import com.group3.backend.authenticationResponse.JwtResponse;
 import com.group3.backend.exceptions.CurrentSemesterException;
 import com.group3.backend.exceptions.GradeCourseException;
 import com.group3.backend.exceptions.MatriculationNumberException;
@@ -16,7 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class StudentService {
@@ -25,12 +32,18 @@ public class StudentService {
     private CourseRepository courseRepository;
     private GradeCourseMappingRepository gradeCourseMappingRepository;
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private PasswordEncoder passwordEncoder;
+    private JwtService jwtService;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository, GradeCourseMappingRepository gradeCourseMappingRepository) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository,
+                          GradeCourseMappingRepository gradeCourseMappingRepository, PasswordEncoder passwordEncoder,
+                          JwtService jwtService) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
         this.gradeCourseMappingRepository = gradeCourseMappingRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     /**
@@ -101,6 +114,8 @@ public class StudentService {
             st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
             st.setFieldOfStudy(student.getFieldOfStudy());
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
+            st.setUsername(student.getUsername());
+            st.setPassword(passwordEncoder.encode(student.getPassword()));
             studentRepository.saveAndFlush(st);
             logger.info("Student: " + st.getMatrNr() + " " + st.getStudentPrename() + " " +
                     st.getStudentFamilyname() + " successfully saved");
@@ -235,5 +250,14 @@ public class StudentService {
             throw new CurrentSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
         }
         return currentSemester;
+    }
+
+
+    public ResponseEntity loginStudent(AuthenticationRequest authenticationRequest){
+        JwtResponse response = studentRepository.findOneByUsername(authenticationRequest.getUsername())
+                .filter(account ->  passwordEncoder.matches(authenticationRequest.getPassword(), account.getPassword()))
+                .map(account -> new JwtResponse(jwtService.generateJwt(authenticationRequest.getUsername())))
+                .orElseThrow(() ->  new EntityNotFoundException("Account not found"));
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

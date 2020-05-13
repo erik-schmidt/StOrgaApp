@@ -1,12 +1,12 @@
-package com.group3.authentication.authenticationserver.service;
+package com.group3.authentication.authenticationserver.backupThings.service;
 
-import com.group3.authentication.authenticationserver.model.StudentAccount;
-import com.group3.authentication.authenticationserver.repository.StudentAccountRepository;
-import com.group3.authentication.authenticationserver.response.JWTTokenResponse;
+import com.group3.authentication.authenticationserver.backupThings.model.StudentAccount;
+import com.group3.authentication.authenticationserver.backupThings.repository.StudentAccountRepository;
+import com.group3.authentication.authenticationserver.backupThings.response.JWTTokenResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
-
+//https://gitlab.com/ertantoker/tutorials/spring-boot-security-jwt-example/-/tree/master
 @Service
 public class AuthenticationService {
 
@@ -29,10 +29,12 @@ public class AuthenticationService {
 
     public StudentAccount registerStudentAccount(StudentAccount studentAccount){
         StudentAccount account = new StudentAccount();
-        account.setFirstname(studentAccount.getFirstname());
-        account.setLastname(studentAccount.getLastname());
+        account.setStudentPrename(studentAccount.getStudentPrename());
+        account.setStudentFamilyname(studentAccount.getStudentFamilyname());
         account.setUsername(studentAccount.getUsername());
-        account.setMatriculationNumber(studentAccount.getMatriculationNumber());
+        account.setFieldOfStudy(studentAccount.getFieldOfStudy());
+        account.setMatrNr(studentAccount.getMatrNr());
+        account.setCurrentSemester(studentAccount.getCurrentSemester());
         account.setPassword(passwordEncoder.encode(studentAccount.getPassword()));
         studentAccountRepository.save(account);
         return account;

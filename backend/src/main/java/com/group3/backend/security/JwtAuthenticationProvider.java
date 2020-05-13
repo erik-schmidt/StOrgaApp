@@ -8,7 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-
+//https://gitlab.com/ertantoker/tutorials/spring-boot-security-jwt-example/-/tree/master
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 

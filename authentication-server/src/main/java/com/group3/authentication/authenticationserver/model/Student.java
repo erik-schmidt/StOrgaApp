@@ -1,4 +1,4 @@
-package com.group3.backend.model;
+package com.group3.authentication.authenticationserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,21 +31,6 @@ public class Student implements Serializable {
     private int currentSemester;
     private String username;
     private String password;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<Course> courses = new HashSet<>();
-    /*@JsonIgnore
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )*/
-    @OneToMany(
-            mappedBy = "student",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JsonIgnore
-    private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
     public Student(String matrNr, String studentPrename, String studentFamilyname,
                    String fieldOfStudy, int currentSemester) {
@@ -113,31 +98,5 @@ public class Student implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
-    public Set<GradeCourseMapping> getGradeCourseMappings() {
-        return gradeCourseMappings;
-    }
-
-    public void setGradeCourseMappings(Set<GradeCourseMapping> gradeCourseMappings) {
-        this.gradeCourseMappings = gradeCourseMappings;
-    }
-
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(matrNr + " ");
-        sb.append(studentPrename + " ");
-        sb.append(studentFamilyname + " ");
-        sb.append(fieldOfStudy + " ");
-        sb.append("Semester: " + currentSemester);
-        return sb.toString();
     }
 }

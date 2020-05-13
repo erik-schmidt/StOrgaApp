@@ -1,16 +1,16 @@
-package com.group3.authentication.authenticationserver.controller;
+package com.group3.authentication.authenticationserver.backupThings.controller;
 
-import com.group3.authentication.authenticationserver.exceptions.EntityNotFoundException;
-import com.group3.authentication.authenticationserver.model.StudentAccount;
-import com.group3.authentication.authenticationserver.request.AuthenticationRequest;
-import com.group3.authentication.authenticationserver.response.JWTTokenResponse;
-import com.group3.authentication.authenticationserver.service.AuthenticationService;
+import com.group3.authentication.authenticationserver.backupThings.exceptions.EntityNotFoundException;
+import com.group3.authentication.authenticationserver.backupThings.model.StudentAccount;
+import com.group3.authentication.authenticationserver.backupThings.request.AuthenticationRequest;
+import com.group3.authentication.authenticationserver.backupThings.response.JWTTokenResponse;
+import com.group3.authentication.authenticationserver.backupThings.service.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+//https://gitlab.com/ertantoker/tutorials/spring-boot-security-jwt-example/-/tree/master
 @RestController
 @RequestMapping
 public class AuthenticationController {
