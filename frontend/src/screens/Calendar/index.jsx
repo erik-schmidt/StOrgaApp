@@ -1,8 +1,8 @@
 import React from "react";
-import CalendarAgenda from "./CalendarAgenda/CalendarAgenda";
+import CalStrip from "./CalendarStrip/CalendarStrip";
 
 const CalendarScreen = () => {
-  return <CalendarAgenda />;
+  return <CalStrip />;
 };
 
 export default CalendarScreen;
