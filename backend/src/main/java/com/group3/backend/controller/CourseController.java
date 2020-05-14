@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("interface/course")
 @CrossOrigin()
 public class CourseController {
 
@@ -60,7 +60,7 @@ public class CourseController {
      * @param matrNr String
      * @return Set<Course>
      */
-    @GetMapping("/get/{matrNr}")
+    @GetMapping("/getStudentsCourses/{matrNr}")
     public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
         return courseService.getStudentsCourses(matrNr);
     }

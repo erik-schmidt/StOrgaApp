@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class DataHandler {
 
-    private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
+    private final String AIBCOURSES_FILE = "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\AIBCoursesSPO.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);
 
     public DataHandler() {
