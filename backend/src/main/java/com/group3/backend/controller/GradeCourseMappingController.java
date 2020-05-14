@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/gradeCourseMapping")
+@RequestMapping("interface/gradeCourseMapping")
 @CrossOrigin()
 public class GradeCourseMappingController {
 

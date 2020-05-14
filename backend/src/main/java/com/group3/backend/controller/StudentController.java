@@ -1,9 +1,17 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Student;
+import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.security.JwtAuthenticatedProfile;
+import com.group3.backend.security.JwtTokenService;
 import com.group3.backend.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,15 +24,19 @@ import org.springframework.web.bind.annotation.*;
  * // PATCH => Updaten von einzelnen feldern
  */
 @RestController
-@RequestMapping("/student")
+@RequestMapping("interface/student")
 @CrossOrigin()
 public class StudentController {
 
     private StudentService studentService;
-
+    private JwtTokenService jwtTokenService;
+    private Logger logger = LoggerFactory.getLogger(StudentController.class);
+    private StudentRepository studentRepository;
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, JwtTokenService jwtTokenService, StudentRepository studentRepository) {
          this.studentService = studentService;
+         this.jwtTokenService = jwtTokenService;
+         this.studentRepository  = studentRepository;
     }
 
     /**
@@ -50,12 +62,15 @@ public class StudentController {
     /**
      * getStudentByNumber
      * return a Student with the given number
-     * @param matNr
+     * @param matrNr
      * @return Student
      */
     @GetMapping("/get/{matNr}")
-    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr){
-        return studentService.getStudentByNumber(matNr);
+    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matrNr, @RequestHeader (name="Authorization") String token){
+        if(!checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
+        return studentService.getStudentByNumber(matrNr);
     }
 
     /**
@@ -64,10 +79,10 @@ public class StudentController {
      * @param student
      * @return ResponseEntity<String> if succesfull return id of student
      */
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public ResponseEntity<?> createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
-    }
+    }*/
 
     /**
      * deleteStudent
@@ -76,7 +91,10 @@ public class StudentController {
      * @return Student object
      */
     @DeleteMapping("/delete/{matrNr}")
-    public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr){
+    public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
+        if(!checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return studentService.deleteStudent(matrNr);
     }
 
@@ -89,8 +107,21 @@ public class StudentController {
      * @return ResoponesEntity return String if fault, return sutdent object if successfull
      */
     @PutMapping("/update")
-    public ResponseEntity<?> updateStudent(@RequestBody Student student){
+    public ResponseEntity<?> updateStudent(@RequestBody Student student, @RequestHeader (name="Authorization") String token){
+        if(!checkAccess(student.getMatrNr(), token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return studentService.updateStudent(student);
+    }
+
+    private boolean checkAccess(String matrNr, String token){
+        String extractToken = token.substring(7, token.length());
+        String username =jwtTokenService.getUsernameFromToken(extractToken);
+        String usernameRepo = studentRepository.findByMatrNr(matrNr).getUsername();
+        if(!username.equals(usernameRepo)){
+            return false;
+        }
+        return true;
     }
 
 
