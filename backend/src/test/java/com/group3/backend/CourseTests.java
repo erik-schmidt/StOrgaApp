@@ -25,7 +25,7 @@ class CourseTests {
     @Autowired
     private StudentService studentService;
 
-    @BeforeTransaction
+/*    @BeforeTransaction
     void init(){
         List<Course> courseList;
         courseList = (List<Course>)courseService.getAllCourses().getBody();
@@ -65,7 +65,7 @@ class CourseTests {
             courseService.addCourseToStudent("202481", c);
         }
         Assertions.assertEquals(((Set<Course>)courseService.getStudentsCourses("202481").getBody()).size(), ((List<Course>) courseService.getAllCourses().getBody()).size());
-    }
+    }*/
 
 //    @Test
 //    void testGettingAllCourses(){

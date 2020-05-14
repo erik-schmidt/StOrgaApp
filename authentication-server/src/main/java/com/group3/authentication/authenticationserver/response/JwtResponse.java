@@ -1,4 +1,4 @@
-package com.group3.backend.authenticationResponse;
+package com.group3.authentication.authenticationserver.response;
 
 public class JwtResponse {
 

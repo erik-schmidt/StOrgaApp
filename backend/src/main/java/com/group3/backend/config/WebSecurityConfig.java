@@ -36,42 +36,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
-
-
-    private final String[] PUBLIC = new String[] {"/auth/login", "/auth/register"};
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                //.csrf().disable()
+                .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                /*.authorizeRequests().anyRequest().authenticated();
-                //.authorizeRequests().antMatchers("api/interface/student/**").authenticated().and()
-                //.authorizeRequests().antMatchers("api/interface/course/**").authenticated();
+                .authorizeRequests()
+                .anyRequest().authenticated();
 
-                //.csrf().disable()
-                //.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                //.authorizeRequests()
-                //.antMatchers("api/auth/**").permitAll()
-                //.anyRequest().authenticated();
-
-
-        //httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-        //httpSecurity.headers().cacheControl();*/
-                .authorizeRequests().antMatchers(PUBLIC).permitAll()
-                .anyRequest().authenticated().and()
-                .csrf().disable();
-
-                httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-                httpSecurity.headers().cacheControl();
+        httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.headers().cacheControl();
     }
-
-        /*@Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                // Spring Security should completely ignore URLs starting with /resources/
-                .antMatchers("api/auth/login");
-    }*/
 }

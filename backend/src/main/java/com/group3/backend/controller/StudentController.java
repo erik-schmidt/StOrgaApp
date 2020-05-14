@@ -2,9 +2,14 @@ package com.group3.backend.controller;
 
 import com.group3.backend.model.Student;
 import com.group3.backend.security.JwtAuthenticatedProfile;
+import com.group3.backend.security.JwtTokenService;
 import com.group3.backend.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,10 +27,12 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
 
     private StudentService studentService;
-
+    private JwtTokenService jwtTokenService;
+    private Logger logger = LoggerFactory.getLogger(StudentController.class);
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, JwtTokenService jwtTokenService) {
          this.studentService = studentService;
+         this.jwtTokenService = jwtTokenService;
     }
 
     /**
@@ -55,8 +62,8 @@ public class StudentController {
      * @return Student
      */
     @GetMapping("/get/{matNr}")
-    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr){
-        return studentService.getStudentByNumber(matNr);
+    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr, @RequestHeader (name="Authorization") String token){
+        return studentService.getStudentByNumber(matNr, token);
     }
 
     /**

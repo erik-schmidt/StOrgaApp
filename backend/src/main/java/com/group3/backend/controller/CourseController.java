@@ -60,10 +60,10 @@ public class CourseController {
      * @param matrNr String
      * @return Set<Course>
      */
-    @GetMapping("/get/{matrNr}")
+    /*@GetMapping("/get/{matrNr}")
     public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
         return courseService.getStudentsCourses(matrNr);
-    }
+    }*/
 
     /**
      * getStudentCourses
@@ -132,8 +132,8 @@ public class CourseController {
      * @param number
      * @return
      */
-    @DeleteMapping("/delete/{matrNr}/{number}")
+    /*@DeleteMapping("/delete/{matrNr}/{number}")
     public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
         return courseService.deleteCourseFromStudent(matrNr, number);
-    }
+    }*/
 }

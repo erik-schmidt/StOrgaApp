@@ -1,24 +1,19 @@
 package com.group3.backend.service;
 
-import com.group3.backend.authenticationJwtService.JwtService;
-import com.group3.backend.authenticationRequest.AuthenticationRequest;
-import com.group3.backend.authenticationResponse.JwtResponse;
 import com.group3.backend.exceptions.CurrentSemesterException;
-import com.group3.backend.exceptions.GradeCourseException;
 import com.group3.backend.exceptions.MatriculationNumberException;
 import com.group3.backend.exceptions.StudentNameException;
-import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
 import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.security.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -33,17 +28,17 @@ public class StudentService {
     private GradeCourseMappingRepository gradeCourseMappingRepository;
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
     private PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     public StudentService(StudentRepository studentRepository, CourseRepository courseRepository,
                           GradeCourseMappingRepository gradeCourseMappingRepository, PasswordEncoder passwordEncoder,
-                          JwtService jwtService) {
+                          JwtTokenService jwtTokenService) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
         this.gradeCourseMappingRepository = gradeCourseMappingRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     /**
@@ -81,7 +76,13 @@ public class StudentService {
      * @param matNr
      * @return Student
      */
-    public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matNr){
+    public ResponseEntity<?> getStudentByNumber(String matNr, String token){
+        String extractToken = token.substring(7, token.length());
+        String username =jwtTokenService.getUsernameFromToken(extractToken);
+        String usernameRepo = studentRepository.findByMatrNr(matNr).getUsername();
+        if(!username.equals(usernameRepo)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         try{
             checkMatriculationNumber(matNr);
             if(checkMatricularNumberIsFree(matNr)){
@@ -253,11 +254,11 @@ public class StudentService {
     }
 
 
-    public ResponseEntity loginStudent(AuthenticationRequest authenticationRequest){
+    /*public ResponseEntity loginStudent(AuthenticationRequest authenticationRequest){
         JwtResponse response = studentRepository.findOneByUsername(authenticationRequest.getUsername())
                 .filter(account ->  passwordEncoder.matches(authenticationRequest.getPassword(), account.getPassword()))
                 .map(account -> new JwtResponse(jwtService.generateJwt(authenticationRequest.getUsername())))
                 .orElseThrow(() ->  new EntityNotFoundException("Account not found"));
         return new ResponseEntity(response, HttpStatus.OK);
-    }
+    }*/
 }
