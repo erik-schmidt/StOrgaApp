@@ -67,7 +67,7 @@ public class CourseService {
      * @param matrNr String
      * @return ResponseEntity<Set<Courses>> if successfull, otherwiese ResponseEntity<String> with error message
      */
-    /*public ResponseEntity<?> getStudentsCourses( String matrNr){
+    public ResponseEntity<?> getStudentsCourses( String matrNr){
         try{
             //Student student = studentRepository.findByMatrNr(matrNr);
             if((studentService.getStudentByNumber(matrNr).getBody().getClass()==String.class)){
@@ -81,7 +81,7 @@ public class CourseService {
             logger.error(e.getClass() + " " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
-    }*/
+    }
 
     /**
      * get a course by it's number
@@ -161,9 +161,7 @@ public class CourseService {
         return ResponseEntity.status(HttpStatus.OK).body(course);
     }
 
-
-    /*
-    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(String matrNr, String number){
+    /*public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(String matrNr, String number){
         Student student = studentRepository.findByMatrNr(matrNr);
         Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(student);
         double grade = 0;
@@ -181,7 +179,7 @@ public class CourseService {
      * @param matrNr
      * @return
      */
-   /* public ResponseEntity<?> deleteCourseFromStudent(String number, String matrNr) {
+     public ResponseEntity<?> deleteCourseFromStudent(String number, String matrNr) {
         if ((studentService.getStudentByNumber(matrNr).getBody().getClass() == String.class)) {
             return studentService.getStudentByNumber(matrNr);
         } else {
@@ -201,6 +199,6 @@ public class CourseService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
             }
         }
-    }*/
+    }
 
 }

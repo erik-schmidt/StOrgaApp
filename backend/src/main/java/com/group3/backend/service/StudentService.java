@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -76,13 +73,7 @@ public class StudentService {
      * @param matNr
      * @return Student
      */
-    public ResponseEntity<?> getStudentByNumber(String matNr, String token){
-        String extractToken = token.substring(7, token.length());
-        String username =jwtTokenService.getUsernameFromToken(extractToken);
-        String usernameRepo = studentRepository.findByMatrNr(matNr).getUsername();
-        if(!username.equals(usernameRepo)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
-        }
+    public ResponseEntity<?> getStudentByNumber(String matNr){
         try{
             checkMatriculationNumber(matNr);
             if(checkMatricularNumberIsFree(matNr)){
