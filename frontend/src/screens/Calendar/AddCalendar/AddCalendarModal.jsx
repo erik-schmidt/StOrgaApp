@@ -1,36 +1,38 @@
 import React, { useState } from "react";
 import { View, Button, Text } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { TextInput } from "react-native-gesture-handler";
 import styles from "./AddCalendarModal.style";
 import Appointment from "../../../models/appointment";
 //import { createAppointment } from "../../../api/services/CalendarService";
 import DatePicker from "react-native-datepicker";
 import AppModal from "../../../components/AppModal/AppModal";
+import AppButton from "../../../components/AppButton/AppButton";
 
 const AddCalendarModal = ({ navigation, route }) => {
   const [timeStart, setTimeStart] = useState(new Date());
-  const [duration, setDuration] = useState(new Date());
+  const [timeEnd, setTimeEnd] = useState(new Date());
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
-  const entry = {};
 
   const saveContent = () => {
-    const appointment = new Appointment(date, timeStart, duration, name, info);
-    entry[date] = [appointment];
-    //console.log(entry);
+    const start = date + " " + timeStart;
+    const end = date + " " + timeEnd;
+    const appointment = new Appointment(date, start, end, name, info);
+
+    //console.log("EntryObjekt ist: ", appointment);
     /*createAppointment(appointment).then((res) => {
       console.log(res);
       //console.log("speichern war erfolgreich");
       
     });
     */
-    navigation.navigate("Kalender", { entry: entry });
+    navigation.navigate("Kalender", { entry: appointment });
   };
 
   return (
     <View style={styles.container}>
-      <AppModal header="Termin hinzufügen">
+      <AppModal>
         <Text style={styles.description}>Datum:</Text>
         <DatePicker
           style={styles.picker}
@@ -58,13 +60,13 @@ const AddCalendarModal = ({ navigation, route }) => {
         <Text style={styles.description}>Dauer:</Text>
         <DatePicker
           style={styles.picker}
-          date={duration}
+          date={timeEnd}
           mode="time"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           minuteInterval={10}
           onDateChange={(time) => {
-            setDuration(time);
+            setTimeEnd(time);
           }}
         />
 
@@ -82,11 +84,11 @@ const AddCalendarModal = ({ navigation, route }) => {
           onChangeText={(info) => setInfo(info)}
           defaultValue={info}
         />
-        <Button
+        <AppButton
           onPress={() => {
             saveContent();
           }}
-          title="Speichern"
+          text="Speichern"
         />
       </AppModal>
     </View>

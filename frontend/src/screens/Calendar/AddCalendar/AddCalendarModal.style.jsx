@@ -1,18 +1,15 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    margin: 10,
-    padding: 10,
-    //flexDirection: "column",
+    width: Dimensions.get("window").width,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
   },
   textInput: {
     width: 200,
-    height: 30,
+    height: 40,
     borderWidth: 1,
     padding: 1,
     marginTop: 10,
@@ -22,6 +19,7 @@ const styles = StyleSheet.create({
   },
   description: {
     width: 200,
+    marginTop: 10,
     backgroundColor: "white",
     fontSize: 20,
     color: "steelblue",
