@@ -3,6 +3,7 @@ package com.group3.backend.controller;
 import com.group3.backend.model.CalendarEntry;
 import com.group3.backend.service.CalendarEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,12 @@ import java.util.Set;
 public class CalendarEntryController {
 
     private CalendarEntryService calendarEntryService;
+    private AccessChecker accessChecker;
 
     @Autowired
-    public CalendarEntryController(CalendarEntryService calendarEntryService) {
+    public CalendarEntryController(CalendarEntryService calendarEntryService, AccessChecker accessChecker) {
         this.calendarEntryService = calendarEntryService;
+        this.accessChecker = accessChecker;
     }
 
     @GetMapping("/ping")
@@ -28,22 +31,31 @@ public class CalendarEntryController {
     }
 
     @GetMapping("/getAll")
-    public List<CalendarEntry> getAllCalendarEntries() {
+    public ResponseEntity<?> getAllCalendarEntries() {
         return calendarEntryService.getAllCalendarEntries();
     }
 
     @GetMapping("/get/{matrNr}")
-    public List<CalendarEntry> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr) {
+    public ResponseEntity<?> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token) {
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return calendarEntryService.getStudentCalendarEntries(matrNr);
     }
 
-    @PostMapping("/{matrNr}/create")
-    public ResponseEntity<CalendarEntry> createCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
+    @PostMapping("/create/{matrNr}")
+    public ResponseEntity<?> createCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return calendarEntryService.createCalendarEntry(matrNr, calendarEntry);
     }
 
     @DeleteMapping("/delete/{matrNr}")
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
+    public ResponseEntity<?> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return calendarEntryService.deleteCalendarEntry(matrNr, calendarEntry);
     }
 
