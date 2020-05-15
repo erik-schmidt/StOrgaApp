@@ -42,7 +42,10 @@ public class CourseController {
      * @return List<Course> </Course>
      */
     @GetMapping("/get")
-    public ResponseEntity<?> getAllCourses(){
+    public ResponseEntity<?> getAllCourses(@RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAdmin(token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return courseService.getAllCourses();
     }
 

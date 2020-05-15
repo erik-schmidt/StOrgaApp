@@ -31,7 +31,10 @@ public class CalendarEntryController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAllCalendarEntries() {
+    public ResponseEntity<?> getAllCalendarEntries(@RequestHeader (name="Authorization") String token) {
+        if(accessChecker.checkAdmin(token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return calendarEntryService.getAllCalendarEntries();
     }
 

@@ -20,11 +20,31 @@ public class AccessChecker {
         this.studentRepository  = studentRepository;
     }
 
+    /**
+     * checks if an Acces token maches the student which information is asked for
+     * @param matrNr matriculation number of the student
+     * @param token jwt in header of request
+     * @return true if token maches with request student
+     */
     public boolean checkAccess(String matrNr, String token){
         String extractToken = token.substring(7, token.length());
-        String username =jwtTokenService.getUsernameFromToken(extractToken);
+        String username = jwtTokenService.getUsernameFromToken(extractToken);
         String usernameRepo = studentRepository.findByMatrNr(matrNr).getUsername();
-        if(!username.equals(usernameRepo)){
+        if(!username.equals(usernameRepo)||checkAdmin(token)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * checks if the token asks for the informations is the admin. admin can access everything
+     * @param token jwt in header of request
+     * @return true if token maches with request admin
+     */
+    public boolean checkAdmin(String token){
+        String extractToken = token.substring(7, token.length());
+        String username = jwtTokenService.getUsernameFromToken(extractToken);
+        if(username == ADMIN_USER){
             return true;
         }
         return false;

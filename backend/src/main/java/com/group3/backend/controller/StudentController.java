@@ -55,7 +55,10 @@ public class StudentController {
      * @return List<Student>
      */
     @GetMapping("/get")
-    public ResponseEntity<?> getAllStudents(){
+    public ResponseEntity<?> getAllStudents(@RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAdmin(token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return studentService.getAllStudents();
     }
 
