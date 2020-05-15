@@ -1,7 +1,7 @@
 import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
 const axios = Axios.create({
-  baseURL: "http://192.168.0.122:8080/api/",
+  baseURL: "http://192.168.0.94:8080/api/",
   responseType: "application/json",
 });
 

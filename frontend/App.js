@@ -1,11 +1,14 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import DrawerNavigation from "./src/navigation";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
-import index from "./src/screens/Login";
+import RegisterScreen from "./src/screens/Register";
+import LoginScreen from "./src/screens/Login";
 import { AuthProvider } from "./src/constants/AuthContext";
+import { login } from "./src/api/services/LoginService";
+import { register } from "./src/api/services/RegisterService";
 
 const App = ({ navigation }) => {
   const Stack = createStackNavigator();
@@ -47,31 +50,68 @@ const App = ({ navigation }) => {
       try {
         userToken = await AsyncStorage.getItem("userToken");
       } catch (e) {
-        //TODO: Show toast that restoring token failed
+        Alert.alert("Wiederherstellung der Daten fehlgeschlagen", e);
       }
-      //TODO: Verification to backend if token is valid!
       dispatch({ type: "RESTORE_TOKEN", token: userToken });
     };
 
     bootstrapAsync();
   }, []);
 
+  _storeDate = async (itemString, item) => {
+    try {
+      await AsyncStorage(itemString, item);
+    } catch {
+      Alert.alert(
+        "Einloggen",
+        "Etwas ist während der Authentifizierung schief gelaufen, versuche es bitte erneut!"
+      );
+    }
+  };
+
+  _retrieveData = async (itemString) => {
+    try {
+      await AsyncStorage(itemString);
+    } catch {
+      Alert.alert(
+        "Fehlschlag",
+        "Etwas ist während dem holen der Daten fehlgeschlagen"
+      );
+    }
+  };
+
   const authContext = React.useMemo(
     () => ({
       signIn: async (data) => {
-        //TODO: Send userdata
-        //TODO: Get token from backend
-        //TODO: Handle errors if sign in failed
-        //TODO: Persist the token using `AsyncStorage`
-        dispatch({ type: "SIGN_IN", token: "HERE SHOULD BE THE USER TOKEN" });
+        let token;
+        login(data.username, data.password)
+          .then((res) => {
+            if (res !== undefined) {
+              _storeDate("token", res.data.access_token);
+              token = res.data.access_token;
+            } else {
+              throw new Error();
+            }
+          })
+          .catch((err) => {
+            Alert.alert("Login ist fehlgeschlagen", err);
+          });
+        dispatch({ type: "SIGN_IN", token: token });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
       signUp: async (data) => {
-        //TODO: Send userdata to server
-        //TODO: Get token from backend
-        //TODO: Handle errors if sign up failed
-        //TODO: persist the token using `AsyncStorage`
-        dispatch({ type: "SIGN_IN", token: "HERE SHOULD BE THE TOKEN" });
+        register(data)
+          .then((res) => {
+            if (res !== undefined) {
+              _storeDate("Student", res.data);
+            } else {
+              throw new Error();
+            }
+          })
+          .catch((err) => {
+            Alert.alert("Registrierung fehlgeschlagen", err);
+          });
+        dispatch({ type: "SIGN_UP", token: res.token.access_token });
       },
     }),
     []
@@ -92,7 +132,15 @@ const App = ({ navigation }) => {
           <Stack.Navigator>
             <Stack.Screen
               name="LoginScreen"
-              component={index}
+              component={LoginScreen}
+              options={{
+                title: "",
+                animationTypeForReplace: state.isSignout ? "pop" : "push",
+              }}
+            />
+            <Stack.Screen
+              name="RegisterScreen"
+              component={RegisterScreen}
               options={{
                 title: "",
                 animationTypeForReplace: state.isSignout ? "pop" : "push",

@@ -27,7 +27,10 @@ const LoginScreen = ({ navigation }) => {
       />
       <View style={styles.signUpContainer}>
         <Text style={styles.newToText}>Neu bei StOrga?</Text>
-        <Text style={styles.signUpText} onPress={() => Alert.alert("Pressed!")}>
+        <Text
+          style={styles.signUpText}
+          onPress={() => navigation.navigate("RegisterScreen")}
+        >
           Registrieren
         </Text>
       </View>
