@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import DrawerNavigation from "./src/navigation";
-import { AsyncStorage, Alert } from "react-native";
+import { AsyncStorage } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
 import RegisterScreen from "./src/screens/Register";
@@ -11,6 +11,7 @@ import { login } from "./src/api/services/LoginService";
 import { register } from "./src/api/services/RegisterService";
 
 const App = ({ navigation }) => {
+
   const Stack = createStackNavigator();
 
   const [state, dispatch] = React.useReducer(
@@ -22,6 +23,12 @@ const App = ({ navigation }) => {
             userToken: action.token,
             isLoading: false,
           };
+        case "SIGN_UP": 
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+        };
         case "SIGN_IN":
           return {
             ...prevState,
@@ -58,9 +65,9 @@ const App = ({ navigation }) => {
     bootstrapAsync();
   }, []);
 
-  _storeDate = async (itemString, item) => {
+  const _storeDate = async (itemString, item) => {
     try {
-      await AsyncStorage(itemString, item);
+      await AsyncStorage.setItem(itemString, item);
     } catch {
       Alert.alert(
         "Einloggen",
@@ -69,9 +76,12 @@ const App = ({ navigation }) => {
     }
   };
 
-  _retrieveData = async (itemString) => {
+  const _retrieveData = async (itemString) => {
     try {
-      await AsyncStorage(itemString);
+      const value = await AsyncStorage.getItem(itemString);
+      if (value != null) {
+        return value;
+      }
     } catch {
       Alert.alert(
         "Fehlschlag",
@@ -84,34 +94,33 @@ const App = ({ navigation }) => {
     () => ({
       signIn: async (data) => {
         let token;
-        login(data.username, data.password)
+        login(data)
           .then((res) => {
+            console.log(res);
             if (res !== undefined) {
-              _storeDate("token", res.data.access_token);
-              token = res.data.access_token;
+              _storeDate("token", res.data);
             } else {
               throw new Error();
             }
           })
           .catch((err) => {
-            Alert.alert("Login ist fehlgeschlagen", err);
+            alert("Login ist fehlgeschlagen", err);
           });
-        dispatch({ type: "SIGN_IN", token: token });
+        dispatch({ type: "SIGN_IN", token: _retrieveData('token') });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
       signUp: async (data) => {
         register(data)
           .then((res) => {
+            console.log(res);
             if (res !== undefined) {
               _storeDate("Student", res.data);
-            } else {
-              throw new Error();
             }
           })
           .catch((err) => {
-            Alert.alert("Registrierung fehlgeschlagen", err);
+            alert("Registrierung fehlgeschlagen", err);
           });
-        dispatch({ type: "SIGN_UP", token: res.token.access_token });
+        dispatch({ type: "SIGN_UP", token: "TEST" });
       },
     }),
     []

@@ -1,13 +1,16 @@
 import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
+import { AsyncStorage } from "react-native";
+const token =  AsyncStorage.getItem("token");
 const axios = Axios.create({
-  baseURL: "http://192.168.0.94:8080/api/",
+  baseURL: "http://192.168.0.122:8080/api/",
   responseType: "application/json",
 });
+axios.defaults.headers.common['Authorization'] = token;
 
 //Objekt anfragen
 export async function fetch(apiPath, param = "") {
-  return axios
+  return await axios
     .get(apiPath, param)
     .then((res) => {
       if (res !== undefined && res.status === HttpStatus.OK) {

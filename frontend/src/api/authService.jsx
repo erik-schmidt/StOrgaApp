@@ -1,7 +1,7 @@
 import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
 const axios = Axios.create({
-  baseURL: "http://192.168.0.94:8888/auth/",
+  baseURL: "http://192.168.0.122:8888/auth/",
   responseType: "application/json",
 });
 
@@ -12,7 +12,7 @@ export async function post(apiPath, param = "") {
       if (res !== undefined && res === HttpStatus.OK) {
         return res;
       }
-      return undefined;
+      return res;
     })
     .catch((error) => {
       if (error.response !== undefined) {

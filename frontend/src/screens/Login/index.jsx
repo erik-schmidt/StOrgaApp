@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, TouchableHighlight, Alert } from "react-native";
-import AppButton from "../../components/AppButton/AppButton";
 import styles from "./index.style";
 import AuthConext from "../../constants/AuthContext";
 
@@ -15,13 +14,13 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         placeholder="Matrikelnummer"
         value={username}
-        onChangeText={setUsername}
+        onChangeText={text => setUsername(text)}
         style={styles.textInput}
       />
       <TextInput
         placeholder="Passwort"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={text => setPassword(text)}
         secureTextEntry
         style={styles.textInput}
       />

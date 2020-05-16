@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Student from "../../models/Student";
-import { register } from "../../api/services/RegisterService";
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, TextInput, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  ScrollView,
+} from "react-native";
 import styles from "./index.style";
 import AuthContext from "../../constants/AuthContext";
 
@@ -18,51 +22,51 @@ const RegisterScreen = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
-      <TextInput
-        placeholder="Matrikelnummer"
-        value={matrNr}
-        onChangeText={(text) => setMatrNr(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Vorname"
-        value={prename}
-        onChangeText={(text) => setPrename(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Nachname"
-        value={familyname}
-        onChangeText={(text) => setFamilyname(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Studiengang"
-        value={fieldOfStudy}
-        onChangeText={(text) => setFieldOfStudy(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Aktuelles Semester"
-        value={currentSemester}
-        onChangeText={(text) => setCurrentSemester(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Nutzername"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Passwort"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        style={styles.textInput}
-      />
-      <TouchableHighlight
+      <ScrollView style={styles.container}>
+        <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
+        <TextInput
+          placeholder="Matrikelnummer"
+          value={matrNr}
+          onChangeText={(text) => setMatrNr(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Vorname"
+          value={prename}
+          onChangeText={(text) => setPrename(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Nachname"
+          value={familyname}
+          onChangeText={(text) => setFamilyname(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Studiengang"
+          value={fieldOfStudy}
+          onChangeText={(text) => setFieldOfStudy(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Aktuelles Semester"
+          value={currentSemester}
+          onChangeText={(text) => setCurrentSemester(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Nutzername"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Passwort"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          style={styles.textInput}
+        />
+        <TouchableHighlight
         onPress={() =>
           signUp(
             new Student(
@@ -80,7 +84,7 @@ const RegisterScreen = ({ navigation }) => {
       >
         <Text style={styles.textStyle}>Registrieren</Text>
       </TouchableHighlight>
-    </View>
+      </ScrollView>
   );
 };
 
