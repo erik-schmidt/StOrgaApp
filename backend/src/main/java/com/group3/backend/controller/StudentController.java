@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
  * // PATCH => Updaten von einzelnen feldern
  */
 @RestController
-@RequestMapping("interface/student")
+@RequestMapping("/student")
 @CrossOrigin()
 public class StudentController {
 
