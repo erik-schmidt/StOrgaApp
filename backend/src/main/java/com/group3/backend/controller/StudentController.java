@@ -30,13 +30,13 @@ public class StudentController {
 
     private StudentService studentService;
     private JwtTokenService jwtTokenService;
-    private Logger logger = LoggerFactory.getLogger(StudentController.class);
     private StudentRepository studentRepository;
+    private AccessChecker accessChecker;
+
     @Autowired
-    public StudentController(StudentService studentService, JwtTokenService jwtTokenService, StudentRepository studentRepository) {
+    public StudentController(StudentService studentService, AccessChecker accessChecker) {
          this.studentService = studentService;
-         this.jwtTokenService = jwtTokenService;
-         this.studentRepository  = studentRepository;
+         this.accessChecker = accessChecker;
     }
 
     /**
@@ -55,7 +55,10 @@ public class StudentController {
      * @return List<Student>
      */
     @GetMapping("/get")
-    public ResponseEntity<?> getAllStudents(){
+    public ResponseEntity<?> getAllStudents(@RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAdmin(token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return studentService.getAllStudents();
     }
 
@@ -67,7 +70,7 @@ public class StudentController {
      */
     @GetMapping("/get/{matNr}")
     public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matrNr, @RequestHeader (name="Authorization") String token){
-        if(!checkAccess(matrNr, token)){
+        if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
         }
         return studentService.getStudentByNumber(matrNr);
@@ -92,7 +95,7 @@ public class StudentController {
      */
     @DeleteMapping("/delete/{matrNr}")
     public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
-        if(!checkAccess(matrNr, token)){
+        if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
         }
         return studentService.deleteStudent(matrNr);
@@ -108,20 +111,10 @@ public class StudentController {
      */
     @PutMapping("/update")
     public ResponseEntity<?> updateStudent(@RequestBody Student student, @RequestHeader (name="Authorization") String token){
-        if(!checkAccess(student.getMatrNr(), token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        if(accessChecker.checkAccess(student.getMatrNr(), token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
         return studentService.updateStudent(student);
-    }
-
-    private boolean checkAccess(String matrNr, String token){
-        String extractToken = token.substring(7, token.length());
-        String username =jwtTokenService.getUsernameFromToken(extractToken);
-        String usernameRepo = studentRepository.findByMatrNr(matrNr).getUsername();
-        if(!username.equals(usernameRepo)){
-            return false;
-        }
-        return true;
     }
 
 

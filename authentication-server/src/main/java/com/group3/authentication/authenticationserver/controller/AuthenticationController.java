@@ -1,4 +1,4 @@
-package com.group3.authentication.authenticationserver;
+package com.group3.authentication.authenticationserver.controller;
 
 import com.group3.authentication.authenticationserver.model.Student;
 import com.group3.authentication.authenticationserver.request.AuthenticationRequest;
