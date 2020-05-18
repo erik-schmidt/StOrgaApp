@@ -7,6 +7,7 @@ import com.group3.authentication.authenticationserver.exceptions.UsernameExcepti
 import com.group3.authentication.authenticationserver.model.Student;
 import com.group3.authentication.authenticationserver.repository.StudentRepository;
 import com.group3.authentication.authenticationserver.request.AuthenticationRequest;
+import com.group3.authentication.authenticationserver.response.JwtResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,13 +44,15 @@ public class AuthenticationService {
             if(!a||student==null){
                 return new ResponseEntity("Password oder Benutzername falsch", HttpStatus.BAD_REQUEST);
             }
+            JwtResponse jwtResponse = new JwtResponse(jwtService.generateJwt(authenticationRequest.getUsername()),student.getMatrNr());
+            return new ResponseEntity(jwtResponse, HttpStatus.OK);
         }catch(Exception e){
             if(e instanceof NoSuchElementException){
                 return new ResponseEntity("Password oder Benutzername falsch", HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity(e.getClass()+" "+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(jwtService.generateJwt(authenticationRequest.getUsername()), HttpStatus.OK);
+
     }
 
     /**
