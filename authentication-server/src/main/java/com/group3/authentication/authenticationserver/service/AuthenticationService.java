@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -30,10 +31,32 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * login an registered student
+     * @param authenticationRequest
+     * @return Response Entity with http.ok and token if success otherwise return http.badrequest
+     */
     public ResponseEntity loginStudent(AuthenticationRequest authenticationRequest){
+        try{
+            Student student = studentRepository.findOneByUsername(authenticationRequest.getUsername()).get();
+            boolean a = passwordEncoder.matches(authenticationRequest.getPassword(), student.getPassword());
+            if(!a||student==null){
+                return new ResponseEntity("Password oder Benutzername falsch", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            if(e instanceof NoSuchElementException){
+                return new ResponseEntity("Password oder Benutzername falsch", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity(e.getClass()+" "+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(jwtService.generateJwt(authenticationRequest.getUsername()), HttpStatus.OK);
     }
 
+    /**
+     * register a given student
+     * @param student
+     * @return Response Entity with http.ok and student object if success otherwise return http.badrequest
+     */
     public ResponseEntity registerStudent(Student student) {
         Student st = new Student();
         try{
