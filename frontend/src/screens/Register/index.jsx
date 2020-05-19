@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import styles from "./index.style";
 import AuthContext from "../../constants/AuthContext";
+import Toast from "../../components/Toast/Toast";
 
 const RegisterScreen = ({ navigation }) => {
   const { signUp } = React.useContext(AuthContext);
@@ -20,54 +21,55 @@ const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
-        <TextInput
-          placeholder="Matrikelnummer"
-          value={matrNr}
-          onChangeText={(text) => setMatrNr(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Vorname"
-          value={prename}
-          onChangeText={(text) => setPrename(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Nachname"
-          value={familyname}
-          onChangeText={(text) => setFamilyname(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Studiengang"
-          value={fieldOfStudy}
-          onChangeText={(text) => setFieldOfStudy(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Aktuelles Semester"
-          value={currentSemester}
-          onChangeText={(text) => setCurrentSemester(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Nutzername"
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          style={styles.textInput}
-        />
-        <TextInput
-          placeholder="Passwort"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.textInput}
-        />
-        <TouchableHighlight
-        onPress={() =>
+    <ScrollView style={styles.container}>
+      <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
+      <TextInput
+        placeholder="Matrikelnummer"
+        value={matrNr}
+        onChangeText={(text) => setMatrNr(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Vorname"
+        value={prename}
+        onChangeText={(text) => setPrename(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Nachname"
+        value={familyname}
+        onChangeText={(text) => setFamilyname(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Studiengang"
+        value={fieldOfStudy}
+        onChangeText={(text) => setFieldOfStudy(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Aktuelles Semester"
+        value={currentSemester}
+        onChangeText={(text) => setCurrentSemester(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Nutzername"
+        value={username}
+        onChangeText={(text) => setUsername(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        placeholder="Passwort"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        style={styles.textInput}
+      />
+      <TouchableHighlight
+        onPress={() => {
           signUp(
             new Student(
               matrNr,
@@ -78,13 +80,15 @@ const RegisterScreen = ({ navigation }) => {
               username,
               password
             )
-          )
-        }
+          );
+          navigation.pop();
+        }}
         style={styles.button}
       >
         <Text style={styles.textStyle}>Registrieren</Text>
       </TouchableHighlight>
-      </ScrollView>
+      <Toast color="red" showModal={showModal} text={errorMessage} />
+    </ScrollView>
   );
 };
 

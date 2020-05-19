@@ -1,30 +1,31 @@
 import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
 import { AsyncStorage } from "react-native";
-const token =  AsyncStorage.getItem("token");
 const axios = Axios.create({
   baseURL: "http://192.168.0.122:8080/api/",
   responseType: "application/json",
 });
-axios.defaults.headers.common['Authorization'] = token;
+
+axios.interceptors.request.use(
+  async (config) => {
+    const userToken = await AsyncStorage.getItem("token");
+    config.headers["Authorization"] = `Bearer ${userToken}`;
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
 
 //Objekt anfragen
 export async function fetch(apiPath, param = "") {
   return await axios
     .get(apiPath, param)
     .then((res) => {
-      if (res !== undefined && res.status === HttpStatus.OK) {
-        return res;
-      }
-      return undefined;
+      return res;
     })
     .catch((error) => {
-      if (error.response !== undefined) {
-        console.log(
-          `An Error occured doing a REST-Request ${error.response.status}`
-        );
-      }
-      return undefined;
+      return error.response;
     });
 }
 
@@ -33,18 +34,10 @@ export async function post(apiPath, param = "") {
   return axios
     .post(apiPath, param)
     .then((res) => {
-      if (res !== undefined && res.status === HttpStatus.OK) {
-        return res;
-      }
-      return undefined;
+      return res;
     })
     .catch((error) => {
-      if (error.response !== undefined) {
-        console.log(
-          `An Error occured doing a REST-Request ${error.response.status}`
-        );
-      }
-      return undefined;
+      return error.response;
     });
 }
 
@@ -53,18 +46,10 @@ export async function put(apiPath, param = "") {
   return axios
     .put(apiPath, param)
     .then((res) => {
-      if (res !== undefined && res.status === HttpStatus.OK) {
-        return res;
-      }
-      return undefined;
+      return res;
     })
     .catch((error) => {
-      if (error.response !== undefined) {
-        console.log(
-          `An Error occured doing a REST-Request ${error.response.status}`
-        );
-      }
-      return undefined;
+      return error.response;
     });
 }
 
@@ -74,17 +59,9 @@ export async function del(apiPath, param = "") {
   return axios
     .delete(apiPath, param)
     .then((res) => {
-      if (res !== undefined && res.status === HttpStatus.OK) {
-        return res.data;
-      }
-      return undefined;
+      return res.data;
     })
     .catch((error) => {
-      if (error.response !== undefined) {
-        console.log(
-          `An Error occured doing a REST-Request ${error.response.status}`
-        );
-      }
-      return undefined;
+      return error.response;
     });
 }

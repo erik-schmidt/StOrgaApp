@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import DrawerNavigation from "./src/navigation";
 import { AsyncStorage } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, Assets } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
 import RegisterScreen from "./src/screens/Register";
 import LoginScreen from "./src/screens/Login";
 import { AuthProvider } from "./src/constants/AuthContext";
 import { login } from "./src/api/services/LoginService";
 import { register } from "./src/api/services/RegisterService";
+import * as HttpStatus from "http-status-codes";
 
 const App = ({ navigation }) => {
-
   const Stack = createStackNavigator();
 
   const [state, dispatch] = React.useReducer(
@@ -23,12 +23,12 @@ const App = ({ navigation }) => {
             userToken: action.token,
             isLoading: false,
           };
-        case "SIGN_UP": 
+        case "SIGN_UP":
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
-        };
+          };
         case "SIGN_IN":
           return {
             ...prevState,
@@ -65,62 +65,39 @@ const App = ({ navigation }) => {
     bootstrapAsync();
   }, []);
 
-  const _storeDate = async (itemString, item) => {
-    try {
-      await AsyncStorage.setItem(itemString, item);
-    } catch {
-      Alert.alert(
-        "Einloggen",
-        "Etwas ist während der Authentifizierung schief gelaufen, versuche es bitte erneut!"
-      );
-    }
-  };
-
-  const _retrieveData = async (itemString) => {
-    try {
-      const value = await AsyncStorage.getItem(itemString);
-      if (value != null) {
-        return value;
-      }
-    } catch {
-      Alert.alert(
-        "Fehlschlag",
-        "Etwas ist während dem holen der Daten fehlgeschlagen"
-      );
-    }
-  };
-
   const authContext = React.useMemo(
     () => ({
       signIn: async (data) => {
-        let token;
         login(data)
-          .then((res) => {
+          .then(async (res) => {
             console.log(res);
-            if (res !== undefined) {
-              _storeDate("token", res.data);
+            if (res.status === HttpStatus.OK) {
+              await AsyncStorage.setItem("token", res.data.token);
+              await AsyncStorage.setItem("matrNr", res.data.matrNr);
+              const token = await AsyncStorage.getItem("token");
+              dispatch({ type: "SIGN_IN", token: token });
             } else {
-              throw new Error();
+              throw new Error(res.data);
             }
           })
           .catch((err) => {
-            alert("Login ist fehlgeschlagen", err);
+            alert(err);
           });
-        dispatch({ type: "SIGN_IN", token: _retrieveData('token') });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
       signUp: async (data) => {
         register(data)
           .then((res) => {
-            console.log(res);
-            if (res !== undefined) {
-              _storeDate("Student", res.data);
+            if (res.status === HttpStatus.OK) {
+              alert("Registration erfolgreich. Nach dem Login kannst du loslegen!")
+              dispatch({ type: "SIGN_UP", token: null });
+            } else {
+              throw new Error(res.data);
             }
           })
           .catch((err) => {
-            alert("Registrierung fehlgeschlagen", err);
+            alert(err);
           });
-        dispatch({ type: "SIGN_UP", token: "TEST" });
       },
     }),
     []
@@ -137,7 +114,7 @@ const App = ({ navigation }) => {
               options={{ animationEnabled: false, headerShown: false }}
             />
           </Stack.Navigator>
-        ) : state.userToken == null ? (
+        ) : state.userToken === null ? (
           <Stack.Navigator>
             <Stack.Screen
               name="LoginScreen"

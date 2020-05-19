@@ -9,9 +9,6 @@ export async function post(apiPath, param = "") {
   return axios
     .post(apiPath, param)
     .then((res) => {
-      if (res !== undefined && res === HttpStatus.OK) {
-        return res;
-      }
       return res;
     })
     .catch((error) => {
@@ -20,6 +17,6 @@ export async function post(apiPath, param = "") {
           `An Error occured doing a REST-Request ${error.response.status}`
         );
       }
-      return undefined;
+      return error.response;
     });
 }
