@@ -138,7 +138,7 @@ public class CourseService {
         try{
             Course cs = new Course(course.getFieldOfStudy(),course.getNumber(), course.getDescription(),
                     course.getRoom(), course.getProfessor(), course.getEcts(), course.getKindOfSubject(), course.getReccomendedSemester(),
-                    course.getStudyFocus());
+                    course.getStudyFocus(), course.getWorkingHoursInClass(), course.getWorkingHoursSelf(), course.getKindOfExam());
             courseRepository.save(cs);
             return ResponseEntity.status(HttpStatus.OK).body(cs);
         }catch (Exception e){
