@@ -14,6 +14,8 @@ import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 //import { getAppointments } from "../../../api/services/CalendarService";
 
+//TO DO: Toast für on Press und Long Press einfügen
+
 const WeekCalendar = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -49,45 +51,52 @@ const WeekCalendar = () => {
 
   useEffect(() => {}, [appointments]);
 
-  const sampleEvents = [
-    {
-      start: "2020-05-23 09:00:00",
-      end: "2020-05-23 10:20:00",
-      name: "Walk my dog",
-      info: "infotext",
-    },
+  const sampleEvents =
+    /*[
+    appointments.name,
+    appointments.end,
+    appointments.start,
+    appointments.info,
+  ];*/
+    [
+      {
+        start: "2020-05-23 09:00:00",
+        end: "2020-05-23 10:20:00",
+        name: "Walk my dog",
+        info: "infotext",
+      },
 
-    {
-      start: "2020-05-13 09:30:00",
-      end: "2020-05-13 01:00:00",
-      name: "Schedule 1",
-      info: "infotext",
-    },
-    {
-      start: "2020-05-13 11:00:00",
-      end: "2020-05-13 14:00:00",
-      name: "Schedule 2",
-      info: "infotext",
-    },
-    {
-      start: "2020-05-13 15:00:00",
-      end: "2020-05-13 15:30:00",
-      name: "Schedule 3",
-      info: "infotext",
-    },
-    {
-      start: "2020-05-13 18:00:00",
-      end: "2020-05-13 19:00:00",
-      name: "Schedule 4",
-      info: "infotext",
-    },
-    {
-      start: "2020-05-13 22:00:00",
-      end: "2020-05-13 23:00:00",
-      name: "Schedule 5",
-      info: "infotext",
-    },
-  ];
+      {
+        start: "2020-05-13 09:30:00",
+        end: "2020-05-13 01:00:00",
+        name: "Schedule 1",
+        info: "infotext",
+      },
+      {
+        start: "2020-05-13 11:00:00",
+        end: "2020-05-13 14:00:00",
+        name: "Schedule 2",
+        info: "infotext",
+      },
+      {
+        start: "2020-05-13 15:00:00",
+        end: "2020-05-13 15:30:00",
+        name: "Schedule 3",
+        info: "infotext",
+      },
+      {
+        start: "2020-05-13 18:00:00",
+        end: "2020-05-13 19:00:00",
+        name: "Schedule 4",
+        info: "infotext",
+      },
+      {
+        start: "2020-05-13 22:00:00",
+        end: "2020-05-13 23:00:00",
+        name: "Schedule 5",
+        info: "infotext",
+      },
+    ];
 
   return (
     <ScrollView
@@ -200,12 +209,12 @@ const WeekCalendar = () => {
         )}
         onDayPress={(weekday, i) => {
           setSelectedDay(moment(weekday).format("L"));
-          console.log(
+          /*console.log(
             weekday.format("L") +
               " is selected! And it is day " +
               (i + 1) +
               " of the week!"
-          );
+          );*/
         }}
       />
     </ScrollView>

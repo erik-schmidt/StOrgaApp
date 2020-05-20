@@ -9,6 +9,7 @@ import AddButton from "../components/AddButton/AddButton";
 import AddCalendarModal from "../screens/Calendar/AddCalendar/AddCalendarModal";
 import CalendarInformationModal from "../screens/Calendar/CalendarInformationModal/CalendarInformationModal";
 import CalendarMenu from "../screens/Calendar/CalendarMenu/CalendarMenu";
+import ChangeCalendarModal from "../screens/Calendar/ChangeCalendarModal/ChangeCalendarModal";
 
 const CalendarScreenNavigator = ({ navigation }) => {
   const CalendarStack = createStackNavigator();
@@ -57,6 +58,14 @@ const CalendarScreenNavigator = ({ navigation }) => {
         options={{
           headerShown: false,
           cardStyle: { backgroundColor: "transparent", opacity: 1 },
+        }}
+      />
+      <CalendarStack.Screen
+        name="ChangeCalendarModal"
+        component={ChangeCalendarModal}
+        options={{
+          headerTitle: "Termin ändern",
+          cardStyle: { backgroundColor: "#ffff" },
         }}
       />
     </CalendarStack.Navigator>

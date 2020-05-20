@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, Text } from "react-native";
 import styles from "./CalendarMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
 //import { deleteCalendar} from "../../../api/services/CalendarService";
 import AppModal from "../../../components/AppModal/AppModal";
+
+//TO DO: Modal für Kalender bearbeiten einfügen
 
 const CalendarMenu = ({ navigation, route }) => {
   const [appointment, setAppointments] = useState(route.params?.appointment);
@@ -33,7 +35,15 @@ const CalendarMenu = ({ navigation, route }) => {
     <View style={styles.container}>
       <View>
         <AppModal header="Termin bearbeiten" description={appointment.name}>
-          <AppButton onPress={() => navigation.pop()} text="bearbeiten" />
+          <AppButton
+            onPress={() =>
+              navigation.navigate("ChangeCalendarModal", {
+                editMode: true,
+                toChangeAppointment: appointment,
+              })
+            }
+            text="bearbeiten"
+          />
           <AppButton
             color="red"
             onPress={() => navigation.pop()}
