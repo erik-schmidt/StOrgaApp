@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "student")
 public class Student implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +30,8 @@ public class Student implements Serializable {
     @Min(1)
     @Max(15)
     private int currentSemester;
+    private String username;
+    private String password;
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
@@ -99,6 +102,22 @@ public class Student implements Serializable {
 
     public void setCurrentSemester(int currentSemester) {
         this.currentSemester = currentSemester;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<Course> getCourses() {

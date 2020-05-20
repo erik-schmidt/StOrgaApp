@@ -37,18 +37,18 @@ public class CalendarEntryService {
         return "reachable";
     }
 
-    public List<CalendarEntry> getAllCalendarEntries(){
+    public ResponseEntity<?> getAllCalendarEntries(){
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findAll();
-        return calendarEntries;
+        return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public List<CalendarEntry> getStudentCalendarEntries (String matrNr) {
+    public ResponseEntity<?> getStudentCalendarEntries (String matrNr) {
         Student student = (Student)studentService.getStudentByNumber(matrNr).getBody();
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findAllByStudentId(student.getId());
-        return calendarEntries;
+        return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public ResponseEntity<CalendarEntry> createCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
+    public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
         Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
         calendarEntry.setStudent(student);
         Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
@@ -60,7 +60,7 @@ public class CalendarEntryService {
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
     }
 
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
+    public ResponseEntity<?> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
         Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
         CalendarEntry calendarEntryDelete = null;
@@ -73,7 +73,7 @@ public class CalendarEntryService {
         }
         //calendarEntryRepository.deleteById(calendarEntryDelete.getId());
         calendarEntryRepository.delete(calendarEntryDelete);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(calendarEntryDelete);
     }
 
    /* public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){

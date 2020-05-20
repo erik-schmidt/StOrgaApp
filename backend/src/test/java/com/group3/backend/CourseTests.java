@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.transaction.BeforeTransaction;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,9 @@ class CourseTests {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @BeforeTransaction
     void init(){
@@ -60,7 +64,15 @@ class CourseTests {
 
     @Test
     void testGetAndSetCoursesOfStudent(){
-        studentService.createStudent(new Student("202481", "Liyan", "Fu-Wacker", "AIB", 7));
+        Student student0 = new Student();
+        student0.setMatrNr("202481");
+        student0.setStudentPrename("Liyan");
+        student0.setStudentFamilyname("Fu-Wacker");
+        student0.setFieldOfStudy("AIB");
+        student0.setCurrentSemester(7);
+        student0.setUsername("LiyanFuW");
+        student0.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
+        studentService.createStudent(student0);
         for (Course c: (List<Course>)courseService.getAllCourses().getBody()){
             courseService.addCourseToStudent("202481", c);
         }
