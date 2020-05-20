@@ -47,16 +47,19 @@ public class NewsController {
         return newsService.getAllNews();
     }
 
+    /*
     /**
      * getNewsByPublishedDate
      * get all news available at the published date in the database
      * @param published Date
      * @return List<News>
      */
+    /*
     @GetMapping("/get/{published}")
     public ResponseEntity<?> getNewsByPublishedDate(@PathVariable(value = "published") Date published){
         return newsService.getNewsByPublishedDate(published);
     }
+     */
 
     /**
      * getNewsByTitle

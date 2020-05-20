@@ -11,5 +11,5 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, String> {
     News findByTitle(String title);
     News findByMessage(String messageOrWord);
-    List<News> findByPublishedDate(Date published);
+    //List<News> findByPublishedDate(Date published);
 }

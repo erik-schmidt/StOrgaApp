@@ -87,11 +87,13 @@ public class NewsService {
         }
     }
 
+    /*
     /**
      * get a news by published Date
      * @param published
      * @return ResponseEntity<News> if successfull, otherwiese ResponseEntity<String> with error message
      */
+    /*
     public ResponseEntity<?> getNewsByPublishedDate(Date published){
         try {
             List<News> newsList = newsRepository.findByPublishedDate(published);
@@ -105,6 +107,7 @@ public class NewsService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
+    */
 
     /**
      * create a new news and save in db

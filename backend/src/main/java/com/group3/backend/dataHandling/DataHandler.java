@@ -1,6 +1,7 @@
 package com.group3.backend.dataHandling;
 
 import com.group3.backend.model.Course;
+import com.group3.backend.model.News;
 import com.group3.backend.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +14,17 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class DataHandler {
 
-    private final String PATH = "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
+    //private final String PATH_CHRIS = "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
+    private final String PATH_TOM = "D:\\Studium\\Semester 4\\SwLab\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
     private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
     private final String ADMIN_USER = "AdminUser.txt";
+    private final String NEWS_FILE = "News.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);
 
     public DataHandler(){
@@ -32,7 +36,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses(){
         Set<Course> courseSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH + AIBCOURSES_FILE))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(PATH_TOM + AIBCOURSES_FILE))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
@@ -55,7 +59,7 @@ public class DataHandler {
      */
     public Student loadAdminUser(){
         Student admin = new Student();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH + ADMIN_USER))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(PATH_TOM + ADMIN_USER))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
@@ -73,6 +77,25 @@ public class DataHandler {
             return admin;
         }catch (Exception e){
             logger.error("Error wihile loading inital course data: " + e.getClass() + " " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Set<News> loadNews(){
+        Set<News> newsSet = new HashSet();
+        try(BufferedReader reader = new BufferedReader(new FileReader(PATH_TOM + NEWS_FILE))){
+            String line = reader.readLine();
+            while (!(line.equals("###"))){
+                if(!(line.equals(""))) {
+                    String[] k = line.split("#");
+                    News news = new News(k[0],k[1],k[2], Date.valueOf(k[3]));
+                    newsSet.add(news);
+                }
+                line = reader.readLine();
+            }
+            return newsSet;
+        }catch (Exception e){
+            logger.error("Error while loading inital news data: " + e.getClass() + " " + e.getMessage());
         }
         return null;
     }
