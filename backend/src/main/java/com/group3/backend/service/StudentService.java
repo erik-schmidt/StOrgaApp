@@ -1,10 +1,7 @@
 package com.group3.backend.service;
 
-import com.group3.backend.exceptions.CurrentSemesterException;
-import com.group3.backend.exceptions.GradeCourseException;
-import com.group3.backend.exceptions.MatriculationNumberException;
+import com.group3.backend.exceptions.Course.CourseWithoutRecommendedSemesterException;
 import com.group3.backend.exceptions.StudentNameException;
-import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
@@ -75,7 +72,7 @@ public class StudentService {
                 throw new MatriculationNumberException("There is no student with matriculation number: " + matNr);
             }
             Student st = studentRepository.findByMatrNr(matNr);
-            logger.info("Student: " + matNr + " successffully read");
+            logger.info("Student: " + matNr + " successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -228,11 +225,11 @@ public class StudentService {
      * checks if the semester value is between 1 and 15
      * @param currentSemester
      * @return int currentSemester value
-     * @throws CurrentSemesterException
+     * @throws CourseWithoutRecommendedSemesterException
      */
     private int checkCurrentSemester(int currentSemester)throws Exception{
         if(currentSemester<1||currentSemester>15){
-            throw new CurrentSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
+            throw new CourseWithoutRecommendedSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
         }
         return currentSemester;
     }

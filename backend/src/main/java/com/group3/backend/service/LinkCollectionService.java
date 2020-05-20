@@ -25,10 +25,19 @@ public class LinkCollectionService {
         this.studentRepository =studentRepository;
     }
 
+    /**
+     * ping-method -> *ping, ping*
+     * @return
+     */
     public String ping(){
         return "reachable";
     }
 
+    /**
+     * Returns the LinkList for the Student with the given MatrNr.
+     * @param matrNr
+     * @return
+     */
     public ResponseEntity<?> getLinkListByMatrNr(String matrNr){
         try {
             List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
@@ -43,6 +52,12 @@ public class LinkCollectionService {
         }
     }
 
+    /**
+     * Returns the Link from the Student with the given MatrNr and the given number.
+     * @param matrNr
+     * @param linkId
+     * @return
+     */
     public ResponseEntity<?> getLinkListByMatrNrAndNr(String matrNr, int linkId){
         try{
             Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
@@ -57,6 +72,12 @@ public class LinkCollectionService {
         }
     }
 
+    /**
+     * Adds the given Link to the Student with the given MatrNr.
+     * @param matrNr
+     * @param link
+     * @return
+     */
     public ResponseEntity<?> addLinkToStudent(String matrNr, Link link){
         try{
             link.setStudent(studentRepository.findByMatrNr(matrNr));
@@ -70,6 +91,12 @@ public class LinkCollectionService {
         return ResponseEntity.status(HttpStatus.OK).body(link);
     }
 
+    /**
+     * Deletes the Link with the given linkId if it matches with the Student of the given MatrNr.
+     * @param matrNr
+     * @param linkId
+     * @return
+     */
     public ResponseEntity<?> deleteLink(String matrNr, int linkId){
         Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
         if (link == null){
@@ -83,6 +110,14 @@ public class LinkCollectionService {
         }
     }
 
+    /**
+     * Method to change a Link by using the MatrNr of the Student and the linkId and replacing that Link with the given
+     * one.
+     * @param matrNr
+     * @param linkId
+     * @param newLink
+     * @return
+     */
     public ResponseEntity<?> changeLink(String matrNr, int linkId, Link newLink){
         Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
         if (link == null){

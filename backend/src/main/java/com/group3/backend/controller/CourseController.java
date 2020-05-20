@@ -48,7 +48,7 @@ public class CourseController {
     }
 
     /**
-     * getCourseByNumger
+     * getCourseByNumber
      * get course information by search with the course number
      * @param number String
      * @return Course
@@ -58,11 +58,21 @@ public class CourseController {
         return courseService.getCourseByNumber(number);
     }
 
+    /**
+     * Get the courses by their kindOfSubject.
+     * @param kindOfSubject
+     * @return
+     */
     @GetMapping("/get/{kindOfSubject}")
     public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
         return courseService.getCourseByKindOfSubject(kindOfSubject);
     }
 
+    /**
+     * Get the courses by their studyFocus.
+     * @param studyFocus
+     * @return
+     */
     @GetMapping("/get/{studyFocus}")
     public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
         return courseService.getCourseByStudyFocus(studyFocus);

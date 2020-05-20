@@ -1,9 +1,11 @@
 package com.group3.backend.service;
 
-import com.group3.backend.exceptions.CourseDescriptionAlreadyExistsException;
-import com.group3.backend.exceptions.CourseNumberAlreadyExistsException;
+import com.group3.backend.exceptions.CheckMatrNrClass;
+import com.group3.backend.exceptions.Course.*;
+import com.group3.backend.exceptions.MatrNrWrongLengthException;
+import com.group3.backend.exceptions.NoDescriptionException;
+import com.group3.backend.exceptions.NoMatrNrException;
 import com.group3.backend.model.Course;
-import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
@@ -20,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class CourseService {
+public class CourseService extends CheckMatrNrClass {
 
     private CourseRepository courseRepository;
     private StudentRepository studentRepository;
@@ -69,6 +71,9 @@ public class CourseService {
      */
     public ResponseEntity<?> getStudentsCourses( String matrNr){
         try{
+            if (!checkMatriculationNumber(matrNr)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong MatrNr format!");
+            }
             //Student student = studentRepository.findByMatrNr(matrNr);
             if((studentService.getStudentByNumber(matrNr).getBody().getClass()==String.class)){
                 return studentService.getStudentByNumber(matrNr);
@@ -88,8 +93,11 @@ public class CourseService {
      * @param number
      * @return ResponseEntity<Course> if successfull, otherwiese ResponseEntity<String> with error message
      */
-    public ResponseEntity<?> getCourseByNumber( String number){
+    public ResponseEntity<?> getCourseByNumber(String number){
         try{
+            if (number.trim().isEmpty()){
+                throw new CourseWithoutNumberException("Error: No number is given!");
+            }
             Course cs = courseRepository.findByNumber(number);
             if(cs == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this numbe r" +number+" in the system");
@@ -110,6 +118,12 @@ public class CourseService {
     public ResponseEntity<?> addCourseToStudent(String matrNr,  Course course){
         Course course1 = null;
         try {
+            if (!checkMatriculationNumber(matrNr)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong MatrNr format!");
+            }
+            if (!checkCourse(course)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error in the course object!");
+            }
             Student student = studentRepository.findByMatrNr(matrNr);
             course1 = courseRepository.findByNumber(course.getNumber());
             Set<Student> studentSet = new HashSet<>();
@@ -130,18 +144,22 @@ public class CourseService {
      * @return ResponseEntity<Course> if successfull, otherwiese ResponseEntity<String> with error message
      */
     public ResponseEntity<?> createCourse(Course course){
-        for (Course c : courseRepository.findAll()){
-            if (course.getNumber().equals(c.getNumber())||course.getDescription().equals(c.getDescription())){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Coursenumber already exists in the repository");
-            }
-        }
         try{
-            Course cs = new Course(course.getFieldOfStudy(),course.getNumber(), course.getDescription(),
-                    course.getRoom(), course.getProfessor(), course.getEcts(), course.getKindOfSubject(), course.getReccomendedSemester(),
-                    course.getStudyFocus());
-            courseRepository.save(cs);
-            return ResponseEntity.status(HttpStatus.OK).body(cs);
-        }catch (Exception e){
+            if (!checkCourse(course)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error in the course object!");
+            }
+            for (Course c : courseRepository.findAll()){
+                if (course.getNumber().equals(c.getNumber())||course.getDescription().equals(c.getDescription())){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Coursenumber already exists in the repository");
+                }
+            }
+                Course cs = new Course(course.getFieldOfStudy(),course.getNumber(), course.getDescription(),
+                        course.getRoom(), course.getProfessor(), course.getEcts(), course.getKindOfSubject(), course.getRecommendedSemester(),
+                        course.getStudyFocus());
+                courseRepository.save(cs);
+                return ResponseEntity.status(HttpStatus.OK).body(cs);
+        }
+        catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
@@ -152,32 +170,66 @@ public class CourseService {
      * @return
      */
     public ResponseEntity<?> deleteCourse(String number){
-        Course course = courseRepository.findByNumber(number);
-        if(course == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this numbe r" +number+" in the system");
-        }else {
-            courseRepository.delete(course);
+        try{
+            if (number.trim().isEmpty()){
+                throw new CourseWithoutNumberException("Error: No number is given!");
+            }
+            Course course = courseRepository.findByNumber(number);
+            if(course == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this numbe r" +number+" in the system");
+            }else {
+                courseRepository.delete(course);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(course);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(course);
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
     }
 
+    /**
+     * Returns a List of Courses, selected by their kindOfSubject.
+     * @param kindOfSubject
+     * @return
+     */
     public ResponseEntity<?> getCourseByKindOfSubject(String kindOfSubject){
-        List<Course> courses = courseRepository.findAllByKindOfSubject(kindOfSubject);
-        if (courses.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this kind of subject in the system.");
+        try{
+            if (kindOfSubject.trim().isEmpty()){
+                throw new CourseWithoutKindOfSubjectException("Error: No kind of subject is given!");
+            }
+            List<Course> courses = courseRepository.findAllByKindOfSubject(kindOfSubject);
+            if (courses.isEmpty()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this kind of subject in the system.");
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.OK).body(courses);
+            }
         }
-        else {
-            return ResponseEntity.status(HttpStatus.OK).body(courses);
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
 
+    /**
+     * Returns a List of Courses, selected by their studyFocus.
+     * @param studyFocus
+     * @return
+     */
     public ResponseEntity<?> getCourseByStudyFocus(String studyFocus){
-        List<Course> courses = courseRepository.findAllByKindOfSubject(studyFocus);
-        if (courses.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this study focus in the system.");
+        try{
+            if (studyFocus.trim().isEmpty()){
+                throw new CourseWithoutStudyFocusException("Error: No study focus is given!");
+            }
+            List<Course> courses = courseRepository.findAllByKindOfSubject(studyFocus);
+            if (courses.isEmpty()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this study focus in the system.");
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.OK).body(courses);
+            }
         }
-        else {
-            return ResponseEntity.status(HttpStatus.OK).body(courses);
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
 
@@ -202,25 +254,75 @@ public class CourseService {
      * @return
      */
     public ResponseEntity<?> deleteCourseFromStudent(String number, String matrNr) {
-        if ((studentService.getStudentByNumber(matrNr).getBody().getClass() == String.class)) {
-            return studentService.getStudentByNumber(matrNr);
-        } else {
-            try {
-                Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-                Set<Course> courseSet = student.getCourses();
-                Course course = new Course();
-                for (Course c : courseSet) {
-                    if (c.getNumber().equals(number)) {
-                        course = c;
-                    }
-                }
-                courseRepository.delete(course);
-                courseSet = student.getCourses();
-                return ResponseEntity.status(HttpStatus.OK).body(courseSet);
-            }catch (Exception e){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        try{
+            if (number.trim().isEmpty()){
+                throw new CourseWithoutNumberException("Error: No number is given!");
             }
+            if (matrNr.trim().isEmpty()){
+                throw new NoMatrNrException("Error: No MatrNr is given!");
+            }
+            if (!checkMatriculationNumber(matrNr)){
+                throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
+            }
+            if ((studentService.getStudentByNumber(matrNr).getBody().getClass() == String.class)) {
+                return studentService.getStudentByNumber(matrNr);
+            } else {
+                try {
+                    Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+                    Set<Course> courseSet = student.getCourses();
+                    Course course = new Course();
+                    for (Course c : courseSet) {
+                        if (c.getNumber().equals(number)) {
+                            course = c;
+                        }
+                    }
+                    courseRepository.delete(course);
+                    courseSet = student.getCourses();
+                    return ResponseEntity.status(HttpStatus.OK).body(courseSet);
+                }catch (Exception e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+                }
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
 
+    public boolean checkCourse(Course course){
+        try{
+            if (course.getNumber().trim().isEmpty()){
+                throw new CourseWithoutNumberException("Error: No number in the course!");
+            }
+            if (course.getDescription().trim().isEmpty()){
+                throw new NoDescriptionException("Error: No description in the course!");
+            }
+            if (course.getEcts() < 1){
+                throw new CourseWithZeroECTSException("Error: The course has zero or negative ECTs!");
+            }
+            if (course.getFieldOfStudy().trim().isEmpty()){
+                throw new CourseWithoutFieldOfStudyException("Error: The course has no field of study!");
+            }
+            if (course.getKindOfSubject().trim().isEmpty()){
+                throw new CourseWithoutKindOfSubjectException("Error: The course has no kind of subject!");
+            }
+            if (course.getProfessor().trim().isEmpty()){
+                throw new CourseWithoutProfessorException("Error: The course has no professor!");
+            }
+            if (course.getRecommendedSemester() > 1 || course.getRecommendedSemester()>10){
+                throw new CourseWithoutRecommendedSemesterException("Error: The course has no valid recommended semester!");
+            }
+            if (course.getStudyFocus().trim().isEmpty()){
+                throw new CourseWithoutStudyFocusException("Error: The course has no study focus!");
+            }
+            if (course.getRoom().trim().isEmpty()){
+                throw new CourseWithoutRoomException("Error: The course has no room!");
+            }
+            return true;
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+            return false;
+        }
+    }
 }

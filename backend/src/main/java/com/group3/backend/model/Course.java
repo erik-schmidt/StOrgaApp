@@ -28,7 +28,7 @@ public class Course implements Serializable {
     @NotNull
     private String kindOfSubject;
     @NotNull
-    private int reccomendedSemester;
+    private int recommendedSemester;
     @NotNull
     private String studyFocus;
     @JsonIgnore
@@ -45,7 +45,7 @@ public class Course implements Serializable {
     }
 
     public Course(String fieldOfStudy, String number, String description, String room, String professor, int ects,
-                  String kindOfSubject, int reccomendedSemester, String studyFocus){
+                  String kindOfSubject, int recommendedSemester, String studyFocus){
         this.fieldOfStudy = fieldOfStudy;
         this.number = number;
         this.description = description;
@@ -53,7 +53,7 @@ public class Course implements Serializable {
         this.professor = professor;
         this.ects = ects;
         this.kindOfSubject  = kindOfSubject;
-        this.reccomendedSemester = reccomendedSemester;
+        this.recommendedSemester = recommendedSemester;
         this.studyFocus = studyFocus;
     }
 
@@ -113,12 +113,12 @@ public class Course implements Serializable {
         this.kindOfSubject = kindOfSubject;
     }
 
-    public int getReccomendedSemester() {
-        return reccomendedSemester;
+    public int getRecommendedSemester() {
+        return recommendedSemester;
     }
 
-    public void setReccomendedSemester(int reccomendedSemester) {
-        this.reccomendedSemester = reccomendedSemester;
+    public void setRecommendedSemester(int reccomendedSemester) {
+        this.recommendedSemester = reccomendedSemester;
     }
 
     public String getStudyFocus() {
@@ -146,7 +146,7 @@ public class Course implements Serializable {
         sb.append(professor+ " ");
         sb.append("ECTS: " + ects + " ");
         sb.append(kindOfSubject + " ");
-        sb.append("Reccomended Semester: " + reccomendedSemester + " ");
+        sb.append("Recommended Semester: " + recommendedSemester + " ");
         sb.append(studyFocus);
         return sb.toString();
     }

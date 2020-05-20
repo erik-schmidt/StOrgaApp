@@ -1,7 +1,6 @@
 package com.group3.backend;
 
-import com.group3.backend.exceptions.CurrentSemesterException;
-import com.group3.backend.exceptions.MatriculationNumberException;
+import com.group3.backend.exceptions.Course.CourseWithoutRecommendedSemesterException;
 import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
@@ -105,11 +104,11 @@ class StudentTests {
         //check current semester is greater than 1
         student.setCurrentSemester(0);
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         //check current semester is lowert than 15
         student.setCurrentSemester(16);
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         student.setCurrentSemester(1);
 
         //check successful create of valid student
@@ -211,11 +210,11 @@ class StudentTests {
         //check current semester is greater than 1
         studentU.setCurrentSemester(0);
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         //check current semester is lowert than 15
         studentU.setCurrentSemester(16);
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         studentU.setCurrentSemester(1);
 
         List<Student> studentListBeforeUpdate = createDefaultStudentsAndAddToRepo();
