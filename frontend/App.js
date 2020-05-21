@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import DrawerNavigation from "./src/navigation";
 import { AsyncStorage } from "react-native";
-import { createStackNavigator, Assets } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
 import RegisterScreen from "./src/screens/Register";
 import LoginScreen from "./src/screens/Login";
@@ -11,7 +11,7 @@ import { login } from "./src/api/services/LoginService";
 import { register } from "./src/api/services/RegisterService";
 import * as HttpStatus from "http-status-codes";
 
-const App = ({ navigation }) => {
+const App = () => {
   const Stack = createStackNavigator();
 
   const [state, dispatch] = React.useReducer(
