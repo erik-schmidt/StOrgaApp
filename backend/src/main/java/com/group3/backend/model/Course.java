@@ -31,6 +31,12 @@ public class Course implements Serializable {
     private int reccomendedSemester;
     @NotNull
     private String studyFocus;
+    @NotNull
+    private Double workingHoursInClass;
+    @NotNull
+    private Double workingHoursSelf;
+    @NotNull
+    private String kindOfExam;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -45,7 +51,8 @@ public class Course implements Serializable {
     }
 
     public Course(String fieldOfStudy, String number, String description, String room, String professor, int ects,
-                  String kindOfSubject, int reccomendedSemester, String studyFocus){
+                  String kindOfSubject, int reccomendedSemester, String studyFocus, Double workingHoursInClass,
+                  Double workingHoursSelf, String kindOfExam){
         this.fieldOfStudy = fieldOfStudy;
         this.number = number;
         this.description = description;
@@ -55,6 +62,9 @@ public class Course implements Serializable {
         this.kindOfSubject  = kindOfSubject;
         this.reccomendedSemester = reccomendedSemester;
         this.studyFocus = studyFocus;
+        this.workingHoursInClass = workingHoursInClass;
+        this.workingHoursSelf = workingHoursSelf;
+        this.kindOfExam = kindOfExam;
     }
 
     public String getDescription() {
@@ -137,6 +147,30 @@ public class Course implements Serializable {
         this.fieldOfStudy = fieldOfStudy;
     }
 
+    public Double getWorkingHoursInClass() {
+        return workingHoursInClass;
+    }
+
+    public void setWorkingHoursInClass(Double workingHoursInClass) {
+        this.workingHoursInClass = workingHoursInClass;
+    }
+
+    public Double getWorkingHoursSelf() {
+        return workingHoursSelf;
+    }
+
+    public void setWorkingHoursSelf(Double workingHoursSelf) {
+        this.workingHoursSelf = workingHoursSelf;
+    }
+
+    public String getKindOfExam() {
+        return kindOfExam;
+    }
+
+    public void setKindOfExam(String kindOfExam) {
+        this.kindOfExam = kindOfExam;
+    }
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(fieldOfStudy + " ");
@@ -148,6 +182,9 @@ public class Course implements Serializable {
         sb.append(kindOfSubject + " ");
         sb.append("Reccomended Semester: " + reccomendedSemester + " ");
         sb.append(studyFocus);
+        sb.append("Time in class: " + workingHoursInClass);
+        sb.append("Self study Time: " + workingHoursSelf);
+        sb.append("Exam: " + kindOfExam);
         return sb.toString();
     }
 }
