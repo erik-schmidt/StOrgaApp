@@ -33,7 +33,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses(){
         Set<Course> courseSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH + AIBCOURSES_FILE))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(AIBCOURSES_FILE))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
@@ -58,7 +58,7 @@ public class DataHandler {
      */
     public Student loadAdminUser(){
         Student admin = new Student();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH + ADMIN_USER))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(ADMIN_USER))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
