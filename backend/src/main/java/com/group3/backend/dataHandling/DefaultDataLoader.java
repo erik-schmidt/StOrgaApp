@@ -1,8 +1,10 @@
 package com.group3.backend.dataHandling;
 
 import com.group3.backend.model.Course;
+import com.group3.backend.model.News;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
+import com.group3.backend.repository.NewsRepository;
 import com.group3.backend.repository.StudentRepository;
 import com.group3.backend.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private final StudentRepository studentRepository;
     @NonNull
     private StudentService studentService;
+    @NonNull
+    private final NewsRepository newsRepository;
 
     /**
      * load the standard informations with {@link DataHandler} and save it in the repositories
@@ -46,6 +50,12 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
         Set<Course> courseSet = dataHandler.loadCourses();
         for (Course course : courseSet) {
             courseRepository.save(course);
+        }
+
+
+        Set<News> newsSet = dataHandler.loadNews();
+        for(News news : newsSet) {
+            newsRepository.save(news);
         }
 
 
