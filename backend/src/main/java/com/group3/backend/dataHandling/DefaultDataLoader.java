@@ -32,17 +32,19 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private final NewsRepository newsRepository;
 
     /**
-     * load the standard informations with {@link DataHandler} and save it in the repositories
+     * load the standard informations with {@link DataHandler} and save it in the
+     * repositories
+     * 
      * @param event
      */
     public void onApplicationEvent(ApplicationReadyEvent event) {
         DataHandler dataHandler = new DataHandler();
-        //load and save admin user
+        // load and save admin user
         Student student = dataHandler.loadAdminUser();
-        if(studentRepository.findByMatrNr(student.getMatrNr())==null){
+        if (studentRepository.findByMatrNr(student.getMatrNr()) == null) {
             studentService.createStudent(student);
         }
-        //load and save default courses
+        // load and save default courses
         if (courseRepository.count() > 0) {
             return;
         }
@@ -52,12 +54,10 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             courseRepository.save(course);
         }
 
-
         Set<News> newsSet = dataHandler.loadNews();
-        for(News news : newsSet) {
+        for (News news : newsSet) {
             newsRepository.save(news);
         }
-
 
     }
 }
