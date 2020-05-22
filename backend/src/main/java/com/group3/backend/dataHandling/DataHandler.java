@@ -25,7 +25,8 @@ public class DataHandler {
     // private final String PATH_TOM = "D:\\Studium\\Semester
     // 4\\SwLab\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
     private final String PATH_ALEXA = "D:\\alexa\\AIB4\\SWLAB\\Projekt\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
-    private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
+
+    private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
     private final String NEWS_FILE = "News.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);

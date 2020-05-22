@@ -45,19 +45,17 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             studentService.createStudent(student);
         }
         // load and save default courses
-        if (courseRepository.count() > 0) {
-            return;
+        if (courseRepository.count() <= 0) {
+            Set<Course> courseSet = dataHandler.loadCourses();
+            for (Course course : courseSet) {
+                courseRepository.save(course);
+            }
         }
-
-        Set<Course> courseSet = dataHandler.loadCourses();
-        for (Course course : courseSet) {
-            courseRepository.save(course);
+        if(newsRepository.count() <=0){
+            Set<News> newsSet = dataHandler.loadNews();
+            for (News news : newsSet) {
+                newsRepository.save(news);
+            }
         }
-
-        Set<News> newsSet = dataHandler.loadNews();
-        for (News news : newsSet) {
-            newsRepository.save(news);
-        }
-
     }
 }
