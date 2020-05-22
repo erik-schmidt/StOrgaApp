@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { getAllNews } from "../../../api/services/NewsletterService";
+import {
+  getAllNews,
+  pingNewsletter,
+} from "../../../api/services/NewsletterService";
 import Card from "../../../components/Card/Card";
 import Toast from "../../../components/Toast/Toast";
 import styles from "./NewsletterList.style";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 
 const NewsList = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [news, setNews] = useState(props.news);
-  const navigation = useNavigation();
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -34,6 +36,7 @@ const NewsList = (props) => {
       });
   };
   useEffect(() => {
+    pingNewsletter();
     getAllNews()
       .then((res) => {
         if (res != undefined) {
@@ -51,6 +54,7 @@ const NewsList = (props) => {
   }, []);
 
   useEffect(() => {
+    pingNewsletter;
     getAllNews()
       .then((res) => {
         if (res != undefined) {
@@ -67,7 +71,7 @@ const NewsList = (props) => {
       });
   }, [route]);
 
-  const News = [
+  /*const News = [
     {
       title: "Titel1",
       message: "Erster Eintrag",
@@ -80,17 +84,17 @@ const NewsList = (props) => {
       author: "Alexa Krepp",
       published: "21.05.2020",
     },
-  ];
+  ];*/
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={News}
+        data={news}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         renderItem={({ item }) => (
-          <Card key={News.length}>
+          <Card key={news.length}>
             <View>
               <Text style={styles.newsHeader}>{item.title}</Text>
             </View>
