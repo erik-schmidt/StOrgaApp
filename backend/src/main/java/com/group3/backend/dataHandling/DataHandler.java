@@ -22,7 +22,8 @@ public class DataHandler {
 
     // private final String PATH_CHRIS =
     // "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
-    private final String PATH_TOM = "D:\\Studium\\Semester 4\\SwLab\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
+    //private final String PATH_TOM = "D:\\Studium\\Semester 4\\SwLab\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
+    private final String PATH_ALEXA ="D:\\alexa\\AIB4\\SWLAB\\Projekt\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
     private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
     private final String ADMIN_USER = "AdminUser.txt";
     private final String NEWS_FILE = "News.txt";
@@ -33,12 +34,12 @@ public class DataHandler {
 
     /**
      * lade a set of the default courses out of a file
-     * 
+     *
      * @return Set of courses
      */
     public Set<Course> loadCourses() {
         Set<Course> courseSet = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_TOM + AIBCOURSES_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_ALEXA + AIBCOURSES_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -60,12 +61,12 @@ public class DataHandler {
 
     /**
      * loads the administrator user out of the file
-     * 
+     *
      * @return Student which represents the administrator
      */
     public Student loadAdminUser() {
         Student admin = new Student();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_TOM + ADMIN_USER))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_ALEXA + ADMIN_USER))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -89,7 +90,7 @@ public class DataHandler {
 
     public Set<News> loadNews() {
         Set<News> newsSet = new HashSet();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_TOM + NEWS_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_ALEXA + NEWS_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
