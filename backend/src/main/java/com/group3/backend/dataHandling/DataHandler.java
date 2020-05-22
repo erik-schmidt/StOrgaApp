@@ -24,7 +24,7 @@ public class DataHandler {
     // "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
     // private final String PATH_TOM = "D:\\Studium\\Semester
     // 4\\SwLab\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
-    private final String PATH_ALEXA = "D:\\alexa\\AIB4\\SWLAB\\Projekt\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
+    //private final String PATH_ALEXA = "D:\\alexa\\AIB4\\SWLAB\\Projekt\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
 
     private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
@@ -41,7 +41,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses() {
         Set<Course> courseSet = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_ALEXA + AIBCOURSES_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader( AIBCOURSES_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -68,7 +68,7 @@ public class DataHandler {
      */
     public Student loadAdminUser() {
         Student admin = new Student();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_ALEXA + ADMIN_USER))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader( ADMIN_USER))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -92,7 +92,7 @@ public class DataHandler {
 
     public Set<News> loadNews() {
         Set<News> newsSet = new HashSet();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PATH_ALEXA + NEWS_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader( NEWS_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
