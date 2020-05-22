@@ -19,7 +19,8 @@ import java.util.Set;
 public class DataHandler {
 
     private final String PATH = "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
-    private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
+    //private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
+    private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);
 
@@ -32,12 +33,14 @@ public class DataHandler {
      */
     public Set<Course> loadCourses(){
         Set<Course> courseSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH + AIBCOURSES_FILE))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(AIBCOURSES_FILE))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
                     String[] k = line.split("#");
-                    Course course = new Course(k[0], k[1], k[2], k[3], k[4], Integer.parseInt(k[5]), k[6], Integer.parseInt(k[7]), k[8]);
+                    String b = k[9];
+                    double a = Double.parseDouble(b);
+                    Course course = new Course(k[0], k[1], k[2], k[3], k[4], Integer.parseInt(k[5]), k[6], Integer.parseInt(k[7]), k[8], Double.parseDouble(k[9]), Double.parseDouble(k[10]), k[11]);
                     courseSet.add(course);
                 }
                 line = reader.readLine();
@@ -55,7 +58,7 @@ public class DataHandler {
      */
     public Student loadAdminUser(){
         Student admin = new Student();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH + ADMIN_USER))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(ADMIN_USER))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {

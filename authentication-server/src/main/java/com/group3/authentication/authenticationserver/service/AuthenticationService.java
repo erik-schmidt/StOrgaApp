@@ -76,7 +76,7 @@ public class AuthenticationService {
                     st.getStudentFamilyname() + " successfully saved");
             return new ResponseEntity(st, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity(e.getClass()+" "+e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
