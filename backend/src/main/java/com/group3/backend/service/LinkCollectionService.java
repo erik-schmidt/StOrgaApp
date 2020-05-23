@@ -1,5 +1,9 @@
 package com.group3.backend.service;
 
+import com.group3.backend.exceptions.CheckMatrNrClass;
+import com.group3.backend.exceptions.LinkList.LinkedListWithoutLinkException;
+import com.group3.backend.exceptions.LinkList.LinkedListWithoutLinkIDException;
+import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.model.Link;
 import com.group3.backend.repository.LinkRepository;
 import com.group3.backend.repository.StudentRepository;
@@ -13,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LinkCollectionService {
+public class LinkCollectionService extends CheckMatrNrClass {
 
     private LinkRepository linkRepository;
     private StudentRepository studentRepository;
@@ -40,6 +44,9 @@ public class LinkCollectionService {
      */
     public ResponseEntity<?> getLinkListByMatrNr(String matrNr){
         try {
+            if (!checkMatriculationNumber(matrNr)){
+                throw new Exception("Problem with MatrNr!");
+            }
             List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
             if (linkList.isEmpty()) {
                 logger.error("There are no links for this student.");
@@ -60,6 +67,12 @@ public class LinkCollectionService {
      */
     public ResponseEntity<?> getLinkListByMatrNrAndNr(String matrNr, int linkId){
         try{
+            if (!checkMatriculationNumber(matrNr)){
+                throw new Exception("Problem with MatrNr!");
+            }
+            if (linkId == 0){
+                throw new LinkedListWithoutLinkIDException("Error: No linkID given!");
+            }
             Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
             if (link == null){
                 logger.error("There are no link for this student with that linkId");
@@ -80,6 +93,12 @@ public class LinkCollectionService {
      */
     public ResponseEntity<?> addLinkToStudent(String matrNr, Link link){
         try{
+            if (!checkMatriculationNumber(matrNr)){
+                throw new Exception("Problem with MatrNr!");
+            }
+            if (!checkLink(link)){
+                throw new Exception("Problem with the given link object!");
+            }
             link.setStudent(studentRepository.findByMatrNr(matrNr));
             linkRepository.save(link);
             linkRepository.saveAndFlush(link);
@@ -98,14 +117,26 @@ public class LinkCollectionService {
      * @return
      */
     public ResponseEntity<?> deleteLink(String matrNr, int linkId){
-        Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
-        if (link == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
+        try {
+            if (!checkMatriculationNumber(matrNr)){
+                throw new Exception("Problem with MatrNr!");
+            }
+            if (linkId == 0){
+                throw new LinkedListWithoutLinkIDException("Error: No linkID given!");
+            }
+            Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
+            if (link == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
+            }
+            try{
+                linkRepository.delete(link);
+                return ResponseEntity.status(HttpStatus.OK).body(link);
+            }
+            catch (Exception e){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+            }
         }
-        try{
-            linkRepository.delete(link);
-            return ResponseEntity.status(HttpStatus.OK).body(link);
-        }catch (Exception e){
+        catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
@@ -119,6 +150,20 @@ public class LinkCollectionService {
      * @return
      */
     public ResponseEntity<?> changeLink(String matrNr, int linkId, Link newLink){
+        try {
+            if (!checkMatriculationNumber(matrNr)){
+                throw new Exception("Problem with MatrNr!");
+            }
+            if (linkId == 0){
+                throw new LinkedListWithoutLinkIDException("Error: No linkID given!");
+            }
+            if (!checkLink(newLink)){
+                throw new Exception("Problem with the given link object!");
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
         Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
         if (link == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
@@ -133,5 +178,20 @@ public class LinkCollectionService {
         }
     }
 
+    public boolean checkLink(Link link){
+        try {
+            if (link.getLink().trim().isEmpty()){
+                throw new LinkedListWithoutLinkException("Error: Link object has no link!");
+            }
+            if (link.getLinkDescription().trim().isEmpty()){
+                throw new NoDescriptionException("Error: Link has no description!");
+            }
+            return true;
+        }
+        catch (Exception e){
+            logger.error(e.getClass() + " " + e.getMessage());
+            return false;
+        }
+    }
 
 }

@@ -260,7 +260,7 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     private boolean checkMatricularNumberIsFree(String matrNr){
         try{
             if (!checkMatriculationNumber(matrNr)){
-                throw new Exception("Problem with MatrNr");
+                throw new Exception("Problem with MatrNr!");
             }
             Student st = studentRepository.findByMatrNr(matrNr);
             if(st == null){
