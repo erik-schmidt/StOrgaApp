@@ -89,7 +89,9 @@ const App = () => {
         register(data)
           .then((res) => {
             if (res.status === HttpStatus.OK) {
-              alert("Registration erfolgreich. Nach dem Login kannst du loslegen!")
+              alert(
+                "Registration erfolgreich. Nach dem Login kannst du loslegen!"
+              );
               dispatch({ type: "SIGN_UP", token: null });
             } else {
               throw new Error(res.data);

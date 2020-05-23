@@ -2,8 +2,7 @@ import Axios from "axios";
 import * as HttpStatus from "http-status-codes";
 import { AsyncStorage } from "react-native";
 const axios = Axios.create({
-  //baseURL: "http://172.18.68.241:8080/api/",
-  baseURL: "http://172.18.110.177:8080/api/",
+  baseURL: "http://192.168.178.27:8080/api/",
   responseType: "application/json",
 });
 
