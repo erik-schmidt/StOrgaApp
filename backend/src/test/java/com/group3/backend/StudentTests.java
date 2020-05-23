@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @SpringBootTest
@@ -19,7 +20,12 @@ class StudentTests {
     @Autowired
     private StudentService studentService;
     private Random random = new Random();
+    private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public StudentTests(PasswordEncoder passwordEncoder){
+        this.passwordEncoder = passwordEncoder;
+    }
     /**
      * deleteStudents
      * delete all students out of repository for a clean test
@@ -274,12 +280,34 @@ class StudentTests {
      * @return List<Student>
      */
     private List<Student> createDefaultStudentsAndAddToRepo(){
-        Student student0 = new Student("202480", "Liyan", "Fu-Wacker",
-                "AIB", 7);
-        Student student1 = new Student("202481", "Chris", "Wacker",
-                "AIB", 4);
-        Student student2 = new Student("202482", "Max", "Mustermann",
-                "AIB", 2);
+        Student student0 = new Student();
+        student0.setMatrNr("202480");
+        student0.setStudentPrename("Liyan");
+        student0.setStudentFamilyname("Fu-Wacker");
+        student0.setFieldOfStudy("AIB");
+        student0.setCurrentSemester(7);
+        student0.setUsername("LiyanFuW");
+        student0.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
+
+        Student student1 = new Student();
+        student1.setMatrNr("202481");
+        student1.setStudentPrename("Chris");
+        student1.setStudentFamilyname("Wacker");
+        student1.setFieldOfStudy("AIB");
+        student1.setCurrentSemester(4);
+        student1.setUsername("ChrisWa01");
+        student1.setPassword(passwordEncoder.encode("chirs"));
+        Student student2 = new Student();
+
+        student2.setMatrNr("202482");
+        student2.setStudentPrename("Max");
+        student2.setStudentFamilyname("Mustermann");
+        student2.setFieldOfStudy("AIB");
+        student2.setCurrentSemester(2);
+        student2.setUsername("maxi");
+        student2.setPassword(passwordEncoder.encode("maxxxi"));
+
+
         studentService.createStudent(student0);
         studentService.createStudent(student1);
         studentService.createStudent(student2);
@@ -296,8 +324,14 @@ class StudentTests {
      * @return Student
      */
     private Student createDefaultStudentAndAddToRepo(){
-        Student student = new Student("202479", "John", "Doe",
-                "AIB", 7);
+        Student student = new Student();
+        student.setMatrNr("202479");
+        student.setStudentPrename("John");
+        student.setStudentFamilyname("Doe");
+        student.setFieldOfStudy("AIB");
+        student.setCurrentSemester(7);
+        student.setUsername("JohnDoooo");
+        student.setPassword(passwordEncoder.encode("johnny"));
         studentService.createStudent(student);
         return student;
     }
@@ -308,8 +342,14 @@ class StudentTests {
      * @return
      */
     private Student getNeverUsedStudentObject(){
-        Student student = new Student("100000", "Fritz", "Mueller",
-                "AIB", 1);
+        Student student = new Student();
+        student.setMatrNr("100000");
+        student.setStudentPrename("Fritz");
+        student.setStudentFamilyname("Mueller");
+        student.setFieldOfStudy("AIB");
+        student.setCurrentSemester(1);
+        student.setUsername("FritzM");
+        student.setPassword(passwordEncoder.encode("fritzle"));
         return student;
     }
 

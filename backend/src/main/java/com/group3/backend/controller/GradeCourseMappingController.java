@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class GradeCourseMappingController {
 
     private GradeCourseMappingService gradeCourseMappingService;
+    private AccessChecker accessChecker;
 
     @Autowired
-    public GradeCourseMappingController(GradeCourseMappingService gradeCourseMappingService) {
+    public GradeCourseMappingController(GradeCourseMappingService gradeCourseMappingService, AccessChecker accessChecker) {
         this.gradeCourseMappingService = gradeCourseMappingService;
+        this.accessChecker = accessChecker;
     }
 
     /**
@@ -27,9 +29,11 @@ public class GradeCourseMappingController {
      * @return ResoponesEntity
      */
     @PutMapping("/add/{matrNr}")
-    public ResponseEntity<?> addGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping){
-        ResponseEntity<?> responseEntity = gradeCourseMappingService.addGradeCourseToStudent(matrNr, gradeCourseMapping);
-        return responseEntity;
+    public ResponseEntity<?> addGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return gradeCourseMappingService.addGradeCourseToStudent(matrNr, gradeCourseMapping);
     }
 
     /**
@@ -39,9 +43,11 @@ public class GradeCourseMappingController {
      * @return ResoponesEntity
      */
     @GetMapping("/getAll/{matrNr}")
-    public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr){
-        ResponseEntity<?> responseEntity = gradeCourseMappingService.getAllGradeCourseOfStudent(matrNr);
-        return responseEntity;
+    public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return gradeCourseMappingService.getAllGradeCourseOfStudent(matrNr);
     }
 
     /**
@@ -62,9 +68,11 @@ public class GradeCourseMappingController {
      * @return  ResponseEntity<?>
      */
     @GetMapping("/get/{matrNr}/{number}")
-    public ResponseEntity<?> getGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-        ResponseEntity<?> responseEntity = gradeCourseMappingService.getGradeCourseOfStudent(matrNr, number);
-        return responseEntity;
+    public ResponseEntity<?> getGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return gradeCourseMappingService.getGradeCourseOfStudent(matrNr, number);
     }
 
     /**
@@ -75,8 +83,10 @@ public class GradeCourseMappingController {
      * @return ResoponesEntity
      */
     @DeleteMapping("/delete/{matrNr}/{number}")
-    public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-        ResponseEntity<?> responseEntity = gradeCourseMappingService.deleteGradeCourseOfStudent(matrNr, number);
-        return responseEntity;
+    public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return gradeCourseMappingService.deleteGradeCourseOfStudent(matrNr, number);
     }
 }

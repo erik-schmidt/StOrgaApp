@@ -155,7 +155,7 @@ public class CourseService extends CheckMatrNrClass {
             }
                 Course cs = new Course(course.getFieldOfStudy(),course.getNumber(), course.getDescription(),
                         course.getRoom(), course.getProfessor(), course.getEcts(), course.getKindOfSubject(), course.getRecommendedSemester(),
-                        course.getStudyFocus());
+                        course.getStudyFocus(), course.getWorkingHoursInClass(), course.getWorkingHoursSelf(), course.getKindOfExam());
                 courseRepository.save(cs);
                 return ResponseEntity.status(HttpStatus.OK).body(cs);
         }
@@ -233,9 +233,7 @@ public class CourseService extends CheckMatrNrClass {
         }
     }
 
-
-    /*
-    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(String matrNr, String number){
+    /*public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(String matrNr, String number){
         Student student = studentRepository.findByMatrNr(matrNr);
         Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(student);
         double grade = 0;
