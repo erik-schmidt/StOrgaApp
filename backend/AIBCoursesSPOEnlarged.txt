@@ -1,0 +1,33 @@
+AIB#173001#AI1.1 Arbeitstechniken#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Pflichtfach#1#Allgemein#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173002#AI1.2 Englisch für IT#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Allgemein#45.0#75.0#ehrveranstaltungsbegleitend durch praktische Arbei#
+AIB#173003#AI1.3 Grundlagen betriebswirtschaftlicher Prozesse#A000#Prof. Dr. Christian Fegeler#4#Pflichtfach#1#Allgemein#60.0#60.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173004#AI1.4 Recht in der IT#A000#Prof. Dr. Sabine Boos#2#Pflichtfach#2#Allgemein#0.0#0.0#ehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173011#AI2.1 Multimediatechnologie#A000#Prof. Dr. Martin Haag#2#Pflichtfach#1#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Kombinierte Prüfung mitKlausur als abschließender Prüfung#
+AIB#173012#AI2.2 Grundlagen der Mensch-ComputerInteraktion#AA000#Prof. Dr.-Ing. Gerrit Meixner#3#Pflichtfach#2#Allgemein#30.0#60.0#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173021#AI3.1 Programmieren 1#A000#Prof. Dr. Martin Haag#8#Pflichtfach#1#Allgemein#67.5#172.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173022#AI3.2 Programmieren 2#A000#Prof. Dr. Martin Haag#6#Pflichtfach#2#Allgemein#45.0#135.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+
+AIB#173031#AI4.1 Rechnernetze#000#Prof. Dr. Jörg Winckler#3#Pflichtfach#1#Allgemein#30.0#45.0#lehrveranstaltungsbegleitend durch Kombinierte Prüfung mitKlausur als abschließender Prüfung#
+AIB#173032#AI4.2 Mathematische Grundlagen der Informatik 1#A000#Prof. Dr. Oliver Kalthoff#5#Pflichtfach#2#Allgemein#60.0#30.0#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173033#AI4.3 Technische Informatik#A000#Prof. Dr.-Ing. Wolfgang Heß#2#Pflichtfach#2#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Kombinierte Prüfung mitKlausur als abschließender Prüfung#
+AIB#173034#AI4.4 Algorithmen und Datenstrukturen#A000#Prof. Dr. Tim Reichert#5#Pflichtfach#2#Allgemein#60.0#80.0#Prüfungsvorleistung durch praktische Arbeit#
+
+AIB#173041#AI5.1 Software Engineering#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#4#Pflichtfach#1#Allgemein#60.0#60.0#Prüfungsvorleistung durch praktische Arbeit#
+AIB#173042#AI5.2 Software Engineering 2#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#2#Pflichtfach#2#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173043#AI5.3 Software Engineering Ergänzungen#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#2#Pflichtfach#2#Allgemein#22.5#37.5#Prüfungsvorleistung durch praktische Arbeit#
+
+AIB#173121#VPI1.1 Grundlagen von Psychologie und Informatik#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#1#Psychologie#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173122#VPI1.2 Grundlagen empirischer Forschung#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#2#Psychologie#22.5#67.5#ehrveranstaltungsbegleitend durch praktische Arbeit#
+
+AIB#173161#VMC1.1 Grundlagen mobiler Lebenswelte#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Mobile Computig#22.5#37.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173162#VMC1.2 Grundlagen der Sensorik#A000#Prof. Dr. Oliver Kalthoff#3#Pflichtfach#2#Mobile Computig#0.0#0.0#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173051#AI6.1 Mathematische Grundlagen der Informatik 2#A000#Prof. Dr. Oliver Kalthoff#5#Pflichtfach#3#Allgemein#60.0#30.0#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173052#AI6.2 Angewandte Kryptographie#A000#Prof. Dr.-Ing. Andreas Mayer#2#Pflichtfach#3#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173053#AI6.3 Theoretische Informatik#A000#Prof. Dr. Alois Heinz#5#Pflichtfach#4#Allgemein#60.0#88.5#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173061#AI7.1 Betriebssysteme#A000#Prof. Dr.-Ing. Wolfgang Heß#2#Pflichtfach#3#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173062#AI7.2 Datenbanken 1#A000#Prof. Dr.-Ing. Daniel Pfeifer#5#Pflichtfach#3#Allgemein#45.0#135.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+###

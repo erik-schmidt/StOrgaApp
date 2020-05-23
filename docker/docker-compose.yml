@@ -1,0 +1,68 @@
+version: "3.5"
+
+services:
+  backend:
+    image: developmentmaven
+    container_name: storga-backend
+    build:
+      context: ../backend
+      dockerfile: ./.docker/Dockerfile
+      target: developmentmaven
+    expose:
+      - "8080"
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+    volumes:
+      - ./../backend:/usr/src/mymaven/
+    networks:
+      - storga
+
+  authentication:
+    image: authenticationmaven
+    container_name: storga-authentication
+    build:
+      context: ../authentication-server
+      dockerfile: ./.docker/Dockerfile
+      target: authenticationmaven
+    expose:
+      - "8888"
+    depends_on:
+      - postgres
+    ports:
+      - "8888:8888"
+    command: mvn spring-boot:run
+    volumes:
+      - ./../authentication-server:/usr/src/myauthmaven
+    networks:
+      - storga
+
+  postgres:
+    image: developmentdb
+    build:
+      context: ../backend
+      dockerfile: ./.docker/Dockerfile
+      target: developmentdb
+    container_name: storga-postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=backend
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    volumes:
+      - storga-db:/var/lib/postgresql/data/
+      - storga-db:/docker-entrypoint-initdb.d
+    networks:
+      - storga
+
+volumes:
+  storga-db:
+
+networks:
+  storga:
