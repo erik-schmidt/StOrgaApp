@@ -5,33 +5,23 @@ import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCourse } from "../../../api/services/CourseService";
 import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
+import * as HttpStatus from "http-status-codes";
 
 const CourseMenu = ({ navigation, route }) => {
   const [course, setCourse] = useState(route.params?.course);
-  const [error, setError] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(route.parms?.editMode);
   const [selectedGrade, setSelectedGrade] = useState();
 
   const onDeleteCourse = () => {
-    deleteCourse(course.number)
-      .then((res) => {
-        if (res != undefined) {
-          setVisible(true);
-          setTimeout(() => {
-            setVisible(false);
-            navigation.navigate("Fächer", { deleteCourse: true });
-          }, 1000);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-        }, 3000);
-      });
+    deleteCourse(course.number).then(res => {
+      if (res.status === HttpStatus.OK) {
+        navigation.navigate("Fächer", {courseDeleted: true});
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
   };
 
   const onChangeGrade = () => {
@@ -68,16 +58,6 @@ const CourseMenu = ({ navigation, route }) => {
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
           </AppModal>
-          <Toast
-            color="red"
-            showModal={error}
-            text="Keine Verbindung zum Server"
-          />
-          <Toast
-            color="green"
-            showModal={visible}
-            text="Kurs erfolgreich gelöscht"
-          />
         </View>
       )}
     </View>

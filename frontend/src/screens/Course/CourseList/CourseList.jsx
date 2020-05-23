@@ -1,72 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, RefreshControl, Modal, AsyncStorage } from "react-native";
-import { getAllCourses } from "../../../api/services/CourseService";
+import { Text, View, RefreshControl, Alert } from "react-native";
+import { getAllCourses, getAllStudentCourses } from "../../../api/services/CourseService";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Toast from "../../../components/Toast/Toast";
-import Axios from "axios";
+import * as HttpStatus from "http-status-codes";
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const onRefresh = () => {
     setRefreshing(true);
-    getAllCourses()
-      .then((res) => {
-        if (res != undefined) {
-          setCourses(res.data);
-          setRefreshing(false);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
+    getAllStudentCourses().then(res => {
+      if (res.status === HttpStatus.OK) {
+        setCourses(res.data);
         setRefreshing(false);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
+      } else {
+        setRefreshing(false);
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000)
   };
 
   useEffect(() => {
-    getAllCourses()
-      .then((res) => {
-        if (res != undefined) {
-          setCourses(res.data);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
+    getAllStudentCourses().then(res => {
+      if (res.status === HttpStatus.OK) {
+        setCourses(res.data);
+      } else {
+        throw new Error(res.data)
+      }
+    }).catch(err => {
+      alert(err);
+    })
   }, []);
 
   useEffect(() => {
-    getAllCourses()
-      .then((res) => {
-        if (res != undefined) {
-          setCourses(res.data);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
+    getAllStudentCourses().then(res => {
+      if (res.status === HttpStatus.OK) {
+        setCourses(res.data);
+      } else {
+        throw new Error(res.data)
+      }
+    }).catch(err => {
+      alert(err);
+    })
   }, [route]);
 
   return (
@@ -101,11 +88,6 @@ const CourseList = () => {
           </Card>
         )}
         keyExtractor={(item) => item.description}
-      />
-      <Toast
-        showModal={showModal}
-        color="red"
-        text="Keine Verbindung zum Server"
       />
     </View>
   );

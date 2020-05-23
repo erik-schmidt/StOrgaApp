@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import DrawerNavigation from "./src/navigation";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./src/screens/SplashScreen";
 import RegisterScreen from "./src/screens/Register";
@@ -70,7 +70,6 @@ const App = () => {
       signIn: async (data) => {
         login(data)
           .then(async (res) => {
-            console.log(res);
             if (res.status === HttpStatus.OK) {
               await AsyncStorage.setItem("token", res.data.token);
               await AsyncStorage.setItem("matrNr", res.data.matrNr);
@@ -81,7 +80,7 @@ const App = () => {
             }
           })
           .catch((err) => {
-            alert(err);
+            Alert.alert("Login fehlgeschlagen",err);
           });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
@@ -89,14 +88,14 @@ const App = () => {
         register(data)
           .then((res) => {
             if (res.status === HttpStatus.OK) {
-              alert("Registration erfolgreich. Nach dem Login kannst du loslegen!")
+              Alert.alert("Registration erfolgreich", "Nach dem Login kannst du loslegen!")
               dispatch({ type: "SIGN_UP", token: null });
             } else {
               throw new Error(res.data);
             }
           })
           .catch((err) => {
-            alert(err);
+            Alert.alert("Registrierung fehlgeschlagen",err);
           });
       },
     }),
