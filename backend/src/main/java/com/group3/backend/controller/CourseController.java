@@ -1,7 +1,9 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.service.CourseService;
+import com.group3.backend.service.GradeCourseMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,13 @@ import java.util.Set;
 public class CourseController {
 
     private CourseService courseService;
+    private GradeCourseMappingService gradeCourseMappingService;
     private AccessChecker accessChecker;
 
     @Autowired
-    public CourseController(CourseService courseService, AccessChecker accessChecker){
+    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService) {
         this.courseService = courseService;
+        this.gradeCourseMappingService = gradeCourseMappingService;
         this.accessChecker = accessChecker;
     }
 
@@ -50,7 +54,7 @@ public class CourseController {
     }
 
     /**
-     * getCourseByNumger
+     * getCourseByNumber
      * get course information by search with the course number
      * @param number String
      * @return Course
@@ -58,6 +62,26 @@ public class CourseController {
     @GetMapping("/get/{number}")
     public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "number") String number){
         return courseService.getCourseByNumber(number);
+    }
+
+    /**
+     * Get the courses by their kindOfSubject.
+     * @param kindOfSubject
+     * @return
+     */
+    @GetMapping("/get/{kindOfSubject}")
+    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
+        return courseService.getCourseByKindOfSubject(kindOfSubject);
+    }
+
+    /**
+     * Get the courses by their studyFocus.
+     * @param studyFocus
+     * @return
+     */
+    @GetMapping("/get/{studyFocus}")
+    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
+        return courseService.getCourseByStudyFocus(studyFocus);
     }
 
     /**
