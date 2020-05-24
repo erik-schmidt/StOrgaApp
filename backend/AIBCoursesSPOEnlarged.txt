@@ -30,4 +30,33 @@ AIB#173053#AI6.3 Theoretische Informatik#A000#Prof. Dr. Alois Heinz#5#Pflichtfac
 
 AIB#173061#AI7.1 Betriebssysteme#A000#Prof. Dr.-Ing. Wolfgang Heß#2#Pflichtfach#3#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Klausur#
 AIB#173062#AI7.2 Datenbanken 1#A000#Prof. Dr.-Ing. Daniel Pfeifer#5#Pflichtfach#3#Allgemein#45.0#135.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173063#AI7.3 Datenbanken 2#A000#Prof. Dr.-Ing. Daniel Pfeifer#3#Pflichtfach#4#Allgemein#23.0#67.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173064#AI7.4 Verteilte Systeme#A000#Prof. Dr. Jörg Winckler#2#Pflichtfach#4#Allgemein#30.0#20.0#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173071#AI8.1 Projektmangement#A000#Prof. Dr. Christian Fegeler#2#Pflichfach#3#Allgemein#30.0#30.0#Prüfungsvorleistung durch praktische Arbeit#
+AIB#173072#AI8.2 Tools des SW Engineering#A000#Prof. Dr. Mark Hastenteufel#2#Pflichfach#3#Allgemein#0.0#0.0#Prüfungsvorleistung durch praktische Arbeit#
+AIB#173073#AI8.3 Software Engineering komplexer Systeme#A000#Prof. Dr. Mark Hastenteufel#4#Pflichtfach#4#Allgemein#60.0#60.0#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173081#AI9.1 Software Labor#A000#Prof. Dr.-Ing. Wolfgang Heß#9#Pflichtfach#3#Allgemein#90.0#180.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+
+AIB#173091#AI10.1 Labor für Software-Projekte und ProjectSkills#Prof. Dr. Christian Fegeler, Prof. Dr. rer. nat. Alexandra Reichenbach#A000#11#Pflichtfach#4#Allgemein#120.0#210.0#lehrveranstaltungsbegleitend durch praktische Arbeit#
+
+AIB#173101#AI11.1 Informationssicherheit#Prof. Dr.-Ing. Andreas Mayer#A000#3#Pflichtfach#6#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173102#AI11.2 IT und Gesellschaft#Prof. Dr. Wendelin Schramm#A000#2#Pflichtfach#7#Allgemein#0.0#0.0#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#171159#B15.4 Rechnerstrukturen#Prof. Dr.-Ing. Wolfgang Heß#A000#2#Pflichtfach#5#Allgemein#23.0#36.4#lehrveranstaltungsübergreifend durch Klausur#
+AIB#171169#B18.1 Grundlagen der MedizinischenSignalverarbeitung#Prof. Dr. Oliver Kalthoff#A000#2#Pflichtfach#5#Allgemein#23.0#36.25#lehrveranstaltungsübergreifend durch Klausur#
+AIB#171170#B18.2 Grundlagen der MedizinischenBildverarbeitung#Prof. Dr. Rolf Bendl#A000#2#Pflichtfach#5#Allgemein#23.0#36.25#lehrveranstaltungsübergreifend durch Klausur#
+AIB#171179#B20B.1 Informationsmanagement#Prof. Dr. Christian Fegeler#A000#3#Wahlpflichtveranstaltung#6#Allgemein#23.0#66.17#lehrveranstaltungsübergreifend durch Klausur#
+AIB#171180#B20B.2 Krankenhausinformationssysteme#Prof. Dr. Christian Fegeler#A000#3#Wahlpflichtveranstaltung#6#Allgemein#23.0#66.17#lehrveranstaltungsübergreifend durch Klausur#
+AIB#171181#B20B.3 Betrieb der Krankenhaus-IT-Abteilung#Prof. Dr. Christian Fegeler#A000#3#Wahlpflichtveranstaltung#6#Allgemein#23.0#66.17#lehrveranstaltungsübergreifend durch Klausur#
+AIB#171186#B20C.3 Telemedizin#Prof. Dr. Oliver Kalthoff#A000#3#Wahlpflichtveranstaltung#6#Allgemein#23.0#66.17#lehrveranstaltungsübergreifend durch Klausur#
+
+AIB#173192#WV Aktuelle Themen der AngewandtenInformatik#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#3#Wahlpflichtveranstaltung#4#Allgemein#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173193#WV Ausgewählte Kapitel des Mobile ComputingVorlesung#Prof. Dr.-Ing. Wolfgang Heß#A000#3#Wahlpflichtveranstaltung#4#Allgemein#0.0#0.0#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173194#WV Ausgewählte Kapitel des Mobile ComputingProjektlabor#Prof. Dr.-Ing. Wolfgang Heß#A000#6#Wahlpflichtveranstaltung#4#Allgemein#0.0#0.0#lehrveranstaltungsbegleitend durch Laborarbeit#
+AIB#173195#WV Ausgewählte Kapitel menschzentrierterSoftwareentwicklung Vorlesung#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#3#Wahlpflichtveranstaltung#4#Allgemein#22.5#67.5#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173196#WV Ausgewählte Kapitel menschzentrierterSoftwareentwicklung Projektlabor#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#6#Wahlpflichtveranstaltung#4#Allgemein#22.5#157.5#lehrveranstaltungsbegleitend durch Laborarbeit#
+AIB#173197#WV Aktuelle Themen der IT-Sicherheit#Prof. Dr.-Ing. Andreas Mayer#A000#3#Wahlpflichtveranstaltung#4#Allgemein#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+
 ###
