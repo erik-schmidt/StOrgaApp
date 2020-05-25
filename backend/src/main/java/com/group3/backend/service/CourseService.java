@@ -4,7 +4,7 @@ import com.group3.backend.exceptions.CheckMatrNrClass;
 import com.group3.backend.exceptions.Course.*;
 import com.group3.backend.exceptions.MatrNrWrongLengthException;
 import com.group3.backend.exceptions.NoDescriptionException;
-import com.group3.backend.exceptions.NoMatrNrException;
+import com.group3.backend.exceptions.MatrNrException;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
@@ -257,7 +257,7 @@ public class CourseService extends CheckMatrNrClass {
                 throw new CourseWithoutNumberException("Error: No number is given!");
             }
             if (matrNr.trim().isEmpty()){
-                throw new NoMatrNrException("Error: No MatrNr is given!");
+                throw new MatrNrException("Error: No MatrNr is given!");
             }
             if (!checkMatriculationNumber(matrNr)){
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");

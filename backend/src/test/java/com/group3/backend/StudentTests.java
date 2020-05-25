@@ -1,9 +1,7 @@
 package com.group3.backend;
 
 import com.group3.backend.exceptions.Course.CourseWithoutRecommendedSemesterException;
-import com.group3.backend.exceptions.MatrNrWrongLengthException;
-import com.group3.backend.exceptions.MatrNrWrongSyntaxException;
-import com.group3.backend.exceptions.Student.*;
+import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
 import org.junit.jupiter.api.*;
