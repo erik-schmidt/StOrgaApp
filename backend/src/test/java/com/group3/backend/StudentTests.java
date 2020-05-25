@@ -1,6 +1,7 @@
 package com.group3.backend;
 
 import com.group3.backend.exceptions.Course.CourseWithoutRecommendedSemesterException;
+import com.group3.backend.exceptions.MatrNrException;
 import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
@@ -65,17 +66,17 @@ class StudentTests {
         //check to short matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,4));
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrException.class + " Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowed");
         //check to long matriculation number exception
         student.setMatrNr(oldMatrNr+"0");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrException.class + " Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowed");
         //check letters in matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,5)+"A");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                MatriculationNumberException.class + " In matricular number are no letters allowed. " +
+                MatrNrException.class + " In matricular number are no letters allowed. " +
                         " Take care of the allowed length of 6 units");
         //set right matriculation number again
         student.setMatrNr(oldMatrNr);
@@ -136,22 +137,22 @@ class StudentTests {
         //check to short matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,4));
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrException.class + " Matriculation Number has not the right length. " +
                 "It must be exactly 6 units long. Only numbers are allowed");
         //check to long matriculation number exception
         student.setMatrNr(oldMatrNr+"0");
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrException.class + " Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowed");
         //check letters in matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,5)+"A");
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " In matricular number are no letters allowed. " +
+                MatrNrException.class + " In matricular number are no letters allowed. " +
                         " Take care of the allowed length of 6 units");
         //set right matriculation number again
         student.setMatrNr(oldMatrNr);
         //check read an matriculation number which not exists Exception
-        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+        Assertions.assertEquals(MatrNrException.class + " There is no student with matriculation number: "
                 + student.getMatrNr(), studentService.getStudentByNumber(student.getMatrNr()).getBody());
         //check successful read
         Student student1 = createDefaultStudentAndAddToRepo();
@@ -184,7 +185,7 @@ class StudentTests {
     void testUpdateStudent(){
         Student studentNu = getNeverUsedStudentObject();
         //check read an matriculation number which not exists Exception
-        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+        Assertions.assertEquals(MatrNrException.class + " There is no student with matriculation number: "
                 + studentNu.getMatrNr(), studentService.updateStudent(studentNu).getBody());
         Student studentU = createDefaultStudentAndAddToRepo();
         //check name not to small exception
@@ -229,7 +230,7 @@ class StudentTests {
         Student updateInformationStudent = getNeverUsedStudentObject();
         //check that the matriculation number can not be found in update
         Assertions.assertEquals(studentService.updateStudent(updateInformationStudent).getBody(),
-                MatriculationNumberException. class +" There is no student with matriculation number: "
+                MatrNrException. class +" There is no student with matriculation number: "
                         + updateInformationStudent.getMatrNr());
         //Set matriculation number of old student to new sutdnet object for successful update
         updateInformationStudent.setMatrNr(student.getMatrNr());
@@ -250,7 +251,7 @@ class StudentTests {
     void testDeleteStudent(){
         Student studentNu = getNeverUsedStudentObject();
         //check read an matriculation number which not exists Exception
-        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+        Assertions.assertEquals(MatrNrException.class + " There is no student with matriculation number: "
                 + studentNu.getMatrNr(), studentService.deleteStudent(studentNu.getMatrNr()).getBody());
         List<Student> studentListBeforeDelete = createDefaultStudentsAndAddToRepo();
         Student student = studentListBeforeDelete.get(random.nextInt(studentListBeforeDelete.size()));
@@ -260,7 +261,7 @@ class StudentTests {
         Assertions.assertEquals(studentListBeforeDelete.size()-1, studentListAfterDelete.size());
         //check that you can not find student in db anymore
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " There is no student with matriculation number: " + student.getMatrNr());
+                MatrNrException.class + " There is no student with matriculation number: " + student.getMatrNr());
     }
 
     /**
@@ -270,7 +271,7 @@ class StudentTests {
     @Test
     void testDoubleInsertionOfStudent(){
         Student student = createDefaultStudentAndAddToRepo();
-        Assertions.assertEquals(studentService.createStudent(student).getBody(), MatriculationNumberException.class
+        Assertions.assertEquals(studentService.createStudent(student).getBody(), MatrNrException.class
                 +" Matriculation number "+student.getMatrNr()+" already used");
     }
 

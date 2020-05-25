@@ -1,8 +1,5 @@
 package com.group3.backend.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 public class CheckMatrNrClass {
 
     /**
@@ -15,7 +12,7 @@ public class CheckMatrNrClass {
     public boolean checkMatriculationNumber(String matrNr) throws Exception{
         try{
             if (matrNr.trim().isEmpty()){
-            throw new NoMatrNrException("Error: No MatrNr is given!");
+            throw new MatrNrException("Error: No MatrNr is given!");
         }
             int matNumberInt = Integer.parseInt(matrNr);
             if(!(matrNr.length()==6)){
@@ -23,15 +20,17 @@ public class CheckMatrNrClass {
             }
         }catch (Exception e) {
             if (e.getClass() == NumberFormatException.class) {
-                throw new NoMatrNrException("In matricular number are no letters allowed. " +
+                throw new MatrNrException("In matricular number are no letters allowed. " +
                         " Take care of the allowed length of 6 units");
             } else {
-                throw new NoMatrNrException("Matriculation Number has not the right length. " +
+                throw new MatrNrException("Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowes");
             }
         }
         return true;
     }
+
+
 
 
 }
