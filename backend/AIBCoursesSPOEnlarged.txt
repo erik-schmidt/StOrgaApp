@@ -21,8 +21,8 @@ AIB#173043#AI5.3 Software Engineering Ergänzungen#A000#Prof. Dr. rer. nat. Alex
 AIB#173121#VPI1.1 Grundlagen von Psychologie und Informatik#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#1#Psychologie#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
 AIB#173122#VPI1.2 Grundlagen empirischer Forschung#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#2#Psychologie#22.5#67.5#ehrveranstaltungsbegleitend durch praktische Arbeit#
 
-AIB#173161#VMC1.1 Grundlagen mobiler Lebenswelte#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Mobile Computig#22.5#37.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
-AIB#173162#VMC1.2 Grundlagen der Sensorik#A000#Prof. Dr. Oliver Kalthoff#3#Pflichtfach#2#Mobile Computig#0.0#0.0#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173161#VMC1.1 Grundlagen mobiler Lebenswelte#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Mobile Computing#22.5#37.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173162#VMC1.2 Grundlagen der Sensorik#A000#Prof. Dr. Oliver Kalthoff#3#Pflichtfach#2#Mobile Computing#0.0#0.0#lehrveranstaltungsbegleitend durch Klausur#
 
 AIB#173051#AI6.1 Mathematische Grundlagen der Informatik 2#A000#Prof. Dr. Oliver Kalthoff#5#Pflichtfach#3#Allgemein#60.0#30.0#lehrveranstaltungsbegleitend durch Klausur#
 AIB#173052#AI6.2 Angewandte Kryptographie#A000#Prof. Dr.-Ing. Andreas Mayer#2#Pflichtfach#3#Allgemein#22.5#37.5#lehrveranstaltungsbegleitend durch Klausur#
@@ -58,5 +58,34 @@ AIB#173194#WV Ausgewählte Kapitel des Mobile ComputingProjektlabor#Prof. Dr.-In
 AIB#173195#WV Ausgewählte Kapitel menschzentrierterSoftwareentwicklung Vorlesung#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#3#Wahlpflichtveranstaltung#4#Allgemein#22.5#67.5#lehrveranstaltungsbegleitend durch Klausur#
 AIB#173196#WV Ausgewählte Kapitel menschzentrierterSoftwareentwicklung Projektlabor#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#6#Wahlpflichtveranstaltung#4#Allgemein#22.5#157.5#lehrveranstaltungsbegleitend durch Laborarbeit#
 AIB#173197#WV Aktuelle Themen der IT-Sicherheit#Prof. Dr.-Ing. Andreas Mayer#A000#3#Wahlpflichtveranstaltung#4#Allgemein#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173198#Innovative Interaktionstechnologien#Prof. Dr.-Ing. Gerrit Meixner#A000#6#Wahlveranstaltung#4#Allgemein#15#165#lehrveranstaltungsbegleitend durch praktische Arbeit#
 
+AIB#261726# Weiterführende Programmiersprachen#Prof. Dr.-Ing. Gerald Permantier#A000#4#Wahlveranstaltung#6#Allgemein#60#60#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261764# Simulation#Prof. Dr. Wendelin Schramm#A000#6#Wahlveranstaltung#6#Allgemein#60#120#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261773# Moderation und Gesprächsführung in der IT#Prof. Dr. Nicola Marsden#A000#4#Wahlveranstaltung#6#Allgemein#60#60#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261806# Spieleentwicklung#Prof. Dr. Tim Reichert#A000#6#Wahlveranstaltung#6#Allgemein#60#0#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261807# Ausgewählte Kapitel des Games Engineering#Prof. Dr. Tim Reichert#A000#6#Wahlveranstaltung#6#Allgemein#60#0#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261829# Projektstudien BusinessInformationssysteme#Prof. Dr. Christine Reck#A000#6#Wahlveranstaltung#6#Allgemein#60#120#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#261846# Moderne verteilte Systeme#Prof. Dr. Jörg Winckler#A000#4#Wahlveranstaltung#6#Allgemein#60#60#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261864# Ausgewählte Kapitel des Software Engineering#Prof. Dr. Mark Hastenteufel#A000#4#Wahlveranstaltung#6#Allgemein#60#60#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261865# Navigation und Ortung#Prof. Dr.-Ing. Jürgen Doneit#A000#3#Wahlveranstaltung#6#Allgemein#30#60#lehrveranstaltungsbegleitend durch Klausur#
+AIB#261896# Mathematische Modellierung#Prof. Dr. Wendelin Schramm#A000#6#Wahlveranstaltung#6#Allgemein#60#120#lehrveranstaltungsbegleitend durch praktische Arbeit
+AIB#261898# Maschinelles Lernen und Mustererkennung#Prof. Dr.-Ing. Daniel Pfeifer#A000#3#Wahlveranstaltung#6#Allgemein#0#0#lehrveranstaltungsbegleitend durch Klausur#
+
+AIB#173111# Studium Generale#Prof. Dr.-Ing. Wolfgang Heß#A000#4#Pflichtfach#4#Allgemein#60#60#Prüfungsvorleistung durch Referat#
+AIB#173112# Bachelor Thesis#Prof. Dr.-Ing. Wolfgang Heß#A000#10#Pflichtfach#7#Allgemein#0#300#Abschlussarbeit (Bachelorarbeit)#
+AIB#173113# Bachelorkolloquium#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#2#Pflichtfach#6#Allgemein#22.5#37.5#Prüfungsvorleistung durch Referat#
+
+AIB#173131# Grundlagen empirischer Forschung 2#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#3#Pflichtfach#3#Psychologie#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173132# Social Media#-#A000#3#Pflichtfach#4#Psychologie#22.5#67.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173141# Forschungs- und Anwendungsgebiete Psychologie#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#6#Pflichtfach#6#Psychologie#45#135#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173142# Sozial- und Medienpsychologie#Prof. Dr. Nicola Marsden#A000#6#Pflichtfach#6#Psychologie#45#135#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173151# Org.-, Arbeits-, Personalpsychologie#Prof. Dr. rer. nat. Alexandra Reichenbach#A000#6#Pflichtfach#7#Psychologie#45#135#lehrveranstaltungsbegleitend durch praktische Arbeit#
+
+AIB#173171# Grundlagen der Visualisierung#Prof. Dr. Rolf Bendl#A000#3#Pflichtfach#3#Mobile Computing#33.75#56.25#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173172# Parallele Programmierung#Prof. Dr.-Ing. Wolfgang Heß#A000#3#Pflichtfach#4#Mobile Computing#22.5#27.5#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173181# Mobile Devices#Prof. Dr.-Ing. Wolfgang Heß#A000#4#Pflichtfach#6#Mobile Computing#45#75#lehrveranstaltungsbegleitend durch Klausur#
+AIB#173182# Mobile Applications#Prof. Dr.-Ing. Wolfgang Heß#A000#4#Pflichtfach#6#Mobile Computing#22.5#97.5#lehrveranstaltungsbegleitend durch praktische Arbeit#
+AIB#173183# Mobile Project Concepts#Prof. Dr.-Ing. Wolfgang Heß#A000#2#flichtfach#6#Mobile Computing#22.5#37.5#Prüfungsvorleistung durch praktische Arbeit#
+AIB#173185# Mobility Project Lab#Prof. Dr.-Ing. Gerrit Meixner und Prof. Dr.-Ing. Wolfgang Heß#A000#8#Pflichtfach#7#Mobile Computing#45#75#lehrveranstaltungsbegleitend durch praktische Arbeit#
 ###
