@@ -1,33 +1,40 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, FlatList, Linking, Text, TouchableOpacity } from "react-native";
 import { getAllLinks } from "../../../api/services/LinkService";
-import Toast from "../../../components/Toast/Toast";
 import styles from "./LinkList.style";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import * as HttpStatus from "http-status-codes";
 
 const LinkList = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const [links, setLinks] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     getAllLinks()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setLinks(res.data);
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setErrorMessage("Keine Verbindung zum Server");
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 3000);
+        alert(err);
       });
   }, []);
+
+  useEffect(() => {
+    getAllLinks().then(res => {
+      if (res.status === HttpStatus.OK) {
+        setLinks(res.data);
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
+  }, [route])
 
   const OpenLinkCard = ({ url, children, description }) => {
     let link = url;
@@ -40,11 +47,7 @@ const LinkList = () => {
       if (supported) {
         await Linking.openURL(link);
       } else {
-        setErrorMessage(`Don't know how to open this URL: ${link}`);
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 2500);
+        alert(`Don't know how to open this URL: ${link}`);
       }
     }, [url]);
     return (
@@ -103,7 +106,6 @@ const LinkList = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-      <Toast showModal={showModal} color="red" text={errorMessage} />
     </View>
   );
 };

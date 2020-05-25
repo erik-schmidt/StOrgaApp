@@ -4,10 +4,24 @@ import AppModal from "../../../components/AppModal/AppModal";
 import { TextInput } from "react-native-gesture-handler";
 import AppButton from "../../../components/AppButton/AppButton";
 import styles from "./AddLink.style";
+import { addLink } from "../../../api/services/LinkService";
+import * as HttpStatus from "http-status-codes";
 
 const AddLink = ({ navigation }) => {
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
+
+  const onSave = () => {
+    addLink({link, description}).then(res => {
+      if (res.status === HttpStatus.OK) {
+        navigation.navigate("LinkScreen", {linkAdded: true});
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -26,7 +40,7 @@ const AddLink = ({ navigation }) => {
         />
         <AppButton
           text="Speichern"
-          onPress={() => console.log("Speichern ausgewählt")}
+          onPress={() => onSave()}
         />
         <AppButton text="Abbrechen" onPress={() => navigation.pop()} />
       </AppModal>
