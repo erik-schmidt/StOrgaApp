@@ -11,4 +11,5 @@ import java.util.Set;
 public interface GradeCourseMappingRepository extends JpaRepository<GradeCourseMapping, String> {
     GradeCourseMapping findByCourseNumber(String courseNumber);
     Set<GradeCourseMapping> findAllByStudent(Student student);
+    Set<GradeCourseMapping> findAllByStudentMatrNr(String matrNr);
 }

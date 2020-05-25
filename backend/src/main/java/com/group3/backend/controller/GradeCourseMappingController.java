@@ -51,6 +51,16 @@ public class GradeCourseMappingController {
     }
 
     /**
+     * Get the grade average of a Student by its MatrNr.
+     * @param matrNr
+     * @return
+     */
+    @GetMapping("/getAverage/{matrNr}")
+    public ResponseEntity<?> getAverageByMatrNr(@PathVariable(value = "matrNr") String matrNr){
+        return gradeCourseMappingService.getAverageByMatrNr(matrNr);
+    }
+
+    /**
      * getGradeCourseOFStudent
      * get the grade course mapping of a stundent and a specific couse
      * @param matrNr String matriculation number o Student
