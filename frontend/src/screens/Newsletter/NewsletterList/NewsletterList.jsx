@@ -6,11 +6,10 @@ import {
   pingNewsletter,
 } from "../../../api/services/NewsletterService";
 import Card from "../../../components/Card/Card";
-import Toast from "../../../components/Toast/Toast";
 import styles from "./NewsletterList.style";
+import * as HttpStatus from "http-status-codes";
 
 const NewsList = () => {
-  const [showModal, setShowModal] = useState(false);
   const [news, setNews] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -18,18 +17,15 @@ const NewsList = () => {
     pingNewsletter();
     getAllNews()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setNews(res.data);
           console.log(res);
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+        alert(err);
       });
   }, []);
 
@@ -45,45 +41,10 @@ const NewsList = () => {
         }
       })
       .catch((err) => {
-        setShowModal(true);
+        alert(err);
         setRefreshing(false);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
       });
   };
-  /*useEffect(() => {
-    pingNewsletter;
-    getAllNews()
-      .then((res) => {
-        if (res != undefined) {
-          setNews(res.data);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
-  }, []);*/
-
-  /*const News = [
-    {
-      title: "Titel1",
-      message: "Erster Eintrag",
-      author: "Alexa Krepp",
-      published: "20.05.2020",
-    },
-    {
-      title: "Titel2",
-      message: "Zweiter Eintrag",
-      author: "Alexa Krepp",
-      published: "21.05.2020",
-    },
-  ];*/
 
   return (
     <View style={styles.container}>
@@ -108,11 +69,6 @@ const NewsList = () => {
           </Card>
         )}
         keyExtractor={(item) => item.title}
-      />
-      <Toast
-        showModal={showModal}
-        color="red"
-        text="Keine Verbindung zum Server"
       />
     </View>
   );
