@@ -59,7 +59,7 @@ public class CourseController {
      * @param number String
      * @return Course
      */
-    @GetMapping("/get/{number}")
+    @GetMapping("/{number}/get")
     public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "number") String number){
         return courseService.getCourseByNumber(number);
     }
@@ -69,7 +69,7 @@ public class CourseController {
      * @param kindOfSubject
      * @return
      */
-    @GetMapping("/get/{kindOfSubject}")
+    @GetMapping("/{kindOfSubject}/get")
     public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
         return courseService.getCourseByKindOfSubject(kindOfSubject);
     }
@@ -79,7 +79,7 @@ public class CourseController {
      * @param studyFocus
      * @return
      */
-    @GetMapping("/get/{studyFocus}")
+    @GetMapping("/{studyFocus}/get")
     public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
         return courseService.getCourseByStudyFocus(studyFocus);
     }
@@ -90,7 +90,7 @@ public class CourseController {
      * @param matrNr String
      * @return Set<Course>
      */
-    @GetMapping("/getStudentsCourses/{matrNr}")
+    @GetMapping("/{matrNr}/getStudentsCourses")
     public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -129,7 +129,7 @@ public class CourseController {
      * @param course Course object
      * @return
      */
-    @PutMapping("/add/{matrNr}")
+    @PutMapping("/{matrNr}/add")
     public ResponseEntity<?> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -167,7 +167,7 @@ public class CourseController {
      * @param number
      * @return
      */
-    @DeleteMapping("/delete/{matrNr}/{number}")
+    @DeleteMapping("/{matrNr}/{number}/delete")
     public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");

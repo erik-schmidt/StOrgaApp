@@ -15,6 +15,7 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @SpringBootTest
@@ -27,7 +28,14 @@ class CourseTests {
     private StudentService studentService;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
+    private Random random;
+
+    @Autowired
+    public CourseTests(){
+        random = new Random();
+    }
 
     @BeforeTransaction
     void init(){
@@ -79,17 +87,10 @@ class CourseTests {
         Assertions.assertEquals(((Set<Course>)courseService.getStudentsCourses("202481").getBody()).size(), ((List<Course>) courseService.getAllCourses().getBody()).size());
     }
 
-//    @Test
-//    void testGettingAllCourses(){
-//        int index = 1;
-//        for (Course c: courseService.getAllCourses()){
-//            System.out.println(index + c.getDescription());
-//            index++;
-//        }
-//        System.out.println("There are " + courseService.getAllCourses().size() + " courses in the repository.");
-//        Assertions.assertTrue(courseService.getAllCourses().size()==20);
-//    }
-
+    private Course createDummyCourse(){
+        Course course = new Course();
+        course.setFieldOfStudy("");
+    }
 
 
 }
