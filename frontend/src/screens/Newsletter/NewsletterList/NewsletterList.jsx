@@ -8,13 +8,30 @@ import {
 import Card from "../../../components/Card/Card";
 import Toast from "../../../components/Toast/Toast";
 import styles from "./NewsletterList.style";
-import { useRoute } from "@react-navigation/native";
 
-const NewsList = (props) => {
+const NewsList = () => {
   const [showModal, setShowModal] = useState(false);
-  const [news, setNews] = useState(props.news);
-  const route = useRoute();
+  const [news, setNews] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    pingNewsletter();
+    getAllNews()
+      .then((res) => {
+        if (res != undefined) {
+          setNews(res.data);
+          console.log(res);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+        }, 5000);
+      });
+  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -35,25 +52,7 @@ const NewsList = (props) => {
         }, 5000);
       });
   };
-  useEffect(() => {
-    pingNewsletter();
-    getAllNews()
-      .then((res) => {
-        if (res != undefined) {
-          setNews(res.data);
-        } else {
-          throw new Error();
-        }
-      })
-      .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
-      });
-  }, []);
-
-  useEffect(() => {
+  /*useEffect(() => {
     pingNewsletter;
     getAllNews()
       .then((res) => {
@@ -69,7 +68,7 @@ const NewsList = (props) => {
           setShowModal(false);
         }, 5000);
       });
-  }, [route]);
+  }, []);*/
 
   /*const News = [
     {

@@ -1,7 +1,8 @@
 import { fetch, put } from "../apiService";
 
-export const getAppointments = () => {
-  return fetch("calendarEntry/get");
+export const getAppointments = async () => {
+  const matrNr = await AsyncStorage.getItem("matrNr");
+  return fetch("calendarEntry/get" + matrNr);
 };
 export const createAppointment = (appointment) => {
   return put("calendarEntry/create", appointment);
