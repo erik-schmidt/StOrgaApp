@@ -29,6 +29,22 @@ const NewsList = () => {
       });
   }, []);
 
+  useEffect(() => {
+    pingNewsletter();
+    getAllNews()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setNews(res.data);
+          console.log(res);
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, []);
+
   const onRefresh = () => {
     setRefreshing(true);
     getAllNews()
