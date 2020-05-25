@@ -1,8 +1,11 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.service.CourseService;
+import com.group3.backend.service.GradeCourseMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +18,14 @@ import java.util.Set;
 public class CourseController {
 
     private CourseService courseService;
+    private GradeCourseMappingService gradeCourseMappingService;
+    private AccessChecker accessChecker;
 
     @Autowired
-    public CourseController(CourseService courseService){
+    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService) {
         this.courseService = courseService;
+        this.gradeCourseMappingService = gradeCourseMappingService;
+        this.accessChecker = accessChecker;
     }
 
     // TODO: 24.04.2020 search by course number not by description
@@ -39,12 +46,15 @@ public class CourseController {
      * @return List<Course> </Course>
      */
     @GetMapping("/get")
-    public ResponseEntity<?> getAllCourses(){
+    public ResponseEntity<?> getAllCourses(@RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAdmin(token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
         return courseService.getAllCourses();
     }
 
     /**
-     * getCourseByNumger
+     * getCourseByNumber
      * get course information by search with the course number
      * @param number String
      * @return Course
@@ -55,13 +65,36 @@ public class CourseController {
     }
 
     /**
+     * Get the courses by their kindOfSubject.
+     * @param kindOfSubject
+     * @return
+     */
+    @GetMapping("/get/{kindOfSubject}")
+    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
+        return courseService.getCourseByKindOfSubject(kindOfSubject);
+    }
+
+    /**
+     * Get the courses by their studyFocus.
+     * @param studyFocus
+     * @return
+     */
+    @GetMapping("/get/{studyFocus}")
+    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
+        return courseService.getCourseByStudyFocus(studyFocus);
+    }
+
+    /**
      * getStudentCourses
      * get all courses which the student is signed in
      * @param matrNr String
      * @return Set<Course>
      */
-    @GetMapping("/get/{matrNr}")
-    public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr){
+    @GetMapping("/getStudentsCourses/{matrNr}")
+    public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getStudentsCourses(matrNr);
     }
 
@@ -97,7 +130,10 @@ public class CourseController {
      * @return
      */
     @PutMapping("/add/{matrNr}")
-    public ResponseEntity<?> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course){
+    public ResponseEntity<?> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.addCourseToStudent(matrNr, course);
     }
 
@@ -109,10 +145,10 @@ public class CourseController {
      * @return ResponseEntity<Course>
      */
     // TODO: 24.04.2020 not available for frontend
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public ResponseEntity<?> createCourse(@RequestBody Course course){
         return courseService.createCourse(course);
-    }
+    }*/
 
     /**
      * deleteCourse
@@ -120,11 +156,10 @@ public class CourseController {
      * @param number String matricuatlion number
      * @return Course
      */
-    // TODO: 24.04.2020 add student matricualtion number for delete mapping
-    @DeleteMapping("/delete/{number}")
+    /*@DeleteMapping("/delete/{number}")
     public ResponseEntity<?> deleteCourse(@PathVariable(value = "number") String number){
         return courseService.deleteCourse(number);
-    }
+    }*/
 
     /**
      * Method to delet a specific course of a specific student.
@@ -133,7 +168,10 @@ public class CourseController {
      * @return
      */
     @DeleteMapping("/delete/{matrNr}/{number}")
-    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+    public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.deleteCourseFromStudent(matrNr, number);
     }
 }

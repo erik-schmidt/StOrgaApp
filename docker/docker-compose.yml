@@ -10,13 +10,32 @@ services:
       target: developmentmaven
     expose:
       - "8080"
-    depends_on: 
+    depends_on:
       - postgres
     ports:
       - "8080:8080"
     command: mvn spring-boot:run
     volumes:
       - ./../backend:/usr/src/mymaven/
+    networks:
+      - storga
+
+  authentication:
+    image: authenticationmaven
+    container_name: storga-authentication
+    build:
+      context: ../authentication-server
+      dockerfile: ./.docker/Dockerfile
+      target: authenticationmaven
+    expose:
+      - "8888"
+    depends_on:
+      - postgres
+    ports:
+      - "8888:8888"
+    command: mvn spring-boot:run
+    volumes:
+      - ./../authentication-server:/usr/src/myauthmaven
     networks:
       - storga
 

@@ -1,5 +1,10 @@
 package com.group3.backend.service;
 
+import com.group3.backend.exceptions.*;
+import com.group3.backend.exceptions.NoDescriptionException;
+import com.group3.backend.exceptions.Calendar.CalendarWithoutFinishTimeException;
+import com.group3.backend.exceptions.Calendar.CalendarWithoutNameException;
+import com.group3.backend.exceptions.Calendar.CalendarWithoutStartTimeException;
 import com.group3.backend.model.CalendarEntry;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CalendarEntryRepository;
@@ -11,14 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.util.Calendar;
-import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class CalendarEntryService {
+public class CalendarEntryService extends CheckMatrNrClass{
 
     private CalendarEntryRepository calendarEntryRepository;
     private StudentService studentService;
@@ -37,43 +39,89 @@ public class CalendarEntryService {
         return "reachable";
     }
 
-    public List<CalendarEntry> getAllCalendarEntries(){
+    public ResponseEntity<?> getAllCalendarEntries(){
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findAll();
-        return calendarEntries;
+        return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public List<CalendarEntry> getStudentCalendarEntries (String matrNr) {
+    public ResponseEntity<?> getStudentCalendarEntries (String matrNr) {
         Student student = (Student)studentService.getStudentByNumber(matrNr).getBody();
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findAllByStudentId(student.getId());
-        return calendarEntries;
+        return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public ResponseEntity<CalendarEntry> createCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
-        Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-        calendarEntry.setStudent(student);
-        Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
-        calendarEntries.add(calendarEntry);
-        student.setCalendarEntries(calendarEntries);
-        studentRepository.save(student);
-        //CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
-        //calendarEntryRepository.save(calendarEntry1);
-        return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
+    public ResponseEntity<CalendarEntry> createCalendarEntry(String matrNr, CalendarEntry calendarEntry){
+        try {
+            if (!checkCalendarObject(calendarEntry)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+            }
+            if (!checkMatriculationNumber(matrNr)){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+            }
+            Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+            calendarEntry.setStudent(student);
+            Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
+            calendarEntries.add(calendarEntry);
+            student.setCalendarEntries(calendarEntries);
+            studentRepository.save(student);
+            //CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
+            //calendarEntryRepository.save(calendarEntry1);
+            return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
+        }
+        catch (Exception e){
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
     }
 
     public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
-        Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-        Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
-        CalendarEntry calendarEntryDelete = null;
-        for(CalendarEntry calendarEntry1 : calendarEntries){
-            if(calendarEntry.getDescription().equals(calendarEntry1.getDescription())&&calendarEntry.getName().equals(calendarEntry1.getName())){
-                calendarEntryDelete = calendarEntry1;
-                calendarEntries.remove(calendarEntry1);
-                student.setCalendarEntries(calendarEntries);
+        try {
+            if (!checkCalendarObject(calendarEntry)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+            }
+            if (!checkMatriculationNumber(matrNr)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+            }
+            Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+            Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
+            CalendarEntry calendarEntryDelete = null;
+            for (CalendarEntry calendarEntry1 : calendarEntries) {
+                if (calendarEntry.getDescription().equals(calendarEntry1.getDescription()) && calendarEntry.getName().equals(calendarEntry1.getName())) {
+                    calendarEntryDelete = calendarEntry1;
+                    calendarEntries.remove(calendarEntry1);
+                    student.setCalendarEntries(calendarEntries);
+                }
+                //calendarEntryRepository.deleteById(calendarEntryDelete.getId());
+                calendarEntryRepository.delete(calendarEntryDelete);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         }
-        //calendarEntryRepository.deleteById(calendarEntryDelete.getId());
-        calendarEntryRepository.delete(calendarEntryDelete);
-        return new ResponseEntity<>(HttpStatus.OK);
+        catch (Exception e){
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+    }
+
+    public boolean checkCalendarObject(CalendarEntry calendarEntry){
+        try {
+            if (calendarEntry.getName().trim().isEmpty()){
+                throw new CalendarWithoutNameException("Calendar has no name!");
+            }
+            if(calendarEntry.getDescription().trim().isEmpty()){
+                throw new NoDescriptionException("Calendar has no description!");
+            }
+            if (calendarEntry.getEntryStartTime() == null){
+                throw new CalendarWithoutStartTimeException("Calendar has no start date!");
+            }
+            if (calendarEntry.getEntryFinishTime() == null){
+                throw new CalendarWithoutFinishTimeException("Calendar has no finish date!");
+            }
+            return true;
+        }
+        catch (Exception e){
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+        return false;
     }
 
    /* public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){

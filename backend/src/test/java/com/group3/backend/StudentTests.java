@@ -1,8 +1,9 @@
 package com.group3.backend;
 
-import com.group3.backend.exceptions.CurrentSemesterException;
-import com.group3.backend.exceptions.MatriculationNumberException;
-import com.group3.backend.exceptions.StudentNameException;
+import com.group3.backend.exceptions.Course.CourseWithoutRecommendedSemesterException;
+import com.group3.backend.exceptions.MatrNrWrongLengthException;
+import com.group3.backend.exceptions.MatrNrWrongSyntaxException;
+import com.group3.backend.exceptions.Student.*;
 import com.group3.backend.model.Student;
 import com.group3.backend.service.StudentService;
 import org.junit.jupiter.api.*;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @SpringBootTest
@@ -20,7 +22,12 @@ class StudentTests {
     @Autowired
     private StudentService studentService;
     private Random random = new Random();
+    private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public StudentTests(PasswordEncoder passwordEncoder){
+        this.passwordEncoder = passwordEncoder;
+    }
     /**
      * deleteStudents
      * delete all students out of repository for a clean test
@@ -60,17 +67,17 @@ class StudentTests {
         //check to short matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,4));
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrWrongLengthException.class + " Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowed");
         //check to long matriculation number exception
         student.setMatrNr(oldMatrNr+"0");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrWrongLengthException.class + " Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowed");
         //check letters in matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,5)+"A");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                MatriculationNumberException.class + " In matricular number are no letters allowed. " +
+                MatrNrWrongSyntaxException.class + " In matricular number are no letters allowed. " +
                         " Take care of the allowed length of 6 units");
         //set right matriculation number again
         student.setMatrNr(oldMatrNr);
@@ -78,38 +85,38 @@ class StudentTests {
         //check name not to small exception
         student.setStudentPrename("A");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+                StudentPrenameWithWrongLengthException.class +  " Prename must be between 2 an 50 letters");
         //check name not to big exception
         student.setStudentPrename("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+                StudentPrenameWithWrongLengthException.class +  " Prename must be between 2 an 50 letters");
         //check that no numbers are in prename
         student.setStudentPrename("Max 1");
         Assertions.assertEquals(
-                StudentNameException.class +  " Numbers are not allowed in Prename", studentService.createStudent(student).getBody());
+                StudentPrenameWrongSyntaxException.class +  " Numbers are not allowed in Prename", studentService.createStudent(student).getBody());
         student.setStudentPrename("Max");
         //check name not to small exception
         student.setStudentFamilyname("A");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+                StudentFamilynameWithWrongLengthException.class +  " Familyname must be between 2 an 50 letters");
         //check name not to big exception
         student.setStudentFamilyname("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+                StudentFamilynameWithWrongLengthException.class +  " Familyname must be between 2 an 50 letters");
         //check that no numbers are in prename
         student.setStudentFamilyname("Musterm1ann");
         Assertions.assertEquals(
-                StudentNameException.class +  " Numbers are not allowed in Familyname", studentService.createStudent(student).getBody());
+                StudentFamilynameWrongSyntaxException.class +  " Numbers are not allowed in Familyname", studentService.createStudent(student).getBody());
         student.setStudentFamilyname("Mustermann");
 
         //check current semester is greater than 1
         student.setCurrentSemester(0);
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         //check current semester is lowert than 15
         student.setCurrentSemester(16);
         Assertions.assertEquals(studentService.createStudent(student).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         student.setCurrentSemester(1);
 
         //check successful create of valid student
@@ -131,22 +138,22 @@ class StudentTests {
         //check to short matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,4));
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrWrongLengthException.class + " Matriculation Number has not the right length. " +
                 "It must be exactly 6 units long. Only numbers are allowed");
         //check to long matriculation number exception
         student.setMatrNr(oldMatrNr+"0");
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " Matriculation Number has not the right length. " +
+                MatrNrWrongLengthException.class + " Matriculation Number has not the right length. " +
                         "It must be exactly 6 units long. Only numbers are allowed");
         //check letters in matriculation number exception
         student.setMatrNr(oldMatrNr.substring(0,5)+"A");
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " In matricular number are no letters allowed. " +
+                MatrNrWrongSyntaxException.class + " In matricular number are no letters allowed. " +
                         " Take care of the allowed length of 6 units");
         //set right matriculation number again
         student.setMatrNr(oldMatrNr);
         //check read an matriculation number which not exists Exception
-        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+        Assertions.assertEquals(StudentDoesntMatchToMatrNrException.class + " There is no student with matriculation number: "
                 + student.getMatrNr(), studentService.getStudentByNumber(student.getMatrNr()).getBody());
         //check successful read
         Student student1 = createDefaultStudentAndAddToRepo();
@@ -179,43 +186,43 @@ class StudentTests {
     void testUpdateStudent(){
         Student studentNu = getNeverUsedStudentObject();
         //check read an matriculation number which not exists Exception
-        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+        Assertions.assertEquals(StudentDoesntMatchToMatrNrException.class + " There is no student with matriculation number: "
                 + studentNu.getMatrNr(), studentService.updateStudent(studentNu).getBody());
         Student studentU = createDefaultStudentAndAddToRepo();
         //check name not to small exception
         studentU.setStudentPrename("A");
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+                StudentPrenameWithWrongLengthException.class +  " Prename must be between 2 an 50 letters");
         //check name not to big exception
         studentU.setStudentPrename("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                StudentNameException.class +  " Prename must be between 2 an 50 letters");
+                StudentPrenameWithWrongLengthException.class +  " Prename must be between 2 an 50 letters");
         //check that no numbers are in prename
         studentU.setStudentPrename("Max 1");
         Assertions.assertEquals(
-                StudentNameException.class +  " Numbers are not allowed in Prename", studentService.updateStudent(studentU).getBody());
+                StudentPrenameWrongSyntaxException.class +  " Numbers are not allowed in Prename", studentService.updateStudent(studentU).getBody());
         studentU.setStudentPrename("Max");
         //check name not to small exception
         studentU.setStudentFamilyname("A");
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+                StudentFamilynameWithWrongLengthException.class +  " Familyname must be between 2 an 50 letters");
         //check name not to big exception
         studentU.setStudentFamilyname("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                StudentNameException.class +  " Familyname must be between 2 an 50 letters");
+                StudentFamilynameWithWrongLengthException.class +  " Familyname must be between 2 an 50 letters");
         //check that no numbers are in prename
         studentU.setStudentFamilyname("Musterm1ann");
         Assertions.assertEquals(
-                StudentNameException.class +  " Numbers are not allowed in Familyname", studentService.updateStudent(studentU).getBody());
+                StudentFamilynameWrongSyntaxException.class +  " Numbers are not allowed in Familyname", studentService.updateStudent(studentU).getBody());
         studentU.setStudentFamilyname("Mustermann");
         //check current semester is greater than 1
         studentU.setCurrentSemester(0);
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         //check current semester is lowert than 15
         studentU.setCurrentSemester(16);
         Assertions.assertEquals(studentService.updateStudent(studentU).getBody(),
-                CurrentSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
+                CourseWithoutRecommendedSemesterException.class +  " Semester can not be smaller then 1 and not be bigger than 15");
         studentU.setCurrentSemester(1);
 
         List<Student> studentListBeforeUpdate = createDefaultStudentsAndAddToRepo();
@@ -224,7 +231,7 @@ class StudentTests {
         Student updateInformationStudent = getNeverUsedStudentObject();
         //check that the matriculation number can not be found in update
         Assertions.assertEquals(studentService.updateStudent(updateInformationStudent).getBody(),
-                MatriculationNumberException. class +" There is no student with matriculation number: "
+                StudentDoesntMatchToMatrNrException. class +" There is no student with matriculation number: "
                         + updateInformationStudent.getMatrNr());
         //Set matriculation number of old student to new sutdnet object for successful update
         updateInformationStudent.setMatrNr(student.getMatrNr());
@@ -245,7 +252,7 @@ class StudentTests {
     void testDeleteStudent(){
         Student studentNu = getNeverUsedStudentObject();
         //check read an matriculation number which not exists Exception
-        Assertions.assertEquals(MatriculationNumberException.class + " There is no student with matriculation number: "
+        Assertions.assertEquals(StudentDoesntMatchToMatrNrException.class + " There is no student with matriculation number: "
                 + studentNu.getMatrNr(), studentService.deleteStudent(studentNu.getMatrNr()).getBody());
         List<Student> studentListBeforeDelete = createDefaultStudentsAndAddToRepo();
         Student student = studentListBeforeDelete.get(random.nextInt(studentListBeforeDelete.size()));
@@ -255,7 +262,7 @@ class StudentTests {
         Assertions.assertEquals(studentListBeforeDelete.size()-1, studentListAfterDelete.size());
         //check that you can not find student in db anymore
         Assertions.assertEquals(studentService.getStudentByNumber(student.getMatrNr()).getBody(),
-                MatriculationNumberException.class + " There is no student with matriculation number: " + student.getMatrNr());
+                StudentDoesntMatchToMatrNrException.class + " There is no student with matriculation number: " + student.getMatrNr());
     }
 
     /**
@@ -265,7 +272,7 @@ class StudentTests {
     @Test
     void testDoubleInsertionOfStudent(){
         Student student = createDefaultStudentAndAddToRepo();
-        Assertions.assertEquals(studentService.createStudent(student).getBody(), MatriculationNumberException.class
+        Assertions.assertEquals(studentService.createStudent(student).getBody(), StudentMatrNrIsAlreadyUsedException.class
                 +" Matriculation number "+student.getMatrNr()+" already used");
     }
 
@@ -275,12 +282,34 @@ class StudentTests {
      * @return List<Student>
      */
     private List<Student> createDefaultStudentsAndAddToRepo(){
-        Student student0 = new Student("202480", "Liyan", "Fu-Wacker",
-                "AIB", 7);
-        Student student1 = new Student("202481", "Chris", "Wacker",
-                "AIB", 4);
-        Student student2 = new Student("202482", "Max", "Mustermann",
-                "AIB", 2);
+        Student student0 = new Student();
+        student0.setMatrNr("202480");
+        student0.setStudentPrename("Liyan");
+        student0.setStudentFamilyname("Fu-Wacker");
+        student0.setFieldOfStudy("AIB");
+        student0.setCurrentSemester(7);
+        student0.setUsername("LiyanFuW");
+        student0.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
+
+        Student student1 = new Student();
+        student1.setMatrNr("202481");
+        student1.setStudentPrename("Chris");
+        student1.setStudentFamilyname("Wacker");
+        student1.setFieldOfStudy("AIB");
+        student1.setCurrentSemester(4);
+        student1.setUsername("ChrisWa01");
+        student1.setPassword(passwordEncoder.encode("chirs"));
+        Student student2 = new Student();
+
+        student2.setMatrNr("202482");
+        student2.setStudentPrename("Max");
+        student2.setStudentFamilyname("Mustermann");
+        student2.setFieldOfStudy("AIB");
+        student2.setCurrentSemester(2);
+        student2.setUsername("maxi");
+        student2.setPassword(passwordEncoder.encode("maxxxi"));
+
+
         studentService.createStudent(student0);
         studentService.createStudent(student1);
         studentService.createStudent(student2);
@@ -297,8 +326,14 @@ class StudentTests {
      * @return Student
      */
     private Student createDefaultStudentAndAddToRepo(){
-        Student student = new Student("202479", "John", "Doe",
-                "AIB", 7);
+        Student student = new Student();
+        student.setMatrNr("202479");
+        student.setStudentPrename("John");
+        student.setStudentFamilyname("Doe");
+        student.setFieldOfStudy("AIB");
+        student.setCurrentSemester(7);
+        student.setUsername("JohnDoooo");
+        student.setPassword(passwordEncoder.encode("johnny"));
         studentService.createStudent(student);
         return student;
     }
@@ -309,8 +344,14 @@ class StudentTests {
      * @return
      */
     private Student getNeverUsedStudentObject(){
-        Student student = new Student("100000", "Fritz", "Mueller",
-                "AIB", 1);
+        Student student = new Student();
+        student.setMatrNr("100000");
+        student.setStudentPrename("Fritz");
+        student.setStudentFamilyname("Mueller");
+        student.setFieldOfStudy("AIB");
+        student.setCurrentSemester(1);
+        student.setUsername("FritzM");
+        student.setPassword(passwordEncoder.encode("fritzle"));
         return student;
     }
 
