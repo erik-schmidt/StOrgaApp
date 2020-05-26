@@ -72,15 +72,8 @@ class CourseTests {
 
     @Test
     void testGetAndSetCoursesOfStudent(){
-        Student student0 = new Student();
-        student0.setMatrNr("202481");
-        student0.setStudentPrename("Liyan");
-        student0.setStudentFamilyname("Fu-Wacker");
-        student0.setFieldOfStudy("AIB");
-        student0.setCurrentSemester(7);
-        student0.setUsername("LiyanFuW");
-        student0.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
-        studentService.createStudent(student0);
+        Student student = createDummyStudent();
+        studentService.createStudent(student);
         for (Course c: (List<Course>)courseService.getAllCourses().getBody()){
             courseService.addCourseToStudent("202481", c);
         }
@@ -90,7 +83,30 @@ class CourseTests {
     private Course createDummyCourse(){
         Course course = new Course();
         course.setFieldOfStudy("");
+        course.setNumber("345876");
+        course.setDescription("Dummy-Course");
+        course.setRoom("A420");
+        course.setProfessor("Mr.Dummy");
+        course.setEcts(5);
+        course.setKindOfSubject("WahlPflichtfach");
+        course.setRecommendedSemester(6);
+        course.setStudyFocus("Allgemein");
+        course.setWorkingHoursInClass(20.0);
+        course.setWorkingHoursSelf(40.0);
+        course.setKindOfExam("Schein");
+        return course;
     }
 
+    private Student createDummyStudent(){
+        Student student = new Student();
+        student.setMatrNr("202481");
+        student.setStudentPrename("Liyan");
+        student.setStudentFamilyname("Fu-Wacker");
+        student.setFieldOfStudy("AIB");
+        student.setCurrentSemester(7);
+        student.setUsername("LiyanFuW");
+        student.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
+        return student;
+    }
 
 }

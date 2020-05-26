@@ -52,7 +52,8 @@ public class CourseService extends CheckMatrNrClass {
      */
     public ResponseEntity<?> getAllCourses(){
         try{
-            List<Course> courseList = courseRepository.findAll();
+            List<Course> courseList = courseRepository.findAllByKindOfSubject("");
+            System.out.println(courseList);
             if(courseList.isEmpty()){
                 logger.error("Error while reading all courses: There are no courses saved");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are not courses saved");

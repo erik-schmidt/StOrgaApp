@@ -53,7 +53,7 @@ public class LinkCollectionController {
      * @param linkNr
      * @return
      */
-    @GetMapping("/{matrNr}/{linkNr}/get")
+    @GetMapping("/{matrNr}/get/{linkNr}")
     public ResponseEntity<?> getLinkListByStdIdAndNr(@PathVariable(value = "matrNr")String matrNr, @PathVariable(value = "linkNr") int linkNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -81,7 +81,7 @@ public class LinkCollectionController {
      * @param linkId
      * @return
      */
-    @DeleteMapping("/{matrNr}/{linkId}/delete")
+    @DeleteMapping("/{matrNr}/delete/{linkId}")
     public ResponseEntity<?> deleteLink(@PathVariable(value = "matrNr")String matrNr,@PathVariable(value = "linkId") int linkId, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -97,7 +97,7 @@ public class LinkCollectionController {
      * @param link
      * @return
      */
-    @PutMapping("/{matrNr}/{linkId}/put")
+    @PutMapping("/{matrNr}/put/{linkId}")
     public ResponseEntity<?> changeLink(@PathVariable(value = "matrNr")String matrNr, @PathVariable(value = "linkId") int linkId, @RequestBody Link link, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");

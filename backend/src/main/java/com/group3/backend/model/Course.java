@@ -13,6 +13,7 @@ public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+                                                        //TODO: What was that again?
     @NotNull
     private String fieldOfStudy;
     //The specific number of the course

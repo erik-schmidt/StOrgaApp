@@ -98,17 +98,17 @@ public class CourseController {
         return courseService.getStudentsCourses(matrNr);
     }
 
-    /**
-     * getStudentCourses
-     * get all courses which the student is signed in
-     * @param matrNr String Matriculation number
-     * @param number String Course number
-     * @return Course
-     */
-   /* @GetMapping("/get/{matrNr}/{number}")
-    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
-    }*/
+//    /**
+//     * getStudentCourses
+//     * get all courses which the student is signed in
+//     * @param matrNr String Matriculation number
+//     * @param number String Course number
+//     * @return Course
+//     */
+//    @GetMapping("/get/{matrNr}/{number}")
+//    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+//        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
+//    }
 
     /**
      * Set the grade of specific course of a specific student.
@@ -167,7 +167,7 @@ public class CourseController {
      * @param number
      * @return
      */
-    @DeleteMapping("/{matrNr}/{number}/delete")
+    @DeleteMapping("/{matrNr}/delete/{number}")
     public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");

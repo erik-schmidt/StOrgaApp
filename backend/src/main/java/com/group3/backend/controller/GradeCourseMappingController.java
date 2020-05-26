@@ -67,7 +67,7 @@ public class GradeCourseMappingController {
      * @param number String number of the curse
      * @return  ResponseEntity<?>
      */
-    @GetMapping("/{matrNr}/{number}/get")
+    @GetMapping("/{matrNr}/get/{number}")
     public ResponseEntity<?> getGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -82,7 +82,7 @@ public class GradeCourseMappingController {
      * @param number grade course mapping json
      * @return ResoponesEntity
      */
-    @DeleteMapping("/{matrNr}/{number}/delete")
+    @DeleteMapping("/{matrNr}/delete/{number}")
     public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
