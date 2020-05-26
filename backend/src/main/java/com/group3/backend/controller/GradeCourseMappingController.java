@@ -42,7 +42,7 @@ public class GradeCourseMappingController {
      * @param matrNr String
      * @return ResoponesEntity
      */
-    @GetMapping("/{matrNr}/getAll")
+    @GetMapping("/{matrNr}/get")
     public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
