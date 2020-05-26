@@ -69,7 +69,7 @@ public class CourseController {
      * @param kindOfSubject
      * @return
      */
-    @GetMapping("/{kindOfSubject}/get")
+    @GetMapping("/get/{kindOfSubject}")
     public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
         return courseService.getCourseByKindOfSubject(kindOfSubject);
     }
@@ -79,7 +79,7 @@ public class CourseController {
      * @param studyFocus
      * @return
      */
-    @GetMapping("/{studyFocus}/get")
+    @GetMapping("get/{studyFocus}/")
     public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
         return courseService.getCourseByStudyFocus(studyFocus);
     }
