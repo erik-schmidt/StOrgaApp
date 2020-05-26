@@ -90,7 +90,7 @@ public class CourseController {
      * @param matrNr String
      * @return Set<Course>
      */
-    @GetMapping("/{matrNr}/getStudentsCourses")
+    @GetMapping("/{matrNr}/get")
     public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
