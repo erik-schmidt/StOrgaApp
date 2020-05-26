@@ -79,7 +79,7 @@ public class CourseController {
      * @param studyFocus
      * @return
      */
-    @GetMapping("get/{studyFocus}/")
+    @GetMapping("/get/{studyFocus}")
     public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
         return courseService.getCourseByStudyFocus(studyFocus);
     }
