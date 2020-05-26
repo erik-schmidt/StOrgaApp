@@ -21,8 +21,8 @@ AIB#173043#AI5.3 Software Engineering Ergänzungen#A000#Prof. Dr. rer. nat. Alex
 AIB#173121#VPI1.1 Grundlagen von Psychologie und Informatik#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#1#Psychologie#
 AIB#173122#VPI1.2 Grundlagen empirischer Forschung#A000#Prof. Dr. rer. nat. Alexandra Reichenbach#3#Wahlpflichtveranstaltung#2#Psychologie#
 
-AIB#173161#VMC1.1 Grundlagen mobiler Lebenswelte#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Mobile Computig#
-AIB#173162#VMC1.2 Grundlagen der Sensorik#A000#Prof. Dr. Oliver Kalthoff#3#Pflichtfach#2#Mobile Computig#
+AIB#173161#VMC1.1 Grundlagen mobiler Lebenswelte#A000#Prof. Dr.-Ing. Wolfgang Heß#3#Pflichtfach#1#Mobile Computing#
+AIB#173162#VMC1.2 Grundlagen der Sensorik#A000#Prof. Dr. Oliver Kalthoff#3#Pflichtfach#2#Mobile Computing#
 
 AIB#173051#AI6.1 Mathematische Grundlagen der Informatik 2#A000#Prof. Dr. Oliver Kalthoff#5#Pflichtfach#3#Allgemein#
 ###

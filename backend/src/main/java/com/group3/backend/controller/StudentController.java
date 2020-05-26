@@ -68,7 +68,7 @@ public class StudentController {
      * @param matrNr
      * @return Student
      */
-    @GetMapping("/get/{matNr}")
+    @GetMapping("/{matNr}/get")
     public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
@@ -93,7 +93,7 @@ public class StudentController {
      * @param matrNr
      * @return Student object
      */
-    @DeleteMapping("/delete/{matrNr}")
+    @DeleteMapping("/{matrNr}/delete")
     public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");

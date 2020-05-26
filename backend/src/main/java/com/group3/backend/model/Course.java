@@ -13,28 +13,40 @@ public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+                                                        //TODO: What was that again?
     @NotNull
     private String fieldOfStudy;
+    //The specific number of the course
     @NotNull
     private String number;
+    //The name of the course
     @NotNull
     private String description;
+    //The room the course takes place
     @NotNull
     private String room;
+    //The professor who leads the course
     @NotNull
     private String professor;
+    //The number of ECTs the course is worth
     @NotNull
     private int ects;
+    //The kind of subject is one of the two: 1. Pflichtfach 2. Wahlfach
     @NotNull
     private String kindOfSubject;
+    //The semester the course is recommended for
     @NotNull
     private int recommendedSemester;
+    //The study focus is one of the three: 1. Mobile Computing 2. Psychologie 3. Allgemein
     @NotNull
     private String studyFocus;
+    //The number of hours which are calculated to spend in class
     @NotNull
     private Double workingHoursInClass;
+    //The number of hours which are calculated to spend for learning by your own
     @NotNull
     private Double workingHoursSelf;
+    //The kind of exam is one of the two: 1. Note 2. Schein         //TODO: Ist das mit kindOfExam gemeint?
     @NotNull
     private String kindOfExam;
     @JsonIgnore
