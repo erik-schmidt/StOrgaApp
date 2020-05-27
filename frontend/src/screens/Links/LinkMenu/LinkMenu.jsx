@@ -3,6 +3,8 @@ import { View, TextInput } from "react-native";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
 import styles from "./LinkMenu.style";
+import {deleteLink, editLink} from '../../../api/services/LinkService';
+import * as HttpStatus from "http-status-codes";
 
 const LinkMenu = ({ navigation, route }) => {
   const [link, setLink] = useState(route.params?.link);
@@ -11,10 +13,28 @@ const LinkMenu = ({ navigation, route }) => {
   const [description, setDescription] = useState("");
 
   const onChangeLink = () => {
-    setEditMode(!editMode);
+    editLink(link.id, {url, description}).then(res => {
+      if (res.status === HttpStatus.OK) {
+        navigation.navigate("LinkScreen", {linkEdited: true});
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
   };
 
-  const onDeleteLink = () => {};
+  const onDeleteLink = () => {
+    deleteLink(link.id).then(res => {
+      if (res.status === HttpStatus.OK) {
+        navigation.navigate("LinkScreen", {linkDeleted: true});
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +52,7 @@ const LinkMenu = ({ navigation, route }) => {
               onChange={(text) => setDescription(text)}
             />
             <AppButton
-              onPress={() => console.log("speichern ausgewählt")}
+              onPress={() => onChangeLink()}
               text="Speichern"
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
@@ -41,7 +61,7 @@ const LinkMenu = ({ navigation, route }) => {
       ) : (
         <View>
           <AppModal header="Link: " description={link.url}>
-            <AppButton onPress={() => onChangeLink()} text="Link bearbeiten" />
+            <AppButton onPress={() => setEditMode(!editMode)} text="Link bearbeiten" />
             <AppButton
               onPress={() => onDeleteLink()}
               text="Löschen"

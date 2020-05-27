@@ -26,17 +26,17 @@ const AddLink = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AppModal header="Link hinzufügen" height={320}>
+      <TextInput
+          style={styles.textInput}
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+          placeholder="Bsp.: 'Google Suchmaschine'"
+        />
         <TextInput
           style={styles.textInput}
           value={link}
           onChangeText={(text) => setLink(text)}
           placeholder="Bsp.: 'http://www.google.de'"
-        />
-        <TextInput
-          style={styles.textInput}
-          value={description}
-          onChangeText={(text) => setDescription(text)}
-          placeholder="Bsp.: 'Google Suchmaschine'"
         />
         <AppButton
           text="Speichern"

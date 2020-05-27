@@ -25,16 +25,18 @@ const LinkList = () => {
   }, []);
 
   useEffect(() => {
-    getAllLinks().then(res => {
-      if (res.status === HttpStatus.OK) {
-        setLinks(res.data);
-      } else {
-        throw new Error(res.data);
-      }
-    }).catch(err => {
-      alert(err);
-    })
-  }, [route])
+    getAllLinks()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setLinks(res.data);
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, [route]);
 
   const OpenLinkCard = ({ url, children, description }) => {
     let link = url;
@@ -60,8 +62,8 @@ const LinkList = () => {
         }
       >
         <View>
-          <Text style={styles.linkText}>{children}</Text>
           <Text style={styles.descriptionText}>{description}</Text>
+          <Text style={styles.linkText}>{children}</Text>
         </View>
       </TouchableOpacity>
     );
