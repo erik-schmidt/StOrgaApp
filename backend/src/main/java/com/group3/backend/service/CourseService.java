@@ -4,7 +4,7 @@ import com.group3.backend.exceptions.CheckMatrNrClass;
 import com.group3.backend.exceptions.Course.*;
 import com.group3.backend.exceptions.MatrNrWrongLengthException;
 import com.group3.backend.exceptions.NoDescriptionException;
-import com.group3.backend.exceptions.NoMatrNrException;
+import com.group3.backend.exceptions.MatrNrException;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
@@ -52,7 +52,12 @@ public class CourseService extends CheckMatrNrClass {
      */
     public ResponseEntity<?> getAllCourses(){
         try{
-            List<Course> courseList = courseRepository.findAll();
+            List<Course> courseListAllgemein = courseRepository.findAllByStudyFocus("Allgemein");
+            List<Course> courseListPsychologie = courseRepository.findAllByStudyFocus("Psychologie");
+            List<Course> courseListMobileComputing = courseRepository.findAllByStudyFocus("Mobile Computing");
+            List<Course> courseList = courseListAllgemein;
+            courseList.addAll(courseListMobileComputing);
+            courseList.addAll(courseListPsychologie);
             if(courseList.isEmpty()){
                 logger.error("Error while reading all courses: There are no courses saved");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are not courses saved");
@@ -69,7 +74,7 @@ public class CourseService extends CheckMatrNrClass {
      * @param matrNr String
      * @return ResponseEntity<Set<Courses>> if successfull, otherwiese ResponseEntity<String> with error message
      */
-    public ResponseEntity<?> getStudentsCourses( String matrNr){
+    public ResponseEntity<?> getStudentsCourses(String matrNr){
         try{
             if (!checkMatriculationNumber(matrNr)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong MatrNr format!");
@@ -257,7 +262,7 @@ public class CourseService extends CheckMatrNrClass {
                 throw new CourseWithoutNumberException("Error: No number is given!");
             }
             if (matrNr.trim().isEmpty()){
-                throw new NoMatrNrException("Error: No MatrNr is given!");
+                throw new MatrNrException("Error: No MatrNr is given!");
             }
             if (!checkMatriculationNumber(matrNr)){
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");

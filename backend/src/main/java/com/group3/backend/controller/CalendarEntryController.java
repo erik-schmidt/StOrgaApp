@@ -38,7 +38,7 @@ public class CalendarEntryController {
         return calendarEntryService.getAllCalendarEntries();
     }
 
-    @GetMapping("/get/{matrNr}")
+    @GetMapping("/{matrNr}/get")
     public ResponseEntity<?> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token) {
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -46,7 +46,7 @@ public class CalendarEntryController {
         return calendarEntryService.getStudentCalendarEntries(matrNr);
     }
 
-    @PostMapping("/create/{matrNr}")
+    @PostMapping("/{matrNr}/create")
     public ResponseEntity<?> createCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -54,7 +54,7 @@ public class CalendarEntryController {
         return calendarEntryService.createCalendarEntry(matrNr, calendarEntry);
     }
 
-    @DeleteMapping("/delete/{matrNr}")
+    @DeleteMapping("/{matrNr}/delete")
     public ResponseEntity<?> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");

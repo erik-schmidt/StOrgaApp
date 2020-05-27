@@ -1,9 +1,6 @@
 package com.group3.authentication.authenticationserver.service;
 
-import com.group3.authentication.authenticationserver.exceptions.CurrentSemesterException;
-import com.group3.authentication.authenticationserver.exceptions.MatriculationNumberException;
-import com.group3.authentication.authenticationserver.exceptions.StudentNameException;
-import com.group3.authentication.authenticationserver.exceptions.UsernameException;
+import com.group3.authentication.authenticationserver.exceptions.*;
 import com.group3.authentication.authenticationserver.model.Student;
 import com.group3.authentication.authenticationserver.repository.StudentRepository;
 import com.group3.authentication.authenticationserver.request.AuthenticationRequest;
@@ -15,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.FileReader;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Properties;
 
 @Service
 public class AuthenticationService {
@@ -67,7 +66,7 @@ public class AuthenticationService {
             st.setMatrNr(checkMatriculationNumber(matriculationNumber));
             st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
             st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
-            st.setFieldOfStudy(student.getFieldOfStudy());
+            st.setFieldOfStudy(checkFieldOfStudy(student.getFieldOfStudy().trim()));
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             st.setUsername(checkUsername(student.getUsername()));
             st.setPassword(passwordEncoder.encode(student.getPassword()));
@@ -174,4 +173,18 @@ public class AuthenticationService {
         return currentSemester;
     }
 
+    private String checkFieldOfStudy(String fieldOfStudy)throws Exception{
+        Properties pathProperties = new Properties();
+        pathProperties.load(new FileReader("filepath.properties"));
+        String filePath = pathProperties.getProperty("fieldOfStudyPath");
+        Properties properties = new Properties();
+        properties.load(new FileReader(filePath));
+        int numberOfFieldOfStudies = properties.size();
+        for(int i = 1; i<=numberOfFieldOfStudies; i++){
+            if(properties.getProperty("prop"+i).equals(fieldOfStudy)){
+                return fieldOfStudy;
+            }
+        }
+        throw new FieldOfStudyException("Kein Studiengang "+ fieldOfStudy + " gefunden");
+    }
 }
