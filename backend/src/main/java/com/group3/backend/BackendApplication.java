@@ -1,6 +1,7 @@
 package com.group3.backend;
 
 import com.group3.backend.controller.CourseController;
+import com.group3.backend.dataHandling.DataHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class BackendApplication {
     public static void main(String[] args) {
 
         try {
+            new DataHandler().loadCourses();
             SpringApplication.run(BackendApplication.class, args);
 
         }

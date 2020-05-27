@@ -6,15 +6,18 @@ import com.group3.backend.exceptions.MatrNrWrongLengthException;
 import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.exceptions.MatrNrException;
 import com.group3.backend.model.Course;
+import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
 import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.security.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -29,13 +32,19 @@ public class CourseService extends CheckMatrNrClass {
     private StudentService studentService;
     private GradeCourseMappingRepository gradeCourseMappingRepository;
     private Logger logger = LoggerFactory.getLogger(CourseService.class);
+    private PasswordEncoder passwordEncoder;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository, StudentService studentService) {
+    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository, StudentService studentService,
+                         GradeCourseMappingRepository gradeCourseMappingRepository, PasswordEncoder passwordEncoder,
+                         JwtTokenService jwtTokenService) {
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
         this.studentService = studentService;
         this.gradeCourseMappingRepository = gradeCourseMappingRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenService = jwtTokenService;
     }
 
     /**
@@ -52,12 +61,7 @@ public class CourseService extends CheckMatrNrClass {
      */
     public ResponseEntity<?> getAllCourses(){
         try{
-            List<Course> courseListAllgemein = courseRepository.findAllByStudyFocus("Allgemein");
-            List<Course> courseListPsychologie = courseRepository.findAllByStudyFocus("Psychologie");
-            List<Course> courseListMobileComputing = courseRepository.findAllByStudyFocus("Mobile Computing");
-            List<Course> courseList = courseListAllgemein;
-            courseList.addAll(courseListMobileComputing);
-            courseList.addAll(courseListPsychologie);
+            List<Course> courseList = courseRepository.findAll();
             if(courseList.isEmpty()){
                 logger.error("Error while reading all courses: There are no courses saved");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are not courses saved");
@@ -126,9 +130,9 @@ public class CourseService extends CheckMatrNrClass {
             if (!checkMatriculationNumber(matrNr)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong MatrNr format!");
             }
-            if (!checkCourse(course)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error in the course object!");
-            }
+//            if (!checkCourse(course)){
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error in the course object!");
+//            }
             Student student = studentRepository.findByMatrNr(matrNr);
             course1 = courseRepository.findByNumber(course.getNumber());
             Set<Student> studentSet = new HashSet<>();
@@ -312,7 +316,7 @@ public class CourseService extends CheckMatrNrClass {
             if (course.getProfessor().trim().isEmpty()){
                 throw new CourseWithoutProfessorException("Error: The course has no professor!");
             }
-            if (course.getRecommendedSemester() > 1 || course.getRecommendedSemester()>10){
+            if (course.getRecommendedSemester() < 1 || course.getRecommendedSemester() > 10){
                 throw new CourseWithoutRecommendedSemesterException("Error: The course has no valid recommended semester!");
             }
             if (course.getStudyFocus().trim().isEmpty()){

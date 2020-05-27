@@ -7,11 +7,13 @@ import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.model.Link;
 import com.group3.backend.repository.LinkRepository;
 import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.security.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +24,16 @@ public class LinkCollectionService extends CheckMatrNrClass {
     private LinkRepository linkRepository;
     private StudentRepository studentRepository;
     private Logger logger = LoggerFactory.getLogger(LinkCollectionService.class);
+    private PasswordEncoder passwordEncoder;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public LinkCollectionService(LinkRepository linkRepository, StudentRepository studentRepository){
+    public LinkCollectionService(LinkRepository linkRepository, StudentRepository studentRepository,
+                                 PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService){
         this.linkRepository = linkRepository;
         this.studentRepository =studentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenService = jwtTokenService;
     }
 
     /**
