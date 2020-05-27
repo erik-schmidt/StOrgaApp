@@ -7,19 +7,15 @@ export const getAllCourses = () => {
 
 export const getAllStudentCourses = async () => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return fetch(`course/getStudentsCourses/${matrNr}`);
+  return fetch(`course/${matrNr}/get`);
 }
-
-export const createCourse = (course) => {
-  return put("course/create", course);
-};
 
 export const addCourse = async (course) => {
   const matrNr = await AsyncStorage.getItem('matrNr');
-  return put(`course/add/${matrNr}`, course);
+  return put(`course/${matrNr}/add`, course);
 };
 
 export const deleteCourse = async (courseNumber) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return del(`course/delete/${matrNr}/${courseNumber}`);
+  return del(`course/${matrNr}/delete/${courseNumber}`);
 }

@@ -5,7 +5,6 @@ import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Toast from "../../../components/Toast/Toast";
 import * as HttpStatus from "http-status-codes";
 
 const CourseList = () => {
