@@ -62,7 +62,7 @@ public class StudentService extends CheckMatrNrClass {
                 logger.error("Error while reading all Students: There are no students saved");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no students saved");
             }
-            logger.info("Students successffully read");
+            logger.info("Students successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(studentList);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -95,7 +95,7 @@ public class StudentService extends CheckMatrNrClass {
      * createStudent
      * create a student in the Database if it not exists already
      * @param student
-     * @return ResponseEntity<String> if succesfull return id of student
+     * @return ResponseEntity<String> if successfully return id of student
      */
     public ResponseEntity<?> createStudent(Student student){
         Student st = new Student();
@@ -134,7 +134,7 @@ public class StudentService extends CheckMatrNrClass {
             }
             Student st = studentRepository.findByMatrNr(matNr);
             studentRepository.delete(st);
-            logger.info("Student: " + matNr + " successffully deleted");
+            logger.info("Student: " + matNr + " successfully deleted");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -161,7 +161,7 @@ public class StudentService extends CheckMatrNrClass {
             st.setFieldOfStudy(student.getFieldOfStudy());
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             studentRepository.save(st);
-            logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successffully updated");
+            logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successfully updated");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
