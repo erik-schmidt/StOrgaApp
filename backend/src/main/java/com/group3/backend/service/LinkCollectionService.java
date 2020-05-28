@@ -5,6 +5,7 @@ import com.group3.backend.exceptions.LinkList.LinkedListWithoutLinkException;
 import com.group3.backend.exceptions.LinkList.LinkedListWithoutLinkIDException;
 import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.model.Link;
+import com.group3.backend.model.Student;
 import com.group3.backend.repository.LinkRepository;
 import com.group3.backend.repository.StudentRepository;
 import com.group3.backend.security.JwtTokenService;
@@ -201,4 +202,18 @@ public class LinkCollectionService extends CheckMatrNrClass {
         }
     }
 
+    public ResponseEntity<?> getAllLinks(){
+        try{
+            List<Link> linkList = linkRepository.findAll();
+            if(linkList.isEmpty()){
+                logger.error("Error while reading all Links: There are no links saved");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no links saved");
+            }
+            logger.info("Links successfully read");
+            return ResponseEntity.status(HttpStatus.OK).body(linkList);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
 }

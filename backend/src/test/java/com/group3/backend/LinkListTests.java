@@ -9,11 +9,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.transaction.Transactional;
 import java.util.Random;
 
 @SpringBootTest
+@Transactional
 public class LinkListTests {
 
     @Autowired
@@ -29,12 +32,35 @@ public class LinkListTests {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @BeforeEach
+    void deleteLinks(){
+        if(linkCollectionService.getAllLinks().getStatusCode().equals(HttpStatus.OK)){
+            List<Link> linkList = (List<Link>)linkCollectionService.getAllLinks().getBody();
+            for(Link link : linkList){
+                linkCollectionService.deleteLink(link.getStudent().getMatrNr(), link.getId());
+                System.out.println((List<Link>)linkCollectionService.getAllLinks().getBody());
+            }
+        }
+    }
+
     @Test
     void addingLinkToStudent(){
+        if(linkCollectionService.getAllLinks().getStatusCode().equals(HttpStatus.OK)){
+            List<Link> linkList = (List<Link>)linkCollectionService.getAllLinks().getBody();
+            for(Link link : linkList){
+                linkCollectionService.deleteLink(link.getStudent().getMatrNr(), link.getId());
+                System.out.println((List<Link>)linkCollectionService.getAllLinks().getBody());
+            }
+        }
         studentService.createStudent(createDummyStudent());
         linkCollectionService.addLinkToStudent(createDummyStudent().getMatrNr(), createDummyLink());
-        List<Link> linkListOfStudent = (List<Link>) linkCollectionService.getLinkListByMatrNr(createDummyStudent().getMatrNr()).getBody();
+        List<Link> linkListOfStudent = (List<Link>)linkCollectionService.getAllLinks().getBody();
+        System.out.println(linkListOfStudent);
         Assertions.assertTrue(linkListOfStudent.size()==1);
+        for(int i = 0; i<11; i++){
+            linkCollectionService.addLinkToStudent(createDummyStudent().getMatrNr(), createDummyLink());
+        }
+        Assertions.assertTrue(linkListOfStudent.size()==11);
     }
 
     public Student createDummyStudent(){

@@ -57,7 +57,7 @@ public class CourseService extends CheckMatrNrClass {
 
     /**
      * get All courses from the Database
-     * @return ResponseEntity<List<Courses>> if successfull, otherwiese ResponseEntity<String> with error message
+     * @return ResponseEntity<List<Courses>> if successful, otherwise ResponseEntity<String> with error message
      */
     public ResponseEntity<?> getAllCourses(){
         try{
@@ -76,7 +76,7 @@ public class CourseService extends CheckMatrNrClass {
     /**
      * get all courses of a student with the given matriculation number
      * @param matrNr String
-     * @return ResponseEntity<Set<Courses>> if successfull, otherwiese ResponseEntity<String> with error message
+     * @return ResponseEntity<Set<Courses>> if successful, otherwise ResponseEntity<String> with error message
      */
     public ResponseEntity<?> getStudentsCourses(String matrNr){
         try{
@@ -100,7 +100,7 @@ public class CourseService extends CheckMatrNrClass {
     /**
      * get a course by it's number
      * @param number
-     * @return ResponseEntity<Course> if successfull, otherwiese ResponseEntity<String> with error message
+     * @return ResponseEntity<Course> if successful, otherwise ResponseEntity<String> with error message
      */
     public ResponseEntity<?> getCourseByNumber(String number){
         try{
@@ -119,7 +119,7 @@ public class CourseService extends CheckMatrNrClass {
     }
 
     /**
-     * a studnet can enter a course by adding the yours as an attribute
+     * a student can enter a course by adding the yours as an attribute
      * @param matrNr
      * @param course
      * @return
@@ -150,7 +150,7 @@ public class CourseService extends CheckMatrNrClass {
     /**
      * create a new course and save in db
      * @param course Course
-     * @return ResponseEntity<Course> if successfull, otherwiese ResponseEntity<String> with error message
+     * @return ResponseEntity<Course> if successfully, otherwise ResponseEntity<String> with error message
      */
     public ResponseEntity<?> createCourse(Course course){
         try{
@@ -159,7 +159,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             for (Course c : courseRepository.findAll()){
                 if (course.getNumber().equals(c.getNumber())||course.getDescription().equals(c.getDescription())){
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Coursenumber already exists in the repository");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course number already exists in the repository");
                 }
             }
                 Course cs = new Course(course.getFieldOfStudy(),course.getNumber(), course.getDescription(),
@@ -185,7 +185,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             Course course = courseRepository.findByNumber(number);
             if(course == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this numbe r" +number+" in the system");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this number" +number+" in the system");
             }else {
                 courseRepository.delete(course);
             }
