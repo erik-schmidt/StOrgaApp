@@ -82,7 +82,7 @@ const CourseList = () => {
             </View>
             <View style={styles.cardText}>
               <Text style={styles.boldText}>Empfohlenes Semester: </Text>
-              <Text>{item.reccomendedSemester}</Text>
+              <Text>{item.recommendedSemester}</Text>
             </View>
           </Card>
         )}

@@ -3,6 +3,7 @@ import { View, TextInput } from "react-native";
 import styles from "./CourseMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCourse } from "../../../api/services/CourseService";
+import {addGrade} from '../../../api/services/GradeService';
 import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
 import * as HttpStatus from "http-status-codes";
@@ -25,7 +26,15 @@ const CourseMenu = ({ navigation, route }) => {
   };
 
   const onChangeGrade = () => {
-    setEditMode(true);
+    addGrade({courseNumber: course.number, grade: selectedGrade}).then(res => {
+      if (res.status === HttpStatus.OK) {
+        navigation.navigate("Fächer", {courseEdit: true});
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
   };
 
   return (
