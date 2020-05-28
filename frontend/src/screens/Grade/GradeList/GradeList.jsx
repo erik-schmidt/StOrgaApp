@@ -93,6 +93,7 @@ const GradeList = () => {
         )}
         keyExtractor={(item) => item.courseNumber}
       />
+      <Text style={{textAlign: "right"}}>Durchschnitt: {average}</Text>
     </View>
   );
 };
