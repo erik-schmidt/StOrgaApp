@@ -5,13 +5,16 @@ import com.group3.backend.exceptions.LinkList.LinkedListWithoutLinkException;
 import com.group3.backend.exceptions.LinkList.LinkedListWithoutLinkIDException;
 import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.model.Link;
+import com.group3.backend.model.Student;
 import com.group3.backend.repository.LinkRepository;
 import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.security.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +25,16 @@ public class LinkCollectionService extends CheckMatrNrClass {
     private LinkRepository linkRepository;
     private StudentRepository studentRepository;
     private Logger logger = LoggerFactory.getLogger(LinkCollectionService.class);
+    private PasswordEncoder passwordEncoder;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public LinkCollectionService(LinkRepository linkRepository, StudentRepository studentRepository){
+    public LinkCollectionService(LinkRepository linkRepository, StudentRepository studentRepository,
+                                 PasswordEncoder passwordEncoder, JwtTokenService jwtTokenService){
         this.linkRepository = linkRepository;
         this.studentRepository =studentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenService = jwtTokenService;
     }
 
     /**
@@ -194,4 +202,18 @@ public class LinkCollectionService extends CheckMatrNrClass {
         }
     }
 
+    public ResponseEntity<?> getAllLinks(){
+        try{
+            List<Link> linkList = linkRepository.findAll();
+            if(linkList.isEmpty()){
+                logger.error("Error while reading all Links: There are no links saved");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no links saved");
+            }
+            logger.info("Links successfully read");
+            return ResponseEntity.status(HttpStatus.OK).body(linkList);
+        }catch (Exception e){
+            logger.error(e.getClass() +" "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
+        }
+    }
 }

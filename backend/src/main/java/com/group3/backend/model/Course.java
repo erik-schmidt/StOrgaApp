@@ -30,24 +30,19 @@ public class Course implements Serializable {
     private String professor;
     //The number of ECTs the course is worth
     @NotNull
-    private int ects;
+    private Integer ects;
     //The kind of subject is one of the two: 1. Pflichtfach 2. Wahlfach
     @NotNull
     private String kindOfSubject;
     //The semester the course is recommended for
-    @NotNull
-    private int recommendedSemester;
+    private Integer recommendedSemester;
     //The study focus is one of the three: 1. Mobile Computing 2. Psychologie 3. Allgemein
-    @NotNull
     private String studyFocus;
     //The number of hours which are calculated to spend in class
-    @NotNull
     private Double workingHoursInClass;
     //The number of hours which are calculated to spend for learning by your own
-    @NotNull
     private Double workingHoursSelf;
     //The kind of exam is one of the two: 1. Note 2. Schein         //TODO: Ist das mit kindOfExam gemeint?
-    @NotNull
     private String kindOfExam;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -63,7 +58,7 @@ public class Course implements Serializable {
     }
 
     public Course(String fieldOfStudy, String number, String description, String room, String professor, int ects,
-                  String kindOfSubject, int reccomendedSemester, String studyFocus, Double workingHoursInClass,
+                  String kindOfSubject, int recommendedSemester, String studyFocus, Double workingHoursInClass,
                   Double workingHoursSelf, String kindOfExam){
         this.fieldOfStudy = fieldOfStudy;
         this.number = number;
