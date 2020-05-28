@@ -4,7 +4,7 @@ import { getGrades, getAverage } from "../../../api/services/GradeService";
 import * as HttpStatus from "http-status-codes";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlatList } from "react-native-gesture-handler";
-import { View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import Card from "../../../components/Card/Card";
 
 const GradeList = () => {
@@ -69,7 +69,7 @@ const GradeList = () => {
         data={grades}
         renderItem={({ item }) => (
           <Card
-            onLongPress={() => console.log("longpressed")}
+            onLongPress={() => navigation.navigate("CourseMenu", {grade: item})}
             onPress={() => console.log("pressed")}
           >
             <View>
@@ -87,3 +87,5 @@ const GradeList = () => {
     </View>
   );
 };
+
+export default GradeList;

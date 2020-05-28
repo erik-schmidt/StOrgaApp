@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './index.style';
 import GradeList from './GradeList/GradeList';
+import {View} from 'react-native';
 
 const GradeScreen = ({ navigation }) => {
     return (
