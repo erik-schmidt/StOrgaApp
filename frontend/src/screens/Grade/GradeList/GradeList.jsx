@@ -16,6 +16,7 @@ const GradeList = () => {
   useEffect(() => {
     getGrades()
       .then((res) => {
+        console.log("Grades: ", res);
         if (res.status === HttpStatus.OK) {
           setGrades(res.data);
         } else {
@@ -27,6 +28,7 @@ const GradeList = () => {
       });
     getAverage()
       .then((res) => {
+        console.log("Average: ", res);
         if (res.status === HttpStatus.OK) {
           setAverage(res.data);
         } else {
@@ -67,6 +69,13 @@ const GradeList = () => {
     <View style={styles.container}>
       <FlatList
         data={grades}
+        ListEmptyComponent={() => {
+          return (
+            <View style={styles.container}>
+              <Text style={{fontSize: 20, fontWeight: "bold", textAlign: "center"}}>Keine Noten gespeichert</Text>
+            </View>
+          )
+        }}
         renderItem={({ item }) => (
           <Card
             onLongPress={() => navigation.navigate("CourseMenu", {grade: item})}
