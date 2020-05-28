@@ -9,10 +9,11 @@ import * as HttpStatus from "http-status-codes";
 
 const AddLink = ({ navigation }) => {
   const [link, setLink] = useState("");
-  const [description, setDescription] = useState("");
+  const [linkDescription, setDescription] = useState("");
 
   const onSave = () => {
-    addLink({link, description}).then(res => {
+    addLink({linkDescription: linkDescription, link: link}).then(res => {
+      console.log(res);
       if (res.status === HttpStatus.OK) {
         navigation.navigate("LinkScreen", {linkAdded: true});
       } else {
@@ -28,7 +29,7 @@ const AddLink = ({ navigation }) => {
       <AppModal header="Link hinzufügen" height={320}>
       <TextInput
           style={styles.textInput}
-          value={description}
+          value={linkDescription}
           onChangeText={(text) => setDescription(text)}
           placeholder="Bsp.: 'Google Suchmaschine'"
         />

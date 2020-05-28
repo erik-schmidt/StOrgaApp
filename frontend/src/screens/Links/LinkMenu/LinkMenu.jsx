@@ -9,11 +9,11 @@ import * as HttpStatus from "http-status-codes";
 const LinkMenu = ({ navigation, route }) => {
   const [link, setLink] = useState(route.params?.link);
   const [editMode, setEditMode] = useState(false);
-  const [url, setUrl] = useState("");
-  const [description, setDescription] = useState("");
+  const [url, setUrl] = useState(route.params?.link.url);
+  const [description, setDescription] = useState(route.params?.link.description);
 
   const onChangeLink = () => {
-    editLink(link.id, {url, description}).then(res => {
+    editLink(link.id, {link: url,linkDescription: description}).then(res => {
       if (res.status === HttpStatus.OK) {
         navigation.navigate("LinkScreen", {linkEdited: true});
       } else {
@@ -43,13 +43,13 @@ const LinkMenu = ({ navigation, route }) => {
           <AppModal header="Link bearbeiten" height={320}>
             <TextInput
               style={styles.textInput}
-              value={link.url}
               onChangeText={(text) => setUrl(text)}
+              value={url}
             />
             <TextInput
               style={styles.textInput}
-              value={link.description}
-              onChange={(text) => setDescription(text)}
+              value={description}
+              onChangeText={(text) => setDescription(text)}
             />
             <AppButton
               onPress={() => onChangeLink()}

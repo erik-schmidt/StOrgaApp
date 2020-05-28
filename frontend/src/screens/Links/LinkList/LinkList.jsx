@@ -38,7 +38,7 @@ const LinkList = () => {
       });
   }, [route]);
 
-  const OpenLinkCard = ({ url, children, description }) => {
+  const OpenLinkCard = ({ id, url, children, description }) => {
     let link = url;
     if (!url.startsWith("http://") || !url.startsWith("https://")) {
       link = "https://" + url;
@@ -57,7 +57,7 @@ const LinkList = () => {
         onPress={handlePress}
         onLongPress={() =>
           navigation.navigate("LinkMenu", {
-            link: { url, description },
+            link: { id, url, description },
           })
         }
       >
@@ -102,7 +102,7 @@ const LinkList = () => {
           />
         )}
         renderItem={({ item }) => (
-          <OpenLinkCard description={item.linkDescription} url={item.link}>
+          <OpenLinkCard id={item.id} description={item.linkDescription} url={item.link}>
             {item.link}
           </OpenLinkCard>
         )}
