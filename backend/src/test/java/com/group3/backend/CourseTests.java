@@ -33,8 +33,9 @@ class CourseTests {
     private Random random;
 
     @Autowired
-    public CourseTests(){
+    public CourseTests(PasswordEncoder passwordEncoder){
         random = new Random();
+        this.passwordEncoder = passwordEncoder;
     }
 
     @BeforeTransaction
@@ -50,9 +51,10 @@ class CourseTests {
     @Test
     @Transactional
     void testAddingAndDeletingCourse() {
-        courseService.createCourse(new Course("AIB", "420", "SWELab", "A007", "Prof.Haag", 7, "choose", 9, "test", 20.0, 50.0, "Klausur und lehrbegleitend"));
+        List<Course> courseList = (List<Course>)courseService.getAllCourses().getBody();
+        courseService.createCourse(new Course("AIB", "20", "SWELab", "A007", "Prof.Haag", 7, "choose", 9, "test", 20.0, 50.0, "Klausur und lehrbegleitend"));
         boolean newCourseIsInRepository = false;
-        for(Course c : (List<Course>)courseService.getAllCourses().getBody()){
+        for(Course c : courseList){
             if(c.getNumber().equals("420")){
                 newCourseIsInRepository = true;
             }
