@@ -9,11 +9,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
   },
-  gradeHeader: {
+  courseHeader: {
     fontWeight: "bold",
     fontSize: 20,
   },
-  gradeDescription: {
+  courseDescription: {
     fontSize: 20,
     marginBottom: 5,
   },
