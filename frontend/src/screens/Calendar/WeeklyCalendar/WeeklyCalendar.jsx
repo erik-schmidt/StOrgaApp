@@ -12,9 +12,13 @@ import moment from "moment";
 import "moment/locale/de";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
-//import { getAppointments } from "../../../api/services/CalendarService";
+import {
+  getAppointments,
+  pingCalendar,
+} from "../../../api/services/CalendarService";
+import * as HttpStatus from "http-status-codes";
 
-//TO DO: Toast für on Press und Long Press einfügen
+//TO DO: Alert für on Press und Long Press einfügen
 
 const WeekCalendar = () => {
   const navigation = useNavigation();
@@ -23,80 +27,35 @@ const WeekCalendar = () => {
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
 
-  /*const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, [refreshing]);*/
-
   const onRefresh = () => {
     setRefreshing(true);
+    getAppointments()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAppointments(res.data);
+          setRefreshing(false);
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        alert(err);
+        setRefreshing(false);
+      });
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
+    pingCalendar();
+
     getAppointments().then((res) => {
-      if (res !== undefined) {
+      console.log(res);
+      if (res.status === HttpStatus.OK) {
         setAppointments(res.data);
       }
     });
-  }, []);*/
-
-  useEffect(() => {
-    console.log("selectedDay: ", selectedDay);
-    if (route.params?.entry !== undefined) {
-      setAppointments([...appointments, route.params?.entry]);
-    }
-    console.log("Neuer Eintrag: -----------------------------xxxxxxx");
-    console.log("Termin:", appointments);
-  }, [route]);
+  }, []);
 
   useEffect(() => {}, [appointments]);
-
-  const sampleEvents =
-    /*[
-    appointments.name,
-    appointments.end,
-    appointments.start,
-    appointments.info,
-  ];*/
-    [
-      {
-        start: "2020-05-23 09:00:00",
-        end: "2020-05-23 10:20:00",
-        name: "Walk my dog",
-        info: "infotext",
-      },
-
-      {
-        start: "2020-05-13 09:30:00",
-        end: "2020-05-13 01:00:00",
-        name: "Schedule 1",
-        info: "infotext",
-      },
-      {
-        start: "2020-05-13 11:00:00",
-        end: "2020-05-13 14:00:00",
-        name: "Schedule 2",
-        info: "infotext",
-      },
-      {
-        start: "2020-05-13 15:00:00",
-        end: "2020-05-13 15:30:00",
-        name: "Schedule 3",
-        info: "infotext",
-      },
-      {
-        start: "2020-05-13 18:00:00",
-        end: "2020-05-13 19:00:00",
-        name: "Schedule 4",
-        info: "infotext",
-      },
-      {
-        start: "2020-05-13 22:00:00",
-        end: "2020-05-13 23:00:00",
-        name: "Schedule 5",
-        info: "infotext",
-      },
-    ];
 
   return (
     <ScrollView
@@ -106,13 +65,17 @@ const WeekCalendar = () => {
       }
     >
       <WeeklyCalendar
-        events={sampleEvents}
+        events={appointments}
         style={{ height: Dimensions.get("window").height }}
         locale="de"
         selectedDay="weekday"
         renderEvent={(event, j) => {
-          let startTime = moment(event.start).format("LT").toString();
-          let endTime = moment(event.end).format("LT").toString();
+          let startTime = moment(event.entryStartTime)
+            .format("hh:mm")
+            .toString();
+          let endTime = moment(event.entryFinishTime)
+            .format("hh:mm")
+            .toString();
 
           return (
             <TouchableHighlight
@@ -149,8 +112,12 @@ const WeekCalendar = () => {
           );
         }}
         renderLastEvent={(event, j) => {
-          let startTime = moment(event.start).format("LT").toString();
-          let endTime = moment(event.end).format("LT").toString();
+          let startTime = moment(event.entryStartTime)
+            .format("hh:mm")
+            .toString();
+          let endTime = moment(event.entryFinishTime)
+            .format("hh:mm")
+            .toString();
 
           return (
             <TouchableHighlight

@@ -15,6 +15,7 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @SpringBootTest
@@ -27,7 +28,14 @@ class CourseTests {
     private StudentService studentService;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
+    private Random random;
+
+    @Autowired
+    public CourseTests(){
+        random = new Random();
+    }
 
     @BeforeTransaction
     void init(){
@@ -64,32 +72,41 @@ class CourseTests {
 
     @Test
     void testGetAndSetCoursesOfStudent(){
-        Student student0 = new Student();
-        student0.setMatrNr("202481");
-        student0.setStudentPrename("Liyan");
-        student0.setStudentFamilyname("Fu-Wacker");
-        student0.setFieldOfStudy("AIB");
-        student0.setCurrentSemester(7);
-        student0.setUsername("LiyanFuW");
-        student0.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
-        studentService.createStudent(student0);
+        Student student = createDummyStudent();
+        studentService.createStudent(student);
         for (Course c: (List<Course>)courseService.getAllCourses().getBody()){
             courseService.addCourseToStudent("202481", c);
         }
         Assertions.assertEquals(((Set<Course>)courseService.getStudentsCourses("202481").getBody()).size(), ((List<Course>) courseService.getAllCourses().getBody()).size());
     }
 
-//    @Test
-//    void testGettingAllCourses(){
-//        int index = 1;
-//        for (Course c: courseService.getAllCourses()){
-//            System.out.println(index + c.getDescription());
-//            index++;
-//        }
-//        System.out.println("There are " + courseService.getAllCourses().size() + " courses in the repository.");
-//        Assertions.assertTrue(courseService.getAllCourses().size()==20);
-//    }
+    private Course createDummyCourse(){
+        Course course = new Course();
+        course.setFieldOfStudy("");
+        course.setNumber("345876");
+        course.setDescription("Dummy-Course");
+        course.setRoom("A420");
+        course.setProfessor("Mr.Dummy");
+        course.setEcts(5);
+        course.setKindOfSubject("WahlPflichtfach");
+        course.setRecommendedSemester(6);
+        course.setStudyFocus("Allgemein");
+        course.setWorkingHoursInClass(20.0);
+        course.setWorkingHoursSelf(40.0);
+        course.setKindOfExam("Schein");
+        return course;
+    }
 
-
+    private Student createDummyStudent(){
+        Student student = new Student();
+        student.setMatrNr("202481");
+        student.setStudentPrename("Liyan");
+        student.setStudentFamilyname("Fu-Wacker");
+        student.setFieldOfStudy("AIB");
+        student.setCurrentSemester(7);
+        student.setUsername("LiyanFuW");
+        student.setPassword(passwordEncoder.encode("ladsfklajsfl505"));
+        return student;
+    }
 
 }

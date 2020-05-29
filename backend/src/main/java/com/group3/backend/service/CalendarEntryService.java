@@ -1,6 +1,7 @@
 package com.group3.backend.service;
 
 import com.group3.backend.exceptions.*;
+import com.group3.backend.exceptions.Calendar.CalenderDateException;
 import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.exceptions.Calendar.CalendarWithoutFinishTimeException;
 import com.group3.backend.exceptions.Calendar.CalendarWithoutNameException;
@@ -45,19 +46,22 @@ public class CalendarEntryService extends CheckMatrNrClass{
     }
 
     public ResponseEntity<?> getStudentCalendarEntries (String matrNr) {
+        try{
+            checkStudentWithNumberIsSaved(matrNr);
+            checkMatriculationNumber(matrNr);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
         Student student = (Student)studentService.getStudentByNumber(matrNr).getBody();
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findAllByStudentId(student.getId());
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public ResponseEntity<CalendarEntry> createCalendarEntry(String matrNr, CalendarEntry calendarEntry){
+    public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
-            if (!checkCalendarObject(calendarEntry)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
-            }
-            if (!checkMatriculationNumber(matrNr)){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
-            }
+            checkStudentWithNumberIsSaved(matrNr);
+            checkCalendarObject(calendarEntry);
+            checkMatriculationNumber(matrNr);
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
             calendarEntry.setStudent(student);
             Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
@@ -76,12 +80,9 @@ public class CalendarEntryService extends CheckMatrNrClass{
 
     public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
-            if (!checkCalendarObject(calendarEntry)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
-            }
-            if (!checkMatriculationNumber(matrNr)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
-            }
+            checkStudentWithNumberIsSaved(matrNr);
+            checkCalendarObject(calendarEntry);
+            checkMatriculationNumber(matrNr);
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
             Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
             CalendarEntry calendarEntryDelete = null;
@@ -102,19 +103,27 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
     }
 
-    public boolean checkCalendarObject(CalendarEntry calendarEntry){
+    private boolean checkCalendarObject(CalendarEntry calendarEntry){
         try {
-            if (calendarEntry.getName().trim().isEmpty()){
-                throw new CalendarWithoutNameException("Calendar has no name!");
+            if (calendarEntry.getName().trim().isEmpty()||calendarEntry.getName()==null){
+                logger.error("Calender has no name");
+                throw new CalendarWithoutNameException("Kalendereintrag hat keinen Namen!");
             }
-            if(calendarEntry.getDescription().trim().isEmpty()){
-                throw new NoDescriptionException("Calendar has no description!");
+            if(calendarEntry.getDescription().trim().isEmpty()||calendarEntry.getDescription()==null){
+                logger.error("Calender has no description");
+                throw new NoDescriptionException("Kalendereintrag hat keine beschreibung!");
             }
             if (calendarEntry.getEntryStartTime() == null){
-                throw new CalendarWithoutStartTimeException("Calendar has no start date!");
+                logger.error("Calender has no start date");
+                throw new CalendarWithoutStartTimeException("Kalendereintrag hat kein Startdatum!");
             }
             if (calendarEntry.getEntryFinishTime() == null){
-                throw new CalendarWithoutFinishTimeException("Calendar has no finish date!");
+                logger.error("Calender has no finish date");
+                throw new CalendarWithoutFinishTimeException("Kalendereintrag hat kein Enddatum!");
+            }
+            if(calendarEntry.getEntryStartTime().isAfter(calendarEntry.getEntryFinishTime())){
+                logger.error("calender entry Startdate after Enddate! ");
+                throw new CalenderDateException("Kalendereintrag Startzeit ist nach Endzeit");
             }
             return true;
         }
@@ -122,6 +131,20 @@ public class CalendarEntryService extends CheckMatrNrClass{
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * checks if a given Matriculation number is used by a saved student
+     * @param matrNr number to check
+     * @return String
+     * @throws Exception matriculation number Exception
+     */
+    private void checkStudentWithNumberIsSaved(String matrNr) throws Exception{
+        Student st = studentRepository.findByMatrNr(matrNr);
+        if(st == null){
+            logger.error("No Student with the given matriculation number "+ matrNr + " found");
+            throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
+        }
     }
 
    /* public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){

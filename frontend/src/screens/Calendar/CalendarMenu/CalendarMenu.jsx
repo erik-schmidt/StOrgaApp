@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { View, TextInput, Text } from "react-native";
 import styles from "./CalendarMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
-//import { deleteCalendar} from "../../../api/services/CalendarService";
+import { deleteCalendar } from "../../../api/services/CalendarService";
 import AppModal from "../../../components/AppModal/AppModal";
 
-//TO DO: Modal für Kalender bearbeiten einfügen
+//TODO: Kalender löschen
 
 const CalendarMenu = ({ navigation, route }) => {
   const [appointment, setAppointments] = useState(route.params?.appointment);

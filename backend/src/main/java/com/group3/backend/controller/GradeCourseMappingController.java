@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/gradeCourseMapping")
+@RequestMapping("/grade")
 @CrossOrigin()
 public class GradeCourseMappingController {
 
@@ -28,7 +28,7 @@ public class GradeCourseMappingController {
      * @param gradeCourseMapping GradeCourseMapping
      * @return ResoponesEntity
      */
-    @PutMapping("/add/{matrNr}")
+    @PutMapping("/{matrNr}/add")
     public ResponseEntity<?> addGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody GradeCourseMapping gradeCourseMapping, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -42,7 +42,7 @@ public class GradeCourseMappingController {
      * @param matrNr String
      * @return ResoponesEntity
      */
-    @GetMapping("/getAll/{matrNr}")
+    @GetMapping("/{matrNr}/get")
     public ResponseEntity<?> getAllGradeCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -55,7 +55,7 @@ public class GradeCourseMappingController {
      * @param matrNr
      * @return
      */
-    @GetMapping("/getAverage/{matrNr}")
+    @GetMapping("/{matrNr}/getAverage")
     public ResponseEntity<?> getAverageByMatrNr(@PathVariable(value = "matrNr") String matrNr){
         return gradeCourseMappingService.getAverageByMatrNr(matrNr);
     }
@@ -67,7 +67,7 @@ public class GradeCourseMappingController {
      * @param number String number of the curse
      * @return  ResponseEntity<?>
      */
-    @GetMapping("/get/{matrNr}/{number}")
+    @GetMapping("/{matrNr}/get/{number}")
     public ResponseEntity<?> getGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -82,7 +82,7 @@ public class GradeCourseMappingController {
      * @param number grade course mapping json
      * @return ResoponesEntity
      */
-    @DeleteMapping("/delete/{matrNr}/{number}")
+    @DeleteMapping("/{matrNr}/delete/{number}")
     public ResponseEntity<?> deleteGradeCourseOfStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");

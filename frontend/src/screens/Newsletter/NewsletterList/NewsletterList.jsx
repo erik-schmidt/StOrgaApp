@@ -49,7 +49,7 @@ const NewsList = () => {
     setRefreshing(true);
     getAllNews()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setNews(res.data);
           setRefreshing(false);
         } else {
