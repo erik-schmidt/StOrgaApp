@@ -11,5 +11,5 @@ public interface TimeTableObjectRepository extends JpaRepository<TimeTableObject
     List<TimeTableObject> findAllByStartTimeDate(LocalDateTime startTimeDate);
     List<TimeTableObject> findAllByFieldOfStudyAndSemester(String courseAndSemester);
     List<TimeTableObject> findAllByStartTimeDateAndFinishTimeDateIsBetween(LocalDateTime startTimeDate, LocalDateTime finishTimeDate);
-    TimeTableObject findByCourseNumber(String courseNumber);
+    List<TimeTableObject> findAllByCourseNumber(String courseNumber);
 }
