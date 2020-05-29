@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
 
     private StudentService studentService;
-    private JwtTokenService jwtTokenService;
-    private StudentRepository studentRepository;
     private AccessChecker accessChecker;
 
     @Autowired
@@ -40,7 +38,6 @@ public class StudentController {
     }
 
     /**
-     * ping()
      * return a String with a successful message if backend reachable
      * @return String "reachable"
      */
