@@ -5,6 +5,7 @@ import com.group3.backend.exceptions.CheckMatrNrClass;
 import com.group3.backend.model.Student;
 import com.group3.backend.model.TimeTableObject;
 import com.group3.backend.repository.TimeTableObjectRepository;
+import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,11 +81,55 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             LocalDate startTime = timeTableDateRequest.getStartDate();
             LocalDate endTime = timeTableDateRequest.getEndDate();
             String matrNr = timeTableDateRequest.getMatrNr();
-
-            if(timeTableDateRequest.isCurrentWeek()){
-
+            Student student = null;
+            if(matrNr!= null){
+                student = (Student)studentService.getStudentByNumber(matrNr).getBody();
             }
-
+            if(timeTableDateRequest.isCurrentWeek()){
+                LocalDate today = LocalDate.now();
+                LocalDate start = null;
+                LocalDate end = null;
+                int todayWeekday = today.getDayOfWeek().getValue();
+                switch (todayWeekday){
+                    case 1:
+                        start = today;
+                        end = today.plusDays(6);
+                        break;
+                    case 2:
+                        start = today.minusDays(1);
+                        end = today.plusDays(5);
+                        break;
+                    case 3:
+                        start = today.minusDays(2);
+                        end = today.plusDays(4);
+                        break;
+                    case 4:
+                        start = today.minusDays(3);
+                        end = today.plusDays(3);
+                        break;
+                    case 5:
+                        start = today.minusDays(4);
+                        end = today.plusDays(2);
+                        break;
+                    case 6:
+                        start = today.minusDays(5);
+                        end = today.plusDays(1);
+                        break;
+                    case 7:
+                        start = today.minusDays(6);
+                        end = today;
+                        break;
+                    default:
+                        return new ResponseEntity("Fehler beim berechnen der nächsten Woche", HttpStatus.BAD_REQUEST);
+                }
+                if(matrNr!=null){
+                    List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(start,
+                            end,student.getFieldOfStudy()+""+student.getCurrentSemester() );
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(start, end);
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            }
             if(matrNr == null && startTime == null && endTime != null){ //search before enddate
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEnd(timeTableDateRequest.getEndDate());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
@@ -92,20 +137,27 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStart(timeTableDateRequest.getStartDate());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else if(matrNr == null && startTime != null && endTime != null){
-                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(timeTableDateRequest.getStartDate(), timeTableDateRequest.getEndDate());
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(timeTableDateRequest.getStartDate(),
+                        timeTableDateRequest.getEndDate());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else if(matrNr != null && startTime == null && endTime == null){
-                return null;
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByFieldOfStudySemester(student.getFieldOfStudy()+""+student.getCurrentSemester());
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else if(matrNr != null && startTime == null && endTime != null){
-                return null;
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEndCourseSemester(timeTableDateRequest.getEndDate(),
+                        student.getFieldOfStudy()+""+student.getCurrentSemester());
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else if(matrNr != null && startTime != null && endTime == null){
-                return null;
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartCourseSemester(timeTableDateRequest.getStartDate(),
+                        student.getFieldOfStudy()+""+student.getCurrentSemester());
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else if(matrNr != null && startTime != null && endTime != null){
-                return null;
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(timeTableDateRequest.getStartDate(),
+                        timeTableDateRequest.getEndDate(),student.getFieldOfStudy()+""+student.getCurrentSemester() );
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else {
                 return new ResponseEntity("Keine Werte zum suchen im Request gefunden", HttpStatus.BAD_REQUEST);
             }
-
         }catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
