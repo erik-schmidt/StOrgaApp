@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -53,7 +54,7 @@ public class TimeTableObjectController {
      * @return ResponseEntity List with all courses of thos day. Or ResponseEntity String in case of error or null objects found
      */
     @GetMapping("/{matNr}/{date}/getAllByStartTime")
-    private ResponseEntity getAllTimeTableObjectsByStartTime(@PathVariable(value = "matNr") String matrNr, @PathVariable(value = "date") LocalDateTime date, @RequestHeader(name="Authorization") String token){
+    private ResponseEntity getAllTimeTableObjectsByStartTime(@PathVariable(value = "matNr") String matrNr, @PathVariable(value = "date") LocalDate date, @RequestHeader(name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
         }

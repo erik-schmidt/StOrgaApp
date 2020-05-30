@@ -2,47 +2,54 @@ package com.group3.backend.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "timetable")
 public class TimeTableObject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
-    //todo aufsplitten in date und time, damit einfacher in der datenbank nach daten gesucht werden kann
-    @Column(columnDefinition = "DATETIME")
-    private LocalDateTime startTimeDate;
-    @Column(columnDefinition = "DATETIME")
-    private LocalDateTime finishTimeDate;
+    private int id;
+    @Column(columnDefinition = "TIME")
+    private LocalTime startTime;
+    @Column(columnDefinition = "TIME")
+    private LocalTime finishTime;
+    @Column(columnDefinition = "DATE")
+    private LocalDate date;
     private String courseNumber;
     private String summary;
     private String UID;
     private String location;
     private String description;
-    private String professor1;
-    private String professor2;
-    private String professor3;
-    private String fieldOfStudyAndSemester;
+    private String fieldOfStudySemester;
 
 
     public TimeTableObject() {
     }
 
-    public LocalDateTime getStartTimeDate() {
-        return startTimeDate;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStartTimeDate(LocalDateTime startTimeDate) {
-        this.startTimeDate = startTimeDate;
+    public void setStartTime(LocalTime startTimeDate) {
+        this.startTime = startTimeDate;
     }
 
-    public LocalDateTime getFinishTimeDate() {
-        return finishTimeDate;
+    public LocalTime getFinishTime() {
+        return finishTime;
     }
 
-    public void setFinishTimeDate(LocalDateTime finishTimeDate) {
-        this.finishTimeDate = finishTimeDate;
+    public void setFinishTime(LocalTime finishTimeDate) {
+        this.finishTime = finishTimeDate;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getCourseNumber() {
@@ -85,35 +92,11 @@ public class TimeTableObject implements Serializable {
         this.description = description;
     }
 
-    public String getProfessor1() {
-        return professor1;
+    public String getFieldOfStudySemester() {
+        return fieldOfStudySemester;
     }
 
-    public void setProfessor1(String professor1) {
-        this.professor1 = professor1;
-    }
-
-    public String getProfessor2() {
-        return professor2;
-    }
-
-    public void setProfessor2(String professor2) {
-        this.professor2 = professor2;
-    }
-
-    public String getProfessor3() {
-        return professor3;
-    }
-
-    public void setProfessor3(String professor3) {
-        this.professor3 = professor3;
-    }
-
-    public String getFieldOfStudyAndSemester() {
-        return fieldOfStudyAndSemester;
-    }
-
-    public void setFieldOfStudyAndSemester(String courseAndSemester) {
-        this.fieldOfStudyAndSemester = courseAndSemester;
+    public void setFieldOfStudySemester(String courseAndSemester) {
+        this.fieldOfStudySemester = courseAndSemester;
     }
 }
