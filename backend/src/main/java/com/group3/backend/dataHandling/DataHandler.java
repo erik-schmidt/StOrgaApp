@@ -17,7 +17,7 @@ import java.util.*;
 
 public class DataHandler {
 
-    private final String PATH = "backend";
+    private final String PATH = "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
     //private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
     private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
@@ -33,7 +33,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses(){
         Set<Course> courseSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(AIBCOURSES_FILE))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(PATH+ AIBCOURSES_FILE))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
@@ -58,7 +58,7 @@ public class DataHandler {
      */
     public Student loadAdminUser(){
         Student admin = new Student();
-        try(BufferedReader reader = new BufferedReader(new FileReader(ADMIN_USER))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(PATH+ADMIN_USER))){
             String line = reader.readLine();
             while (!(line.equals("###"))){
                 if(!(line.equals(""))) {
@@ -80,9 +80,14 @@ public class DataHandler {
         return null;
     }
 
+    /**
+     * loads the time table objects out of the timetable file wich can be downloaded for AIB4 at
+     * https://splan.hs-heilbronn.de/splan/ical?lan=de&puid=29&type=pg&pgid=17357
+     * @return List<TimeTableObject> or null
+     */
     public List<TimeTableObject> loadTimeTable(){
         List<TimeTableObject> timeTableObjectArrayList = new ArrayList<>(2000);
-        try(BufferedReader reader = new BufferedReader(new FileReader(TIMETABLE))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(PATH+TIMETABLE))){
             String line = reader.readLine();
             TimeTableObject timeTableObject = null;
             boolean wordStart = false;
@@ -111,6 +116,12 @@ public class DataHandler {
         return null;
     }
 
+    /**
+     * logic of fill the time table objects with values
+     * @param timeTableObject new time table object which has to be filled
+     * @param line current read line
+     * @return TimeTableObject with values or default time table object
+     */
     private TimeTableObject fillTimeTableObjectWithAttributes(TimeTableObject timeTableObject, String line){
         if(line.contains("DTSTAMP")){
             return timeTableObject;

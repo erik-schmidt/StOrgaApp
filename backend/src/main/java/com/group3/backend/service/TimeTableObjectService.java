@@ -84,4 +84,15 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity getAllTimeTableObjectsBetween(LocalDate startDate, LocalDate endDate){
+        try{
+            List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDate(startDate, endDate);
+            return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+        }catch (Exception e){
+            logger.error(e.getClass() + " " + e.getMessage());
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

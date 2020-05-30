@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "timetable")
+@Table(name = "TimeTableObject")
 public class TimeTableObject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
