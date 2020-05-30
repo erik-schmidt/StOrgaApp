@@ -1,5 +1,6 @@
 package com.group3.backend.service;
 
+import com.group3.backend.controller.TimeTableDateRequest;
 import com.group3.backend.exceptions.CheckMatrNrClass;
 import com.group3.backend.model.Student;
 import com.group3.backend.model.TimeTableObject;
@@ -51,17 +52,6 @@ public class TimeTableObjectService extends CheckMatrNrClass {
         }
     }
 
-    // TODO: 29.05.2020 doc and test  exceptions
-    public ResponseEntity getAllTimeTableObjectsByStartTime(LocalDate date){
-        try{
-            List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDate(date);
-            return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
-        }catch (Exception e){
-            logger.error(e.getClass() + " " + e.getMessage());
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     // TODO: 29.05.2020 doc and test   exceptions
     public ResponseEntity getAllTimeTableObjectsByStartEndTime(LocalDateTime startDate, LocalDateTime endDate){
         try{
@@ -85,10 +75,37 @@ public class TimeTableObjectService extends CheckMatrNrClass {
         }
     }
 
-    public ResponseEntity getAllTimeTableObjectsBetween(LocalDate startDate, LocalDate endDate){
+    public ResponseEntity getAllTimeTableObjectsBetween(TimeTableDateRequest timeTableDateRequest){
         try{
-            List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDate(startDate, endDate);
-            return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            LocalDate startTime = timeTableDateRequest.getStartDate();
+            LocalDate endTime = timeTableDateRequest.getEndDate();
+            String matrNr = timeTableDateRequest.getMatrNr();
+
+            if(timeTableDateRequest.isCurrentWeek()){
+
+            }
+
+            if(matrNr == null && startTime == null && endTime != null){ //search before enddate
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEnd(timeTableDateRequest.getEndDate());
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            }else if(matrNr == null && startTime != null && endTime == null){ // search after startdate
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStart(timeTableDateRequest.getStartDate());
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            }else if(matrNr == null && startTime != null && endTime != null){
+                List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(timeTableDateRequest.getStartDate(), timeTableDateRequest.getEndDate());
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            }else if(matrNr != null && startTime == null && endTime == null){
+                return null;
+            }else if(matrNr != null && startTime == null && endTime != null){
+                return null;
+            }else if(matrNr != null && startTime != null && endTime == null){
+                return null;
+            }else if(matrNr != null && startTime != null && endTime != null){
+                return null;
+            }else {
+                return new ResponseEntity("Keine Werte zum suchen im Request gefunden", HttpStatus.BAD_REQUEST);
+            }
+
         }catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -96,3 +113,4 @@ public class TimeTableObjectService extends CheckMatrNrClass {
     }
 
 }
+

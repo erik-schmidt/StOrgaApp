@@ -47,21 +47,6 @@ public class TimeTableObjectController {
     }
 
     /**
-     * return a list of all time table objcets at a specific day;
-     * @param matrNr String number of a logged in student
-     * @param date day you want to search the time table objects
-     * @param token String token of a logged in student
-     * @return ResponseEntity List with all courses of thos day. Or ResponseEntity String in case of error or null objects found
-     */
-    @GetMapping("/{matNr}/{date}/getAllByStartTime")
-    private ResponseEntity getAllTimeTableObjectsByStartTime(@PathVariable(value = "matNr") String matrNr, @PathVariable(value = "date") LocalDate date, @RequestHeader(name="Authorization") String token){
-        if(accessChecker.checkAccess(matrNr, token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
-        }
-        return timeTableObjectService.getAllTimeTableObjectsByStartTime(date);
-    }
-
-    /**
      * return a list of all time table objects between start and end date
      * @param matrNr number of a logged in student
      * @param startDate Start date
@@ -92,15 +77,6 @@ public class TimeTableObjectController {
         return timeTableObjectService.getAllTimeTableObjectsByCourseNumber(courseNumber);
     }
 
-
-    /*@GetMapping("/{matNr}/getAllByStudent")
-    private ResponseEntity getAllTimeTableObjectsByStudent(@PathVariable(value = "matNr") String matrNr, @RequestHeader(name="Authorization") String token){
-        if(accessChecker.checkAccess(matrNr, token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
-        }
-        return timeTableObjectService.getAllTimeTableObjectsByStudent(matrNr);
-    }*/
-
     /**
      * returns all timetableobjects between a start and enddate. the dates are representet by the {@link TimeTableDateRequest} objects
      * @param matrNr number of a logged in student
@@ -113,6 +89,9 @@ public class TimeTableObjectController {
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
         }
-        return timeTableObjectService.getAllTimeTableObjectsBetween(timeTableDateRequest.getStartDate(), timeTableDateRequest.getEndDate());
+        if(timeTableDateRequest.getMatrNr() != null && !matrNr.equals(timeTableDateRequest.getMatrNr())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
+        }
+        return timeTableObjectService.getAllTimeTableObjectsBetween(timeTableDateRequest);
     }
 }
