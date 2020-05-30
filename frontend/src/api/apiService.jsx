@@ -6,6 +6,8 @@ const axios = Axios.create({
   responseType: "application/json",
 });
 
+const navigation = useNavigation();
+
 axios.interceptors.request.use(
   async (config) => {
     const userToken = await AsyncStorage.getItem("token");
@@ -22,6 +24,9 @@ export async function fetch(apiPath, param = "") {
   return await axios
     .get(apiPath, param)
     .then((res) => {
+        if (res.status === HttpStatus.UNAUTHORIZED) {
+            navigation.navigate("LoginScreen");
+        }
       return res;
     })
     .catch((error) => {
@@ -34,6 +39,9 @@ export async function post(apiPath, param = "") {
   return axios
     .post(apiPath, param)
     .then((res) => {
+        if (res.status === HttpStatus.UNAUTHORIZED) {
+            navigation.navigate("LoginScreen");
+        }
       return res;
     })
     .catch((error) => {
@@ -46,6 +54,9 @@ export async function put(apiPath, param = "") {
   return axios
     .put(apiPath, param)
     .then((res) => {
+        if (res.status === HttpStatus.UNAUTHORIZED) {
+            navigation.navigate("LoginScreen");
+        }
       return res;
     })
     .catch((error) => {
@@ -59,6 +70,9 @@ export async function del(apiPath, param = "") {
   return axios
     .delete(apiPath, param)
     .then((res) => {
+        if (res.status === HttpStatus.UNAUTHORIZED) {
+            navigation.navigate("LoginScreen");
+        }
       return res.data;
     })
     .catch((error) => {

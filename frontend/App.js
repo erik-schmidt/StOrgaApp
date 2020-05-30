@@ -70,7 +70,6 @@ const App = () => {
       signIn: async (data) => {
         login(data)
           .then(async (res) => {
-            console.log(res);
             if (res.status === HttpStatus.OK) {
               await AsyncStorage.setItem("token", res.data.token);
               await AsyncStorage.setItem("matrNr", res.data.matrNr);

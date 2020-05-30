@@ -5,67 +5,55 @@ import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Toast from "../../../components/Toast/Toast";
-import Axios from "axios";
+import * as HttpStatus from 'http-status-codes';
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const onRefresh = () => {
     setRefreshing(true);
     getAllCourses()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setCourses(res.data);
           setRefreshing(false);
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setRefreshing(false);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+          alert(err);
       });
   };
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setCourses(res.data);
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+          alert(err);
       });
   }, []);
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setCourses(res.data);
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+          alert(err);
       });
   }, [route]);
 
@@ -102,12 +90,7 @@ const CourseList = () => {
         )}
         keyExtractor={(item) => item.description}
       />
-      <Toast
-        showModal={showModal}
-        color="red"
-        text="Keine Verbindung zum Server"
-      />
-    </View>
+   </View>
   );
 };
 

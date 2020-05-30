@@ -7,16 +7,21 @@ import {
   pingCalendar,
 } from "../../../api/services/CalendarService";
 import LocalConfig from "./LocalConfig";
+import * as HttpStatus from 'http-status-codes';
 
 const CalendarAgenda = () => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     getAppointments().then((res) => {
-      if (res !== undefined) {
+      if (res.status === HttpStatus.OK) {
         setAppointments(res.data);
+      } else {
+          throw new Error(res.data);
       }
-    });
+    }).catch(err => {
+        alert(err);
+    );
   }, []);
 
   useEffect(() => {}, [appointments]);

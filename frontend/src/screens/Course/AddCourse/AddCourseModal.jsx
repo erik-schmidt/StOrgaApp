@@ -5,6 +5,7 @@ import styles from "./AddCourseModal.style";
 import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
+import * as HttpStatus from 'http-status-code';
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -15,17 +16,14 @@ const AddCourseModal = ({ navigation }) => {
     getAllCourses()
       .then((res) => {
         console.log(res);
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setCourses(res.data);
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+          alert(err);
       });
   }, []);
 
@@ -44,17 +42,12 @@ const AddCourseModal = ({ navigation }) => {
           })}
         </Picker>
         <AppButton
-          onPress={() => console.log("Speichern ausgewählt")}
+        onPress={() => console.log("Speichern ausgewählt")}
           text="Speichern"
-        />
+      />
         <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
       </AppModal>
-      <Toast
-        color="red"
-        showModal={visible}
-        text="Keine Verbindung zum Server"
-      />
-    </View>
+   </View>
   );
 };
 

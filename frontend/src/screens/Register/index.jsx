@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import styles from "./index.style";
 import AuthContext from "../../constants/AuthContext";
-import Toast from "../../components/Toast/Toast";
 
 const RegisterScreen = ({ navigation }) => {
   const { signUp } = React.useContext(AuthContext);
@@ -20,10 +19,8 @@ const RegisterScreen = ({ navigation }) => {
   const [currentSemester, setCurrentSemester] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  return (
+    return (
     <ScrollView style={styles.container}>
       <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
       <TextInput
@@ -87,7 +84,6 @@ const RegisterScreen = ({ navigation }) => {
       >
         <Text style={styles.textStyle}>Registrieren</Text>
       </TouchableHighlight>
-      <Toast color="red" showModal={showModal} text={errorMessage} />
     </ScrollView>
   );
 };
