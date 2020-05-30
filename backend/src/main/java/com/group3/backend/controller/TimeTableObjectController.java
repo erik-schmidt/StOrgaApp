@@ -47,22 +47,6 @@ public class TimeTableObjectController {
     }
 
     /**
-     * return a list of all time table objects between start and end date
-     * @param matrNr number of a logged in student
-     * @param startDate Start date
-     * @param endDate End date
-     * @param token String token of a logged in student
-     * @return ResponseEntity List with all courses of thos day. Or ResponseEntity String in case of error or null objects foun
-     */
-    @GetMapping("/{matNr}/{startDate}/{endDate}/getAllByStartEndTime")
-    private ResponseEntity getAllTimeTableObjectsByStartEndTime(@PathVariable(value = "matNr") String matrNr, @PathVariable(value = "startDate") LocalDateTime startDate, @PathVariable(value = "endDate") LocalDateTime endDate, @RequestHeader(name="Authorization") String token){
-        if(accessChecker.checkAccess(matrNr, token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
-        }
-        return timeTableObjectService.getAllTimeTableObjectsByStartEndTime(startDate, endDate);
-    }
-
-    /**
      * find the dates of a course with the given number
      * @param matrNr number of a logged in student
      * @param courseNumber course you want to get the timetableobjects of

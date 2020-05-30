@@ -54,18 +54,6 @@ public class TimeTableObjectService extends CheckMatrNrClass {
     }
 
     // TODO: 29.05.2020 doc and test   exceptions
-    public ResponseEntity getAllTimeTableObjectsByStartEndTime(LocalDateTime startDate, LocalDateTime endDate){
-        try{
-            //List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByStartTimeDateAndFinishTimeDateIsBetween(startDate, endDate);
-            //return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
-            return null;
-        }catch (Exception e){
-            logger.error(e.getClass() + " " + e.getMessage());
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // TODO: 29.05.2020 doc and test   exceptions
     public ResponseEntity getAllTimeTableObjectsByCourseNumber(String courseNumber){
         try{
             List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByCourseNumber(courseNumber);
@@ -76,6 +64,7 @@ public class TimeTableObjectService extends CheckMatrNrClass {
         }
     }
 
+    // TODO: 30.05.2020 get next x days from current day
     public ResponseEntity getAllTimeTableObjectsBetween(TimeTableDateRequest timeTableDateRequest){
         try{
             LocalDate startTime = timeTableDateRequest.getStartDate();
