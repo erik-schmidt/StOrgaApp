@@ -1,5 +1,6 @@
 package com.group3.backend.dataHandling;
 
+import com.group3.backend.model.CalendarEntry;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.News;
 import com.group3.backend.model.Student;
@@ -15,6 +16,9 @@ import javax.validation.constraints.Size;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +29,7 @@ public class DataHandler {
     private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
     private final String NEWS_FILE = "News.txt";
+    private final String CALENDAR_FILE = "CalendarEntries.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);
 
     public DataHandler() {
@@ -104,4 +109,24 @@ public class DataHandler {
         }
         return null;
     }
+
+    public Set<CalendarEntry> loadCalendarEntries() {
+        Set<CalendarEntry> calendarEntries = new HashSet();
+        try (BufferedReader reader = new BufferedReader(new FileReader( CALENDAR_FILE))) {
+            String line = reader.readLine();
+            while (!(line.equals("###"))) {
+                if (!(line.equals(""))) {
+                    String[] k = line.split("#");
+                    CalendarEntry calendarEntry = new CalendarEntry(k[0], LocalTime.parse(k[1]), LocalTime.parse(k[2]), LocalDate.parse(k[3]), k[4]);
+                    calendarEntries.add(calendarEntry);
+                }
+                line = reader.readLine();
+            }
+            return calendarEntries;
+        } catch (Exception e) {
+            logger.error("Error while loading inital calendar entries data: " + e.getClass() + " " + e.getMessage());
+        }
+        return null;
+    }
+
 }

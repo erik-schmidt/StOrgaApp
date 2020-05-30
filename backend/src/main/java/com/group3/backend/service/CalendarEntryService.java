@@ -157,7 +157,7 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return calendarEntriesByDate;
     }
 
-    // TODO: 24.04.2020 Monthly CalendarEntries
+    // TODO: 24.04.2020 Monthly CalendarEntries.txt
     public List<CalendarEntry> getCalendarEntryByMonth(String matrNr, Date entryDate){
         return null;
     }
