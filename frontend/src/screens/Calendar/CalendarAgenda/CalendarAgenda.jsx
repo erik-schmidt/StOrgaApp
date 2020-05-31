@@ -21,7 +21,7 @@ const CalendarAgenda = () => {
       }
     }).catch(err => {
         alert(err);
-    );
+    });
   }, []);
 
   useEffect(() => {}, [appointments]);

@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { View, Picker } from "react-native";
 import { getAllCourses } from "../../../api/services/CourseService";
 import styles from "./AddCourseModal.style";
-import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
-import * as HttpStatus from 'http-status-code';
+import * as HttpStatus from 'http-status-codes';
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);

@@ -6,7 +6,6 @@ const axios = Axios.create({
   responseType: "application/json",
 });
 
-const navigation = useNavigation();
 
 axios.interceptors.request.use(
   async (config) => {
