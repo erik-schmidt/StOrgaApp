@@ -69,13 +69,13 @@ public class TimeTableObjectController {
      * @return
      */
     @GetMapping("/{matNr}/getByRequestObject")
-    private ResponseEntity getAllTimeTableObjectsBetween(@PathVariable(value = "matNr") String matrNr, @RequestBody TimeTableDateRequest timeTableDateRequest, @RequestHeader(name="Authorization") String token){
+    private ResponseEntity getAllTimeTableObjects(@PathVariable(value = "matNr") String matrNr, @RequestBody TimeTableDateRequest timeTableDateRequest, @RequestHeader(name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
         }
         if(timeTableDateRequest.getMatrNr() != null && !matrNr.equals(timeTableDateRequest.getMatrNr())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
         }
-        return timeTableObjectService.getAllTimeTableObjectsBetween(timeTableDateRequest);
+        return timeTableObjectService.getAllTimeTableByResponseEntity(timeTableDateRequest);
     }
 }
