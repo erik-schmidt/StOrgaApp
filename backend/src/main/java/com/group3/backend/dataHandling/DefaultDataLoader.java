@@ -63,9 +63,15 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
         }
         if(calendarEntryRepository.count() <= 0){
             Set<CalendarEntry> calendarEntries = dataHandler.loadCalendarEntries();
+
+            student.setCalendarEntries(calendarEntries);
+
             for(CalendarEntry calendarEntry : calendarEntries) {
                 calendarEntryRepository.save(calendarEntry);
             }
+
+            //calendarEntryRepository.save(calendarEntries);
+
         }
     }
 }

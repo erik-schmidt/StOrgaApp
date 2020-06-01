@@ -63,6 +63,8 @@ public class CalendarEntryService extends CheckMatrNrClass{
             checkCalendarObject(calendarEntry);
             checkMatriculationNumber(matrNr);
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+
+
             calendarEntry.setStudent(student);
             Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
             calendarEntries.add(calendarEntry);
