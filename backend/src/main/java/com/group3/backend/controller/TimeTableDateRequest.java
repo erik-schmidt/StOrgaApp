@@ -8,12 +8,14 @@ public class TimeTableDateRequest {
     private LocalDate endDate;
     private String matrNr;
     private boolean currentWeek;
+    private Integer timePeriod;
 
-    public TimeTableDateRequest(LocalDate startDate, LocalDate endDate, String matrNr, boolean currentWeek) {
+    public TimeTableDateRequest(LocalDate startDate, LocalDate endDate, String matrNr, boolean currentWeek, Integer timePeriod) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.matrNr = matrNr;
         this.currentWeek = currentWeek;
+        this.timePeriod = timePeriod;
     }
 
     public TimeTableDateRequest() {
@@ -49,5 +51,13 @@ public class TimeTableDateRequest {
 
     public void setCurrentWeek(boolean currentWeek) {
         this.currentWeek = currentWeek;
+    }
+
+    public Integer getTimePeriod() {
+        return timePeriod;
+    }
+
+    public void setTimePeriod(Integer timePeriod) {
+        this.timePeriod = timePeriod;
     }
 }

@@ -71,11 +71,34 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             LocalDate endTime = timeTableDateRequest.getEndDate();
             String matrNr = timeTableDateRequest.getMatrNr();
             Student student = null;
+            LocalDate today = LocalDate.now();
             if(matrNr!= null){
                 student = (Student)studentService.getStudentByNumber(matrNr).getBody();
             }
-            if(timeTableDateRequest.isCurrentWeek()){
-                LocalDate today = LocalDate.now();
+            if(timeTableDateRequest.getTimePeriod()!=null&&timeTableDateRequest.getTimePeriod()>0){
+                if(startTime !=null){
+                    if(matrNr!=null){
+                        List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(timeTableDateRequest.getStartDate(),
+                                startTime.plusDays(timeTableDateRequest.getTimePeriod()-1),student.getFieldOfStudy()+""+student.getCurrentSemester() );
+                        return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    }else {
+                        List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(timeTableDateRequest.getStartDate(),
+                                startTime.plusDays(timeTableDateRequest.getTimePeriod()-1));
+                        return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    }
+                }else {
+                    if(matrNr!=null){
+                        List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(today,
+                                today.plusDays(timeTableDateRequest.getTimePeriod()-1),student.getFieldOfStudy()+""+student.getCurrentSemester() );
+                        return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    }else {
+                        List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(today,
+                                today.plusDays(timeTableDateRequest.getTimePeriod()-1));
+                        return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    }
+                }
+            }
+            else if(timeTableDateRequest.isCurrentWeek()){
                 LocalDate start = null;
                 LocalDate end = null;
                 int todayWeekday = today.getDayOfWeek().getValue();
@@ -119,7 +142,7 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(start, end);
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }
-            if(matrNr == null && startTime == null && endTime != null){ //search before enddate
+            else if(matrNr == null && startTime == null && endTime != null){ //search before enddate
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEnd(timeTableDateRequest.getEndDate());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             }else if(matrNr == null && startTime != null && endTime == null){ // search after startdate
@@ -152,6 +175,5 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 }
 
