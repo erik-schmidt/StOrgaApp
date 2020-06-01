@@ -2,34 +2,36 @@ package com.group3.backend.service;
 
 import com.group3.backend.controller.TimeTableDateRequest;
 import com.group3.backend.exceptions.CheckMatrNrClass;
+import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import com.group3.backend.model.TimeTableObject;
 import com.group3.backend.repository.TimeTableObjectRepository;
-import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TimeTableObjectService extends CheckMatrNrClass {
 
     private TimeTableObjectRepository timeTableObjectRepository;
+    private CourseService courseService;
     private StudentService studentService;
     private Logger logger = LoggerFactory.getLogger(TimeTableObject.class);
 
     @Autowired
-    public TimeTableObjectService(TimeTableObjectRepository timeTableObjectRepository, StudentService studentService){
+    public TimeTableObjectService(TimeTableObjectRepository timeTableObjectRepository, StudentService studentService, CourseService courseService){
         this.timeTableObjectRepository = timeTableObjectRepository;
         this.studentService = studentService;
+        this.courseService = courseService;
     }
-
+// TODO: 01.06.2020 exception handling -> student might only see courses he joined.
     /**
      * reachabilityTest()
      * return a String with a successful message if backend reachable
@@ -71,7 +73,6 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 
     /**
      * get all time table objects by attributes of the {@link TimeTableDateRequest}
@@ -169,17 +170,73 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             }
         } else if(timeTableDateRequest.getMatrNr() != null) {
             if (startTime == null && endTime == null) {
+                if(timeTableDateRequest.isOnlyJoinedCourses()){
+                    Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                    if(courses==null){
+                        new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                    }
+                    List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                    for(Course c : courses){
+                        List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByCourseNumberAndFieldOfStudySemester(c.getNumber(), student.getFieldOfStudy()+student.getCurrentSemester());
+                        for(TimeTableObject t : timeTableObjects){
+                            timeTableObjectList.add(t);
+                        }
+                    }
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByFieldOfStudySemester(student.getFieldOfStudy() + "" + student.getCurrentSemester());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             } else if (startTime == null && endTime != null) {
+                if(timeTableDateRequest.isOnlyJoinedCourses()){
+                    Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                    if(courses==null){
+                        new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                    }
+                    List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                    for(Course c : courses){
+                        List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByDateEndCourse(c.getNumber(), endTime, student.getFieldOfStudy() + "" + student.getCurrentSemester()) ;
+                        for(TimeTableObject t : timeTableObjects){
+                            timeTableObjectList.add(t);
+                        }
+                    }
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEndCourseSemester(timeTableDateRequest.getEndDate(),
                         student.getFieldOfStudy() + "" + student.getCurrentSemester());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             } else if (startTime != null && endTime == null) {
+                if(timeTableDateRequest.isOnlyJoinedCourses()){
+                    Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                    if(courses==null){
+                        new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                    }
+                    List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                    for(Course c : courses){
+                        List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByDateStartCourse(c.getNumber(), startTime, student.getFieldOfStudy() + "" + student.getCurrentSemester()) ;
+                        for(TimeTableObject t : timeTableObjects){
+                            timeTableObjectList.add(t);
+                        }
+                    }
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartCourseSemester(timeTableDateRequest.getStartDate(),
                         student.getFieldOfStudy() + "" + student.getCurrentSemester());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
             } else if (startTime != null && endTime != null) {
+                if(timeTableDateRequest.isOnlyJoinedCourses()){
+                    Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                    if(courses==null){
+                        new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                    }
+                    List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                    for(Course c : courses){
+                        List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByDateStartEndCourse(c.getNumber(), startTime, endTime,student.getFieldOfStudy() + "" + student.getCurrentSemester()) ;
+                        for(TimeTableObject t : timeTableObjects){
+                            timeTableObjectList.add(t);
+                        }
+                    }
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(timeTableDateRequest.getStartDate(),
                         timeTableDateRequest.getEndDate(), student.getFieldOfStudy() + "" + student.getCurrentSemester());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);

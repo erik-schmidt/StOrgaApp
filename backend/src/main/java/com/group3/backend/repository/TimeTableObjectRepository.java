@@ -25,4 +25,12 @@ public interface TimeTableObjectRepository extends JpaRepository<TimeTableObject
     List<TimeTableObject> findAllByDateStartCourseSemester(LocalDate dateStart, String courseSemester);
     @Query("SELECT t FROM TimeTableObject t WHERE t.date >= ?1 AND t.fieldOfStudySemester = ?2")
     List<TimeTableObject> findAllByDateEndCourseSemester(LocalDate dateEnd, String courseSemester);
+
+    List<TimeTableObject> findAllByCourseNumberAndFieldOfStudySemester(String courseNumber, String fieldOfStudy);
+    @Query("SELECT t FROM TimeTableObject t WHERE t.courseNumber =?1 AND t.date >= ?2 AND t.date <= ?3 AND t.fieldOfStudySemester = ?4")
+    List<TimeTableObject> findAllByDateStartEndCourse(String courseNumber, LocalDate dateStart, LocalDate dateEnd, String courseSemester);
+    @Query("SELECT t FROM TimeTableObject t WHERE t.courseNumber =?1 AND t.date >= ?2 AND t.fieldOfStudySemester = ?3")
+    List<TimeTableObject> findAllByDateStartCourse(String courseNumber, LocalDate dateStart, String courseSemester);
+    @Query("SELECT t FROM TimeTableObject t WHERE t.courseNumber =?1 AND t.date >= ?2 AND t.fieldOfStudySemester = ?3")
+    List<TimeTableObject> findAllByDateEndCourse(String courseNumber, LocalDate dateEnd, String courseSemester);
 }
