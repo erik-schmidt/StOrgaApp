@@ -70,7 +70,6 @@ const App = () => {
       signIn: async (data) => {
         login(data)
           .then(async (res) => {
-            console.log(res);
             if (res.status === HttpStatus.OK) {
               await AsyncStorage.setItem("token", res.data.token);
               await AsyncStorage.setItem("matrNr", res.data.matrNr);
@@ -89,7 +88,9 @@ const App = () => {
         register(data)
           .then((res) => {
             if (res.status === HttpStatus.OK) {
-              alert("Registration erfolgreich. Nach dem Login kannst du loslegen!")
+              alert(
+                "Registration erfolgreich. Nach dem Login kannst du loslegen!"
+              );
               dispatch({ type: "SIGN_UP", token: null });
             } else {
               throw new Error(res.data);

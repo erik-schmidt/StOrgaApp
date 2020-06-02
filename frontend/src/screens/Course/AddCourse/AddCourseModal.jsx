@@ -2,30 +2,28 @@ import React, { useState, useEffect } from "react";
 import { View, Picker } from "react-native";
 import { getAllCourses } from "../../../api/services/CourseService";
 import styles from "./AddCourseModal.style";
-import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
+import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState();
-  const [visible, setVisible] = useState(false);
+  const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        console.log(res);
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setCourses(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+        alert(err);
       });
   }, []);
 
@@ -49,11 +47,6 @@ const AddCourseModal = ({ navigation }) => {
         />
         <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
       </AppModal>
-      <Toast
-        color="red"
-        showModal={visible}
-        text="Keine Verbindung zum Server"
-      />
     </View>
   );
 };

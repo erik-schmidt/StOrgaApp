@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./CourseInformationModal.style";
 import { View, Text } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Toast from "../../../components/Toast/Toast";
 
 const CourseInformationModal = ({ navigation, route }) => {
   navigation.setOptions({
@@ -21,8 +20,6 @@ const CourseInformationModal = ({ navigation, route }) => {
     ),
   });
   const [course, setCourse] = useState(route.params?.course);
-  const [visible, setVisible] = useState(false);
-  const [error, setError] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -38,12 +35,6 @@ const CourseInformationModal = ({ navigation, route }) => {
       <Text style={styles.text}>
         Empfohlenes Semester: {course.reccomendedSemester}
       </Text>
-      <Toast
-        color="green"
-        text="Kurs wurde erfolgreich gelöscht"
-        showModal={visible}
-      />
-      <Toast color="red" text="Keine Verbindung zum Server" showModal={error} />
     </View>
   );
 };
