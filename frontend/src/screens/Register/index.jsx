@@ -20,7 +20,7 @@ const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-    return (
+  return (
     <ScrollView style={styles.container}>
       <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
       <TextInput
