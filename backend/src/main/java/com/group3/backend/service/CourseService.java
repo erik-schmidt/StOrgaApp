@@ -260,7 +260,7 @@ public class CourseService extends CheckMatrNrClass {
      * @param matrNr
      * @return
      */
-    public ResponseEntity<?> deleteCourseFromStudent(String number, String matrNr) {
+    public ResponseEntity<?> deleteCourseFromStudent(String matrNr, String number) {
         try{
             if (number.trim().isEmpty()){
                 throw new CourseWithoutNumberException("Error: No number is given!");
@@ -276,16 +276,31 @@ public class CourseService extends CheckMatrNrClass {
             } else {
                 try {
                     Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-                    Set<Course> courseSet = student.getCourses();
-                    Course course = new Course();
-                    for (Course c : courseSet) {
+                    Course course = courseRepository.findByNumber(number);
+
+                    Set<Course> studentCourses = student.getCourses();
+                    if(studentCourses == null || studentCourses.isEmpty()){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
+                    }
+                    for (Course c : studentCourses) {
                         if (c.getNumber().equals(number)) {
-                            course = c;
+                            studentCourses.remove(c);
                         }
                     }
-                    courseRepository.delete(course);
-                    courseSet = student.getCourses();
-                    return ResponseEntity.status(HttpStatus.OK).body(courseSet);
+                    Set<Student> courseStudents = course.getStudents();
+                    if(courseStudents==null||courseStudents.isEmpty()){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
+                    }
+                    for (Student s : courseStudents) {
+                        if (s.getMatrNr().equals(matrNr)) {
+                            courseStudents.remove(s);
+                        }
+                    }
+                    student.setCourses(studentCourses);
+                    course.setStudents(courseStudents);
+                    studentService.updateStudent(student);
+                    courseRepository.save(course);
+                    return ResponseEntity.status(HttpStatus.OK).body(studentCourses);
                 }catch (Exception e){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
                 }

@@ -1,22 +1,19 @@
-import { fetch, put, del } from '../apiService';
-import { AsyncStorage } from 'react-native';
+import { fetch, put, del } from "../apiService";
+import { AsyncStorage } from "react-native";
+import { getMatrNr } from "../../constants/MatrNrService.jsx";
 
 export const getGrades = async () => {
-    const matrNr = await AsyncStorage.getItem("matrNr");
-    return fetch(`grade/${matrNr}/get`);
-}
+  return fetch(`grade/${getMatrNr()}/get`);
+};
 
 export const addGrade = async (gradeCourse) => {
-    const matrNr = await AsyncStorage.getItem("matrNr");
-    return put(`grade/${matrNr}/add`, gradeCourse);
-}
+  return put(`grade/${getMatrNr()}/add`, gradeCourse);
+};
 
 export const getAverage = async () => {
-    const matrNr = await AsyncStorage.getItem("matrNr");
-    return fetch(`grade/${matrNr}/getAverage`);
-}
+  return fetch(`grade/${getMatrNr()}/getAverage`);
+};
 
 export const deleteGrade = async (number) => {
-    const matrNr = await AsyncStorage.getItem("matrNr");
-    return del(`grade/${matrNr}/delete/${number}`);
-}
+  return del(`grade/${getMatrNr()}/delete/${number}`);
+};

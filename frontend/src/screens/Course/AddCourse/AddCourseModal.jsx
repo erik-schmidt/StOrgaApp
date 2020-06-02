@@ -5,24 +5,27 @@ import styles from "./AddCourseModal.style";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
 import * as HttpStatus from "http-status-codes";
-
+import AuthContext from "../../../constants/AuthContext";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
+  const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setCourses(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err);
-      })
+      });
   }, []);
 
   const onSave = () => {

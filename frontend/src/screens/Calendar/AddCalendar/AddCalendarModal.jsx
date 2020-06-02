@@ -17,8 +17,6 @@ const AddCalendarModal = ({ navigation }) => {
   const saveContent = () => {
     const appointment = new Appointment(date, timeStart, timeEnd, name, info);
     createAppointment(appointment).then((res) => {
-      console.log(res);
-      console.log("speichern war erfolgreich");
       navigation.navigate("Kalender");
     });
   };

@@ -3,26 +3,31 @@ import { View, TextInput } from "react-native";
 import styles from "./CourseMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCourse } from "../../../api/services/CourseService";
-import {addGrade} from '../../../api/services/GradeService';
-import Toast from "../../../components/Toast/Toast";
+import { addGrade } from '../../../api/services/GradeService';
 import AppModal from "../../../components/AppModal/AppModal";
 import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext";
 
 const CourseMenu = ({ navigation, route }) => {
   const [course, setCourse] = useState(route.params?.course);
   const [editMode, setEditMode] = useState(route.parms?.editMode);
   const [selectedGrade, setSelectedGrade] = useState();
+  const { signOut } = React.useContext(AuthContext);
 
   const onDeleteCourse = () => {
-    deleteCourse(course.number).then(res => {
-      if (res.status === HttpStatus.OK) {
-        navigation.navigate("Fächer", {courseDeleted: true});
-      } else {
-        throw new Error(res.data);
-      }
-    }).catch(err => {
-      alert(err);
-    })
+    deleteCourse(course.number)
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          navigation.navigate("Fächer", { courseDeleted: true });
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   const onChangeGrade = () => {
