@@ -89,7 +89,7 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                 return getTimeTableByPeriod(timeTableDateRequest.getStartDate(), student, timeTableDateRequest);
             }
             else if(timeTableDateRequest.isCurrentWeek()){
-                return getTimeTableByCurrentWeek(student);
+                return getTimeTableByCurrentWeek(student, timeTableDateRequest);
             }else{
                 return getTimeTableByAttributes(timeTableDateRequest.getStartDate(), timeTableDateRequest.getEndDate(), timeTableDateRequest, student);
             }
@@ -109,6 +109,20 @@ public class TimeTableObjectService extends CheckMatrNrClass {
     private ResponseEntity getTimeTableByPeriod(LocalDate startTime, Student student, TimeTableDateRequest timeTableDateRequest){
         if(startTime !=null){
             if(timeTableDateRequest.getMatrNr()!=null){
+                if(timeTableDateRequest.isOnlyJoinedCourses()){
+                    Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                    if(courses==null){
+                        new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                    }
+                    List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                    for(Course c : courses){
+                        List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByDateStartCourse(c.getNumber(), startTime,  student.getFieldOfStudy() + "" + student.getCurrentSemester()) ;
+                        for(TimeTableObject t : timeTableObjects){
+                            timeTableObjectList.add(t);
+                        }
+                    }
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(timeTableDateRequest.getStartDate(),
                         startTime.plusDays(timeTableDateRequest.getTimePeriod()-1),student.getFieldOfStudy()+""+student.getCurrentSemester() );
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
@@ -119,6 +133,20 @@ public class TimeTableObjectService extends CheckMatrNrClass {
             }
         }else {
             if(timeTableDateRequest.getMatrNr()!=null){
+                if(timeTableDateRequest.isOnlyJoinedCourses()){
+                    Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                    if(courses==null){
+                        new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                    }
+                    List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                    for(Course c : courses){
+                        List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByCourseNumberAndFieldOfStudySemester(c.getNumber(), student.getFieldOfStudy() + "" + student.getCurrentSemester()) ;
+                        for(TimeTableObject t : timeTableObjects){
+                            timeTableObjectList.add(t);
+                        }
+                    }
+                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(LocalDate.now(),
                         LocalDate.now().plusDays(timeTableDateRequest.getTimePeriod()-1),student.getFieldOfStudy()+""+student.getCurrentSemester());
                 return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
@@ -135,10 +163,24 @@ public class TimeTableObjectService extends CheckMatrNrClass {
      * @param student student wich allow us to search time table objects also by field of study and semester
      * @return RensponsEntity<TimeTableObject> which might be null or RensponsEntity<String> in case of error
      */
-    private ResponseEntity getTimeTableByCurrentWeek(Student student){
+    private ResponseEntity getTimeTableByCurrentWeek(Student student, TimeTableDateRequest timeTableDateRequest){
         LocalDate start = LocalDate.now().minusDays((LocalDate.now().getDayOfWeek().getValue()) - ((LocalDate.now().getDayOfWeek().getValue()-1)));
         LocalDate end = LocalDate.now().plusDays(7 -(LocalDate.now().getDayOfWeek().getValue()));
         if(student.getMatrNr()!=null){
+            if(timeTableDateRequest.isOnlyJoinedCourses()){
+                Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
+                if(courses==null){
+                    new ResponseEntity("Student "+ timeTableDateRequest.getMatrNr() +" ist in keiem Kurs beigetreten", HttpStatus.BAD_REQUEST);
+                }
+                List<TimeTableObject> timeTableObjectList = new ArrayList<>();
+                for(Course c : courses){
+                    List<TimeTableObject> timeTableObjects = timeTableObjectRepository.findAllByDateStartEndCourse(c.getNumber(), start, end, student.getFieldOfStudy() + "" + student.getCurrentSemester()) ;
+                    for(TimeTableObject t : timeTableObjects){
+                        timeTableObjectList.add(t);
+                    }
+                }
+                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            }
             List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(start,
                     end,student.getFieldOfStudy()+""+student.getCurrentSemester());
             return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
