@@ -7,21 +7,27 @@ import {
   pingCalendar,
 } from "../../../api/services/CalendarService";
 import LocalConfig from "./LocalConfig";
-import * as HttpStatus from 'http-status-codes';
+import * as HttpStatus from "http-status-codes";
+import AuthConext from "../../constants/AuthConext";
 
 const CalendarAgenda = () => {
   const [appointments, setAppointments] = useState([]);
+  const { signOut } = React.useContext(AuthConext);
 
   useEffect(() => {
-    getAppointments().then((res) => {
-      if (res.status === HttpStatus.OK) {
-        setAppointments(res.data);
-      } else {
+    getAppointments()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAppointments(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
           throw new Error(res.data);
-      }
-    }).catch(err => {
+        }
+      })
+      .catch((err) => {
         alert(err);
-    });
+      });
   }, []);
 
   useEffect(() => {}, [appointments]);

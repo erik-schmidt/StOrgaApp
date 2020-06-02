@@ -4,25 +4,26 @@ import { getAllCourses } from "../../../api/services/CourseService";
 import styles from "./AddCourseModal.style";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
-import * as HttpStatus from 'http-status-codes';
+import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState();
-  const [visible, setVisible] = useState(false);
+  const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
           setCourses(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
           throw new Error(res.data);
         }
       })
       .catch((err) => {
-          alert(err);
+        alert(err);
       });
   }, []);
 
@@ -41,12 +42,12 @@ const AddCourseModal = ({ navigation }) => {
           })}
         </Picker>
         <AppButton
-        onPress={() => console.log("Speichern ausgewählt")}
+          onPress={() => console.log("Speichern ausgewählt")}
           text="Speichern"
-      />
+        />
         <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
       </AppModal>
-   </View>
+    </View>
   );
 };
 
