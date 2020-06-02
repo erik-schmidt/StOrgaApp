@@ -22,7 +22,7 @@ public class CourseController {
     private AccessChecker accessChecker;
 
     @Autowired
-    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService) {
+    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService, AccessChecker accessChecker) {
         this.courseService = courseService;
         this.gradeCourseMappingService = gradeCourseMappingService;
         this.accessChecker = accessChecker;
@@ -45,6 +45,7 @@ public class CourseController {
      * get all available courses in the database
      * @return List<Course> </Course>
      */
+    // TODO: 02.06.2020 authentifizierung
     @GetMapping("/get")
     public ResponseEntity<?> getAllCourses(@RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAdmin(token)){
@@ -59,8 +60,12 @@ public class CourseController {
      * @param number String
      * @return Course
      */
+    // TODO: 02.06.2020 authentifizierung
     @GetMapping("/get/{number}")
-    public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "number") String number){
+    public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number,  @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getCourseByNumber(number);
     }
 
@@ -69,8 +74,12 @@ public class CourseController {
      * @param kindOfSubject
      * @return
      */
-    @GetMapping("/get/{kindOfSubject}")
-    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
+    // TODO: 02.06.2020 authentifizierung
+    @GetMapping("/{matrNr}/get/{kindOfSubject}")
+    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "kindOfSubject") String kindOfSubject,  @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getCourseByKindOfSubject(kindOfSubject);
     }
 
@@ -79,8 +88,12 @@ public class CourseController {
      * @param studyFocus
      * @return
      */
-    @GetMapping("/get/{studyFocus}")
-    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
+    // TODO: 02.06.2020 authentifizierung
+    @GetMapping("/{matrNr}/get/{studyFocus}")
+    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "studyFocus") String studyFocus, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getCourseByStudyFocus(studyFocus);
     }
 
