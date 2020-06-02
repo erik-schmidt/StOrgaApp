@@ -8,11 +8,11 @@ import {
 } from "../../../api/services/CalendarService";
 import LocalConfig from "./LocalConfig";
 import * as HttpStatus from "http-status-codes";
-import AuthConext from "../../constants/AuthConext";
+import AuthContext from "../../../constants/AuthContext.jsx";
 
 const CalendarAgenda = () => {
   const [appointments, setAppointments] = useState([]);
-  const { signOut } = React.useContext(AuthConext);
+  const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
     getAppointments()
