@@ -8,14 +8,14 @@ export const getAllCourses = () => {
 export const getAllStudentCourses = async () => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return fetch(`course/${matrNr}/get`);
-}
+};
 
 export const addCourse = async (course) => {
-  const matrNr = await AsyncStorage.getItem('matrNr');
+  const matrNr = await AsyncStorage.getItem("matrNr");
   return put(`course/${matrNr}/add`, course);
 };
 
 export const deleteCourse = async (courseNumber) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return del(`course/${matrNr}/delete/${courseNumber}`);
-}
+};

@@ -3,7 +3,7 @@ import { View, TextInput } from "react-native";
 import styles from "./CourseMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCourse } from "../../../api/services/CourseService";
-import { addGrade } from '../../../api/services/GradeService';
+import { addGrade } from "../../../api/services/GradeService";
 import AppModal from "../../../components/AppModal/AppModal";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
@@ -31,15 +31,17 @@ const CourseMenu = ({ navigation, route }) => {
   };
 
   const onChangeGrade = () => {
-    addGrade({courseNumber: course.number, grade: selectedGrade}).then(res => {
-      if (res.status === HttpStatus.OK) {
-        navigation.navigate("Fächer", {courseEdit: true});
-      } else {
-        throw new Error(res.data);
-      }
-    }).catch(err => {
-      alert(err);
-    })
+    addGrade({ courseNumber: course.number, grade: selectedGrade })
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          navigation.navigate("Fächer", { courseEdit: true });
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (
@@ -55,7 +57,7 @@ const CourseMenu = ({ navigation, route }) => {
               value={selectedGrade}
             />
             <AppButton
-              onPress={() => console.log("Ändern ausgewählt")}
+              onPress={() => onChangeGrade()}
               text="Speichern"
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
@@ -64,7 +66,7 @@ const CourseMenu = ({ navigation, route }) => {
       ) : (
         <View>
           <AppModal header="Veranstaltung:" description={course.description}>
-            <AppButton onPress={() => onChangeGrade()} text="Note ändern" />
+            <AppButton onPress={() => setEditMode(true)} text="Note ändern" />
             <AppButton
               color="red"
               onPress={() => onDeleteCourse()}
