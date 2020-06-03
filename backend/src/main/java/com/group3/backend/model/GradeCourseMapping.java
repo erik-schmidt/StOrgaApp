@@ -15,8 +15,8 @@ public class GradeCourseMapping {
     private int id;
     @NotNull
     private String courseNumber;
-    @Min(1)
-    @Max(5)
+    @Min(0)
+    @Max(6)
     private double grade;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
