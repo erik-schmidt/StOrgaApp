@@ -109,7 +109,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             }
             link.setStudent(studentRepository.findByMatrNr(matrNr));
             linkRepository.save(link);
-            linkRepository.saveAndFlush(link);
+            //linkRepository.saveAndFlush(link);
         }
         catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
@@ -132,7 +132,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             if (linkId == 0){
                 throw new LinkedListWithoutLinkIDException("Error: No linkID given!");
             }
-            Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
+            Link link = linkRepository.findById(linkId);
             if (link == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
             }

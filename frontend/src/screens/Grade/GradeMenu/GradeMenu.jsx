@@ -5,15 +5,21 @@ import { deleteGrade } from "../../../api/services/GradeService";
 import AppModal from "../../../components/AppModal/AppModal";
 import * as HttpStatus from "http-status-codes";
 import AppButton from "../../../components/AppButton/AppButton";
+import AuthContext from "../../../constants/AuthContext";
 
 const GradeMenu = ({ navigation, route }) => {
   const [grade, setGrade] = useState(route.params?.grade);
+  const { signOut } = React.useContext(AuthContext);
 
   const onDeleteGrade = () => {
     deleteGrade(grade.courseNumber)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           navigation.navigate("GradeScreen", { gradeDeleted: true });
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.status);
         }
       })
       .catch((err) => {
