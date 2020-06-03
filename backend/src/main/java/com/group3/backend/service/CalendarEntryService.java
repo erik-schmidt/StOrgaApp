@@ -63,6 +63,8 @@ public class CalendarEntryService extends CheckMatrNrClass{
             checkCalendarObject(calendarEntry);
             checkMatriculationNumber(matrNr);
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+
+
             calendarEntry.setStudent(student);
             Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
             calendarEntries.add(calendarEntry);
@@ -157,7 +159,7 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return calendarEntriesByDate;
     }
 
-    // TODO: 24.04.2020 Monthly CalendarEntries
+    // TODO: 24.04.2020 Monthly CalendarEntries.txt
     public List<CalendarEntry> getCalendarEntryByMonth(String matrNr, Date entryDate){
         return null;
     }
