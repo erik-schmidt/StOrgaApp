@@ -1,5 +1,4 @@
 import Axios from "axios";
-import * as HttpStatus from "http-status-codes";
 import { AsyncStorage } from "react-native";
 const axios = Axios.create({
   baseURL: "http://192.168.178.27:8080/api/",
@@ -59,7 +58,7 @@ export async function del(apiPath, param = "") {
   return axios
     .delete(apiPath, param)
     .then((res) => {
-      return res.data;
+      return res;
     })
     .catch((error) => {
       return error.response;

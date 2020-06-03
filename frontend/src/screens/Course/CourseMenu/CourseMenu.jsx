@@ -3,39 +3,45 @@ import { View, TextInput } from "react-native";
 import styles from "./CourseMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCourse } from "../../../api/services/CourseService";
-import Toast from "../../../components/Toast/Toast";
+import { addGrade } from "../../../api/services/GradeService";
 import AppModal from "../../../components/AppModal/AppModal";
+import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext";
 
 const CourseMenu = ({ navigation, route }) => {
   const [course, setCourse] = useState(route.params?.course);
-  const [error, setError] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [editMode, setEditMode] = useState(route.parms?.editMode);
   const [selectedGrade, setSelectedGrade] = useState();
+  const { signOut } = React.useContext(AuthContext);
 
   const onDeleteCourse = () => {
     deleteCourse(course.number)
       .then((res) => {
-        if (res != undefined) {
-          setVisible(true);
-          setTimeout(() => {
-            setVisible(false);
-            navigation.navigate("Fächer", { deleteCourse: true });
-          }, 1000);
+        if (res.status === HttpStatus.OK) {
+          navigation.navigate("Fächer", { courseDeleted: true });
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setError(true);
-        setTimeout(() => {
-          setError(false);
-        }, 3000);
+        alert(err);
       });
   };
 
   const onChangeGrade = () => {
-    setEditMode(true);
+    addGrade({ courseNumber: course.number, grade: selectedGrade })
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          navigation.navigate("Fächer", { courseEdit: true });
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (
@@ -51,7 +57,7 @@ const CourseMenu = ({ navigation, route }) => {
               value={selectedGrade}
             />
             <AppButton
-              onPress={() => console.log("Ändern ausgewählt")}
+              onPress={() => onChangeGrade()}
               text="Speichern"
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
@@ -60,7 +66,7 @@ const CourseMenu = ({ navigation, route }) => {
       ) : (
         <View>
           <AppModal header="Veranstaltung:" description={course.description}>
-            <AppButton onPress={() => onChangeGrade()} text="Note ändern" />
+            <AppButton onPress={() => setEditMode(true)} text="Note ändern" />
             <AppButton
               color="red"
               onPress={() => onDeleteCourse()}
@@ -68,16 +74,6 @@ const CourseMenu = ({ navigation, route }) => {
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
           </AppModal>
-          <Toast
-            color="red"
-            showModal={error}
-            text="Keine Verbindung zum Server"
-          />
-          <Toast
-            color="green"
-            showModal={visible}
-            text="Kurs erfolgreich gelöscht"
-          />
         </View>
       )}
     </View>

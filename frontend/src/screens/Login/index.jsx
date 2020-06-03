@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, TouchableHighlight, Alert } from "react-native";
+import { View, TextInput, Text, TouchableHighlight, } from "react-native";
 import styles from "./index.style";
 import AuthConext from "../../constants/AuthContext";
-import Toast from "../../components/Toast/Toast";
 
 const LoginScreen = ({ navigation }) => {
   const { signIn } = React.useContext(AuthConext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [visible, setVisible] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -44,7 +41,6 @@ const LoginScreen = ({ navigation }) => {
       >
         <Text style={styles.textStyle}>Login</Text>
       </TouchableHighlight>
-      <Toast color="red" showModal={visible} text={errorMessage} />
     </View>
   );
 };
