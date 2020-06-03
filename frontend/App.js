@@ -57,7 +57,7 @@ const App = () => {
       try {
         userToken = await AsyncStorage.getItem("userToken");
       } catch (e) {
-        Alert.alert("Wiederherstellung der Daten fehlgeschlagen", e);
+        alert(e);
       }
       dispatch({ type: "RESTORE_TOKEN", token: userToken });
     };
@@ -80,7 +80,7 @@ const App = () => {
             }
           })
           .catch((err) => {
-            alert(err);
+            alert("Login fehlgeschlagen " + err);
           });
       },
       signOut: () => dispatch({ type: "SIGN_OUT" }),
@@ -97,7 +97,7 @@ const App = () => {
             }
           })
           .catch((err) => {
-            alert(err);
+            alert("Registrierung fehlgeschlagen " + err);
           });
       },
     }),

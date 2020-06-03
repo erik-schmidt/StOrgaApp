@@ -33,7 +33,7 @@ const CourseInformationModal = ({ navigation, route }) => {
       <Text style={styles.text}>Vertiefungsrichtung {course.studyFocus}</Text>
       <Text style={styles.text}>ECTS: {course.ects}</Text>
       <Text style={styles.text}>
-        Empfohlenes Semester: {course.reccomendedSemester}
+        Empfohlenes Semester: {course.recommendedSemester}
       </Text>
     </View>
   );

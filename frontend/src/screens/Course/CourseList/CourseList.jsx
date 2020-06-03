@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, RefreshControl } from "react-native";
-import { getAllCourses } from "../../../api/services/CourseService";
+import { Text, View, RefreshControl, Alert } from "react-native";
+import { getAllStudentCourses } from "../../../api/services/CourseService";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
@@ -17,7 +17,7 @@ const CourseList = () => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    getAllCourses()
+    getAllStudentCourses()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setCourses(res.data);
@@ -34,7 +34,7 @@ const CourseList = () => {
   };
 
   useEffect(() => {
-    getAllCourses()
+    getAllStudentCourses()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setCourses(res.data);
@@ -50,7 +50,7 @@ const CourseList = () => {
   }, []);
 
   useEffect(() => {
-    getAllCourses()
+    getAllStudentCourses()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setCourses(res.data);
@@ -92,7 +92,7 @@ const CourseList = () => {
             </View>
             <View style={styles.cardText}>
               <Text style={styles.boldText}>Empfohlenes Semester: </Text>
-              <Text>{item.reccomendedSemester}</Text>
+              <Text>{item.recommendedSemester}</Text>
             </View>
           </Card>
         )}
