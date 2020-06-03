@@ -26,10 +26,10 @@ const CalendarInformationModal = ({ navigation, route }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Termin: {appointment.name}</Text>
       <Text style={styles.text}>
-        Startzeit : {moment(appointment.entryStartTime).format("LT")} Uhr
+        Startzeit : {appointment.entryStartTime} Uhr
       </Text>
       <Text style={styles.text}>
-        Endzeit : {moment(appointment.entryFinishTime).format("LT")} Uhr
+        Endzeit : {appointment.entryFinishTime} Uhr
       </Text>
       <Text style={styles.text}>Infos: {appointment.description}</Text>
     </View>

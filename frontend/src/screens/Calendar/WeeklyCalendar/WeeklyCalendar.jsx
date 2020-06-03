@@ -25,149 +25,157 @@ const WeekCalendar = () => {
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
           setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
         alert(err);
-        setRefreshing(false);
       });
   };
 
   useEffect(() => {
-    getAppointments().then((res) => {
-      console.log(res);
-      if (res.status === HttpStatus.OK) {
-        setAppointments(res.data);
-      }
-    });
+    getAppointments()
+      .then((res) => {
+        console.log(res);
+        if (res.status === HttpStatus.OK) {
+          setAppointments(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }, []);
 
   useEffect(() => {}, [appointments]);
 
   return (
-    <View>
-      <WeeklyCalendar
-        events={appointments}
-        style={{ height: Dimensions.get("window").height }}
-        locale="de"
-        selectedDay="weekday"
-        renderEvent={(event, j) => {
-          const startTime = moment(event.entryStartTime)
-            .format("LT")
-            .toString();
-          console.log(event.entryStartTime + "starttime: " + startTime);
+    /*<View
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >*/
+    <WeeklyCalendar
+      events={appointments}
+      style={{ height: Dimensions.get("window").height }}
+      locale="de"
+      selectedDay="weekday"
+      renderEvent={(event, j) => {
+        const startTime = moment(event.entryStartTime).format("LT").toString;
+        console.log(event.entryStartTime + "starttime: " + startTime);
 
-          const endTime = moment(event.entryFinishTime).format("LT").toString();
-          console.log(event.entryFinishTime + "endtime: " + endTime);
-
-          return (
-            <TouchableHighlight
-              onPress={() =>
-                navigation.navigate("CalendarInformationModal", {
-                  appointment: event,
-                })
-              }
-              onLongPress={() =>
-                navigation.navigate("CalendarMenu", { appointment: event })
-              }
-            >
-              <View key={j}>
-                <View style={styles.event}>
-                  <View style={styles.eventDuration}>
-                    <View style={styles.durationContainer}>
-                      <View style={styles.durationDot} />
-                      <Text style={styles.durationText}>{startTime}</Text>
-                    </View>
-                    <View style={{ paddingTop: 10 }} />
-                    <View style={styles.durationContainer}>
-                      <View style={styles.durationDot} />
-                      <Text style={styles.durationText}>{endTime}</Text>
-                    </View>
-                    <View style={styles.durationDotConnector} />
+        return (
+          <TouchableHighlight
+            onPress={() =>
+              navigation.navigate("CalendarInformationModal", {
+                appointment: event,
+              })
+            }
+            onLongPress={() =>
+              navigation.navigate("CalendarMenu", { appointment: event })
+            }
+          >
+            <View key={j}>
+              <View style={styles.event}>
+                <View style={styles.eventDuration}>
+                  <View style={styles.durationContainer}>
+                    <View style={styles.durationDot} />
+                    <Text style={styles.durationText}>
+                      {event.entryStartTime}
+                    </Text>
                   </View>
-                  <View style={styles.eventNote}>
-                    <Text style={styles.eventText}>{event.name}</Text>
+                  <View style={{ paddingTop: 10 }} />
+                  <View style={styles.durationContainer}>
+                    <View style={styles.durationDot} />
+                    <Text style={styles.durationText}>
+                      {event.entryFinishTime}
+                    </Text>
                   </View>
+                  <View style={styles.durationDotConnector} />
                 </View>
-                <View style={styles.lineSeparator} />
-              </View>
-            </TouchableHighlight>
-          );
-        }}
-        renderLastEvent={(event, j) => {
-          let startTime = moment(event.entryStartTime)
-            .format("hh:mm")
-            .toString();
-          console.log(event.entryStartTime + "Laststarttime: " + startTime);
-          let endTime = moment(event.entryFinishTime)
-            .format("hh:mm")
-            .toString();
-          console.log(event.entryFinishTime + "Lastendtime: " + endTime);
-
-          return (
-            <TouchableHighlight
-              onPress={() =>
-                navigation.navigate("CalendarInformationModal", {
-                  appointment: event,
-                })
-              }
-              onLongPress={() =>
-                navigation.navigate("CalendarMenu", { appointment: event })
-              }
-            >
-              <View key={j}>
-                <View style={styles.event}>
-                  <View style={styles.eventDuration}>
-                    <View style={styles.durationContainer}>
-                      <View style={styles.durationDot} />
-                      <Text style={styles.durationText}>{startTime}</Text>
-                    </View>
-                    <View style={{ paddingTop: 10 }} />
-                    <View style={styles.durationContainer}>
-                      <View style={styles.durationDot} />
-                      <Text style={styles.durationText}>{endTime}</Text>
-                    </View>
-                    <View style={styles.durationDotConnector} />
-                  </View>
-                  <View style={styles.eventNote}>
-                    <Text style={styles.eventText}>{event.name}</Text>
-                  </View>
+                <View style={styles.eventNote}>
+                  <Text style={styles.eventText}>{event.name}</Text>
                 </View>
               </View>
-            </TouchableHighlight>
-          );
-        }}
-        renderDay={(eventViews, weekdayToAdd, i) => (
-          <View key={i.toString()} style={styles.day}>
-            <View style={styles.dayLabel}>
-              <Text style={[styles.monthDateText, { color: "#66CDAA" }]}>
-                {weekdayToAdd.format("M/D").toString()}
-              </Text>
-              <Text style={[styles.dayText, { color: "grey" }]}>
-                {weekdayToAdd.format("ddd").toString()}
-              </Text>
+              <View style={styles.lineSeparator} />
             </View>
-            <View
-              style={[
-                styles.allEvents,
-                eventViews.length === 0
-                  ? { width: "100%", backgroundColor: "lightgrey" }
-                  : {},
-              ]}
-            >
-              {eventViews}
+          </TouchableHighlight>
+        );
+      }}
+      renderLastEvent={(event, j) => {
+        let startTime = moment(event.entryStartTime).format("LT").toString;
+        console.log(event.entryStartTime + " Laststarttime: " + startTime);
+
+        return (
+          <TouchableHighlight
+            onPress={() =>
+              navigation.navigate("CalendarInformationModal", {
+                appointment: event,
+              })
+            }
+            onLongPress={() =>
+              navigation.navigate("CalendarMenu", { appointment: event })
+            }
+          >
+            <View key={j}>
+              <View style={styles.event}>
+                <View style={styles.eventDuration}>
+                  <View style={styles.durationContainer}>
+                    <View style={styles.durationDot} />
+                    <Text style={styles.durationText}>{startTime}</Text>
+                  </View>
+                  <View style={{ paddingTop: 10 }} />
+                  <View style={styles.durationContainer}>
+                    <View style={styles.durationDot} />
+                    <Text style={styles.durationText}>
+                      {event.entryFinishTime}
+                    </Text>
+                  </View>
+                  <View style={styles.durationDotConnector} />
+                </View>
+                <View style={styles.eventNote}>
+                  <Text style={styles.eventText}>{event.name}</Text>
+                </View>
+              </View>
             </View>
+          </TouchableHighlight>
+        );
+      }}
+      renderDay={(eventViews, weekdayToAdd, i) => (
+        <View key={i.toString()} style={styles.day}>
+          <View style={styles.dayLabel}>
+            <Text style={[styles.monthDateText, { color: "#66CDAA" }]}>
+              {weekdayToAdd.format("M/D").toString()}
+            </Text>
+            <Text style={[styles.dayText, { color: "grey" }]}>
+              {weekdayToAdd.format("ddd").toString()}
+            </Text>
           </View>
-        )}
-        onDayPress={(weekday) => {
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
+          <View
+            style={[
+              styles.allEvents,
+              eventViews.length === 0
+                ? { width: "100%", backgroundColor: "lightgrey" }
+                : {},
+            ]}
+          >
+            {eventViews}
+          </View>
+        </View>
+      )}
+      onDayPress={(weekday) => {
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
 
-          setSelectedDay(moment(weekday).format("L"));
-        }}
-      />
-    </View>
+        setSelectedDay(moment(weekday).format("L"));
+      }}
+    />
+    //</View>
   );
 };
 export default WeekCalendar;
