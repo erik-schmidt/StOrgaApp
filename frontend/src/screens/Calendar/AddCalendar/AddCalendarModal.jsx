@@ -16,25 +16,17 @@ const AddCalendarModal = ({ navigation, route }) => {
   const [date, setDate] = useState(new Date());
 
   const saveContent = () => {
-    //const start = date + " " + timeStart;
-    //const end = date + " " + timeEnd;
-    //const appointment = new Appointment(date, start, end, name, info);
-    //console.log(appointment);
     createAppointment({
       name: name,
-      entryStartTime: timeStart,
+      entryStartTimeString: timeStart,
       entryFinishTime: timeEnd,
       entryDate: date,
       description: info,
     }).then((res) => {
       console.log(res);
       console.log("speichern war erfolgreich");
-      const appointment = new Appointment(date, timeStart, timeEnd, name, info);
-      createAppointment(appointment).then((res) => {
-        navigation.navigate("Kalender");
-      });
-      navigation.navigate("Kalender");
     });
+    navigation.navigate("Kalender");
   };
 
   return (
