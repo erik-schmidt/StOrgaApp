@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import styles from "./CalendarInformationModal.style";
 import { View, Text } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 
 const CalendarInformationModal = ({ navigation, route }) => {
   navigation.setOptions({
     headerRight: () => (
-      <FontAwesome5.Button
-        name="edit"
+      <AntDesign.Button
+        name="delete"
         color="black"
         backgroundColor="#ffff"
         onPress={() =>

@@ -60,14 +60,6 @@ const CalendarScreenNavigator = ({ navigation }) => {
           cardStyle: { backgroundColor: "transparent", opacity: 1 },
         }}
       />
-      <CalendarStack.Screen
-        name="ChangeCalendarModal"
-        component={ChangeCalendarModal}
-        options={{
-          headerTitle: "Termin ändern",
-          cardStyle: { backgroundColor: "#ffff" },
-        }}
-      />
     </CalendarStack.Navigator>
   );
 };

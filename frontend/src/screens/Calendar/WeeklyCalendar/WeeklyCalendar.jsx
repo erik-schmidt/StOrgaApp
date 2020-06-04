@@ -15,6 +15,7 @@ const WeekCalendar = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [appointments, setAppointments] = useState([]);
+
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
 
@@ -39,9 +40,10 @@ const WeekCalendar = () => {
   useEffect(() => {
     getAppointments()
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
+          console.log(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -67,8 +69,7 @@ const WeekCalendar = () => {
       locale="de"
       selectedDay="weekday"
       renderEvent={(event, j) => {
-        const startTime = moment(event.entryStartTime).format("LT").toString;
-        console.log(event.entryStartTime + "starttime: " + startTime);
+        //const startTime = moment(event.entryStartTime).format("LT").toString;
 
         return (
           <TouchableHighlight
@@ -109,8 +110,7 @@ const WeekCalendar = () => {
         );
       }}
       renderLastEvent={(event, j) => {
-        let startTime = moment(event.entryStartTime).format("LT").toString;
-        console.log(event.entryStartTime + " Laststarttime: " + startTime);
+        //let startTime = moment(event.entryStartTime).format("LT").toString;
 
         return (
           <TouchableHighlight
@@ -128,7 +128,9 @@ const WeekCalendar = () => {
                 <View style={styles.eventDuration}>
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
-                    <Text style={styles.durationText}>{startTime}</Text>
+                    <Text style={styles.durationText}>
+                      {event.entryStartTime}
+                    </Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>

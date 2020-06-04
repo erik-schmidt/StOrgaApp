@@ -13,6 +13,7 @@ const AddCalendarModal = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
+  //const start = date + " " + timeStart;
 
   const saveContent = () => {
     createAppointment({
