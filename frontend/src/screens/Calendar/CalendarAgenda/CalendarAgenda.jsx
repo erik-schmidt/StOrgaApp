@@ -62,9 +62,7 @@ const CalendarAgenda = () => {
         "2020-04-23": { dots: [termin], color: "red" },
       }}
       markingType={"multi-dot"}
-      loadItemsForMonth={(month) => {
-        console.log("month loading");
-      }}
+      loadItemsForMonth={(month) => {}}
       onCalendarToggled={(calendarOpened) => {
         console.log(calendarOpened);
       }}
