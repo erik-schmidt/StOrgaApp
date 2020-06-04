@@ -38,11 +38,7 @@ const LinkList = () => {
       });
   }, [route]);
 
-  const OpenLinkCard = ({ id, url, children, description }) => {
-    let link = url;
-    if (!url.startsWith("http://") || !url.startsWith("https://")) {
-      link = "https://" + url;
-    }
+  const OpenLinkCard = ({ id, link, linkDescription }) => {
     const handlePress = useCallback(async () => {
       const supported = await Linking.canOpenURL(link);
 
@@ -51,19 +47,19 @@ const LinkList = () => {
       } else {
         alert(`Don't know how to open this URL: ${link}`);
       }
-    }, [url]);
+    }, [link]);
     return (
       <TouchableOpacity
         onPress={handlePress}
         onLongPress={() =>
           navigation.navigate("LinkMenu", {
-            link: { id, url, description },
+            link: { id, link, linkDescription },
           })
         }
       >
         <View>
-          <Text style={styles.descriptionText}>{description}</Text>
-          <Text style={styles.linkText}>{children}</Text>
+          <Text style={styles.descriptionText}>{linkDescription}</Text>
+          <Text style={styles.linkText}>{link}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -102,9 +98,12 @@ const LinkList = () => {
           />
         )}
         renderItem={({ item }) => (
-          <OpenLinkCard id={item.id} description={item.linkDescription} url={item.link}>
-            {item.link}
-          </OpenLinkCard>
+          <OpenLinkCard
+            id={item.id}
+            item={item}
+            link={item.link}
+            linkDescription={item.linkDescription}
+          />
         )}
         keyExtractor={(item) => item.id}
       />
