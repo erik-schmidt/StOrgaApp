@@ -16,3 +16,6 @@ export const deleteCalendar = async (appointment) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return post(`calendarEntry/${matrNr}/delete/`, appointment);
 };
+export const getAllAppointments = () => {
+  return fetch("calendarEntry/getAll");
+};
