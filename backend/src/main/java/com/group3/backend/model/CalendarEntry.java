@@ -35,7 +35,7 @@ public class CalendarEntry {
     private String description;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //@JoinColumn(name = "student")
     private Student student = new Student();
 
