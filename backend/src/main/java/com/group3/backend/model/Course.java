@@ -45,7 +45,7 @@ public class Course implements Serializable {
     //The kind of exam is one of the two: 1. Note 2. Schein         //TODO: Ist das mit kindOfExam gemeint?
     private String kindOfExam;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "Courses_Students",
             joinColumns = {@JoinColumn(name = "course_id")},
