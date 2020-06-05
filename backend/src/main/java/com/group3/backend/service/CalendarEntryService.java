@@ -59,19 +59,18 @@ public class CalendarEntryService extends CheckMatrNrClass{
 
     public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
+            //Checkmethods
             checkStudentWithNumberIsSaved(matrNr);
             checkCalendarObject(calendarEntry);
             checkMatriculationNumber(matrNr);
+
+            //Student for calendarentry save process
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-
-
             calendarEntry.setStudent(student);
             Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
             calendarEntries.add(calendarEntry);
             student.setCalendarEntries(calendarEntries);
             studentRepository.save(student);
-            //CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
-            //calendarEntryRepository.save(calendarEntry1);
             return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
         }
         catch (Exception e){
@@ -123,10 +122,14 @@ public class CalendarEntryService extends CheckMatrNrClass{
                 logger.error("Calender has no finish date");
                 throw new CalendarWithoutFinishTimeException("Kalendereintrag hat kein Enddatum!");
             }
+            //OBJECT IS NOW TIMESTAMP NOT LOCAL DATE
+            /*
             if(calendarEntry.getEntryStartTime().isAfter(calendarEntry.getEntryFinishTime())){
                 logger.error("calender entry Startdate after Enddate! ");
                 throw new CalenderDateException("Kalendereintrag Startzeit ist nach Endzeit");
             }
+             */
+
             return true;
         }
         catch (Exception e){

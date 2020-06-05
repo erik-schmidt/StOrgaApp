@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class CalendarEntry implements Serializable {
     @NotNull
     private String name;
 
-    // TODO: 24.04.2020 Eventuell stimmen die Datentypen für die folgenden 3 Attribute nicht.
+    /*
     @Column(columnDefinition = "TIME")
    // @Convert(disableConversion = true)
     private LocalTime entryStartTime;
@@ -34,6 +35,15 @@ public class CalendarEntry implements Serializable {
     @Column(columnDefinition = "DATE")
     //@Convert(disableConversion = true)
     private LocalDate entryDate;
+     */
+
+    @Column(name = "startTime", columnDefinition = "TIMESTAMP")
+    //@Temporal(TemporalType.TIMESTAMP)
+    private Timestamp entryStartTime;
+
+    @Column(name = "finishTime", columnDefinition = "TIMESTAMP")
+    //@Temporal(TemporalType.TIMESTAMP)
+    private Timestamp entryFinishTime;
 
     private String description;
 
@@ -46,11 +56,10 @@ public class CalendarEntry implements Serializable {
 
     }
 
-    public CalendarEntry(String name, LocalTime entryStartTimeString, LocalTime entryFinishTime, LocalDate entryDate, String description){
+    public CalendarEntry(String name, Timestamp entryStartTime, Timestamp entryFinishTime, String description){
         this.name = name;
-        this.entryStartTime = entryStartTimeString;
+        this.entryStartTime = entryStartTime;
         this.entryFinishTime = entryFinishTime;
-        this.entryDate = entryDate;
         this.description = description;
     }
 
@@ -63,28 +72,20 @@ public class CalendarEntry implements Serializable {
         this.name = name;
     }
 
-    public LocalTime getEntryStartTime() {
+    public Timestamp getEntryStartTime() {
         return entryStartTime;
     }
 
-    public void setEntryStartTime(LocalTime entryStartTime) {
+    public void setEntryStartTime(Timestamp entryStartTime) {
         this.entryStartTime = entryStartTime;
     }
 
-    public LocalTime getEntryFinishTime() {
+    public Timestamp getEntryFinishTime() {
         return entryFinishTime;
     }
 
-    public void setEntryFinishTime(LocalTime entryFinishTime) {
+    public void setEntryFinishTime(Timestamp entryFinishTime) {
         this.entryFinishTime = entryFinishTime;
-    }
-
-    public LocalDate getEntryDate() {
-        return entryDate;
-    }
-
-    public void setEntryDate(LocalDate entryDate) {
-        this.entryDate = entryDate;
     }
 
     public String getDescription() {
