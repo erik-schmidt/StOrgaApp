@@ -9,7 +9,6 @@ import AddButton from "../components/AddButton/AddButton";
 import AddCalendarModal from "../screens/Calendar/AddCalendar/AddCalendarModal";
 import CalendarInformationModal from "../screens/Calendar/CalendarInformationModal/CalendarInformationModal";
 import CalendarMenu from "../screens/Calendar/CalendarMenu/CalendarMenu";
-import ChangeCalendarModal from "../screens/Calendar/ChangeCalendarModal/ChangeCalendarModal";
 
 const CalendarScreenNavigator = ({ navigation }) => {
   const CalendarStack = createStackNavigator();

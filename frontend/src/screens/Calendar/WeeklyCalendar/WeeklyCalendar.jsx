@@ -6,7 +6,11 @@ import moment from "moment";
 import "moment/locale/de";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { getAppointments } from "../../../api/services/CalendarService";
+import {
+  getAppointments,
+  pingCalendar,
+  getAllAppointments,
+} from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
 
 //TO DO: Alert für on Press und Long Press einfügen
@@ -15,13 +19,12 @@ const WeekCalendar = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [appointments, setAppointments] = useState([]);
-
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
     setRefreshing(true);
-    getAppointments()
+    getAllAppointments()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
@@ -38,9 +41,10 @@ const WeekCalendar = () => {
   };
 
   useEffect(() => {
-    getAppointments()
+    pingCalendar();
+    getAllAppointments()
       .then((res) => {
-        //console.log(res);
+        console.log(res);
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
           console.log(res.data);
@@ -69,7 +73,8 @@ const WeekCalendar = () => {
       locale="de"
       selectedDay="weekday"
       renderEvent={(event, j) => {
-        //const startTime = moment(event.entryStartTime).format("LT").toString;
+        const startTime = moment(event.entryStartTime).format("LTS").toString;
+        const endTime = moment(event.entryFinishTime).format("LTS").toString;
 
         return (
           <TouchableHighlight
@@ -87,16 +92,12 @@ const WeekCalendar = () => {
                 <View style={styles.eventDuration}>
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
-                    <Text style={styles.durationText}>
-                      {event.entryStartTime}
-                    </Text>
+                    <Text style={styles.durationText}>{startTime}</Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
-                    <Text style={styles.durationText}>
-                      {event.entryFinishTime}
-                    </Text>
+                    <Text style={styles.durationText}>{endTime}</Text>
                   </View>
                   <View style={styles.durationDotConnector} />
                 </View>
@@ -110,7 +111,8 @@ const WeekCalendar = () => {
         );
       }}
       renderLastEvent={(event, j) => {
-        //let startTime = moment(event.entryStartTime).format("LT").toString;
+        const startTime = moment(event.entryStartTime).format("LT").toString;
+        const endTime = moment(event.entryFinishTime).format("LT").toString;
 
         return (
           <TouchableHighlight
@@ -128,16 +130,12 @@ const WeekCalendar = () => {
                 <View style={styles.eventDuration}>
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
-                    <Text style={styles.durationText}>
-                      {event.entryStartTime}
-                    </Text>
+                    <Text style={styles.durationText}>{startTime}</Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
-                    <Text style={styles.durationText}>
-                      {event.entryFinishTime}
-                    </Text>
+                    <Text style={styles.durationText}>{endTime}</Text>
                   </View>
                   <View style={styles.durationDotConnector} />
                 </View>

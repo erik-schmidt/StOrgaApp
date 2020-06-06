@@ -13,14 +13,17 @@ const AddCalendarModal = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
-  //const start = date + " " + timeStart;
 
+  const start = date + " " + timeStart;
+  const end = date + " " + timeEnd;
+
+  console.log("Start: " + start);
+  console.log("End: " + end);
   const saveContent = () => {
     createAppointment({
       name: name,
-      entryStartTime: timeStart,
-      entryFinishTime: timeEnd,
-      entryDate: date,
+      entryStartTime: start,
+      entryFinishTime: end,
       description: info,
     }).then((res) => {
       console.log(res);
@@ -51,7 +54,7 @@ const AddCalendarModal = ({ navigation, route }) => {
           style={styles.picker}
           date={timeStart}
           mode="time"
-          format="hh:mm"
+          format="hh:mm:ss"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           minuteInterval={10}
@@ -65,7 +68,7 @@ const AddCalendarModal = ({ navigation, route }) => {
           style={styles.picker}
           date={timeEnd}
           mode="time"
-          format="hh:mm"
+          format="hh:mm:ss"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           minuteInterval={10}
