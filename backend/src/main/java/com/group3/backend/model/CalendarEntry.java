@@ -23,27 +23,9 @@ public class CalendarEntry implements Serializable {
     @NotNull
     private String name;
 
-    /*
-    @Column(columnDefinition = "TIME")
-   // @Convert(disableConversion = true)
-    private LocalTime entryStartTime;
+    private String entryStartDateAndTime;
 
-    @Column(columnDefinition = "TIME")
-    //@Convert(disableConversion = true)
-    private LocalTime entryFinishTime;
-
-    @Column(columnDefinition = "DATE")
-    //@Convert(disableConversion = true)
-    private LocalDate entryDate;
-     */
-
-    @Column(name = "startTime", columnDefinition = "TIMESTAMP")
-    //@Temporal(TemporalType.TIMESTAMP)
-    private Timestamp entryStartTime;
-
-    @Column(name = "finishTime", columnDefinition = "TIMESTAMP")
-    //@Temporal(TemporalType.TIMESTAMP)
-    private Timestamp entryFinishTime;
+    private String entryFinishDateAndTime;
 
     private String description;
 
@@ -56,10 +38,10 @@ public class CalendarEntry implements Serializable {
 
     }
 
-    public CalendarEntry(String name, Timestamp entryStartTime, Timestamp entryFinishTime, String description){
+    public CalendarEntry(String name, String entryStartDateAndTime, String entryFinishDateAndTime, String description){
         this.name = name;
-        this.entryStartTime = entryStartTime;
-        this.entryFinishTime = entryFinishTime;
+        this.entryStartDateAndTime = entryStartDateAndTime;
+        this.entryFinishDateAndTime = entryFinishDateAndTime;
         this.description = description;
     }
 
@@ -72,20 +54,20 @@ public class CalendarEntry implements Serializable {
         this.name = name;
     }
 
-    public Timestamp getEntryStartTime() {
-        return entryStartTime;
+    public String getEntryStartDateAndTime() {
+        return entryStartDateAndTime;
     }
 
-    public void setEntryStartTime(Timestamp entryStartTime) {
-        this.entryStartTime = entryStartTime;
+    public void setEntryStartDateAndTime(String entryStartDateAndTime) {
+        this.entryStartDateAndTime = entryStartDateAndTime;
     }
 
-    public Timestamp getEntryFinishTime() {
-        return entryFinishTime;
+    public String getEntryFinishDateAndTime() {
+        return entryFinishDateAndTime;
     }
 
-    public void setEntryFinishTime(Timestamp entryFinishTime) {
-        this.entryFinishTime = entryFinishTime;
+    public void setEntryFinishDateAndTime(String entryFinishDateAndTime) {
+        this.entryFinishDateAndTime = entryFinishDateAndTime;
     }
 
     public String getDescription() {

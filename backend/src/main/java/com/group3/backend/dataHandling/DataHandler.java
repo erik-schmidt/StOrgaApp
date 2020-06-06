@@ -45,7 +45,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses() {
         Set<Course> courseSet = new HashSet<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH+AIBCOURSES_FILE))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH + AIBCOURSES_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -72,7 +72,7 @@ public class DataHandler {
      */
     public Student loadAdminUser() {
         Student admin = new Student();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PATH+ADMIN_USER))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH + ADMIN_USER))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -96,7 +96,7 @@ public class DataHandler {
 
     public Set<News> loadNews() {
         Set<News> newsSet = new HashSet();
-        try (BufferedReader reader = new BufferedReader(new FileReader( NEWS_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(NEWS_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -115,12 +115,12 @@ public class DataHandler {
 
     public Set<CalendarEntry> loadCalendarEntries() {
         Set<CalendarEntry> calendarEntries = new HashSet();
-        try (BufferedReader reader = new BufferedReader(new FileReader( CALENDAR_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CALENDAR_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
                     String[] k = line.split("#");
-                    CalendarEntry calendarEntry = new CalendarEntry(k[0], Timestamp.valueOf(k[1]), Timestamp.valueOf(k[2]), k[3]);
+                    CalendarEntry calendarEntry = new CalendarEntry(k[0], k[1], k[2], k[3]);
                     calendarEntries.add(calendarEntry);
                 }
                 line = reader.readLine();
