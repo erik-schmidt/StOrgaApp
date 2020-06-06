@@ -1,39 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { View, Picker } from "react-native";
-import { getAllCourses } from "../../../api/services/CourseService";
+import { getAllCourses, addCourse } from "../../../api/services/CourseService";
 import styles from "./AddCourseModal.style";
-import Toast from "../../../components/Toast/Toast";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
+import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState();
-  const [visible, setVisible] = useState(false);
+  const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        console.log(res);
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setCourses(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-        }, 5000);
+        alert(err);
       });
   }, []);
+
+  const onSave = () => {
+    addCourse(selectedCourse).then(res => {
+      if (res.status === HttpStatus.OK) {
+        navigation.navigate("Fächer", {courseAdded: true});
+      } else {
+        throw new Error(res.data);
+      }
+    }).catch(err => {
+      alert(err);
+    })
+  }
 
   return (
     <View style={styles.container}>
       <AppModal header="Kurs zur Liste hinzufügen" height={280} width={280}>
         <Picker
-          selectedValue={""}
+        selectedValue={selectedCourse}
           style={styles.picker}
           onValueChange={(itemValue, itemIndex) => {
             setSelectedCourse(itemValue);
@@ -44,16 +55,11 @@ const AddCourseModal = ({ navigation }) => {
           })}
         </Picker>
         <AppButton
-          onPress={() => console.log("Speichern ausgewählt")}
+          onPress={() => onSave()}
           text="Speichern"
         />
         <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
       </AppModal>
-      <Toast
-        color="red"
-        showModal={visible}
-        text="Keine Verbindung zum Server"
-      />
     </View>
   );
 };

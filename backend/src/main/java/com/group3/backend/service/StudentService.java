@@ -2,9 +2,10 @@ package com.group3.backend.service;
 
 import com.group3.backend.exceptions.CheckMatrNrClass;
 import com.group3.backend.exceptions.Course.CourseWithoutRecommendedSemesterException;
+import com.group3.backend.exceptions.MatrNrWrongLengthException;
+import com.group3.backend.exceptions.MatrNrWrongSyntaxException;
 import com.group3.backend.exceptions.Student.StudentDoesntMatchToMatrNrException;
 import com.group3.backend.exceptions.Student.StudentMatrNrIsAlreadyUsedException;
-import com.group3.backend.exceptions.StudentNameException;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
@@ -61,7 +62,7 @@ public class StudentService extends CheckMatrNrClass {
                 logger.error("Error while reading all Students: There are no students saved");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no students saved");
             }
-            logger.info("Students successffully read");
+            logger.info("Students successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(studentList);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -94,7 +95,7 @@ public class StudentService extends CheckMatrNrClass {
      * createStudent
      * create a student in the Database if it not exists already
      * @param student
-     * @return ResponseEntity<String> if succesfull return id of student
+     * @return ResponseEntity<String> if successfully return id of student
      */
     public ResponseEntity<?> createStudent(Student student){
         Student st = new Student();
@@ -133,7 +134,7 @@ public class StudentService extends CheckMatrNrClass {
             }
             Student st = studentRepository.findByMatrNr(matNr);
             studentRepository.delete(st);
-            logger.info("Student: " + matNr + " successffully deleted");
+            logger.info("Student: " + matNr + " successfully deleted");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -160,7 +161,7 @@ public class StudentService extends CheckMatrNrClass {
             st.setFieldOfStudy(student.getFieldOfStudy());
             st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             studentRepository.save(st);
-            logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successffully updated");
+            logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successfully updated");
             return ResponseEntity.status(HttpStatus.OK).body(st);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -197,11 +198,11 @@ public class StudentService extends CheckMatrNrClass {
      * @param name String
      * @param kindOfname String
      * @return string name
-     * @throws StudentNameException
+     * @throws MatrNrWrongLengthException
      */
     private String checkName(String name, String kindOfname) throws Exception {
         if(name.length()<2||name.length()>50){
-            throw new StudentNameException(kindOfname + " must be between 2 an 50 letters");
+            throw new MatrNrWrongLengthException(kindOfname + " must be between 2 an 50 letters");
         }
         boolean found = false;
         for (char c : name.toCharArray()) {
@@ -209,7 +210,7 @@ public class StudentService extends CheckMatrNrClass {
                 found = true;
             }
             if (found) {
-                throw new StudentNameException("Numbers are not allowed in " + kindOfname );
+                throw new MatrNrWrongSyntaxException("Numbers are not allowed in " + kindOfname );
             }
         }
         return name;

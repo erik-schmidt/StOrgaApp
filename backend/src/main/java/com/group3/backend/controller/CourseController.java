@@ -22,7 +22,7 @@ public class CourseController {
     private AccessChecker accessChecker;
 
     @Autowired
-    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService) {
+    public CourseController(CourseService courseService, GradeCourseMappingService gradeCourseMappingService, AccessChecker accessChecker) {
         this.courseService = courseService;
         this.gradeCourseMappingService = gradeCourseMappingService;
         this.accessChecker = accessChecker;
@@ -45,6 +45,7 @@ public class CourseController {
      * get all available courses in the database
      * @return List<Course> </Course>
      */
+    // TODO: 02.06.2020 authentifizierung
     @GetMapping("/get")
     public ResponseEntity<?> getAllCourses(@RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAdmin(token)){
@@ -59,8 +60,12 @@ public class CourseController {
      * @param number String
      * @return Course
      */
+    // TODO: 02.06.2020 authentifizierung
     @GetMapping("/get/{number}")
-    public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "number") String number){
+    public ResponseEntity<?> getCourseByNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number,  @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getCourseByNumber(number);
     }
 
@@ -69,8 +74,12 @@ public class CourseController {
      * @param kindOfSubject
      * @return
      */
-    @GetMapping("/get/{kindOfSubject}")
-    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "kindOfSubject") String kindOfSubject){
+    // TODO: 02.06.2020 authentifizierung
+    @GetMapping("/{matrNr}/get/{kindOfSubject}")
+    public ResponseEntity<?> getCoursesByKindOfSubject(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "kindOfSubject") String kindOfSubject,  @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getCourseByKindOfSubject(kindOfSubject);
     }
 
@@ -79,8 +88,12 @@ public class CourseController {
      * @param studyFocus
      * @return
      */
-    @GetMapping("/get/{studyFocus}")
-    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "studyFocus") String studyFocus){
+    // TODO: 02.06.2020 authentifizierung
+    @GetMapping("/{matrNr}/get/{studyFocus}")
+    public ResponseEntity<?> getCoursesByStudyFocus(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "studyFocus") String studyFocus, @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
         return courseService.getCourseByStudyFocus(studyFocus);
     }
 
@@ -90,7 +103,7 @@ public class CourseController {
      * @param matrNr String
      * @return Set<Course>
      */
-    @GetMapping("/getStudentsCourses/{matrNr}")
+    @GetMapping("/{matrNr}/get")
     public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -98,17 +111,17 @@ public class CourseController {
         return courseService.getStudentsCourses(matrNr);
     }
 
-    /**
-     * getStudentCourses
-     * get all courses which the student is signed in
-     * @param matrNr String Matriculation number
-     * @param number String Course number
-     * @return Course
-     */
-   /* @GetMapping("/get/{matrNr}/{number}")
-    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
-    }*/
+//    /**
+//     * getStudentCourses
+//     * get all courses which the student is signed in
+//     * @param matrNr String Matriculation number
+//     * @param number String Course number
+//     * @return Course
+//     */
+//    @GetMapping("/get/{matrNr}/{number}")
+//    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
+//        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
+//    }
 
     /**
      * Set the grade of specific course of a specific student.
@@ -129,7 +142,7 @@ public class CourseController {
      * @param course Course object
      * @return
      */
-    @PutMapping("/add/{matrNr}")
+    @PutMapping("/{matrNr}/add")
     public ResponseEntity<?> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
@@ -167,7 +180,7 @@ public class CourseController {
      * @param number
      * @return
      */
-    @DeleteMapping("/delete/{matrNr}/{number}")
+    @DeleteMapping("/{matrNr}/delete/{number}")
     public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");

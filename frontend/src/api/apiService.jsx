@@ -1,8 +1,7 @@
 import Axios from "axios";
-import * as HttpStatus from "http-status-codes";
 import { AsyncStorage } from "react-native";
 const axios = Axios.create({
-  baseURL: "http://192.168.0.122:8080/api/",
+  baseURL: "http://storga.hs-heilbronn.de:8080/api/",
   responseType: "application/json",
 });
 
@@ -59,7 +58,7 @@ export async function del(apiPath, param = "") {
   return axios
     .delete(apiPath, param)
     .then((res) => {
-      return res.data;
+      return res;
     })
     .catch((error) => {
       return error.response;

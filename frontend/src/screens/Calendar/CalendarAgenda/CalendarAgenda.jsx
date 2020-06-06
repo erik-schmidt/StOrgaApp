@@ -7,16 +7,27 @@ import {
   pingCalendar,
 } from "../../../api/services/CalendarService";
 import LocalConfig from "./LocalConfig";
+import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext.jsx";
 
 const CalendarAgenda = () => {
   const [appointments, setAppointments] = useState([]);
+  const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
-    getAppointments().then((res) => {
-      if (res !== undefined) {
-        setAppointments(res.data);
-      }
-    });
+    getAppointments()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAppointments(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }, []);
 
   useEffect(() => {}, [appointments]);
@@ -51,9 +62,7 @@ const CalendarAgenda = () => {
         "2020-04-23": { dots: [termin], color: "red" },
       }}
       markingType={"multi-dot"}
-      loadItemsForMonth={(month) => {
-        console.log("month loading");
-      }}
+      loadItemsForMonth={(month) => {}}
       onCalendarToggled={(calendarOpened) => {
         console.log(calendarOpened);
       }}

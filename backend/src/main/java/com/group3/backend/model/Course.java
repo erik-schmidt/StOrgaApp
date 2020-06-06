@@ -13,32 +13,39 @@ public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+                                                        //TODO: What was that again?
     @NotNull
     private String fieldOfStudy;
+    //The specific number of the course
     @NotNull
     private String number;
+    //The name of the course
     @NotNull
     private String description;
+    //The room the course takes place
     @NotNull
     private String room;
+    //The professor who leads the course
     @NotNull
     private String professor;
+    //The number of ECTs the course is worth
     @NotNull
-    private int ects;
+    private Integer ects;
+    //The kind of subject is one of the two: 1. Pflichtfach 2. Wahlfach
     @NotNull
     private String kindOfSubject;
-    @NotNull
-    private int recommendedSemester;
-    @NotNull
+    //The semester the course is recommended for
+    private Integer recommendedSemester;
+    //The study focus is one of the three: 1. Mobile Computing 2. Psychologie 3. Allgemein
     private String studyFocus;
-    @NotNull
+    //The number of hours which are calculated to spend in class
     private Double workingHoursInClass;
-    @NotNull
+    //The number of hours which are calculated to spend for learning by your own
     private Double workingHoursSelf;
-    @NotNull
+    //The kind of exam is one of the two: 1. Note 2. Schein         //TODO: Ist das mit kindOfExam gemeint?
     private String kindOfExam;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "Courses_Students",
             joinColumns = {@JoinColumn(name = "course_id")},
@@ -51,7 +58,7 @@ public class Course implements Serializable {
     }
 
     public Course(String fieldOfStudy, String number, String description, String room, String professor, int ects,
-                  String kindOfSubject, int reccomendedSemester, String studyFocus, Double workingHoursInClass,
+                  String kindOfSubject, int recommendedSemester, String studyFocus, Double workingHoursInClass,
                   Double workingHoursSelf, String kindOfExam){
         this.fieldOfStudy = fieldOfStudy;
         this.number = number;

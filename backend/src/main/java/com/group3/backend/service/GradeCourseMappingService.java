@@ -8,6 +8,7 @@ import com.group3.backend.exceptions.GradCourseMapping.GradeCourseMappingWithout
 import com.group3.backend.exceptions.GradeFormatException;
 import com.group3.backend.exceptions.Student.StudentDoesntMatchToMatrNrException;
 import com.group3.backend.model.GradeCourseMapping;
+import com.group3.backend.model.Link;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
@@ -19,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Service
@@ -53,15 +56,15 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no student with the number " + matrNr);
             }
             gradeCourseMapping.setStudent(st);
-            if(checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The curse with number "+
-                        gradeCourseMapping.getCourseNumber() + " already has a grade and is mapped for Student " + matrNr);
+            if(!checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no course with number:  "+
+                        gradeCourseMapping.getCourseNumber() + " available");
             }
             Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
             gradeCourseMappingSet.add(checkGradeCourse(gradeCourseMapping));
             st.setGradeCourseMappings(gradeCourseMappingSet);
             studentRepository.save(st);
-            logger.info("New Grade to curs successfully added");
+            logger.info("New Grade to course successfully added");
             return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -85,6 +88,8 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
             Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(st);
             logger.info("Grade to course of student "+ matrNr + " successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingSet);
+        }catch (GradeCourseMappingStudentWithoutMappedCoursesException e) {
+            return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMappingRepository.findAllByStudent(studentRepository.findByMatrNr(matrNr)));
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
@@ -172,14 +177,15 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
                 throw new StudentDoesntMatchToMatrNrException("There is no student with matriculation number: " + matrNr);
             }
             double average = 0;
-            int counter = 0;
+            double counter = 0;
             Set<GradeCourseMapping> gradeCourseMappings = gradeCourseMappingRepository.findAllByStudentMatrNr(matrNr);
             for (GradeCourseMapping mapping : gradeCourseMappings){
                 counter++;
-                average = average + mapping.getGrade();
+                average += mapping.getGrade();
             }
-            average = Math.round((average/counter)*100)/100;
-            return ResponseEntity.status(HttpStatus.OK).body(average);
+            DecimalFormat twoDForm = new DecimalFormat("#.##");
+            average = average/counter;
+            return ResponseEntity.status(HttpStatus.OK).body(twoDForm.format(average));
         }
         catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
@@ -219,11 +225,11 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
      * @return Set<GradeCourseMapping>
      * @throws Exception
      */
-    private void checkIfStudentHasMappedGradeCourses(Student student) throws Exception{
+    private void checkIfStudentHasMappedGradeCourses(Student student) throws GradeCourseMappingStudentWithoutMappedCoursesException{
         Set<GradeCourseMapping> gradeCourseMappingSet = student.getGradeCourseMappings();
         if(gradeCourseMappingSet.isEmpty()){
             logger.error("The student " + student.getMatrNr() + " has grades to courses mapped");
-            throw  new GradeCourseMappingStudentWithoutMappedCoursesException("The student "+ student.getMatrNr() + " has no mapped grades to courses");
+            throw new GradeCourseMappingStudentWithoutMappedCoursesException("The student "+ student.getMatrNr() + " has no mapped grades to courses");
         }
     }
 
