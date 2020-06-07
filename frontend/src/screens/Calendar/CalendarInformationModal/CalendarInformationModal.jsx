@@ -21,12 +21,14 @@ const CalendarInformationModal = ({ navigation, route }) => {
     ),
   });
   const [appointment, setAppointments] = useState(route.params?.appointment);
-  const startTime = moment(appointment.entryStartTime).format("LTS").toString;
-  const endTime = moment(appointment.entryFinishTime).format("LTS").toString;
+  const startTime = moment(appointment.entryStartDateAndTime).format("LT");
+  const endTime = moment(appointment.entryFinishDateAndTime).format("LT");
+  const date = moment(appointment.entryFinishDateAndTime).format("LL");
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Termin: {appointment.name}</Text>
+      <Text style={styles.text}>Datum : {date} </Text>
       <Text style={styles.text}>Startzeit : {startTime} Uhr</Text>
       <Text style={styles.text}>Endzeit : {endTime} Uhr</Text>
       <Text style={styles.text}>Infos: {appointment.description}</Text>

@@ -38,7 +38,7 @@ public class CalendarEntry implements Serializable {
 
     }
 
-    public CalendarEntry(String name, String entryStartDateAndTime, String entryFinishDateAndTime, String description){
+    public CalendarEntry(String name,String entryStartDateAndTime,String entryFinishDateAndTime, String description){
         this.name = name;
         this.entryStartDateAndTime = entryStartDateAndTime;
         this.entryFinishDateAndTime = entryFinishDateAndTime;

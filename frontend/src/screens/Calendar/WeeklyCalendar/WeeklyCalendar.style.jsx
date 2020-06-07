@@ -1,6 +1,18 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 0,
+    //marginTop: Expo.Constants.statusBarHeight,
+    color: "transparent",
+  },
+  scrollView: {
+    flex: 0,
+    backgroundColor: "pink",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "transparent",
+  },
   component: {
     width: Dimensions.get("window").width,
     alignItems: "center",

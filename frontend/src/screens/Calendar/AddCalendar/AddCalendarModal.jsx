@@ -21,15 +21,14 @@ const AddCalendarModal = ({ navigation, route }) => {
   console.log("End: " + end);
   const saveContent = () => {
     createAppointment({
+      entryStartDateAndTime: start,
+      entryFinishDateAndTime: end,
       name: name,
-      entryStartTime: start,
-      entryFinishTime: end,
       description: info,
     }).then((res) => {
       console.log(res);
       console.log("speichern war erfolgreich");
     });
-    navigation.navigate("Kalender");
   };
 
   return (
@@ -92,9 +91,11 @@ const AddCalendarModal = ({ navigation, route }) => {
           onChangeText={(info) => setInfo(info)}
           defaultValue={info}
         />
+
         <AppButton
           onPress={() => {
             saveContent();
+            navigation.navigate("Kalender");
           }}
           text="Speichern"
         />

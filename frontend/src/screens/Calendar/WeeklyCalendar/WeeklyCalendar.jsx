@@ -4,16 +4,13 @@ import WeeklyCalendar from "react-native-weekly-calendar";
 import styles from "./WeeklyCalendar.style";
 import moment from "moment";
 import "moment/locale/de";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { TouchableHighlight, ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   getAppointments,
-  pingCalendar,
   getAllAppointments,
 } from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
-
-//TO DO: Alert für on Press und Long Press einfügen
 
 const WeekCalendar = () => {
   const navigation = useNavigation();
@@ -41,7 +38,6 @@ const WeekCalendar = () => {
   };
 
   useEffect(() => {
-    pingCalendar();
     getAllAppointments()
       .then((res) => {
         console.log(res);
@@ -62,7 +58,8 @@ const WeekCalendar = () => {
   useEffect(() => {}, [appointments]);
 
   return (
-    /*<View
+    /*<ScrollView
+      contentContainerStyle={styles.scrollView}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
@@ -71,10 +68,11 @@ const WeekCalendar = () => {
       events={appointments}
       style={{ height: Dimensions.get("window").height }}
       locale="de"
-      selectedDay="weekday"
+      //selectedDay="weekday"
+
       renderEvent={(event, j) => {
-        const startTime = moment(event.entryStartTime).format("LTS").toString;
-        const endTime = moment(event.entryFinishTime).format("LTS").toString;
+        const startTime = moment(event.entryStartDateAndTime).format("LT");
+        const endTime = moment(event.entryFinishDateAndTime).format("LT");
 
         return (
           <TouchableHighlight
@@ -111,8 +109,8 @@ const WeekCalendar = () => {
         );
       }}
       renderLastEvent={(event, j) => {
-        const startTime = moment(event.entryStartTime).format("LT").toString;
-        const endTime = moment(event.entryFinishTime).format("LT").toString;
+        const startTime = moment(event.entryStartDateAndTime).format("LT");
+        const endTime = moment(event.entryFinishDateAndTime).format("LT");
 
         return (
           <TouchableHighlight
@@ -170,12 +168,10 @@ const WeekCalendar = () => {
         </View>
       )}
       onDayPress={(weekday) => {
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
-
         setSelectedDay(moment(weekday).format("L"));
       }}
     />
-    //</View>
+    //</ScrollView>
   );
 };
 export default WeekCalendar;
