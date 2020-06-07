@@ -33,7 +33,7 @@ public class Student implements Serializable {
     private String username;
     private String password;
     @JsonIgnore
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
     /*
      * @JsonIgnore
