@@ -8,7 +8,6 @@ import com.group3.backend.exceptions.GradCourseMapping.GradeCourseMappingWithout
 import com.group3.backend.exceptions.GradeFormatException;
 import com.group3.backend.exceptions.Student.StudentDoesntMatchToMatrNrException;
 import com.group3.backend.model.GradeCourseMapping;
-import com.group3.backend.model.Link;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.GradeCourseMappingRepository;
@@ -19,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import com.group3.backend.model.Course;
 import java.util.Set;
 
 @Service
@@ -40,11 +37,24 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * addGradeCourseToStudent
-     * add a Grade course mapping to a student to identify his grades in the given subjects
-     * @param matrNr string matricuatlion number of student
-     * @param gradeCourseMapping GradeCourseMApping object
-     * @return ResponseEntity<?>
+     * Is used to test the reachability of the service.
+     * Called by "/ping".
+     * @return
+     *          "reachable" to represent that the service can be reached.
+     */
+    public String ping(){return "reachable";}
+
+    /**
+     * Is used to add a {@link GradeCourseMapping} to a {@link Student}.
+     * Is called by "/{matrNr}/add".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} the {@link GradeCourseMapping} should be mapped to.
+     * @param gradeCourseMapping
+     *                              The {@link GradeCourseMapping} which should be mapped to the {@link Student}.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the added
+     *          {@link GradeCourseMapping} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> addGradeCourseToStudent(String matrNr, GradeCourseMapping gradeCourseMapping){
         try {
@@ -56,15 +66,17 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no student with the number " + matrNr);
             }
             gradeCourseMapping.setStudent(st);
-            if(!checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There is no course with number:  "+
-                        gradeCourseMapping.getCourseNumber() + " available");
+            if(checkIfCourseExists(gradeCourseMapping.getCourseNumber())){
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The curse with number "+
+                        gradeCourseMapping.getCourseNumber() + " already has a grade and is mapped for Student " + matrNr);
             }
             Set<GradeCourseMapping> gradeCourseMappingSet = st.getGradeCourseMappings();
-            gradeCourseMappingSet.add(checkGradeCourse(gradeCourseMapping));
+            if(checkGradeCourse(gradeCourseMapping)){
+                gradeCourseMappingSet.add(gradeCourseMapping);
+            }
             st.setGradeCourseMappings(gradeCourseMappingSet);
             studentRepository.save(st);
-            logger.info("New Grade to course successfully added");
+            logger.info("New Grade to curs successfully added");
             return ResponseEntity.status(HttpStatus.OK).body(gradeCourseMapping);
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
@@ -73,10 +85,14 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * getGradeCourseofStudent
-     * get the grade course mapping of a student
-     * @param matrNr string matricuatlion number of student
-     * @return ResponseEntity<?>
+     * Is used to get all {@link GradeCourseMapping} of a {@link Student}.
+     * Is called by "/{matrNr}/get".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link GradeCourseMapping} objects for.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link GradeCourseMapping} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getAllGradeCourseOfStudent(String matrNr){
         try {
@@ -97,11 +113,16 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * getGradeCourseOfStudent
-     * get the grade course mapping of a student. Get back only one course with the given number
-     * @param matrNr String Matriculation number of Student
-     * @param number String number of the curse wich should be searched for
-     * @return ResponseEntity<?>
+     * Is used to get a specific {@link GradeCourseMapping} of a specific {@link Student}.
+     * Is called by "/{matrNr}/get/{number}".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link GradeCourseMapping} of.
+     * @param number
+     *                  The number of the {@link GradeCourseMapping} you want from the {@link Student}.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link GradeCourseMapping} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getGradeCourseOfStudent(String matrNr, String number){
         try {
@@ -131,10 +152,14 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * deleteGradeCourseOfStudent
-     * delete GradeCourse mapping of a student if exists
-     * @param matrNr String of students matricuatlation number
-     * @return ResponseEntity<?>
+     * Is used to delete a {@link GradeCourseMapping} from a {@link Student}.
+     * Is called by "/{matrNr}/delete/{number}".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want to delete the {@link GradeCourseMapping} of.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link GradeCourseMapping} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> deleteGradeCourseOfStudent(String matrNr, String number) {
         try {
@@ -164,9 +189,14 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * Calculates the average for all grades of the Student with the given MatrNr.
+     * Is used to get the average of all grades from a specific {@link Student}.
+     * Is called by "/{matrNr}/getAverage".
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want the average of.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          average in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getAverageByMatrNr(String matrNr){
         try {
@@ -177,15 +207,14 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
                 throw new StudentDoesntMatchToMatrNrException("There is no student with matriculation number: " + matrNr);
             }
             double average = 0;
-            double counter = 0;
+            int counter = 0;
             Set<GradeCourseMapping> gradeCourseMappings = gradeCourseMappingRepository.findAllByStudentMatrNr(matrNr);
             for (GradeCourseMapping mapping : gradeCourseMappings){
                 counter++;
-                average += mapping.getGrade();
+                average = average + mapping.getGrade();
             }
-            DecimalFormat twoDForm = new DecimalFormat("#.##");
-            average = average/counter;
-            return ResponseEntity.status(HttpStatus.OK).body(twoDForm.format(average));
+            average = Math.round((average/counter)*100)/100;
+            return ResponseEntity.status(HttpStatus.OK).body(average);
         }
         catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
@@ -194,14 +223,15 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * checkGradeCourse
-     * check the object that the mapping fields are not null or empty and check if the grade is in the
-     * range of 1 to 5
-     * @param gradeCourseMapping Object
-     * @return acceptable gradeCourseMapping object
+     * Is used to check if the syntax of the {@link GradeCourseMapping} is valid.
+     * @param gradeCourseMapping
+     *                              The {@link GradeCourseMapping} you want to check.
+     * @return
+     *          Returns true if the syntax of the {@link GradeCourseMapping} is valid.
      * @throws Exception
+     *                      Is thrown if the syntax of the {@link GradeCourseMapping} is not valid.
      */
-    private GradeCourseMapping checkGradeCourse(GradeCourseMapping gradeCourseMapping) throws Exception{
+    private boolean checkGradeCourse(GradeCourseMapping gradeCourseMapping) throws Exception{
         if(gradeCourseMapping.getCourseNumber() == null||gradeCourseMapping.getCourseNumber().equals("")){
             throw new GradeCourseMappingWithoutNumberException("Error: Course number can not be null");
         }
@@ -215,30 +245,36 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
         }catch (Exception e){
             throw  e;
         }
-        return gradeCourseMapping;
+        return true;
     }
 
     /**
-     * checkIfStudentHasMappedGradeCourses
-     * check if the student has mapped any courses for read them
-     * @param student Student
-     * @return Set<GradeCourseMapping>
+     * Is used to check if a {@link Student} has mapped {@link GradeCourseMapping} objects.
+     * @param student
+     *                  The {@link Student} you want to check.
+     * @return
+     *          Returns true if the {@link Student} has at least one mapped {@link GradeCourseMapping}.
      * @throws Exception
+     *                      Is thrown if the {@link Student} has no mapped {@link GradeCourseMapping} objects.
      */
-    private void checkIfStudentHasMappedGradeCourses(Student student) throws GradeCourseMappingStudentWithoutMappedCoursesException{
+    private boolean checkIfStudentHasMappedGradeCourses(Student student) throws GradeCourseMappingStudentWithoutMappedCoursesException{
         Set<GradeCourseMapping> gradeCourseMappingSet = student.getGradeCourseMappings();
         if(gradeCourseMappingSet.isEmpty()){
             logger.error("The student " + student.getMatrNr() + " has grades to courses mapped");
             throw new GradeCourseMappingStudentWithoutMappedCoursesException("The student "+ student.getMatrNr() + " has no mapped grades to courses");
         }
+        return true;
     }
 
     /**
-     * checkIfCourseExists
-     * check if there is a course with the given number in the database
-     * @param number String
-     * @return acceptable gradeCourseMapping object
+     * Is used to check if a {@link Course} with the given number exists.
+     * @param number
+     *                  The number you want to know if its used in a {@link Course}.
+     * @return
+     *          Returns true if the number is used by a {@link Course}.
+     *          Returns false if not.
      * @throws Exception
+     *                      Is thrown if no {@link Course} with this number could be found.
      */
     private boolean checkIfCourseExists(String number){
         try {
@@ -257,11 +293,14 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
     }
 
     /**
-     * checkMatricularNumberIsFree
-     * checks if a given Matriculation number is free or already used by another student
-     * @param matrNr number to check
-     * @return String available matriculation number
-     * @throws Exception matriculation number Exception
+     * Is used to check if a matrNr is already used by a {@link Student}.
+     * @param matrNr
+     *                  The matrNr you want to check.
+     * @return
+     *          Returns true if the matrNr is free to use.
+     *          Returns false if not.
+     * @throws Exception
+     *                      Is thrown if the matrNr is already used by a {@link Student}.
      */
     private boolean checkMatricularNumberIsFree(String matrNr){
         try{

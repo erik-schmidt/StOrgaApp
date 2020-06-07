@@ -5,6 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * The repository for the {@link Link}.
+ * Supported methods to find objects are:
+ * - By studentMatrNr
+ * - By studentMatrNrAndId
+ */
+
 public interface LinkRepository extends JpaRepository<Link, String> {
     List<Link> findAllByStudentMatrNr(String matrNr);
     Link findByStudentMatrNrAndId(String matrNr, int linkId);

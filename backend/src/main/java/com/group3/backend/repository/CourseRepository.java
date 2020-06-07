@@ -10,13 +10,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * The repository for the {@link Course}.
+ * Supported methods to find objects are:
+ * - By description
+ * - By number
+ * - By studyFocus
+ * - By kindOfSubject
+ */
+
 @Repository
 public interface CourseRepository extends JpaRepository<Course, String> {
-    //Course findById(int id);
-    //Course findByDescription(String description);
     Set<Course> findAllByDescription(String description);
     Course findByNumber(String number);
     List<Course> findAllByStudyFocus(String studyFocus);
     List<Course> findAllByKindOfSubject(String kindOfSubject);
-//    Set<Course> findByMatrNr(String matrNr, String courseID);
 }
