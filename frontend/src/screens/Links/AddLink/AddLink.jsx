@@ -12,22 +12,24 @@ const AddLink = ({ navigation }) => {
   const [linkDescription, setDescription] = useState("");
 
   const onSave = () => {
-    addLink({linkDescription: linkDescription, link: link}).then(res => {
-      console.log(res);
-      if (res.status === HttpStatus.OK) {
-        navigation.navigate("LinkScreen", {linkAdded: true});
-      } else {
-        throw new Error(res.data);
-      }
-    }).catch(err => {
-      alert(err);
-    })
-  }
+    addLink({ linkDescription, link })
+      .then((res) => {
+        console.log(res);
+        if (res.status === HttpStatus.OK) {
+          navigation.navigate("LinkScreen", { linkAdded: true });
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <View style={styles.container}>
       <AppModal header="Link hinzufügen" height={320}>
-      <TextInput
+        <TextInput
           style={styles.textInput}
           value={linkDescription}
           onChangeText={(text) => setDescription(text)}
@@ -39,10 +41,7 @@ const AddLink = ({ navigation }) => {
           onChangeText={(text) => setLink(text)}
           placeholder="Bsp.: 'http://www.google.de'"
         />
-        <AppButton
-          text="Speichern"
-          onPress={() => onSave()}
-        />
+        <AppButton text="Speichern" onPress={() => onSave()} />
         <AppButton text="Abbrechen" onPress={() => navigation.pop()} />
       </AppModal>
     </View>

@@ -8,14 +8,15 @@ import * as HttpStatus from "http-status-codes";
 
 const LinkMenu = ({ navigation, route }) => {
   const [editMode, setEditMode] = useState(false);
-  const [link, setLink] = useState(route.params?.link);
-  const [url, setUrl] = useState("");
-  const [description, setDescription] = useState("");
+  const [linkObject, setLinkObject] = useState(route.params?.link);
+  const [link, setLink] = useState("");
+  const [linkDescription, setLinkDescription] = useState("");
 
   const onChangeLink = () => {
-    editLink(link.id, {
-      link: url,
-      linkDescription: description,
+    console.log(linkObject.id);
+    editLink(linkObject.id, {
+      linkDescription,
+      link,
     })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
@@ -30,7 +31,8 @@ const LinkMenu = ({ navigation, route }) => {
   };
 
   const onDeleteLink = () => {
-    deleteLink(link.id)
+    console.log(linkObject.id);
+    deleteLink(linkObject.id)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           navigation.navigate("LinkScreen", { linkDeleted: true });
@@ -50,15 +52,15 @@ const LinkMenu = ({ navigation, route }) => {
           <AppModal header="Link bearbeiten" height={320}>
             <TextInput
               style={styles.textInput}
-              onChangeText={(text) => setUrl(text)}
-              value={url}
-              placeholder={link.link}
+              onChangeText={(text) => setLink(text)}
+              value={link}
+              placeholder={linkObject.link}
             />
             <TextInput
               style={styles.textInput}
-              value={description}
-              onChangeText={(text) => setDescription(text)}
-              placeholder={link.linkDescription}
+              value={linkDescription}
+              onChangeText={(text) => setLinkDescription(text)}
+              placeholder={linkObject.linkDescription}
             />
             <AppButton onPress={() => onChangeLink()} text="Speichern" />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
@@ -66,7 +68,7 @@ const LinkMenu = ({ navigation, route }) => {
         </View>
       ) : (
         <View>
-          <AppModal header="Link: " description={link.link}>
+          <AppModal header="Link: " description={linkObject.link}>
             <AppButton
               onPress={() => setEditMode(!editMode)}
               text="Link bearbeiten"
