@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Student from "../../models/Student";
 import {
-  View,
   Text,
   TextInput,
   TouchableHighlight,
-  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import styles from "./index.style";
 import AuthContext from "../../constants/AuthContext";
+import { ScrollView } from "react-native-gesture-handler";
 
 const RegisterScreen = ({ navigation }) => {
   const { signUp } = React.useContext(AuthContext);
@@ -21,69 +22,77 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
-      <TextInput
-        placeholder="Matrikelnummer"
-        value={matrNr}
-        onChangeText={(text) => setMatrNr(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Vorname"
-        value={prename}
-        onChangeText={(text) => setPrename(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Nachname"
-        value={familyname}
-        onChangeText={(text) => setFamilyname(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Studiengang"
-        value={fieldOfStudy}
-        onChangeText={(text) => setFieldOfStudy(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Aktuelles Semester"
-        value={currentSemester}
-        onChangeText={(text) => setCurrentSemester(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Nutzername"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Passwort"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        style={styles.textInput}
-      />
-      <TouchableHighlight
-        onPress={() => {
-          signUp(
-            new Student(
-              matrNr,
-              prename,
-              familyname,
-              fieldOfStudy,
-              currentSemester,
-              username,
-              password
-            )
-          );
-          navigation.pop();
-        }}
-        style={styles.button}
+    <ScrollView>
+      <KeyboardAvoidingView
+        enabled={true}
+        behavior={Platform.OS === "ios" ? "height" : null}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+        style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
       >
-        <Text style={styles.textStyle}>Registrieren</Text>
-      </TouchableHighlight>
+        <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
+        <TextInput
+          placeholder="Matrikelnummer"
+          value={matrNr}
+          onChangeText={(text) => setMatrNr(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Vorname"
+          value={prename}
+          onChangeText={(text) => setPrename(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Nachname"
+          value={familyname}
+          onChangeText={(text) => setFamilyname(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Studiengang"
+          value={fieldOfStudy}
+          onChangeText={(text) => setFieldOfStudy(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Aktuelles Semester"
+          value={currentSemester}
+          onChangeText={(text) => setCurrentSemester(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Nutzername"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="Passwort"
+          secureTextEntry
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          style={styles.textInput}
+        />
+        <TouchableHighlight
+          onPress={() => {
+            signUp(
+              new Student(
+                matrNr,
+                prename,
+                familyname,
+                fieldOfStudy,
+                currentSemester,
+                username,
+                password
+              )
+            );
+            navigation.pop();
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.textStyle}>Registrieren</Text>
+        </TouchableHighlight>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };
