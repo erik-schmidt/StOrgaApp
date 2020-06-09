@@ -23,4 +23,7 @@ public interface CalendarEntryRepository extends JpaRepository<CalendarEntry, St
     List<CalendarEntry> findAllByStudentId(Integer id);
     // TODO: 24.04.2020 : getAllEntriesOfWeek und getAllEntriesOfMonth damit die DB nicht überlastet wird. Dementsprechend wird dateOfEntry zu einem Datumsobjekt
     // TODO: 24.04.2020 : Tests schreiben
+    @Query("select max(id) from CalendarEntry ")
+    int findMaxID();
+    CalendarEntry findById(int id);
 }

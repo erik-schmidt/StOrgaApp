@@ -28,6 +28,7 @@ public class DataHandler {
     //private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
     private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
+    private final String TIMETABLE = "splan_ss_2020_AIB.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);
 
     public DataHandler(){
