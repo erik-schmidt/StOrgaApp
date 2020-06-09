@@ -29,7 +29,7 @@ public class HomescreenController {
     public String ping(){return homescreenService.ping();}
 
     @GetMapping("/getHomescreen/{matrNr}")
-    public ResponseEntity getHomescreenItems(@PathVariable(value = "matNr") String matrNr, @RequestHeader (name="Authorization") String token){
+    public ResponseEntity getHomescreenItems(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
