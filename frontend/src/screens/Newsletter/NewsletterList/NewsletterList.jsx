@@ -20,6 +20,8 @@ const NewsList = () => {
         if (res.status === HttpStatus.OK) {
           setNews(res.data);
           console.log(res);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
           throw new Error(res.data);
         }
@@ -29,27 +31,13 @@ const NewsList = () => {
       });
   }, []);
 
-  useEffect(() => {
-    pingNewsletter();
-    getAllNews()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setNews(res.data);
-          console.log(res);
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, []);
+  useEffect(() => {}, [news]);
 
   const onRefresh = () => {
     setRefreshing(true);
     getAllNews()
       .then((res) => {
-        if (res != undefined) {
+        if (res.status === HttpStatus.OK) {
           setNews(res.data);
           setRefreshing(false);
         } else {

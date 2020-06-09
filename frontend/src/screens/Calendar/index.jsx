@@ -1,8 +1,9 @@
 import React from "react";
-import WeekCalendar from "./WeeklyCalendar/WeeklyCalendar";
+import CalStrip from "./CalendarStrip/CalendarStrip";
+import styles from "./index.style";
 
 const CalendarScreen = () => {
-  return <WeekCalendar />;
+  return <CalStrip />;
 };
 
 export default CalendarScreen;

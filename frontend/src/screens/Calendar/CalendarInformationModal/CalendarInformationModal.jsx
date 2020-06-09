@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import styles from "./CalendarInformationModal.style";
 import { View, Text } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 
 const CalendarInformationModal = ({ navigation, route }) => {
   navigation.setOptions({
     headerRight: () => (
-      <FontAwesome5.Button
-        name="edit"
+      <AntDesign.Button
+        name="delete"
         color="black"
         backgroundColor="#ffff"
         onPress={() =>
@@ -21,19 +21,17 @@ const CalendarInformationModal = ({ navigation, route }) => {
     ),
   });
   const [appointment, setAppointments] = useState(route.params?.appointment);
-  const [visible, setVisible] = useState(false);
-  const [error, setError] = useState(false);
+  const startTime = moment(appointment.entryStartDateAndTime).format("LT");
+  const endTime = moment(appointment.entryFinishDateAndTime).format("LT");
+  const date = moment(appointment.entryFinishDateAndTime).format("LL");
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Termin: {appointment.name}</Text>
-      <Text style={styles.text}>
-        Startzeit : {moment(appointment.start).format("LT")} Uhr
-      </Text>
-      <Text style={styles.text}>
-        Endzeit : {moment(appointment.end).format("LT")} Uhr
-      </Text>
-      <Text style={styles.text}>Infos: {appointment.info}</Text>
+      <Text style={styles.text}>Datum : {date} </Text>
+      <Text style={styles.text}>Start : {startTime} Uhr</Text>
+      <Text style={styles.text}>Ende : {endTime} Uhr</Text>
+      <Text style={styles.text}>Infos: {appointment.description}</Text>
     </View>
   );
 };

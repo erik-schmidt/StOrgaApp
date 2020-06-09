@@ -1,5 +1,6 @@
 package com.group3.backend.dataHandling;
 
+import com.group3.backend.model.CalendarEntry;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.News;
 import com.group3.backend.model.Student;
@@ -15,20 +16,24 @@ import javax.validation.constraints.Size;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
 public class DataHandler {
 
-    // private final String PATH_CHRIS =
+    // private final String PATH =
     // "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
-    // private final String PATH_TOM = "D:\\Studium\\Semester
-    // 4\\SwLab\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
-    //private final String PATH_ALEXA = "D:\\alexa\\AIB4\\SWLAB\\Projekt\\aib_labswp_2020_ss_hhn_uniapp\\backend\\";
-
+    private final String PATH = "";
+    // private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
     private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
     private final String ADMIN_USER = "AdminUser.txt";
     private final String NEWS_FILE = "News.txt";
+    private final String CALENDAR_FILE = "CalendarEntries.txt";
     private Logger logger = LoggerFactory.getLogger(DataHandler.class);
 
     public DataHandler() {
@@ -41,7 +46,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses() {
         Set<Course> courseSet = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader( AIBCOURSES_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(AIBCOURSES_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -68,7 +73,7 @@ public class DataHandler {
      */
     public Student loadAdminUser() {
         Student admin = new Student();
-        try (BufferedReader reader = new BufferedReader(new FileReader( ADMIN_USER))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH + ADMIN_USER))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -92,7 +97,7 @@ public class DataHandler {
 
     public Set<News> loadNews() {
         Set<News> newsSet = new HashSet();
-        try (BufferedReader reader = new BufferedReader(new FileReader( NEWS_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH + NEWS_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -108,4 +113,24 @@ public class DataHandler {
         }
         return null;
     }
+
+    public Set<CalendarEntry> loadCalendarEntries() {
+        Set<CalendarEntry> calendarEntries = new HashSet();
+        try (BufferedReader reader = new BufferedReader(new FileReader(CALENDAR_FILE))) {
+            String line = reader.readLine();
+            while (!(line.equals("###"))) {
+                if (!(line.equals(""))) {
+                    String[] k = line.split("#");
+                    CalendarEntry calendarEntry = new CalendarEntry(k[0], k[1], k[2], k[3]);
+                    calendarEntries.add(calendarEntry);
+                }
+                line = reader.readLine();
+            }
+            return calendarEntries;
+        } catch (Exception e) {
+            logger.error("Error while loading inital calendar entries data: " + e.getClass() + " " + e.getMessage());
+        }
+        return null;
+    }
+
 }

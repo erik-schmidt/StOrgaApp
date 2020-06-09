@@ -1,8 +1,10 @@
 package com.group3.backend.dataHandling;
 
+import com.group3.backend.model.CalendarEntry;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.News;
 import com.group3.backend.model.Student;
+import com.group3.backend.repository.CalendarEntryRepository;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.NewsRepository;
 import com.group3.backend.repository.StudentRepository;
@@ -30,6 +32,8 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private StudentService studentService;
     @NonNull
     private final NewsRepository newsRepository;
+    @NonNull
+    private final CalendarEntryRepository calendarEntryRepository;
 
     /**
      * load the standard informations with {@link DataHandler} and save it in the
@@ -56,6 +60,18 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             for (News news : newsSet) {
                 newsRepository.save(news);
             }
+        }
+        if(calendarEntryRepository.count() <= 0){
+            Set<CalendarEntry> calendarEntries = dataHandler.loadCalendarEntries();
+
+            student.setCalendarEntries(calendarEntries);
+
+            for(CalendarEntry calendarEntry : calendarEntries) {
+                calendarEntryRepository.save(calendarEntry);
+            }
+
+            //calendarEntryRepository.save(calendarEntries);
+
         }
     }
 }
