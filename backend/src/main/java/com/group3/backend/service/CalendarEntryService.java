@@ -156,7 +156,7 @@ public class CalendarEntryService extends CheckMatrNrClass {
             logger.error("No Student with the given matriculation number " + matrNr + " found");
             throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
         }
-        return true;
+
     }
 
     /*
