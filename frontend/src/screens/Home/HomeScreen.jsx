@@ -1,11 +1,12 @@
-import React from "react";
-import { Text, View, Button } from "react-native";
+import React, { useState } from "react";
+import { Text, View, SectionList } from "react-native";
 import styles from "./HomeScreen.style";
 
 const HomeScreen = ({ navigation }) => {
+  const [latestItems, setLatestItems] = useState([]);
   return (
     <View style={styles.container}>
-      <Text>Hello there! What uuuuuuuuuup?</Text>
+      <SectionList />
     </View>
   );
 };
