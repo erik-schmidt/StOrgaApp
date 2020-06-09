@@ -69,12 +69,12 @@ public class CalendarEntryController {
         return calendarEntryService.createCalendarEntry(matrNr, calendarEntry);
     }
 
-    @DeleteMapping("/{matrNr}/delete")
-    public ResponseEntity<?> deleteCalendarEntry(@PathVariable(value ="matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry, @RequestHeader (name="Authorization") String token){
+    @DeleteMapping("/{matrNr}/delete/{id}")
+    public ResponseEntity<?> deleteCalendarEntryFromStudent(@PathVariable(value ="matrNr") String matrNr, @PathVariable(value = "id") int id, @RequestHeader (name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
-        return calendarEntryService.deleteCalendarEntry(matrNr, calendarEntry);
+        return calendarEntryService.deleteCalendarEntryFromStudent(matrNr, id);
     }
 
 }
