@@ -35,7 +35,7 @@ const CalendarMenu = ({ navigation, route }) => {
         <AppModal header="Termin löschen?" description={appointment.name}>
           <AppButton
             color="red"
-            onPress={() => onDeleteCalendar}
+            onPress={() => onDeleteCalendar()}
             text="löschen"
           />
           <AppButton onPress={() => navigation.pop()} text="abbrechen" />
