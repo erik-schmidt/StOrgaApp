@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TimeTableObjectService extends CheckMatrNrClass {
@@ -121,15 +119,15 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                             timeTableObjectList.add(t);
                         }
                     }
-                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
                 }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(timeTableDateRequest.getStartDate(),
                         startTime.plusDays(timeTableDateRequest.getTimePeriod()-1),student.getFieldOfStudy()+""+student.getCurrentSemester() );
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }else {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(timeTableDateRequest.getStartDate(),
                         startTime.plusDays(timeTableDateRequest.getTimePeriod()-1));
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }
         }else {
             if(timeTableDateRequest.getMatrNr()!=null){
@@ -145,15 +143,15 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                             timeTableObjectList.add(t);
                         }
                     }
-                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
                 }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(LocalDate.now(),
                         LocalDate.now().plusDays(timeTableDateRequest.getTimePeriod()-1),student.getFieldOfStudy()+""+student.getCurrentSemester());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }else {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(LocalDate.now(),
                         LocalDate.now().plusDays(timeTableDateRequest.getTimePeriod()-1));
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }
         }
     }
@@ -179,14 +177,14 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                         timeTableObjectList.add(t);
                     }
                 }
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }
             List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(start,
                     end,student.getFieldOfStudy()+""+student.getCurrentSemester());
-            return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+            return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
         }
         List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(start, end);
-        return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+        return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
     }
 
     /**
@@ -201,14 +199,14 @@ public class TimeTableObjectService extends CheckMatrNrClass {
         if(timeTableDateRequest.getMatrNr() == null) {
             if (startTime == null && endTime != null) {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEnd(timeTableDateRequest.getEndDate());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             } else if (startTime != null && endTime == null) {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStart(timeTableDateRequest.getStartDate());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             } else if (startTime != null && endTime != null) {
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEnd(timeTableDateRequest.getStartDate(),
                         timeTableDateRequest.getEndDate());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }
         } else if(timeTableDateRequest.getMatrNr() != null) {
             if (startTime == null && endTime == null) {
@@ -224,10 +222,10 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                             timeTableObjectList.add(t);
                         }
                     }
-                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
                 }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByFieldOfStudySemester(student.getFieldOfStudy() + "" + student.getCurrentSemester());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             } else if (startTime == null && endTime != null) {
                 if(timeTableDateRequest.isOnlyJoinedCourses()){
                     Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
@@ -241,11 +239,11 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                             timeTableObjectList.add(t);
                         }
                     }
-                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
                 }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateEndCourseSemester(timeTableDateRequest.getEndDate(),
                         student.getFieldOfStudy() + "" + student.getCurrentSemester());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             } else if (startTime != null && endTime == null) {
                 if(timeTableDateRequest.isOnlyJoinedCourses()){
                     Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
@@ -259,11 +257,11 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                             timeTableObjectList.add(t);
                         }
                     }
-                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
                 }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartCourseSemester(timeTableDateRequest.getStartDate(),
                         student.getFieldOfStudy() + "" + student.getCurrentSemester());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             } else if (startTime != null && endTime != null) {
                 if(timeTableDateRequest.isOnlyJoinedCourses()){
                     Set<Course> courses = (Set)courseService.getStudentsCourses(timeTableDateRequest.getMatrNr()).getBody();
@@ -277,14 +275,37 @@ public class TimeTableObjectService extends CheckMatrNrClass {
                             timeTableObjectList.add(t);
                         }
                     }
-                    return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                    return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
                 }
                 List<TimeTableObject> timeTableObjectList = timeTableObjectRepository.findAllByDateStartEndCourseSemester(timeTableDateRequest.getStartDate(),
                         timeTableDateRequest.getEndDate(), student.getFieldOfStudy() + "" + student.getCurrentSemester());
-                return new ResponseEntity(timeTableObjectList, HttpStatus.OK);
+                return new ResponseEntity(sortTimeTableObjects(timeTableObjectList), HttpStatus.OK);
             }
         }
         return new ResponseEntity("Keine Werte zum suchen im Request gefunden", HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * sort the time table Objects beginning with the first date in the week at list index 0
+     * Also sort by time. Start with the earlies one in the list
+     * Bubble sort we don't want to transform a List in an Array and Back
+     * @param timeTableObjects
+     * @return
+     */
+    private List<TimeTableObject> sortTimeTableObjects(List<TimeTableObject> timeTableObjects){
+        for(int i = timeTableObjects.size(); i>1; i--){
+            for(int j = 0; j<i-1; j++){
+                if(timeTableObjects.get(j).getDate().isAfter(timeTableObjects.get(j+1).getDate())){
+                    Collections.swap(timeTableObjects, j, j+1);
+
+                }
+                if(timeTableObjects.get(j).getStartTime().isAfter(timeTableObjects.get(j+1).getStartTime())
+                        &&timeTableObjects.get(j).getDate().equals(timeTableObjects.get(j+1).getDate())){
+                    Collections.swap(timeTableObjects, j, j+1);
+                }
+            }
+        }
+        return timeTableObjects;
     }
 }
 
