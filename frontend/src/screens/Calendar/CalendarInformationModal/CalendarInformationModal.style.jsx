@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     margin: 10,
+    color: "#66CDAA",
   },
   text: {
     margin: 10,
