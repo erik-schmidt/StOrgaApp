@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   newsHeader: {
     fontWeight: "bold",
     fontSize: 25,
+    color: "#66CDAA",
   },
   newsMessage: {
     fontSize: 15,

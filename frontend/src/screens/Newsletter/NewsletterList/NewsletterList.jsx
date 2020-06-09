@@ -14,7 +14,6 @@ const NewsList = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    pingNewsletter();
     getAllNews()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
@@ -40,13 +39,14 @@ const NewsList = () => {
         if (res.status === HttpStatus.OK) {
           setNews(res.data);
           setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
         alert(err);
-        setRefreshing(false);
       });
   };
 
