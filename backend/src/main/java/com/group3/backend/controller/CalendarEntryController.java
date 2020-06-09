@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -45,6 +46,19 @@ public class CalendarEntryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
         return calendarEntryService.getCalendarEntriesByStudent_Id(matrNr);
+    }
+
+    @GetMapping("/{matrNr}/getWeek")
+    public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(
+            @PathVariable(value = "matrNr") String matrNr,
+            @RequestBody LocalDate dateStart,
+            @RequestBody LocalDate dateEnd,
+            @RequestHeader (name="Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return calendarEntryService.getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(matrNr, dateStart, dateEnd);
+
     }
 
     @PostMapping("/{matrNr}/create")
