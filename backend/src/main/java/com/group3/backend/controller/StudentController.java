@@ -7,6 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * StudentController
+ * implemetns the Rest Api
+ * //assert != null
+ * // Get => Daten holen
+ * // POST => Daten erstellen/Eintragen
+ * // PUT => Hinzufügen von relations
+ * // PATCH => Updaten von einzelnen feldern
+ */
 @RestController
 @RequestMapping("/student")
 @CrossOrigin()
@@ -22,9 +31,8 @@ public class StudentController {
     }
 
     /**
-     * The ping-method of this controller. It is used to check if the frontend is able to access the methods of this
-     * controller.
-     * @return  Returns the String "reachable" if access to the methods is possible.
+     * return a String with a successful message if backend reachable
+     * @return String "reachable"
      */
     @GetMapping("/ping")
     public String ping(){

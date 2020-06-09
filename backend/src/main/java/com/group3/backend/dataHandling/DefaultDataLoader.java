@@ -2,8 +2,10 @@ package com.group3.backend.dataHandling;
 
 import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
+import com.group3.backend.model.TimeTableObject;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.repository.TimeTableObjectRepository;
 import com.group3.backend.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -26,6 +30,8 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private final StudentRepository studentRepository;
     @NonNull
     private StudentService studentService;
+    @NonNull
+    private TimeTableObjectRepository timeTableObjectRepository;
 
     /**
      * load the standard information with {@link DataHandler} and save it in the repositories
@@ -39,15 +45,18 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             studentService.createStudent(student);
         }
         //load and save default courses
-        if (courseRepository.count() > 0) {
-            return;
+        if (courseRepository.count() == 0) {
+            Set<Course> courseSet = dataHandler.loadCourses();
+            for (Course course : courseSet) {
+                courseRepository.save(course);
+            }
         }
-
-        Set<Course> courseSet = dataHandler.loadCourses();
-        for (Course course : courseSet) {
-            courseRepository.save(course);
+        //load and save timetable
+        if (timeTableObjectRepository.count() == 0) {
+            List<TimeTableObject> timeTableObjectSet = dataHandler.loadTimeTable();
+            for(TimeTableObject timeTableObject: timeTableObjectSet){
+                timeTableObjectRepository.save(timeTableObject);
+            }
         }
-
-
     }
 }
