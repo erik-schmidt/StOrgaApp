@@ -62,25 +62,4 @@ public class CalendarEntryController {
         return calendarEntryService.deleteCalendarEntry(matrNr, calendarEntry);
     }
 
-    /*@GetMapping("/{matrNr}/get/{description}")
-    public CalendarEntry getCalendarEntryByDescription(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "description") String description){
-        return calendarEntryService.getCalendarEntryByDescription(matrNr, description);
-    }
-
-    @GetMapping("/{matrNr}/get/{date}")
-    public List<CalendarEntry> getCalendarEntriesByDate(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "date") Date date){
-        return calendarEntryService.getCalendarEntryByDate(matrNr, date);
-    }
-
-    @PutMapping("/{matrNr}/add")
-    public ResponseEntity<CalendarEntry> addEntry(@PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntry calendarEntry){
-        return calendarEntryService.addCalendarEntryToStudent(matrNr, calendarEntry);
-    }*/
-
-
-    /*@PostMapping("/create")
-    public ResponseEntity<CalendarEntry> createCalendarEntry(@RequestBody CalendarEntry calendarEntry){
-        return calendarEntryService.createCalendarEntry(calendarEntry);
-    }*/
-
 }

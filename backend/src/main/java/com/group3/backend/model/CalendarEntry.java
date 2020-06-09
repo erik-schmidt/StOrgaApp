@@ -5,6 +5,9 @@ import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -12,11 +15,12 @@ import java.time.LocalTime;
 
 
 @Entity(name = "CalendarEntry")
-public class CalendarEntry {
+public class CalendarEntry implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotNull
     private String name;
 
     // TODO: 24.04.2020 Eventuell stimmen die Datentypen für die folgenden 3 Attribute nicht.
@@ -36,7 +40,7 @@ public class CalendarEntry {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "student")
+    @JoinColumn(name = "student")
     private Student student = new Student();
 
     public CalendarEntry() {

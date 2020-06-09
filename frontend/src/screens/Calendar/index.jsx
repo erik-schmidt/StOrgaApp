@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import CalendarAgenda from "./CalendarAgenda/CalendarAgenda";
+import React from "react";
+import WeekCalendar from "./WeeklyCalendar/WeeklyCalendar";
 
 const CalendarScreen = () => {
-  return <CalendarAgenda />;
+  return <WeekCalendar />;
 };
 
 export default CalendarScreen;

@@ -12,14 +12,5 @@ import java.util.Set;
 
 @Repository
 public interface CalendarEntryRepository extends JpaRepository<CalendarEntry, String> {
-    //@Query(value = "SELECT * FROM CalendarEntry WHERE "
-    //CalendarEntry findByStudAndId(String matrNr, int id);
-    CalendarEntry findByDescription(String description);
-    List<CalendarEntry> findAllByStudentId(Integer id);
-    //CalendarEntry findByDescription(String matrNr, String description);
-
-    //List<CalendarEntry> findByDate(String matrNr, Date date);
-
-    // TODO: 24.04.2020 : getAllEntriesOfWeek und getAllEntriesOfMonth damit die DB nicht überlastet wird. Dementsprechend wird dateOfEntry zu einem Datumsobjekt
-    // TODO: 24.04.2020 : Tests schreiben
+    List<CalendarEntry> findCalendarEntriesByStudent_Id(int id);
 }
