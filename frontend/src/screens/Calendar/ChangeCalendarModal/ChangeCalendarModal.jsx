@@ -1,26 +1,37 @@
 import React, { useState } from "react";
 import { View, Button, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import styles from "./AddCalendarModal.style";
+import styles from "./ChangeCalendarModal.style";
 import Appointment from "../../../models/appointment";
 //import { createAppointment } from "../../../api/services/CalendarService";
 import DatePicker from "react-native-datepicker";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
 
-const AddCalendarModal = ({ navigation, route }) => {
+//TODO: geänderte Zeit und Datum speichern und zurück geben
+
+const ChangeCalendarModal = ({ navigation, route }) => {
   const [timeStart, setTimeStart] = useState(new Date());
   const [timeEnd, setTimeEnd] = useState(new Date());
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
+  const [toChangeAppointment, settoChangeAppointments] = useState(
+    route.params?.toChangeAppointment
+  );
 
   const saveContent = () => {
-    const appointment = new Appointment(date, timeStart, timeEnd, name, info);
-    createAppointment(appointment).then((res) => {
-      navigation.navigate("Kalender");
-    });
+    const start = date + " " + timeStart;
+    const end = date + " " + timeEnd;
+    const appointment = new Appointment(date, start, end, name, info);
 
+    //console.log("EntryObjekt ist: ", appointment);
+    /*createAppointment(appointment).then((res) => {
+      console.log(res);
+      //console.log("speichern war erfolgreich");
+      
+    });
+    */
     navigation.navigate("Kalender", { entry: appointment });
   };
 
@@ -30,7 +41,7 @@ const AddCalendarModal = ({ navigation, route }) => {
         <Text style={styles.description}>Datum:</Text>
         <DatePicker
           style={styles.picker}
-          date={date}
+          date={toChangeAppointment.start}
           mode="date"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -42,7 +53,7 @@ const AddCalendarModal = ({ navigation, route }) => {
         <Text style={styles.description}>Startzeit:</Text>
         <DatePicker
           style={styles.picker}
-          date={timeStart}
+          date={toChangeAppointment.start}
           mode="time"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -54,7 +65,7 @@ const AddCalendarModal = ({ navigation, route }) => {
         <Text style={styles.description}>Dauer:</Text>
         <DatePicker
           style={styles.picker}
-          date={timeEnd}
+          date={toChangeAppointment.end}
           mode="time"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
@@ -67,16 +78,14 @@ const AddCalendarModal = ({ navigation, route }) => {
         <Text style={styles.description}>Bezeichnung:</Text>
         <TextInput
           style={styles.textInput}
-          placeholder="Bezeichnung "
           onChangeText={(name) => setName(name)}
-          defaultValue={name}
+          value={toChangeAppointment.name}
         />
         <Text style={styles.description}>Notizen:</Text>
         <TextInput
           style={styles.textInput}
-          placeholder="Notizen "
           onChangeText={(info) => setInfo(info)}
-          defaultValue={info}
+          value={toChangeAppointment.info}
         />
         <AppButton
           onPress={() => {
@@ -89,4 +98,4 @@ const AddCalendarModal = ({ navigation, route }) => {
   );
 };
 
-export default AddCalendarModal;
+export default ChangeCalendarModal;

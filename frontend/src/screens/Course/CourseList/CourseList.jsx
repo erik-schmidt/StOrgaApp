@@ -8,8 +8,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
 
-const CourseList = () => {
-  const [courses, setCourses] = useState([]);
+const CourseList = (props) => {
+  const [courses, setCourses] = useState(props.courses);
   const navigation = useNavigation();
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
