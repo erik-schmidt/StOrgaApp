@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -65,7 +66,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
             if (linkList.isEmpty()) {
                 logger.error("There are no links for this student.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: No saved links");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList());
             }
             return ResponseEntity.status(HttpStatus.OK).body(linkList);
         }catch (Exception e){
@@ -97,7 +98,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
             if (link == null){
                 logger.error("There are no link for this student with that linkId");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: No saved link");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList());
             }
             return ResponseEntity.status(HttpStatus.OK).body(link);
         }catch (Exception e){
@@ -254,7 +255,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             List<Link> linkList = linkRepository.findAll();
             if(linkList.isEmpty()){
                 logger.error("Error while reading all Links: There are no links saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no links saved");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList());
             }
             logger.info("Links successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(linkList);
@@ -262,5 +263,10 @@ public class LinkCollectionService extends CheckMatrNrClass {
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
         }
+    }
+
+    public List<Link> getEmptyList(){
+        List<Link> linkList = new LinkedList<>();
+        return linkList;
     }
 }
