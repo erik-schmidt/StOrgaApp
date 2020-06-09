@@ -24,7 +24,6 @@ public class BackendApplication {
     public static void main(String[] args) {
 
         try {
-            //new DataHandler().loadCourses();
             SpringApplication.run(BackendApplication.class, args);
 
         }
