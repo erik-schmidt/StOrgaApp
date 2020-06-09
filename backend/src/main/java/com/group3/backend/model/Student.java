@@ -28,6 +28,7 @@ public class Student implements Serializable {
     private String studentFamilyname;
     private String fieldOfStudy;
     @Min(1)
+
     @Max(15)
     // TODO: 01.06.2020 Was wenn man im Semester 0 ist weil man noch nicht eingeschrieben ist? @Chris
     private int currentSemester = 1;

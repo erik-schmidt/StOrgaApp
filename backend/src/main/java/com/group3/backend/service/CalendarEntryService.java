@@ -45,7 +45,7 @@ public class CalendarEntryService extends CheckMatrNrClass {
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public ResponseEntity<?> getStudentCalendarEntries(String matrNr) {
+    public ResponseEntity<?> getCalendarEntriesByStudent_Id(String matrNr) {
         try {
             checkStudentWithNumberIsSaved(matrNr);
             checkMatriculationNumber(matrNr);

@@ -23,17 +23,13 @@ public class CalendarEntry implements Serializable {
     @NotNull
     private String name;
 
-    // TODO: 24.04.2020 Eventuell stimmen die Datentypen für die folgenden 3 Attribute nicht.
     @Column(columnDefinition = "TIME")
-   // @Convert(disableConversion = true)
     private LocalTime entryStartTime;
 
     @Column(columnDefinition = "TIME")
-    //@Convert(disableConversion = true)
     private LocalTime entryFinishTime;
 
     @Column(columnDefinition = "DATE")
-    //@Convert(disableConversion = true)
     private LocalDate entryDate;
 
     private String description;
@@ -47,21 +43,14 @@ public class CalendarEntry implements Serializable {
 
     }
 
-    public CalendarEntry(String name, LocalTime entryStartTimeString, LocalTime entryFinishTime, LocalDate entryDate, String description){
+    public CalendarEntry(String name, LocalTime entryStartTime, LocalTime entryFinishTime, LocalDate entryDate, String description){
         this.name = name;
-        this.entryStartTime = entryStartTimeString;
+        this.entryStartTime = entryStartTime;
         this.entryFinishTime = entryFinishTime;
         this.entryDate = entryDate;
         this.description = description;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

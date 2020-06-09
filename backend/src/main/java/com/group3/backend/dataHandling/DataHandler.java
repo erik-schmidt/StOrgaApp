@@ -120,7 +120,7 @@ public class DataHandler {
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
                     String[] k = line.split("#");
-                    CalendarEntry calendarEntry = new CalendarEntry(k[0], k[1], k[2], k[3]);
+                    CalendarEntry calendarEntry = new CalendarEntry(k[0], LocalTime.parse(k[1]), LocalTime.parse(k[2]), LocalDate.parse(k[3]), k[4]);
                     calendarEntries.add(calendarEntry);
                 }
                 line = reader.readLine();

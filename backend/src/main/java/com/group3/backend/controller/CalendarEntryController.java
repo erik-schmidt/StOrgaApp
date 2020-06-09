@@ -38,12 +38,13 @@ public class CalendarEntryController {
         return calendarEntryService.getAllCalendarEntries();
     }
 
+
     @GetMapping("/{matrNr}/get")
-    public ResponseEntity<?> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token) {
+    public ResponseEntity<?> getCalendarEntriesByStudent_Id(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token) {
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
-        return calendarEntryService.getStudentCalendarEntries(matrNr);
+        return calendarEntryService.getCalendarEntriesByStudent_Id(matrNr);
     }
 
     @PostMapping("/{matrNr}/create")
