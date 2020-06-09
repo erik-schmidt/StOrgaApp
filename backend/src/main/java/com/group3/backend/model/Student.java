@@ -11,6 +11,18 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Model to represent the student the user uses to login.
+ *
+ * The matrNr is used to identify the {@link Student}.
+ * The studentPrename is the pre name of the {@link Student}.
+ * The studentFamilyname is the family name of the {@link Student}.
+ * The fieldOfStudy is the subject of the study of the {@link Student}.
+ * The currentSemester is the semester the {@link Student} is actual in.
+ * The username is the nickname of the {@link Student}.
+ * The password is used to login the {@link Student}.
+ */
+
 @Entity
 @Table(name = "student")
 public class Student implements Serializable {

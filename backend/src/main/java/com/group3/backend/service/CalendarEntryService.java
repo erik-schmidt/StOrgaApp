@@ -36,15 +36,39 @@ public class CalendarEntryService extends CheckMatrNrClass{
         this.studentRepository = studentRepository;
     }
 
+    /**
+     * Is used to test the reachability of the service.
+     * Called by "/ping".
+     * @return
+     *          "reachable" to represent that the service can be reached.
+     */
     public String ping() {
         return "reachable";
     }
 
+    /**
+     * Is used to get all {@link CalendarEntry} from the repository.
+     * Called by "/getAll".
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link CalendarEntry} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
     public ResponseEntity<?> getAllCalendarEntries(){
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
+    /**
+     * Is used to get all {@link CalendarEntry} from a specific {@link Student}.
+     * Called by "/{matrNr}/get".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link CalendarEntry} objects for.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link CalendarEntry} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
     public ResponseEntity<?> getStudentCalendarEntries (String matrNr) {
         try{
             checkStudentWithNumberIsSaved(matrNr);
@@ -57,6 +81,18 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
+    /**
+     * Is used to map a {@link CalendarEntry} to a {@link Student}.
+     * Called by "/{matrNr}/create".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want map the {@link CalendarEntry} objects to.
+     * @param calendarEntry
+     *                      The {@link CalendarEntry} object which should be mapped to the {@link Student}.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link CalendarEntry} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
     public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
             checkStudentWithNumberIsSaved(matrNr);
@@ -78,6 +114,18 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
     }
 
+    /**
+     * Is used to delete a {@link CalendarEntry} from a {@link Student}.
+     * Called by "/{matrNr}/delete".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want to delete the {@link CalendarEntry} objects from.
+     * @param calendarEntry
+     *                      The {@link CalendarEntry} you want to delete from the {@link Student}.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the deleted
+     *          {@link CalendarEntry} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
     public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
             checkStudentWithNumberIsSaved(matrNr);
@@ -103,6 +151,13 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
     }
 
+    /**
+     * Method to check if a {@link CalendarEntry} has a valid syntax.
+     * @param calendarEntry
+     *                      The {@link CalendarEntry} you want to check.
+     * @return
+     *          Returns true if the {@link CalendarEntry} has a valid syntax and false if it hasn't.
+     */
     private boolean checkCalendarObject(CalendarEntry calendarEntry){
         try {
             if (calendarEntry.getName().trim().isEmpty()||calendarEntry.getName()==null){
@@ -134,48 +189,20 @@ public class CalendarEntryService extends CheckMatrNrClass{
     }
 
     /**
-     * checks if a given Matriculation number is used by a saved student
-     * @param matrNr number to check
-     * @return String
-     * @throws Exception matriculation number Exception
+     * Method to check if a matrNr is used by a saved {@link Student}.
+     * @param matrNr
+     *                  The matrNr which should be checked.
+     * @return
+     *          Returns true if the matrNr is used by a saved {@link Student}.
+     * @throws Exception
+     *                      Is thrown if no saved {@link Student} uses this matrNr.
      */
-    private void checkStudentWithNumberIsSaved(String matrNr) throws Exception{
+    private boolean checkStudentWithNumberIsSaved(String matrNr) throws Exception{
         Student st = studentRepository.findByMatrNr(matrNr);
         if(st == null){
             logger.error("No Student with the given matriculation number "+ matrNr + " found");
             throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
         }
+        return true;
     }
-
-   /* public CalendarEntry getCalendarEntryByDescription(String matrNr, String description){
-        CalendarEntry calendarEntry = calendarEntryRepository.findByDescription(matrNr, description);
-        return calendarEntry;
-    }
-
-    public List<CalendarEntry> getCalendarEntryByDate(String matrNr, Date entryDate){
-        List<CalendarEntry> calendarEntriesByDate = calendarEntryRepository.findByDate(matrNr, entryDate);
-        return calendarEntriesByDate;
-    }
-
-    // TODO: 24.04.2020 Monthly CalendarEntries
-    public List<CalendarEntry> getCalendarEntryByMonth(String matrNr, Date entryDate){
-        return null;
-    }
-
-    public ResponseEntity<CalendarEntry> addCalendarEntryToStudent(String matrNr, CalendarEntry calendarEntry){
-        try {
-            Student student = studentRepository.findByMatrNr(matrNr);
-            CalendarEntry calendarEntry1 = calendarEntryRepository.findByDescription(matrNr, calendarEntry.getDescription());
-            calendarEntry1.setStudent(student);
-            calendarEntryRepository.save(calendarEntry1);
-            calendarEntryRepository.saveAndFlush(calendarEntry1);
-        } catch (Exception e) {
-            logger.error(e.getClass() + " " + e.getMessage());
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-    }*/
-
-
-
-
 }

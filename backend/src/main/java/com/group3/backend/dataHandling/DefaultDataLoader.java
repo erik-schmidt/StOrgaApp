@@ -28,7 +28,7 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private StudentService studentService;
 
     /**
-     * load the standard informations with {@link DataHandler} and save it in the repositories
+     * load the standard information with {@link DataHandler} and save it in the repositories
      * @param event
      */
     public void onApplicationEvent(ApplicationReadyEvent event) {

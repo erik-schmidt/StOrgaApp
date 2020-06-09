@@ -7,6 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
+/**
+ * The repository for the {@link GradeCourseMapping}.
+ * Supported methods to find objects are:
+ * - By courseNumber
+ * - By student
+ * - By studentMatrNr
+ */
+
 @Repository
 public interface GradeCourseMappingRepository extends JpaRepository<GradeCourseMapping, String> {
     GradeCourseMapping findByCourseNumber(String courseNumber);

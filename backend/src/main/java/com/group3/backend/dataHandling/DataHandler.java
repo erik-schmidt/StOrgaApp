@@ -29,8 +29,9 @@ public class DataHandler {
     }
 
     /**
-     * lade a set of the default courses out of a file
-     * @return Set of courses
+     * Loads the set of the default {@link Course} objects from the 'AIBCoursesSPOEnlarged.txt' text file.
+     * @return
+     *          The set with the {@link Course} objects.
      */
     public Set<Course> loadCourses(){
         Set<Course> courseSet = new HashSet<>();
@@ -54,8 +55,9 @@ public class DataHandler {
     }
 
     /**
-     * loads the administrator user out of the file
-     * @return Student which represents the administrator
+     * Loads the administrator user from the 'AdminUser.txt' text file.
+     * @return
+     *          A {@link Student} object which represents the administrator model.
      */
     public Student loadAdminUser(){
         Student admin = new Student();

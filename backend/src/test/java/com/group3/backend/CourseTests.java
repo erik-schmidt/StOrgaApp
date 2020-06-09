@@ -62,7 +62,7 @@ class CourseTests {
         Assertions.assertTrue(newCourseIsInRepository);
         System.out.println("Adding course works!");
         //Now test for deleting a course.
-        courseService.deleteCourse("420");
+        courseService.deleteCourseFromStudent("202481", "420");
         for(Course c : (List<Course>)courseService.getAllCourses().getBody()){
             if(c.getNumber().equals("420")){
                 newCourseIsInRepository = false;
