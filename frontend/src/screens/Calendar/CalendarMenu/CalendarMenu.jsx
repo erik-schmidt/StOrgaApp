@@ -7,14 +7,12 @@ import AppModal from "../../../components/AppModal/AppModal";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
 
-//TODO: Kalender löschen
-
 const CalendarMenu = ({ navigation, route }) => {
   const [appointment, setAppointments] = useState(route.params?.appointment);
   const { signOut } = React.useContext(AuthContext);
 
   const onDeleteCalendar = () => {
-    deleteCalendar(appointment.number)
+    deleteCalendar(appointment)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           navigation.navigate("Kalender", { calendarDeleted: true });
