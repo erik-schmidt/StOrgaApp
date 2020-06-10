@@ -9,13 +9,13 @@ export const createAppointment = async (appointment) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return post(`calendarEntry/${matrNr}/create/`, appointment);
 };
-export const getWeeklyAppointments = async (appointment) => {
+export const getWeeklyAppointments = async (date) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return fetch(`calendarEntry/${matrNr}/getWeek/`, appointment);
+  return fetch(`calendarEntry/${matrNr}/getWeek/`, date);
 };
-export const deleteCalendar = async (appointment) => {
+export const deleteCalendar = async (id) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return post(`calendarEntry/${matrNr}/delete/`, appointment);
+  return post(`calendarEntry/${matrNr}/delete/`, id);
 };
 export const getAllAppointments = () => {
   return fetch("calendarEntry/getAll");

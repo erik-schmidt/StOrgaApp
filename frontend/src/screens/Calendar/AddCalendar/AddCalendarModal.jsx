@@ -23,9 +23,6 @@ const AddCalendarModal = ({ navigation, route }) => {
       entryFinishTime: timeEnd,
       entryDate: date,
       description: info,
-    }).then((res) => {
-      console.log(res);
-      console.log("speichern war erfolgreich");
     });
   };
 

@@ -3,7 +3,10 @@ import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
 import { Text, RefreshControl, View, FlatList, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { getAppointments } from "../../../api/services/CalendarService";
+import {
+  getAppointments,
+  getWeeklyAppointments,
+} from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
@@ -13,6 +16,8 @@ const CalStrip = () => {
   const navigation = useNavigation();
   const [appointments, setAppointments] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  //const [newSelectedDate, setNewSelectedDate] = useState(new Date());
+  moment.locale("de");
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -34,10 +39,8 @@ const CalStrip = () => {
   useEffect(() => {
     getAppointments()
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
-          console.log(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -50,7 +53,18 @@ const CalStrip = () => {
   }, []);
 
   useEffect(() => {}, [appointments]);
-  moment.locale("de");
+
+  //console.log(newSelectedDate);
+
+  const getWeekApps = (date) => {
+    const newDate = moment(date).format("YYYY-MM-DD");
+    console.log("new Date: " + newDate);
+    getWeeklyAppointments({ dateStart: newDate, dateEnd: newDate }).then(
+      (res) => {
+        console.log(res);
+      }
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -65,6 +79,8 @@ const CalStrip = () => {
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
         highlightDateNumberStyle={{ color: "#66CDAA" }}
+        //selectedDate={(date) => setNewSelectedDate(date)}
+        onDateSelected={(date) => getWeekApps(date)}
       />
       <View style={styles.container}>
         <FlatList
@@ -89,7 +105,7 @@ const CalStrip = () => {
                 <View style={styles.eventDuration}>
                   <View style={styles.durationContainer}>
                     <Text style={styles.dateText}>
-                      {moment(item.entryStartDateAndTime).format("l")}
+                      {moment(item.entryDate).format("l")}
                     </Text>
                   </View>
                 </View>
@@ -97,14 +113,14 @@ const CalStrip = () => {
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {moment(item.entryStartDateAndTime).format("LT")}
+                      {item.entryStartTime}
                     </Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {moment(item.entryFinishDateAndTime).format("LT")}
+                      {item.entryFinishTime}
                     </Text>
                   </View>
                   <View style={styles.durationDotConnector} />
