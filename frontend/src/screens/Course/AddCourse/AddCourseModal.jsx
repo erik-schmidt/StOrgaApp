@@ -29,24 +29,27 @@ const AddCourseModal = ({ navigation }) => {
   }, []);
 
   const onSave = () => {
-    addCourse(selectedCourse).then(res => {
-      if (res.status === HttpStatus.OK) {
-        navigation.navigate("Fächer", {courseAdded: true});
-      } else {
-        throw new Error(res.data);
-      }
-    }).catch(err => {
-      alert(err);
-    })
-  }
+    addCourse(selectedCourse)
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          navigation.navigate("Fächer", { courseAdded: true });
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <View style={styles.container}>
       <AppModal header="Kurs zur Liste hinzufügen" height={280} width={280}>
         <Picker
-        selectedValue={selectedCourse}
+          selectedValue={selectedCourse}
           style={styles.picker}
           onValueChange={(itemValue, itemIndex) => {
+            console.log(itemValue);
             setSelectedCourse(itemValue);
           }}
         >
@@ -54,10 +57,7 @@ const AddCourseModal = ({ navigation }) => {
             return <Picker.Item label={course.description} value={course} />;
           })}
         </Picker>
-        <AppButton
-          onPress={() => onSave()}
-          text="Speichern"
-        />
+        <AppButton onPress={() => onSave()} text="Speichern" />
         <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
       </AppModal>
     </View>
