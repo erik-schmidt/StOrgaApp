@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import {
-  getAllNews,
-  pingNewsletter,
-} from "../../../api/services/NewsletterService";
+import { getAllNews } from "../../../api/services/NewsletterService";
 import Card from "../../../components/Card/Card";
 import styles from "./NewsletterList.style";
 import * as HttpStatus from "http-status-codes";
@@ -14,12 +11,10 @@ const NewsList = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    pingNewsletter();
     getAllNews()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setNews(res.data);
-          console.log(res);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -40,13 +35,14 @@ const NewsList = () => {
         if (res.status === HttpStatus.OK) {
           setNews(res.data);
           setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
-          throw new Error();
+          throw new Error(res.data);
         }
       })
       .catch((err) => {
         alert(err);
-        setRefreshing(false);
       });
   };
 
