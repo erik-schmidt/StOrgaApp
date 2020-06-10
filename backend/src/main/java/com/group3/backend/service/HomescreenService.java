@@ -82,7 +82,7 @@ public class HomescreenService {
         Homescreen homescreen = new Homescreen();
         homescreen.setTitle("Kalendereintrag");
         if(calendarEntryRepository.count()>0) {
-            int maxID = calendarEntryRepository.findMaxID();
+            int maxID = calendarEntryRepository.findCalendarEntryByMaxId();
             CalendarEntry calendarEntry = calendarEntryRepository.findById(maxID);
             homescreen.setData(calendarEntry.getName() + " " + calendarEntry.getEntryStartTime() + " " + calendarEntry.getDescription());
         }else {
