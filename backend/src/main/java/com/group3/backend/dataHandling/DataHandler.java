@@ -95,7 +95,7 @@ public class DataHandler {
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
                     String[] k = line.split("#");
-                    News news = new News(k[0], k[1], k[2], Date.valueOf(k[3]));
+                    News news = new News(k[0], k[1], k[2], LocalDate.parse(k[3]));
                     newsSet.add(news);
                 }
                 line = reader.readLine();
