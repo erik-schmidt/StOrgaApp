@@ -5,9 +5,11 @@ import com.group3.backend.model.Course;
 import com.group3.backend.model.News;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CalendarEntryRepository;
+import com.group3.backend.model.TimeTableObject;
 import com.group3.backend.repository.CourseRepository;
 import com.group3.backend.repository.NewsRepository;
 import com.group3.backend.repository.StudentRepository;
+import com.group3.backend.repository.TimeTableObjectRepository;
 import com.group3.backend.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -34,6 +38,7 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private final NewsRepository newsRepository;
     @NonNull
     private final CalendarEntryRepository calendarEntryRepository;
+    private TimeTableObjectRepository timeTableObjectRepository;
 
     /**
      * load the standard informations with {@link DataHandler} and save it in the
@@ -49,7 +54,7 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             studentService.createStudent(student);
         }
         // load and save default courses
-        if (courseRepository.count() <= 0) {
+        if (courseRepository.count() == 0) {
             Set<Course> courseSet = dataHandler.loadCourses();
             for (Course course : courseSet) {
                 courseRepository.save(course);
@@ -61,17 +66,24 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
                 newsRepository.save(news);
             }
         }
-        if(calendarEntryRepository.count() <= 0){
+        if (calendarEntryRepository.count() <= 0) {
             Set<CalendarEntry> calendarEntries = dataHandler.loadCalendarEntries();
 
             student.setCalendarEntries(calendarEntries);
 
-            for(CalendarEntry calendarEntry : calendarEntries) {
+            for (CalendarEntry calendarEntry : calendarEntries) {
                 calendarEntryRepository.save(calendarEntry);
             }
 
-            //calendarEntryRepository.save(calendarEntries);
+            // calendarEntryRepository.save(calendarEntries);
 
+        }
+        // load and save timetable
+        if (timeTableObjectRepository.count() == 0) {
+            List<TimeTableObject> timeTableObjectSet = dataHandler.loadTimeTable();
+            for (TimeTableObject timeTableObject : timeTableObjectSet) {
+                timeTableObjectRepository.save(timeTableObject);
+            }
         }
     }
 }
