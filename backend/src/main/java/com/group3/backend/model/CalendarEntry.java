@@ -31,9 +31,14 @@ public class CalendarEntry implements Serializable {
     @NotNull
     private String name;
 
-    private String entryStartDateAndTime;
+    @Column(columnDefinition = "TIME")
+    private LocalTime entryStartTime;
 
-    private String entryFinishDateAndTime;
+    @Column(columnDefinition = "TIME")
+    private LocalTime entryFinishTime;
+
+    @Column(columnDefinition = "DATE")
+    private LocalDate entryDate;
 
     private String description;
 
@@ -46,11 +51,16 @@ public class CalendarEntry implements Serializable {
 
     }
 
-    public CalendarEntry(String name, String entryStartDateAndTime, String entryFinishDateAndTime, String description) {
+    public CalendarEntry(String name, LocalTime entryStartTime, LocalTime entryFinishTime, LocalDate entryDate, String description){
         this.name = name;
-        this.entryStartDateAndTime = entryStartDateAndTime;
-        this.entryFinishDateAndTime = entryFinishDateAndTime;
+        this.entryStartTime = entryStartTime;
+        this.entryFinishTime = entryFinishTime;
+        this.entryDate = entryDate;
         this.description = description;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getName() {
@@ -61,20 +71,28 @@ public class CalendarEntry implements Serializable {
         this.name = name;
     }
 
-    public String getEntryStartDateAndTime() {
-        return entryStartDateAndTime;
+    public LocalTime getEntryStartTime() {
+        return entryStartTime;
     }
 
-    public void setEntryStartDateAndTime(String entryStartDateAndTime) {
-        this.entryStartDateAndTime = entryStartDateAndTime;
+    public void setEntryStartTime(LocalTime entryStartTime) {
+        this.entryStartTime = entryStartTime;
     }
 
-    public String getEntryFinishDateAndTime() {
-        return entryFinishDateAndTime;
+    public LocalTime getEntryFinishTime() {
+        return entryFinishTime;
     }
 
-    public void setEntryFinishDateAndTime(String entryFinishDateAndTime) {
-        this.entryFinishDateAndTime = entryFinishDateAndTime;
+    public void setEntryFinishTime(LocalTime entryFinishTime) {
+        this.entryFinishTime = entryFinishTime;
+    }
+
+    public LocalDate getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(LocalDate entryDate) {
+        this.entryDate = entryDate;
     }
 
     public String getDescription() {
