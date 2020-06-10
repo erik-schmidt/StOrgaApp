@@ -13,10 +13,6 @@ const CalStrip = () => {
   const navigation = useNavigation();
   const [appointments, setAppointments] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  //const [selectedDate, setSelectedDate] = new Date();
-  //const [weekAppointments, setWeekAppointments] = useState([]);
-  //TO DO: delete Weekly Calendar from npm
-  moment.locale("de");
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -54,22 +50,12 @@ const CalStrip = () => {
   }, []);
 
   useEffect(() => {}, [appointments]);
-
-  /*const getWeekApps = () => {
-    getWeeklyAppointments({
-      dateStart: date,
-      dateEnd: date,
-    }).then((res) => {
-      console.log(res);
-      setWeekAppointments(res.data);
-    });
-  };*/
+  moment.locale("de");
 
   return (
     <View style={styles.container}>
       <CalendarStrip
         style={styles.stripContainer}
-        //date={moment()}
         daySelectionAnimation={{
           type: "border",
           duration: 200,
@@ -79,8 +65,6 @@ const CalStrip = () => {
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
         highlightDateNumberStyle={{ color: "#66CDAA" }}
-        //selectedDate={setSelectedDate(selectedDate)}
-        //onDateSelected={getWeekApps()}
       />
       <View style={styles.container}>
         <FlatList
@@ -105,7 +89,7 @@ const CalStrip = () => {
                 <View style={styles.eventDuration}>
                   <View style={styles.durationContainer}>
                     <Text style={styles.dateText}>
-                      {moment(item.entryDate).format("l")}
+                      {moment(item.entryStartDateAndTime).format("l")}
                     </Text>
                   </View>
                 </View>
@@ -113,14 +97,14 @@ const CalStrip = () => {
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {item.entryStartTime}
+                      {moment(item.entryStartDateAndTime).format("LT")}
                     </Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {item.entryFinishTime}
+                      {moment(item.entryFinishDateAndTime).format("LT")}
                     </Text>
                   </View>
                   <View style={styles.durationDotConnector} />
