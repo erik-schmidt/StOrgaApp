@@ -4,6 +4,7 @@ import com.group3.backend.repository.StudentRepository;
 import com.group3.backend.security.JwtTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import com.group3.backend.model.Student;
 
 @Controller
 public class AccessChecker {
@@ -21,10 +22,13 @@ public class AccessChecker {
     }
 
     /**
-     * checks if an Acces token maches the student which information is asked for
-     * @param matrNr matriculation number of the student
-     * @param token jwt in header of request
-     * @return true if token maches with request student
+     * Checks if an access token matches the {@link Student} which the information are asked for.
+     * @param matrNr
+     *              Matriculation number of the {@link Student}.
+     * @param token
+     *              Jwt in header of request.
+     * @return
+     *              True if token matches with request {@link Student}.
      */
     public boolean checkAccess(String matrNr, String token){
         String extractToken = token.substring(7, token.length());
@@ -37,9 +41,11 @@ public class AccessChecker {
     }
 
     /**
-     * checks if the token asks for the informations is the admin. admin can access everything
-     * @param token jwt in header of request
-     * @return true if token maches with request admin
+     * Checks if the token asks for the information is the admin. Admin has access to everything.
+     * @param token
+     *              Jwt in header of request.
+     * @return
+     *              True if the token matches with request admin.
      */
     public boolean checkAdmin(String token){
         String extractToken = token.substring(7, token.length());
