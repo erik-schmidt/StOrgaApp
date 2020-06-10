@@ -30,7 +30,7 @@ public class CalendarEntryController {
     /**
      * The ping-method of this controller. It is used to check if the frontend is
      * able to access the methods of this controller.
-     * 
+     *
      * @return Returns the String "reachable" if access to the methods is possible.
      */
     @GetMapping("/ping")
@@ -40,7 +40,7 @@ public class CalendarEntryController {
 
     /**
      * The get-method to get all {@link CalendarEntry} objects from the repository.
-     * 
+     *
      * @param token The token to authorize your request.
      * @return Returns a ResponseEntity. If the request was successful, the
      *         HTTPStatus is 'OK' and you get a list of {@link CalendarEntry}
@@ -58,7 +58,7 @@ public class CalendarEntryController {
     /**
      * The get-method to get all {@link CalendarEntry} of a specific
      * {@link Student}.
-     * 
+     *
      * @param matrNr The matrNr of the {@link Student} you want the
      *               {@link CalendarEntry} of.
      * @param token  The token to authorize your request for the specific
@@ -69,11 +69,9 @@ public class CalendarEntryController {
      *         HTTPStatus 'BAD-REQUEST'.
      */
     @GetMapping("/{matrNr}/get")
-    public ResponseEntity<?> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr,
-            @RequestHeader(name = "Authorization") String token) {
-        if (accessChecker.checkAccess(matrNr, token)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+    public ResponseEntity<?> getCalendarEntriesByStudent_Id(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token) {
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
         return calendarEntryService.getCalendarEntriesByStudent_Id(matrNr);
     }
@@ -93,7 +91,7 @@ public class CalendarEntryController {
     /**
      * The create-method to create a new {@link CalendarEntry} for a specific
      * {@link Student}.
-     * 
+     *
      * @param matrNr        The matrNr of the {@link Student} you want to create the
      *                      {@link CalendarEntry} for.
      * @param calendarEntry The {@link CalendarEntry} object you want to create for
@@ -118,7 +116,7 @@ public class CalendarEntryController {
     /**
      * The delete-method to delete a {@link CalendarEntry} from a specific
      * {@link Student}.
-     * 
+     *
      * @param matrNr        The matrNr of the {@link Student} you want to delete the
      *                      {@link CalendarEntry} of.
      * @param calendarEntry The {@link CalendarEntry} object you want to delete from
@@ -137,5 +135,6 @@ public class CalendarEntryController {
                     .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
 
         }
+        return calendarEntryService.deleteCalendarEntryFromStudent(matrNr, id);
     }
 }

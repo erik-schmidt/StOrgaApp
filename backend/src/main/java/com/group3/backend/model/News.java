@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class News implements Serializable {
@@ -20,13 +21,13 @@ public class News implements Serializable {
     @NotNull
     private String author;
     @NotNull
-    private Date published;
+    private LocalDate published;
 
     public News() {
 
     }
 
-    public News(String title, String message, String author, Date published){
+    public News(String title, String message, String author, LocalDate published){
         this.title = title;
         this.message = message;
         this.author = author;
@@ -57,11 +58,11 @@ public class News implements Serializable {
         this.author = author;
     }
 
-    public Date getPublished() {
+    public LocalDate getPublished() {
         return published;
     }
 
-    public void setPublished(Date published) {
+    public void setPublished(LocalDate published) {
         this.published = published;
     }
 
