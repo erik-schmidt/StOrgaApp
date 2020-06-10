@@ -104,8 +104,6 @@ public class CalendarEntryService extends CheckMatrNrClass{
             calendarEntries.add(calendarEntry);
             student.setCalendarEntries(calendarEntries);
             studentRepository.save(student);
-            //CalendarEntry calendarEntry1 = new CalendarEntry(calendarEntry.getName(), calendarEntry.getEntryStartTime(), calendarEntry.getEntryFinishTime(), calendarEntry.getEntryDate(), calendarEntry.getDescription());
-            //calendarEntryRepository.save(calendarEntry1);
             return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
         }
         catch (Exception e){

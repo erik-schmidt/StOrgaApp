@@ -45,7 +45,6 @@ public class CalendarEntry {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "student")
     private Student student = new Student();
 
     public CalendarEntry() {
