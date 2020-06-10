@@ -29,8 +29,8 @@ const CalendarInformationModal = ({ navigation, route }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Termin: {appointment.name}</Text>
       <Text style={styles.text}>Datum : {date} </Text>
-      <Text style={styles.text}>Startzeit : {startTime} Uhr</Text>
-      <Text style={styles.text}>Endzeit : {endTime} Uhr</Text>
+      <Text style={styles.text}>Start : {startTime} Uhr</Text>
+      <Text style={styles.text}>Ende : {endTime} Uhr</Text>
       <Text style={styles.text}>Infos: {appointment.description}</Text>
     </View>
   );

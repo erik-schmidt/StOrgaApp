@@ -6,6 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * The repository for the {@link Student}.
+ * Supported methods to find objects are:
+ * - By matrNr
+ * - By username
+ */
+
 @Repository
 public interface StudentRepository extends JpaRepository<Student, String> {
     Student findByMatrNr(String matnr);

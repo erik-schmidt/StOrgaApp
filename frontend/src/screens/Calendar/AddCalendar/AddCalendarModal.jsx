@@ -6,6 +6,8 @@ import { createAppointment } from "../../../api/services/CalendarService";
 import DatePicker from "react-native-datepicker";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
+import moment from "moment";
+import "moment/locale/de";
 
 const AddCalendarModal = ({ navigation, route }) => {
   const [timeStart, setTimeStart] = useState(new Date());
@@ -40,36 +42,36 @@ const AddCalendarModal = ({ navigation, route }) => {
           date={date}
           mode="date"
           format="YYYY-MM-DD"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
+          confirmBtnText="OK"
+          cancelBtnText="Abbrechen"
           onDateChange={(date) => {
             console.log("date: " + date);
             setDate(date);
           }}
         />
 
-        <Text style={styles.description}>Startzeit:</Text>
+        <Text style={styles.description}>Start:</Text>
         <DatePicker
           style={styles.picker}
           date={timeStart}
           mode="time"
-          format="hh:mm:ss"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
+          format="hh:mm"
+          confirmBtnText="OK"
+          cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
             console.log("timeStart: " + time);
             setTimeStart(time);
           }}
         />
-        <Text style={styles.description}>Dauer:</Text>
+        <Text style={styles.description}>Ende:</Text>
         <DatePicker
           style={styles.picker}
           date={timeEnd}
           mode="time"
-          format="hh:mm:ss"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
+          format="hh:mm"
+          confirmBtnText="OK"
+          cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
             console.log("timeEnd " + time);

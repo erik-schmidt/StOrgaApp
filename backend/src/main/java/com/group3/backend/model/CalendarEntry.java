@@ -13,6 +13,14 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.time.LocalTime;
 
+/**
+ * Model to represent an entry of the calendar.
+ *
+ * The name defines how the entry is called. The entryStartTime is the time from
+ * where the entry begins. The entryFinishTime is the time when the entry ends.
+ * The entryDate is simply the date of the entry in the calendar. The
+ * description is a text to give the user extra information about the entry.
+ */
 
 @Entity(name = "CalendarEntry")
 public class CalendarEntry implements Serializable {
