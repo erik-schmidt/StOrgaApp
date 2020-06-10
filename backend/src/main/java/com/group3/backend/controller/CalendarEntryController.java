@@ -118,7 +118,7 @@ public class CalendarEntryController {
     /**
      * The delete-method to delete a {@link CalendarEntry} from a specific
      * {@link Student}.
-     * 
+     *
      * @param matrNr        The matrNr of the {@link Student} you want to delete the
      *                      {@link CalendarEntry} of.
      * @param calendarEntry The {@link CalendarEntry} object you want to delete from
@@ -137,5 +137,6 @@ public class CalendarEntryController {
                     .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
 
         }
+        return calendarEntryService.deleteCalendarEntryFromStudent(matrNr, id);
     }
 }

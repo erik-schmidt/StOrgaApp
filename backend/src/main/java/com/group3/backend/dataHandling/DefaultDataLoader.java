@@ -79,11 +79,14 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
 
         }
         // load and save timetable
+        /*
         if (timeTableObjectRepository.count() == 0) {
             List<TimeTableObject> timeTableObjectSet = dataHandler.loadTimeTable();
             for (TimeTableObject timeTableObject : timeTableObjectSet) {
                 timeTableObjectRepository.save(timeTableObject);
             }
         }
+
+         */
     }
 }
