@@ -48,11 +48,6 @@ public class Student implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
-    /*
-     * @JsonIgnore
-     * 
-     * @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
-     */
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();

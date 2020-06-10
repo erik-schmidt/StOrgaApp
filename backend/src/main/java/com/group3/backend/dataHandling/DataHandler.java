@@ -7,20 +7,11 @@ import com.group3.backend.model.Student;
 import com.group3.backend.model.TimeTableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 public class DataHandler {
@@ -40,9 +31,10 @@ public class DataHandler {
     }
 
     /**
-     * lade a set of the default courses out of a file
+     * Lode a set of the default courses out of a file.
      *
-     * @return Set of courses
+     * @return
+     *          Set of {@link Course} objects.
      */
     public Set<Course> loadCourses() {
         Set<Course> courseSet = new HashSet<>();
@@ -61,15 +53,16 @@ public class DataHandler {
             }
             return courseSet;
         } catch (Exception e) {
-            logger.error("Error wihile loading inital course data: " + e.getClass() + " " + e.getMessage());
+            logger.error("Error while loading inital course data: " + e.getClass() + " " + e.getMessage());
         }
         return null;
     }
 
     /**
-     * loads the administrator user out of the file
+     * Loads the administrator user out of the file
      *
-     * @return Student which represents the administrator
+     * @return
+     *          {@link Student} which represents the administrator
      */
     public Student loadAdminUser() {
         Student admin = new Student();
@@ -110,15 +103,19 @@ public class DataHandler {
             return newsSet;
         } catch (Exception e) {
             logger.error("Error while loading inital news data: " + e.getClass() + " " + e.getMessage());
+            return new HashSet<>();
+        }
+    }
 
     /**
-     * loads the time table objects out of the timetable file wich can be downloaded
+     * Loads the time table objects out of the timetable file which can be downloaded
      * for AIB4 at
      * https://splan.hs-heilbronn.de/splan/ical?lan=de&puid=29&type=pg&pgid=17357
      * 
-     * @return List<TimeTableObject> or null
+     * @return
+     *          List<TimeTableObject> or null
      */
-    public List<TimeTableObject> loadTimeTable() {
+    public List<TimeTableObject> loadTimeTable(){
         List<TimeTableObject> timeTableObjectArrayList = new ArrayList<>(2000);
         try (BufferedReader reader = new BufferedReader(new FileReader(TIMETABLE))) {
             String line = reader.readLine();
@@ -144,7 +141,7 @@ public class DataHandler {
             }
             return timeTableObjectArrayList;
         } catch (Exception e) {
-            logger.error("Error wihile loading inital time table data: " + e.getClass() + " " + e.getMessage());
+            logger.error("Error while loading inital time table data: " + e.getClass() + " " + e.getMessage());
         }
         return null;
     }
@@ -169,11 +166,14 @@ public class DataHandler {
     }
 
     /**
-     * logic of fill the time table objects with values
+     * Logic of fill the time table objects with values
      * 
-     * @param timeTableObject new time table object which has to be filled
-     * @param line            current read line
-     * @return TimeTableObject with values or default time table object
+     * @param timeTableObject
+     *                          New time table object which has to be filled.
+     * @param line
+     *                          Current read line.
+     * @return
+     *              TimeTableObject with values or default time table object.
      */
     private TimeTableObject fillTimeTableObjectWithAttributes(TimeTableObject timeTableObject, String line) {
         if (line.contains("DTSTAMP")) {
