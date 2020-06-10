@@ -12,7 +12,7 @@ const CalendarMenu = ({ navigation, route }) => {
   const { signOut } = React.useContext(AuthContext);
 
   const onDeleteCalendar = () => {
-    deleteCalendar(appointment)
+    deleteCalendar(appointment.id)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           navigation.navigate("Kalender", { calendarDeleted: true });

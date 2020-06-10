@@ -6,6 +6,8 @@
 *.exe
 *.o
 *.so
+.idea
+*.iml
 
 # Packages #
 ############
@@ -36,3 +38,5 @@
 ehthumbs.db
 Thumbs.db
 frontend/package-lock.json
+.idea/workspace.xml
+.idea

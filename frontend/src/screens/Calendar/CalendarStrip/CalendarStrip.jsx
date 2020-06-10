@@ -3,11 +3,7 @@ import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
 import { Text, RefreshControl, View, FlatList, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  getAppointments,
-  getAllAppointments,
-  getWeeklyAppointments,
-} from "../../../api/services/CalendarService";
+import { getAppointments } from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
@@ -17,7 +13,7 @@ const CalStrip = () => {
   const navigation = useNavigation();
   const [appointments, setAppointments] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedDate, setSelectedDate] = new Date();
+  //const [selectedDate, setSelectedDate] = new Date();
   //const [weekAppointments, setWeekAppointments] = useState([]);
   //TO DO: delete Weekly Calendar from npm
   moment.locale("de");
