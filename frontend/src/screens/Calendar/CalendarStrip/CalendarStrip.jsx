@@ -16,8 +16,8 @@ const CalStrip = () => {
   const navigation = useNavigation();
   const [appointments, setAppointments] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  //const [newSelectedDate, setNewSelectedDate] = useState(new Date());
-  moment.locale("de");
+  const [newSelectedDate, setNewSelectedDate] = useState(new Date());
+  //moment.locale("de");
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -54,12 +54,13 @@ const CalStrip = () => {
 
   useEffect(() => {}, [appointments]);
 
-  //console.log(newSelectedDate);
+  const getWeekApps = (start) => {
+    const startDate = moment(start).format("YYYY-MM-DD");
+    const endDate = moment(startDate).add(6, "days").calendar();
+    console.log("startDate: " + startDate);
+    console.log("endDate: " + endDate);
 
-  const getWeekApps = (date) => {
-    const newDate = moment(date).format("YYYY-MM-DD");
-    console.log("new Date: " + newDate);
-    getWeeklyAppointments({ dateStart: newDate, dateEnd: newDate }).then(
+    getWeeklyAppointments({ dateStart: startDate, dateEnd: endDate }).then(
       (res) => {
         console.log(res);
       }
@@ -80,7 +81,8 @@ const CalStrip = () => {
         calendarHeaderStyle={{ color: "#66CDAA" }}
         highlightDateNumberStyle={{ color: "#66CDAA" }}
         //selectedDate={(date) => setNewSelectedDate(date)}
-        onDateSelected={(date) => getWeekApps(date)}
+        //onDateSelected={(date) => getWeekApps(date)}
+        onWeekChanged={(start) => getWeekApps(start)}
       />
       <View style={styles.container}>
         <FlatList
