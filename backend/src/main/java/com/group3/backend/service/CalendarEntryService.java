@@ -71,7 +71,6 @@ public class CalendarEntryService extends CheckMatrNrClass{
      */
     public ResponseEntity<?> getStudentCalendarEntries (String matrNr) {
         try{
-            checkStudentWithNumberIsSaved(matrNr);
             checkMatriculationNumber(matrNr);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
@@ -95,7 +94,6 @@ public class CalendarEntryService extends CheckMatrNrClass{
      */
     public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
-            checkStudentWithNumberIsSaved(matrNr);
             checkCalendarObject(calendarEntry);
             checkMatriculationNumber(matrNr);
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
@@ -128,7 +126,6 @@ public class CalendarEntryService extends CheckMatrNrClass{
      */
     public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry){
         try {
-            checkStudentWithNumberIsSaved(matrNr);
             checkCalendarObject(calendarEntry);
             checkMatriculationNumber(matrNr);
             Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
@@ -140,7 +137,6 @@ public class CalendarEntryService extends CheckMatrNrClass{
                     calendarEntries.remove(calendarEntry1);
                     student.setCalendarEntries(calendarEntries);
                 }
-                //calendarEntryRepository.deleteById(calendarEntryDelete.getId());
                 calendarEntryRepository.delete(calendarEntryDelete);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
@@ -188,21 +184,21 @@ public class CalendarEntryService extends CheckMatrNrClass{
         return false;
     }
 
-    /**
-     * Method to check if a matrNr is used by a saved {@link Student}.
-     * @param matrNr
-     *                  The matrNr which should be checked.
-     * @return
-     *          Returns true if the matrNr is used by a saved {@link Student}.
-     * @throws Exception
-     *                      Is thrown if no saved {@link Student} uses this matrNr.
-     */
-    private boolean checkStudentWithNumberIsSaved(String matrNr) throws Exception{
-        Student st = studentRepository.findByMatrNr(matrNr);
-        if(st == null){
-            logger.error("No Student with the given matriculation number "+ matrNr + " found");
-            throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
-        }
-        return true;
-    }
+//    /**
+//     * Method to check if a matrNr is used by a saved {@link Student}.
+//     * @param matrNr
+//     *                  The matrNr which should be checked.
+//     * @return
+//     *          Returns true if the matrNr is used by a saved {@link Student}.
+//     * @throws Exception
+//     *                      Is thrown if no saved {@link Student} uses this matrNr.
+//     */
+//    private boolean checkStudentWithNumberIsSaved(String matrNr) throws Exception{
+//        Student st = studentRepository.findByMatrNr(matrNr);
+//        if(st == null){
+//            logger.error("No Student with the given matriculation number "+ matrNr + " found");
+//            throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
+//        }
+//        return true;
+//    }
 }

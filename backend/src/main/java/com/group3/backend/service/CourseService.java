@@ -70,7 +70,7 @@ public class CourseService extends CheckMatrNrClass {
             List<Course> courseList = courseRepository.findAll();
             if(courseList.isEmpty()){
                 logger.error("Error while reading all courses: There are no courses saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are not courses saved");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(courseList);
         }catch (Exception e){
@@ -125,7 +125,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             Course cs = courseRepository.findByNumber(number);
             if(cs == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this numbe r" +number+" in the system");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(cs);
         }catch (Exception e){
@@ -216,7 +216,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             List<Course> courses = courseRepository.findAllByKindOfSubject(kindOfSubject);
             if (courses.isEmpty()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this kind of subject in the system.");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             else {
                 return ResponseEntity.status(HttpStatus.OK).body(courses);
@@ -244,7 +244,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             List<Course> courses = courseRepository.findAllByKindOfSubject(studyFocus);
             if (courses.isEmpty()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this study focus in the system.");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             else {
                 return ResponseEntity.status(HttpStatus.OK).body(courses);
