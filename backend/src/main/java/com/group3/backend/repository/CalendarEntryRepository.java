@@ -23,8 +23,8 @@ public interface CalendarEntryRepository extends JpaRepository<CalendarEntry, St
     @Query("SELECT c.id FROM CalendarEntry c WHERE c.id = (SELECT MAX(id) FROM CalendarEntry )")
     int findCalendarEntryByMaxId();
 
-   @Query("SELECT c FROM CalendarEntry c WHERE c.student.id = ?1 AND c.entryDate >= ?2 AND c.entryDate <= ?3")
-    List<CalendarEntry> findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(int id, LocalDate dateStart, LocalDate dateEnd);
+   @Query("SELECT c FROM CalendarEntry c WHERE c.student.matrNr = ?1 AND c.entryDate >= ?2 AND c.entryDate <= ?3")
+    List<CalendarEntry> findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(String matrNr, LocalDate dateStart, LocalDate dateEnd);
 
 
 }

@@ -75,7 +75,7 @@ public class CalendarEntryService extends CheckMatrNrClass {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
         Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-        List<CalendarEntry> calendarEntries = calendarEntryRepository.findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(student.getId(), dateStart, dateEnd);
+        List<CalendarEntry> calendarEntries = calendarEntryRepository.findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(student.getMatrNr(), dateStart, dateEnd);
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
