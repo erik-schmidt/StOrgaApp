@@ -80,13 +80,14 @@ public class CalendarEntryController {
 
     @GetMapping("/{matrNr}/getWeek")
     public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(
-            @PathVariable(value = "matrNr") String matrNr, @RequestBody LocalDate dateStart,
-            @RequestBody LocalDate dateEnd, @RequestHeader(name = "Authorization") String token) {
+            @PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntryDateRequest calendarEntryDateRequest,
+            @RequestHeader(name = "Authorization") String token) {
         if (accessChecker.checkAccess(matrNr, token)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
-        return calendarEntryService.getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(matrNr, dateStart, dateEnd);
+        return calendarEntryService.getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(matrNr,
+                calendarEntryDateRequest.getStartDate(), calendarEntryDateRequest.getEndDate());
     }
 
     /**
