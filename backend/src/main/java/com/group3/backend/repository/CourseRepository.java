@@ -3,6 +3,7 @@ package com.group3.backend.repository;
 import com.group3.backend.model.Course;
 import com.group3.backend.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.Max;
@@ -25,4 +26,7 @@ public interface CourseRepository extends JpaRepository<Course, String> {
     Course findByNumber(String number);
     List<Course> findAllByStudyFocus(String studyFocus);
     List<Course> findAllByKindOfSubject(String kindOfSubject);
+    @Query("select max(id) from Course ")
+    int findMaxID();
+    Course findById(int id);
 }

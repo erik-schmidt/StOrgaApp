@@ -5,22 +5,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
+
 
 /**
- * The repository for the {@link CalendarEntry}.
- * Supported methods to find objects are:
- * - By description
- * - By studentId
+ * The repository for the {@link CalendarEntry}. Supported methods to find
+ * objects are: - By description - By studentId
  */
 
 @Repository
 public interface CalendarEntryRepository extends JpaRepository<CalendarEntry, String> {
     CalendarEntry findByDescription(String description);
     List<CalendarEntry> findAllByStudentId(Integer id);
-    // TODO: 24.04.2020 : getAllEntriesOfWeek und getAllEntriesOfMonth damit die DB nicht überlastet wird. Dementsprechend wird dateOfEntry zu einem Datumsobjekt
-    // TODO: 24.04.2020 : Tests schreiben
+    List<CalendarEntry> findCalendarEntriesByStudent_Id(int id);
+    CalendarEntry findById(int id);
+    @Query("SELECT c.id FROM CalendarEntry c WHERE c.id = (SELECT MAX(id) FROM CalendarEntry )")
+    int findCalendarEntryByMaxId();
+
+   @Query("SELECT c FROM CalendarEntry c WHERE c.student.id = ?1 AND c.entryDate >= ?2 AND c.entryDate <= ?3")
+    List<CalendarEntry> findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(int id, LocalDate dateStart, LocalDate dateEnd);
+
+
 }

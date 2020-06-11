@@ -255,18 +255,6 @@ public class CourseService extends CheckMatrNrClass {
         }
     }
 
-    /*public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(String matrNr, String number){
-        Student student = studentRepository.findByMatrNr(matrNr);
-        Set<GradeCourseMapping> gradeCourseMappingSet = gradeCourseMappingRepository.findAllByStudent(student);
-        double grade = 0;
-        for (GradeCourseMapping mapping : gradeCourseMappingSet){
-            if (mapping.getCourseNumber().equals(number)){
-                grade = mapping.getGrade();
-            }
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(grade);
-    }*/
-
     /**
      * Is used to delete a {@link Course} from a {@link Student}.
      * Called by "/{matrNr}/delete/{number}".

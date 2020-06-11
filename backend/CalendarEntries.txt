@@ -1,0 +1,3 @@
+CalendarEntryDummy1#12:30:00#13:30:00#2020-06-05#Erste Beschreibung des ersten Dummys lul#
+CalendarEntryDummy2#09:45:00#10:45:00#2020-06-06#Zweite Beschreibung des zweiten Dummys lol#
+###

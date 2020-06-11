@@ -40,24 +40,21 @@ public class Student implements Serializable {
     private String studentFamilyname;
     private String fieldOfStudy;
     @Min(1)
+
     @Max(15)
-    private int currentSemester;
+    // TODO: 01.06.2020 Was wenn man im Semester 0 ist weil man noch nicht eingeschrieben ist? @Chris
+    private int currentSemester = 1;
     private String username;
     private String password;
     @JsonIgnore
     @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Course> courses = new HashSet<>();
-    /*
-     * @JsonIgnore
-     * 
-     * @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
-     */
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
     @JsonIgnore
@@ -74,6 +71,7 @@ public class Student implements Serializable {
     }
 
     public Student() {
+
     }
 
     public String getMatrNr() {

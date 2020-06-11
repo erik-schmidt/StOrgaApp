@@ -270,13 +270,4 @@ public class StudentService extends CheckMatrNrClass {
         }
         return true;
     }
-
-
-    /*public ResponseEntity loginStudent(AuthenticationRequest authenticationRequest){
-        JwtResponse response = studentRepository.findOneByUsername(authenticationRequest.getUsername())
-                .filter(account ->  passwordEncoder.matches(authenticationRequest.getPassword(), account.getPassword()))
-                .map(account -> new JwtResponse(jwtService.generateJwt(authenticationRequest.getUsername())))
-                .orElseThrow(() ->  new EntityNotFoundException("Account not found"));
-        return new ResponseEntity(response, HttpStatus.OK);
-    }*/
 }

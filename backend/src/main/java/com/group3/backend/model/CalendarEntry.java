@@ -5,6 +5,9 @@ import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -13,59 +16,51 @@ import java.time.LocalTime;
 /**
  * Model to represent an entry of the calendar.
  *
- * The name defines how the entry is called.
- * The entryStartTime is the time from where the entry begins.
- * The entryFinishTime is the time when the entry ends.
- * The entryDate is simply the date of the entry in the calendar.
- * The description is a text to give the user extra information about the entry.
+ * The name defines how the entry is called. The entryStartTime is the time from
+ * where the entry begins. The entryFinishTime is the time when the entry ends.
+ * The entryDate is simply the date of the entry in the calendar. The
+ * description is a text to give the user extra information about the entry.
  */
 
 @Entity(name = "CalendarEntry")
-public class CalendarEntry {
+public class CalendarEntry implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotNull
     private String name;
 
-    // TODO: 24.04.2020 Eventuell stimmen die Datentypen für die folgenden 3 Attribute nicht.
     @Column(columnDefinition = "TIME")
-   // @Convert(disableConversion = true)
     private LocalTime entryStartTime;
 
     @Column(columnDefinition = "TIME")
-    //@Convert(disableConversion = true)
     private LocalTime entryFinishTime;
 
     @Column(columnDefinition = "DATE")
-    //@Convert(disableConversion = true)
     private LocalDate entryDate;
 
     private String description;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "student")
+    @JoinColumn(name = "student")
     private Student student = new Student();
 
     public CalendarEntry() {
 
     }
 
-    public CalendarEntry(String name, LocalTime entryStartTimeString, LocalTime entryFinishTime, LocalDate entryDate, String description){
+    public CalendarEntry(String name, LocalTime entryStartTime, LocalTime entryFinishTime, LocalDate entryDate, String description){
         this.name = name;
-        this.entryStartTime = entryStartTimeString;
+        this.entryStartTime = entryStartTime;
         this.entryFinishTime = entryFinishTime;
         this.entryDate = entryDate;
         this.description = description;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
