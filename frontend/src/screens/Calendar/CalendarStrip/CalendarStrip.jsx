@@ -16,8 +16,9 @@ const CalStrip = () => {
   const navigation = useNavigation();
   const [appointments, setAppointments] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [newSelectedDate, setNewSelectedDate] = useState(new Date());
-  //moment.locale("de");
+  const [weeklyAppointments, setWeeklyAppointments] = useState([]);
+
+  moment.locale("de");
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -36,7 +37,7 @@ const CalStrip = () => {
         alert(err);
       });
   };
-  useEffect(() => {
+  /*useEffect(() => {
     getAppointments()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
@@ -52,19 +53,45 @@ const CalStrip = () => {
       });
   }, []);
 
-  useEffect(() => {}, [appointments]);
+  useEffect(() => {}, [appointments]);*/
+
+  const getAllAppointments = () => {
+    getAppointments()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAppointments(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   const getWeekApps = (start) => {
     const startDate = moment(start).format("YYYY-MM-DD");
-    const endDate = moment(startDate).add(6, "days").calendar();
+    const endDate = moment(start).add(6, "days").format("YYYY-MM-DD");
     console.log("startDate: " + startDate);
     console.log("endDate: " + endDate);
 
-    getWeeklyAppointments({ dateStart: startDate, dateEnd: endDate }).then(
-      (res) => {
+    getWeeklyAppointments({ dateStart: startDate, dateEnd: endDate })
+      .then((res) => {
         console.log(res);
-      }
-    );
+        if (res.status === HttpStatus.OK) {
+          setWeeklyAppointments(res.data);
+          console.log(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (
@@ -80,8 +107,6 @@ const CalStrip = () => {
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
         highlightDateNumberStyle={{ color: "#66CDAA" }}
-        //selectedDate={(date) => setNewSelectedDate(date)}
-        //onDateSelected={(date) => getWeekApps(date)}
         onWeekChanged={(start) => getWeekApps(start)}
       />
       <View style={styles.container}>
