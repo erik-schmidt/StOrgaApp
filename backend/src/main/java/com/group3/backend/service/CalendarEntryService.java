@@ -69,8 +69,8 @@ public class CalendarEntryService extends CheckMatrNrClass {
 
     public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(String matrNr, LocalDate dateStart, LocalDate dateEnd) {
         try {
-            checkStudentWithNumberIsSaved(matrNr);
-            checkMatriculationNumber(matrNr);
+            //checkStudentWithNumberIsSaved(matrNr);
+            //checkMatriculationNumber(matrNr);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
