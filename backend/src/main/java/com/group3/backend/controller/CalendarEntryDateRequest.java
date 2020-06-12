@@ -8,10 +8,9 @@ public class CalendarEntryDateRequest {
     private LocalDate endDate;
     private String matrNr;
 
-    private CalendarEntryDateRequest(LocalDate startDate, LocalDate endDate, String matrNr){
+    private CalendarEntryDateRequest(LocalDate startDate, LocalDate endDate){
         this.startDate = startDate;
         this.endDate = endDate;
-        this.matrNr = matrNr;
     }
 
     private CalendarEntryDateRequest(){
@@ -32,13 +31,5 @@ public class CalendarEntryDateRequest {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
-    }
-
-    public String getMatrNr() {
-        return matrNr;
-    }
-
-    public void setMatrNr(String matrNr) {
-        this.matrNr = matrNr;
     }
 }
