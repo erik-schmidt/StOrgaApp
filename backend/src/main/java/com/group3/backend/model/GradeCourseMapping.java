@@ -7,6 +7,13 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Model to save the grade of a {@link Course} from a {@link Student}.
+ *
+ * The courseNumber is the key to get the specific {@link Course}.
+ * The grade is a double between 1-5 which is the grade of the {@link Student}.
+ */
+
 @Entity
 public class GradeCourseMapping {
 

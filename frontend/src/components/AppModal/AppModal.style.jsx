@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   modalView: {
-    width: 280,
-    height: 280,
+    width: 300,
+    height: "80%",
     backgroundColor: "white",
     justifyContent: "center",
     borderRadius: 20,

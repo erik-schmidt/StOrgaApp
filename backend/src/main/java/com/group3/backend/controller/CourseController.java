@@ -1,16 +1,13 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Course;
-import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.service.CourseService;
 import com.group3.backend.service.GradeCourseMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
+import com.group3.backend.model.Student;
 
 @RestController
 @RequestMapping("/course")
@@ -31,9 +28,9 @@ public class CourseController {
     // TODO: 24.04.2020 search by course number not by description
 
     /**
-     * ping()
-     * return a String with a successful message if backend reachable
-     * @return String "Test successful"
+     * The ping-method of this controller. It is used to check if the frontend is able to access the methods of this
+     * controller.
+     * @return  Returns the String "reachable" if access to the methods is possible.
      */
     @GetMapping("/ping")
     public String ping(){
@@ -41,9 +38,13 @@ public class CourseController {
     }
 
     /**
-     * getAllCourses
-     * get all available courses in the database
-     * @return List<Course> </Course>
+     * The get-method to get all {@link Course} in the {@link Course}-Repository.
+     * @param token
+     *              The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link Course} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     // TODO: 02.06.2020 authentifizierung
     @GetMapping("/get")
@@ -55,10 +56,13 @@ public class CourseController {
     }
 
     /**
-     * getCourseByNumber
-     * get course information by search with the course number
-     * @param number String
-     * @return Course
+     * The get-method to get a specific {@link Course} by its number.
+     * @param number
+     *                  The number of the {@link Course} object you want to get.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link Course} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     // TODO: 02.06.2020 authentifizierung
     @GetMapping("/get/{number}")
@@ -70,9 +74,13 @@ public class CourseController {
     }
 
     /**
-     * Get the courses by their kindOfSubject.
+     * The get-method to get a specific {@link Course} by its kindOfSubject.
      * @param kindOfSubject
+     *                      The kindOfSubject of the {@link Course} object you want to get.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link Course} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     // TODO: 02.06.2020 authentifizierung
     @GetMapping("/{matrNr}/get/{kindOfSubject}")
@@ -84,9 +92,13 @@ public class CourseController {
     }
 
     /**
-     * Get the courses by their studyFocus.
+     * The get-method to get a specific {@link Course} by its studyFocus.
      * @param studyFocus
+     *                      The studyFocus of the {@link Course} object you want to get.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link Course} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     // TODO: 02.06.2020 authentifizierung
     @GetMapping("/{matrNr}/get/{studyFocus}")
@@ -98,10 +110,15 @@ public class CourseController {
     }
 
     /**
-     * getStudentCourses
-     * get all courses which the student is signed in
-     * @param matrNr String
-     * @return Set<Course>
+     * The get-method to get all {@link Course} from a specific {@link Student}.
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link Course} entries for.
+     * @param token
+     *              The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link Course} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @GetMapping("/{matrNr}/get")
     public ResponseEntity<?> getStudentsCourses(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
@@ -111,36 +128,18 @@ public class CourseController {
         return courseService.getStudentsCourses(matrNr);
     }
 
-//    /**
-//     * getStudentCourses
-//     * get all courses which the student is signed in
-//     * @param matrNr String Matriculation number
-//     * @param number String Course number
-//     * @return Course
-//     */
-//    @GetMapping("/get/{matrNr}/{number}")
-//    public ResponseEntity<?> getGradeByMatrNrAndCourseNumber(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number){
-//        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
-//    }
-
     /**
-     * Set the grade of specific course of a specific student.
+     * The add-method to add a specific {@link Course} to a specific {@link Student}.
      * @param matrNr
-     * @param number
-     * @param grade
+     *                  The matrNr of the {@link Student} you want to add the {@link Course} to.
+     * @param course
+     *                  The {@link Course} object you want to add to the {@link Student}.
+     * @param token
+     *              The token to authorize your request.
      * @return
-     */
-    /*@PutMapping("/grade/{matrNr}/{number}/{grade}")
-    public ResponseEntity<?> setGradeOfCourse(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @PathVariable(value = "garde") double grade){
-        return courseService.getGradeByMatrNrAndCourseNumber(matrNr, number);
-    }*/
-
-    /**
-     * addCourseToStudent
-     * add a course to a student
-     * @param matrNr String matriculation number
-     * @param course Course object
-     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the added
+     *          {@link Course} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @PutMapping("/{matrNr}/add")
     public ResponseEntity<?> addCourseToStudent(@PathVariable(value = "matrNr") String matrNr, @RequestBody Course course, @RequestHeader (name="Authorization") String token){
@@ -150,35 +149,17 @@ public class CourseController {
         return courseService.addCourseToStudent(matrNr, course);
     }
 
-
-    /**
-     * createCourse
-     * add a new course to the database
-     * @param course Course
-     * @return ResponseEntity<Course>
-     */
-    // TODO: 24.04.2020 not available for frontend
-    /*@PostMapping("/create")
-    public ResponseEntity<?> createCourse(@RequestBody Course course){
-        return courseService.createCourse(course);
-    }*/
-
-    /**
-     * deleteCourse
-     * delete a course mapping of a student
-     * @param number String matricuatlion number
-     * @return Course
-     */
-    /*@DeleteMapping("/delete/{number}")
-    public ResponseEntity<?> deleteCourse(@PathVariable(value = "number") String number){
-        return courseService.deleteCourse(number);
-    }*/
-
     /**
      * Method to delet a specific course of a specific student.
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want to delete the {@link Course} of.
      * @param number
+     *                  The number of the {@link Course} you want to delete.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a Set of
+     *          {@link Course} objects which remain at the {@link Student}. Therefore the deleted {@link Course}
+     *          shouldn't be under those {@link Course} objects from the Set. Otherwise, pls tell it the Backend.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @DeleteMapping("/{matrNr}/delete/{number}")
     public ResponseEntity<?> deleteCourseFromStudent(@PathVariable(value = "matrNr") String matrNr, @PathVariable(value = "number") String number, @RequestHeader (name="Authorization") String token){

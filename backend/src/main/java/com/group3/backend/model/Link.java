@@ -6,6 +6,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * Model to save links in the link list.
+ *
+ * The link is the URL you want so safe.
+ * The linkDescription is the name of the {@link Link}.
+ */
+
 @Entity
 public class Link implements Serializable {
 
@@ -20,7 +27,6 @@ public class Link implements Serializable {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "student")
     private Student student = new Student();
 
     public Link(){

@@ -8,6 +8,22 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Model to represent an course.
+ * The fieldOfStudy is the specific them of the {@link Course} (for example 'AIB').
+ * The number is the specific number of the {@link Course}.
+ * The description is the name of the {@link Course}.
+ * The room is the room where the {@link Course} takes place.
+ * The professor is the professor who leads the {@link Course}.
+ * The ects are the number of ECTs the {@link Course} is worth.
+ * The kindOfSubject is one of the two: 1. Pflichtfach 2. Wahlfach.
+ * The recommendedSemester is the semester the {@link Course} is recommended for.
+ * The studyFocus is one of the three: 1. Mobile Computing 2. Psychologie 3. Allgemein.
+ * The workingHoursInClass are the number of hours which are calculated to spend in class.
+ * The workingHoursSelf are the number of hours which are calculated to spend for learning by your own.
+ * The kindOfExam is the kind of exam is one of the two: 1. Note 2. Schein //TODO: Ist das mit kindOfExam gemeint?
+ */
+
 @Entity
 public class Course implements Serializable {
     @Id
@@ -16,33 +32,22 @@ public class Course implements Serializable {
                                                         //TODO: What was that again?
     @NotNull
     private String fieldOfStudy;
-    //The specific number of the course
     @NotNull
     private String number;
-    //The name of the course
     @NotNull
     private String description;
-    //The room the course takes place
     @NotNull
     private String room;
-    //The professor who leads the course
     @NotNull
     private String professor;
-    //The number of ECTs the course is worth
     @NotNull
     private Integer ects;
-    //The kind of subject is one of the two: 1. Pflichtfach 2. Wahlfach
     @NotNull
     private String kindOfSubject;
-    //The semester the course is recommended for
     private Integer recommendedSemester;
-    //The study focus is one of the three: 1. Mobile Computing 2. Psychologie 3. Allgemein
     private String studyFocus;
-    //The number of hours which are calculated to spend in class
     private Double workingHoursInClass;
-    //The number of hours which are calculated to spend for learning by your own
     private Double workingHoursSelf;
-    //The kind of exam is one of the two: 1. Note 2. Schein         //TODO: Ist das mit kindOfExam gemeint?
     private String kindOfExam;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
