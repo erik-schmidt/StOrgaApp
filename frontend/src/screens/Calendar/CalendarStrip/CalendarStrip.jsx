@@ -37,9 +37,10 @@ const CalStrip = () => {
         alert(err);
       });
   };
-  /*useEffect(() => {
+  useEffect(() => {
     getAppointments()
       .then((res) => {
+        console.log(res);
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
@@ -53,7 +54,7 @@ const CalStrip = () => {
       });
   }, []);
 
-  useEffect(() => {}, [appointments]);*/
+  useEffect(() => {}, [appointments]);
 
   const getAllAppointments = () => {
     getAppointments()
