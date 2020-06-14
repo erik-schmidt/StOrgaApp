@@ -6,7 +6,6 @@ public class CalendarEntryDateRequest {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    private String matrNr;
 
     private CalendarEntryDateRequest(LocalDate startDate, LocalDate endDate){
         this.startDate = startDate;
