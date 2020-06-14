@@ -77,7 +77,7 @@ const CalStrip = () => {
     console.log("startDate: " + startDate);
     console.log("endDate: " + endDate);
 
-    getWeeklyAppointments({ dateStart: startDate, dateEnd: endDate })
+    getWeeklyAppointments({ startDate: startDate, endDate: endDate })
       .then((res) => {
         console.log(res);
         if (res.status === HttpStatus.OK) {
