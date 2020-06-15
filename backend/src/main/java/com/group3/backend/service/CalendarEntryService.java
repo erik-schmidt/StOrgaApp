@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -69,14 +70,14 @@ public class CalendarEntryService extends CheckMatrNrClass {
 
     public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(String matrNr, LocalDate dateStart, LocalDate dateEnd) {
         try {
-            //checkStudentWithNumberIsSaved(matrNr);
-            //checkMatriculationNumber(matrNr);
+            checkStudentWithNumberIsSaved(matrNr);
+            checkMatriculationNumber(matrNr);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
         Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
         List<CalendarEntry> calendarEntries = calendarEntryRepository.findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(student.getMatrNr(), dateStart, dateEnd);
-        return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
+        return ResponseEntity.status(HttpStatus.OK).body(sortCalendarEntryObjects(calendarEntries));
     }
 
     public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
@@ -175,23 +176,6 @@ public class CalendarEntryService extends CheckMatrNrClass {
                 logger.error("Calender has no description");
                 throw new NoDescriptionException("Kalendereintrag hat keine beschreibung!");
             }
-            // DATE AND TIME ARE NOW STRINGS
-            /*
-             * if (calendarEntry.getEntryStartTime() == null) {
-             * logger.error("Calender has no start date"); throw new
-             * CalendarWithoutStartTimeException("Kalendereintrag hat kein Startdatum!"); }
-             * if (calendarEntry.getEntryFinishTime() == null) {
-             * logger.error("Calender has no finish date"); throw new
-             * CalendarWithoutFinishTimeException("Kalendereintrag hat kein Enddatum!"); }
-             * 
-             */
-            // OBJECT IS NOW TIMESTAMP NOT LOCAL DATE
-            /*
-             * if(calendarEntry.getEntryStartTime().isAfter(calendarEntry.getEntryFinishTime
-             * ())){ logger.error("calender entry Startdate after Enddate! "); throw new
-             * CalenderDateException("Kalendereintrag Startzeit ist nach Endzeit"); }
-             */
-
             return true;
         } catch (Exception e) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
@@ -215,29 +199,26 @@ public class CalendarEntryService extends CheckMatrNrClass {
 
     }
 
-    /*
-     * public CalendarEntry getCalendarEntryByDescription(String matrNr, String
-     * description){ CalendarEntry calendarEntry =
-     * calendarEntryRepository.findByDescription(matrNr, description); return
-     * calendarEntry; }
-     * 
-     * public List<CalendarEntry> getCalendarEntryByDate(String matrNr, Date
-     * entryDate){ List<CalendarEntry> calendarEntriesByDate =
-     * calendarEntryRepository.findByDate(matrNr, entryDate); return
-     * calendarEntriesByDate; }
-     * 
-     * // TODO: 24.04.2020 Monthly CalendarEntries.txt public List<CalendarEntry>
-     * getCalendarEntryByMonth(String matrNr, Date entryDate){ return null; }
-     * 
-     * public ResponseEntity<CalendarEntry> addCalendarEntryToStudent(String matrNr,
-     * CalendarEntry calendarEntry){ try { Student student =
-     * studentRepository.findByMatrNr(matrNr); CalendarEntry calendarEntry1 =
-     * calendarEntryRepository.findByDescription(matrNr,
-     * calendarEntry.getDescription()); calendarEntry1.setStudent(student);
-     * calendarEntryRepository.save(calendarEntry1);
-     * calendarEntryRepository.saveAndFlush(calendarEntry1); } catch (Exception e) {
-     * logger.error(e.getClass() + " " + e.getMessage()); } return new
-     * ResponseEntity<>(HttpStatus.OK); }
+    /**
+     * sort the calendar Objects beginning with the first date in the week at list index 0
+     * Also sort by time. Start with the earlies one in the list
+     * Bubble sort we don't want to transform a List in an Array and Back
+     * @param calendarEntries
+     * @return
      */
+    private List<CalendarEntry> sortCalendarEntryObjects(List<CalendarEntry> calendarEntries){
+        for(int i = calendarEntries.size(); i>1; i--){
+            for(int j = 0; j<i-1; j++){
+                if(calendarEntries.get(j).getEntryDate().isAfter(calendarEntries.get(j+1).getEntryDate())){
+                    Collections.swap(calendarEntries, j, j+1);
+                }
+                if (calendarEntries.get(j).getEntryStartTime().isAfter(calendarEntries.get(j + 1).getEntryStartTime())
+                    && calendarEntries.get(j).getEntryDate().equals(calendarEntries.get(j+1).getEntryDate())){
+                    Collections.swap(calendarEntries, j, j+1);
+                }
+            }
+        }
+        return calendarEntries;
+    }
 
 }
