@@ -4,7 +4,7 @@ import { getGrades, getAverage } from "../../../api/services/GradeService";
 import * as HttpStatus from "http-status-codes";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlatList } from "react-native-gesture-handler";
-import { View, Text } from "react-native";
+import { View, Text, RefreshControl } from "react-native";
 import Card from "../../../components/Card/Card";
 import AuthContext from "../../../constants/AuthContext";
 
@@ -12,8 +12,27 @@ const GradeList = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [grades, setGrades] = useState([]);
+  const [refreshing, setRefreshing] = useState();
   const [average, setAverage] = useState();
   const { signOut } = React.useContext(AuthContext);
+
+  const onRefresh = () => {
+    setRefreshing(false);
+    getGrades()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setGrades(res.data);
+          setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   useEffect(() => {
     getGrades()
@@ -27,6 +46,9 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
+        if (err === "Error") {
+          return;
+        }
         alert(err);
       });
     getAverage()
@@ -40,6 +62,9 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
+        if (err === "Error") {
+          return;
+        }
         alert(err);
       });
   }, []);
@@ -77,6 +102,9 @@ const GradeList = () => {
     <View style={styles.container}>
       <FlatList
         data={grades}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         ListEmptyComponent={() => {
           return (
             <View style={styles.container}>

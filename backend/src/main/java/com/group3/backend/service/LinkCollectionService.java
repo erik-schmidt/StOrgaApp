@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -38,17 +39,24 @@ public class LinkCollectionService extends CheckMatrNrClass {
     }
 
     /**
-     * ping-method -> *ping, ping*
+     * Is used to test the reachability of the service.
+     * Called by "/ping".
      * @return
+     *          "reachable" to represent that the service can be reached.
      */
     public String ping(){
         return "reachable";
     }
 
     /**
-     * Returns the LinkList for the Student with the given MatrNr.
+     * Is used to get all {@link Link} objects of a specific {@link Student}.
+     * Is called by "/{matrNr}/get".
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link Link} objects of.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          the {@link Link} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getLinkListByMatrNr(String matrNr){
         try {
@@ -58,7 +66,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
             if (linkList.isEmpty()) {
                 logger.error("There are no links for this student.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: No saved links");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList("Link"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(linkList);
         }catch (Exception e){
@@ -68,10 +76,16 @@ public class LinkCollectionService extends CheckMatrNrClass {
     }
 
     /**
-     * Returns the Link from the Student with the given MatrNr and the given number.
+     * Is used to get a specific {@link Link} of a specific {@link Student}.
+     * Is called by "/{matrNr}/get/{linkNr}".
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link Link} of.
      * @param linkId
+     *                  The linkId of the {@link Link} you want to get from the {@link Student}.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link Link} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getLinkListByMatrNrAndNr(String matrNr, int linkId){
         try{
@@ -84,7 +98,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
             if (link == null){
                 logger.error("There are no link for this student with that linkId");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: No saved link");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList("Link"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(link);
         }catch (Exception e){
@@ -94,10 +108,16 @@ public class LinkCollectionService extends CheckMatrNrClass {
     }
 
     /**
-     * Adds the given Link to the Student with the given MatrNr.
+     * Is used to add a {@link Link} to a {@link Student}.
+     * Is called by "/{matrNr}/add".
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want to add the {@link Link} to.
      * @param link
+     *              The {@link Link} you want to add to the {@link Student}.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the added
+     *          {@link Link} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> addLinkToStudent(String matrNr, Link link){
         try{
@@ -109,7 +129,6 @@ public class LinkCollectionService extends CheckMatrNrClass {
             }
             link.setStudent(studentRepository.findByMatrNr(matrNr));
             linkRepository.save(link);
-            //linkRepository.saveAndFlush(link);
         }
         catch (Exception e){
             logger.error(e.getClass() + " " + e.getMessage());
@@ -119,10 +138,16 @@ public class LinkCollectionService extends CheckMatrNrClass {
     }
 
     /**
-     * Deletes the Link with the given linkId if it matches with the Student of the given MatrNr.
+     * Is used to delete a {@link Link} from a {@link Student}.
+     * Is called by "/{matrNr}/delete/{linkId}".
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want to delete the {@link Link} from.
      * @param linkId
+     *                  The linkId of the {@link Link} you want to delete from the {@link Student}.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the deleted
+     *          {@link Link} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> deleteLink(String matrNr, int linkId){
         try {
@@ -150,12 +175,19 @@ public class LinkCollectionService extends CheckMatrNrClass {
     }
 
     /**
-     * Method to change a Link by using the MatrNr of the Student and the linkId and replacing that Link with the given
-     * one.
+     * Is used to update a specific {@link Link} of a specific {@link Student}. Replaces the old {@link Link} with
+     * the new one.
+     * Is called by "/{matrNr}/put/{linkId}".
      * @param matrNr
+     *                  The matrNr of the {@link Student} you want to update the {@link Link} of.
      * @param linkId
+     *                  The linkId of the {@link Link} you want to update.
      * @param newLink
+     *                  The new {@link Link} which should replace the updated one.
      * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the updated
+     *          {@link Link} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> changeLink(String matrNr, int linkId, Link newLink){
         try {
@@ -186,6 +218,14 @@ public class LinkCollectionService extends CheckMatrNrClass {
         }
     }
 
+    /**
+     * Is used to check the syntax of a {@link Link}.
+     * @param link
+     *              The {@link Link} you want to check.
+     * @return
+     *          Returns true if the syntax is valid.
+     *          Returns false if not.
+     */
     public boolean checkLink(Link link){
         try {
             if (link.getLink().trim().isEmpty()){
@@ -202,12 +242,19 @@ public class LinkCollectionService extends CheckMatrNrClass {
         }
     }
 
+    /**
+     * Is used to get all {@link Link} objects from the repository.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link Link} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
     public ResponseEntity<?> getAllLinks(){
         try{
             List<Link> linkList = linkRepository.findAll();
             if(linkList.isEmpty()){
                 logger.error("Error while reading all Links: There are no links saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no links saved");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList("Link"));
             }
             logger.info("Links successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(linkList);
