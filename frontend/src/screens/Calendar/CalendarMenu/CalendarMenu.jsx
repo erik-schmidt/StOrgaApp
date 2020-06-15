@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Text } from "react-native";
+import { View } from "react-native";
 import styles from "./CalendarMenu.style";
 import AppButton from "../../../components/AppButton/AppButton";
 import { deleteCalendar } from "../../../api/services/CalendarService";

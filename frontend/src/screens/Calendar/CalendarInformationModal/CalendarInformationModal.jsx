@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./CalendarInformationModal.style";
 import { View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import moment from "moment";
 import "moment/locale/de";
 
 const CalendarInformationModal = ({ navigation, route }) => {

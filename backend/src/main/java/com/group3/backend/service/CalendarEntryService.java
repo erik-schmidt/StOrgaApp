@@ -211,19 +211,20 @@ public class CalendarEntryService extends CheckMatrNrClass {
      * @param calendarEntries
      * @return
      */
-    private List<CalendarEntry> sortCalendarEntryObjects(List<CalendarEntry> calendarEntries){
-        for(int i = calendarEntries.size(); i>1; i--){
-            for(int j = 0; j<i-1; j++){
-                if(calendarEntries.get(j).getEntryDate().isAfter(calendarEntries.get(j+1).getEntryDate())){
-                    Collections.swap(calendarEntries, j, j+1);
+    private List<CalendarEntry> sortCalendarEntryObjects(List<CalendarEntry> calendarEntries) {
+        for (int i = calendarEntries.size(); i > 1; i--) {
+            for (int j = 0; j < i - 1; j++) {
+                if (calendarEntries.get(j).getEntryDate().isAfter(calendarEntries.get(j + 1).getEntryDate())) {
+                    Collections.swap(calendarEntries, j, j + 1);
                 }
                 if (calendarEntries.get(j).getEntryStartTime().isAfter(calendarEntries.get(j + 1).getEntryStartTime())
-                    && calendarEntries.get(j).getEntryDate().equals(calendarEntries.get(j+1).getEntryDate())){
-                    Collections.swap(calendarEntries, j, j+1);
+                        && calendarEntries.get(j).getEntryDate().equals(calendarEntries.get(j + 1).getEntryDate())) {
+                    Collections.swap(calendarEntries, j, j + 1);
                 }
             }
         }
         return calendarEntries;
+    }
     /*
     public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
         try {
