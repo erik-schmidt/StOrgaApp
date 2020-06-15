@@ -1,73 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CalendarStrip from "react-native-calendar-strip";
 import styles from "./TimetableStrip.style";
-import { Text, RefreshControl, View, FlatList, Dimensions } from "react-native";
+import { Text, View, FlatList, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
 import "moment/locale/de";
-import {
-  getAllCourses,
-  getCoursesByStartDate,
-} from "../../../api/services/TimetableService";
+import { getCoursesByStartDate } from "../../../api/services/TimetableService";
+import { AsyncStorage } from "react-native";
 
 const TimetableStrip = () => {
   const navigation = useNavigation();
-  const [courses, setCourses] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
   const [weeklyCourses, setWeeklyCourses] = useState([]);
 
   moment.locale("de");
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    getAllCourses()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setCourses(res.data);
-          setRefreshing(false);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
-
-  useEffect(() => {
-    getAllCourses()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setCourses(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, []);
-
-  useEffect(() => {}, [courses]);
-
-  const getWeeklyCourses = (start) => {
+  const getWeeklyCourses = async (start) => {
     const startDate = moment(start).format("YYYY-MM-DD");
     const endDate = moment(start).add(6, "days").format("YYYY-MM-DD");
-    console.log("startDate: " + startDate);
-    console.log("endDate: " + endDate);
+    const matrNr = await AsyncStorage.getItem("matrNr");
 
-    getCoursesByStartDate({ startDate: startDate, endDate: endDate })
+    getCoursesByStartDate({
+      startDate: startDate,
+      endDate: endDate,
+      matrNr: matrNr,
+      currentWeek: false,
+      timePeriod: null,
+      onlyJoinedCourses: false,
+    })
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
           setWeeklyCourses(res.data);
-          //console.log(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -98,12 +62,9 @@ const TimetableStrip = () => {
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
           data={weeklyCourses}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
           renderItem={({ item }) => (
             <Card
-              key={courses.length}
+              key={weeklyCourses.length}
               onPress={() =>
                 navigation.navigate("TimetableInformationModal", {
                   courses: item,

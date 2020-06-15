@@ -9,7 +9,7 @@ export const getCoursesByCourseNumber = async (courseNumber) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return fetch(`timeTable/${matrNr}/${courseNumber}/getAllByCourseNumber/`);
 };
-export const getCoursesByStartDate = async (date) => {
+export const getCoursesByStartDate = async (TimeTableDateRequest) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return fetch(`timeTable/${matrNr}/getByRequestObject/`, date);
+  return post(`timeTable/${matrNr}/getByRequestObject/`, TimeTableDateRequest);
 };
