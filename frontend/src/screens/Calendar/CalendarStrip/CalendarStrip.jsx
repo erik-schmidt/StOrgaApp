@@ -53,6 +53,9 @@ const CalStrip = () => {
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
           data={weeklyAppointments}
+          ListEmptyComponent={
+            <Text style={styles.emptyList}>Keine Termine in dieser Woche</Text>
+          }
           renderItem={({ item }) => (
             <Card
               key={weeklyAppointments.length}
