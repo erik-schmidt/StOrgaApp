@@ -7,19 +7,42 @@ import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
 import "moment/locale/de";
-import { getAllCourses } from "../../../api/services/TimetableService";
+import {
+  getAllCourses,
+  getCoursesByStartDate,
+} from "../../../api/services/TimetableService";
 
 const TimetableStrip = () => {
   const navigation = useNavigation();
   const [courses, setCourses] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [weeklyCourses, setWeeklyCourses] = useState([]);
+
+  moment.locale("de");
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getAllCourses()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setCourses(res.data);
+          setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   useEffect(() => {
     getAllCourses()
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
           setCourses(res.data);
-          console.log(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -32,7 +55,29 @@ const TimetableStrip = () => {
   }, []);
 
   useEffect(() => {}, [courses]);
-  moment.locale("de");
+
+  const getWeeklyCourses = (start) => {
+    const startDate = moment(start).format("YYYY-MM-DD");
+    const endDate = moment(start).add(6, "days").format("YYYY-MM-DD");
+    console.log("startDate: " + startDate);
+    console.log("endDate: " + endDate);
+
+    getCoursesByStartDate({ startDate: startDate, endDate: endDate })
+      .then((res) => {
+        console.log(res);
+        if (res.status === HttpStatus.OK) {
+          setWeeklyCourses(res.data);
+          //console.log(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -47,14 +92,15 @@ const TimetableStrip = () => {
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
         highlightDateNumberStyle={{ color: "#66CDAA" }}
+        onWeekChanged={(start) => getWeeklyCourses(start)}
       />
       <View style={styles.container}>
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
-          data={courses}
-          /*refreshControl={
+          data={weeklyCourses}
+          refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }*/
+          }
           renderItem={({ item }) => (
             <Card
               key={courses.length}
@@ -85,7 +131,7 @@ const TimetableStrip = () => {
                   <View style={styles.durationDotConnector} />
                 </View>
                 <View style={styles.eventNote}>
-                  <Text style={styles.eventText}>{item.description}</Text>
+                  <Text style={styles.eventText}>{item.summary}</Text>
                 </View>
               </View>
             </Card>

@@ -11,5 +11,5 @@ export const getCoursesByCourseNumber = async (courseNumber) => {
 };
 export const getCoursesByStartDate = async (date) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return fetch(`timeTable/${matrNr}/getAllByMatriculationNumber/`, date);
+  return fetch(`timeTable/${matrNr}/getByRequestObject/`, date);
 };
