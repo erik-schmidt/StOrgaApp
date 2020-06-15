@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.group3.backend.model.Student;
+import com.group3.backend.model.CourseList;
 
 @RestController
 @RequestMapping("/course")
@@ -150,7 +151,7 @@ public class CourseController {
     }
 
     /**
-     * Method to delet a specific course of a specific student.
+     * Method to delete a specific {@link Course} of a specific {@link Student}.
      * @param matrNr
      *                  The matrNr of the {@link Student} you want to delete the {@link Course} of.
      * @param number
@@ -167,5 +168,43 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
         return courseService.deleteCourseFromStudent(matrNr, number);
+    }
+
+    /**
+     * Method to get a list with {@link CourseList} objects, ordered by their kindOfSubject.
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link CourseList} objects for.
+     * @param token
+     *                  The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          list with the {@link CourseList} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
+    @GetMapping("/{matrNr}/get/kindOfSubject")
+    public ResponseEntity<?> getCourseListOfStudentByKindOfSubject(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name = "Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return courseService.getCourseListOfStudentByKindOfSubject(matrNr);
+    }
+
+    /**
+     * Method to get a list with {@link CourseList} objects, ordered by their recommendetSemester.
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link CourseList} objects for.
+     * @param token
+     *                  The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          list with the {@link CourseList} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
+    @GetMapping("/{matrNr}/get/recommendetSemester")
+    public ResponseEntity<?> getCourseListOfStudentByRecommendetSemester(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name = "Authorization") String token){
+        if(accessChecker.checkAccess(matrNr, token)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+        }
+        return courseService.getCourseListOfStudentByRecommendetSemester(matrNr);
     }
 }
