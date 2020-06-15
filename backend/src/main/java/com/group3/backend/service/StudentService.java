@@ -64,7 +64,7 @@ public class StudentService extends CheckMatrNrClass {
             List<Student> studentList = studentRepository.findAll();
             if(studentList.isEmpty()){
                 logger.error("Error while reading all Students: There are no students saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no students saved");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Student"));
             }
             logger.info("Students successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(studentList);
@@ -180,8 +180,6 @@ public class StudentService extends CheckMatrNrClass {
                 throw new StudentDoesntMatchToMatrNrException("There is no student with matriculation number: " + student.getMatrNr());
             }
             Student st = studentRepository.findByMatrNr(student.getMatrNr());
-            //Matriculation number should not be changed form student -> only set
-            //st.setMatrNr(student.getMatrNr());
             if (checkName(student.getStudentPrename(), "Prename")){
                 st.setStudentPrename(student.getStudentPrename());
             }

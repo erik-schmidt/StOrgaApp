@@ -144,7 +144,7 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
                 }
             }
             logger.error("No grade for course number " + number + " in student "+ matrNr+ " saved");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No grade for course number " + number + " in student "+ matrNr+ " saved");
+            return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
         }catch (Exception e){
             logger.error(e.getClass() +" "+e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() +" "+e.getMessage());
@@ -181,7 +181,7 @@ public class GradeCourseMappingService extends CheckMatrNrClass {
                 }
             }
             logger.error("No grade for course number " + number + " in student "+ matrNr+ " saved");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No grade for course number " + number + " in student "+ matrNr+ " saved");
+            return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
         } catch (Exception e) {
             logger.error(e.getClass() + " " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());

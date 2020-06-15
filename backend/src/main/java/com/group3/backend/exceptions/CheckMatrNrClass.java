@@ -1,5 +1,10 @@
 package com.group3.backend.exceptions;
 
+import com.group3.backend.model.*;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class CheckMatrNrClass {
 
     /**
@@ -32,7 +37,26 @@ public class CheckMatrNrClass {
         return true;
     }
 
-
-
-
+    /**
+     * Method to return a empty list. Is used to represent that no requested item could be found.
+     * @param dataTyp
+     *                  A string which represents the type of data you want the empty list for.
+     * @return
+     *          The empty list.
+     */
+    public List<?> getEmptyList(String dataTyp){
+        switch (dataTyp){
+            case "Link": List<Link> linkList = new LinkedList<>();
+                return linkList;
+            case "Course": List<Course> courseList = new LinkedList<>();
+                return courseList;
+            case "Calendar": List<CalendarEntry> calendarEntryList = new LinkedList<>();
+                return calendarEntryList;
+            case "Student": List<Student> studentList = new LinkedList<>();
+                return studentList;
+            case "GradeCourse": List<GradeCourseMapping> gradeCourseMappingList = new LinkedList<>();
+                return gradeCourseMappingList;
+        }
+        return new LinkedList<>();
+    }
 }

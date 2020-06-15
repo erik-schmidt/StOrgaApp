@@ -44,12 +44,11 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Kurs zur Liste hinzufügen" height={280} width={280}>
+      <AppModal header="Kurs zur Liste hinzufügen" height={350} width={300}>
         <Picker
           selectedValue={selectedCourse}
           style={styles.picker}
           onValueChange={(itemValue, itemIndex) => {
-            console.log(itemValue);
             setSelectedCourse(itemValue);
           }}
         >

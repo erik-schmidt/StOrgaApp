@@ -38,6 +38,7 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
     private final NewsRepository newsRepository;
     @NonNull
     private final CalendarEntryRepository calendarEntryRepository;
+    @NonNull
     private TimeTableObjectRepository timeTableObjectRepository;
 
     /**
