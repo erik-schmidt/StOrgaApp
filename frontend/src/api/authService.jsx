@@ -1,6 +1,6 @@
 import Axios from "axios";
 const axios = Axios.create({
-  baseURL: "http://storga.hs-heilbronn.de:8888/auth/",
+  baseURL: "http://storga.it-stud.hs-heilbronn.de:8888/auth/",
   responseType: "application/json",
 });
 
