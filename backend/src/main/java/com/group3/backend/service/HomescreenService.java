@@ -97,7 +97,9 @@ public class HomescreenService {
         if(gradeCourseMappingRepository.count()>0) {
             int maxID = gradeCourseMappingRepository.findMaxID();
             GradeCourseMapping gradeCourseMapping = gradeCourseMappingRepository.findById(maxID);
-            homescreen.setData(courseRepository.findByNumber(gradeCourseMapping.getCourseNumber()) + " mit Note" + gradeCourseMapping.getGrade() + " eingetragen");
+            homescreen.setData(courseRepository.findByNumber(gradeCourseMapping.getCourseNumber()).getNumber()+" "+
+                    courseRepository.findByNumber(gradeCourseMapping.getCourseNumber()).getDescription() + " mit Note" +
+                    gradeCourseMapping.getGrade() + " eingetragen");
         }else {
             homescreen.setData("Keine Noten einem Kurs zugeordnet");
         }
