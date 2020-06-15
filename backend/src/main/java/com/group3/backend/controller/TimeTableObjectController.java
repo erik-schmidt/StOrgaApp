@@ -68,7 +68,7 @@ public class TimeTableObjectController {
      * @param token String token of a logged in student
      * @return
      */
-    @GetMapping("/{matNr}/getByRequestObject")
+    @PostMapping("/{matNr}/getByRequestObject")
     private ResponseEntity getAllTimeTableObjects(@PathVariable(value = "matNr") String matrNr, @RequestBody TimeTableDateRequest timeTableDateRequest, @RequestHeader(name="Authorization") String token){
         if(accessChecker.checkAccess(matrNr, token)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not autorized for this request");
