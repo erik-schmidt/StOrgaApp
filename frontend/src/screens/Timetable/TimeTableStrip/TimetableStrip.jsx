@@ -62,6 +62,9 @@ const TimetableStrip = () => {
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
           data={weeklyCourses}
+          ListEmptyComponent={
+            <Text style={styles.emptyList}>Keine Kurse in dieser Woche</Text>
+          }
           renderItem={({ item }) => (
             <Card
               key={weeklyCourses.length}
