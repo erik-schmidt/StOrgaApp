@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, RefreshControl, Alert } from "react-native";
+import { Text, View, RefreshControl } from "react-native";
 import { getAllStudentCourses } from "../../../api/services/CourseService";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";

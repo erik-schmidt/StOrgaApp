@@ -48,7 +48,7 @@ const AddCourseModal = ({ navigation }) => {
         <Picker
           selectedValue={selectedCourse}
           style={styles.picker}
-          onValueChange={(itemValue, itemIndex) => {
+          onValueChange={(itemValue) => {
             setSelectedCourse(itemValue);
           }}
         >

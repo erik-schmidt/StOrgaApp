@@ -46,6 +46,9 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
+        if (err === "Error") {
+          return;
+        }
         alert(err);
       });
     getAverage()
@@ -59,6 +62,9 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
+        if (err === "Error") {
+          return;
+        }
         alert(err);
       });
   }, []);

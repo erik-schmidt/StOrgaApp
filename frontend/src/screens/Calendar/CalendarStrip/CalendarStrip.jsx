@@ -3,10 +3,7 @@ import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
 import { Text, RefreshControl, View, FlatList, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  getAppointments,
-  getAllAppointments,
-} from "../../../api/services/CalendarService";
+import { getAppointments } from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
@@ -37,10 +34,8 @@ const CalStrip = () => {
   useEffect(() => {
     getAppointments()
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
           setAppointments(res.data);
-          console.log(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {

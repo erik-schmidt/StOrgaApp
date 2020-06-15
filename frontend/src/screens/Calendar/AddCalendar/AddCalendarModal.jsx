@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { View, Button, Text } from "react-native";
+import { View, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import styles from "./AddCalendarModal.style";
 import { createAppointment } from "../../../api/services/CalendarService";
 import DatePicker from "react-native-datepicker";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
-import moment from "moment";
 import "moment/locale/de";
 
-const AddCalendarModal = ({ navigation, route }) => {
+const AddCalendarModal = ({ navigation }) => {
   const [timeStart, setTimeStart] = useState(new Date());
   const [timeEnd, setTimeEnd] = useState(new Date());
   const [name, setName] = useState("");
@@ -19,17 +18,12 @@ const AddCalendarModal = ({ navigation, route }) => {
   const start = date + " " + timeStart;
   const end = date + " " + timeEnd;
 
-  console.log("Start: " + start);
-  console.log("End: " + end);
   const saveContent = () => {
     createAppointment({
       entryStartDateAndTime: start,
       entryFinishDateAndTime: end,
       name: name,
       description: info,
-    }).then((res) => {
-      console.log(res);
-      console.log("speichern war erfolgreich");
     });
   };
 
@@ -45,7 +39,6 @@ const AddCalendarModal = ({ navigation, route }) => {
           confirmBtnText="OK"
           cancelBtnText="Abbrechen"
           onDateChange={(date) => {
-            console.log("date: " + date);
             setDate(date);
           }}
         />
@@ -60,7 +53,6 @@ const AddCalendarModal = ({ navigation, route }) => {
           cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
-            console.log("timeStart: " + time);
             setTimeStart(time);
           }}
         />
@@ -74,7 +66,6 @@ const AddCalendarModal = ({ navigation, route }) => {
           cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
-            console.log("timeEnd " + time);
             setTimeEnd(time);
           }}
         />
