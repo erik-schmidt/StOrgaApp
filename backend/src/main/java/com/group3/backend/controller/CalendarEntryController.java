@@ -78,7 +78,7 @@ public class CalendarEntryController {
         return calendarEntryService.getCalendarEntriesByStudent_Id(matrNr);
     }
 
-    @GetMapping("/{matrNr}/getWeek")
+    @PostMapping("/{matrNr}/getWeek")
     public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(
             @PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntryDateRequest calendarEntryDateRequest,
             @RequestHeader(name = "Authorization") String token) {

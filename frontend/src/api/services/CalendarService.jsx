@@ -11,7 +11,7 @@ export const createAppointment = async (appointment) => {
 };
 export const getWeeklyAppointments = async (date) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return fetch(`calendarEntry/${matrNr}/getWeek/`, date);
+  return post(`calendarEntry/${matrNr}/getWeek/`, date);
 };
 export const deleteCalendar = async (id) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
