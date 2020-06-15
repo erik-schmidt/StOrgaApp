@@ -55,6 +55,16 @@ public class CalendarEntryService extends CheckMatrNrClass {
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
+    /**
+     * Is used to get all {@link CalendarEntry} from a specific {@link Student}.
+     * Called by "/{matrNr}/get".
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link CalendarEntry} objects for.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          {@link CalendarEntry} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
     public ResponseEntity<?> getCalendarEntriesByStudent_Id(String matrNr) {
         try {
             checkStudentWithNumberIsSaved(matrNr);
@@ -99,33 +109,6 @@ public class CalendarEntryService extends CheckMatrNrClass {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
     }
-    /*
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
-        try {
-            checkStudentWithNumberIsSaved(matrNr);
-            checkCalendarObject(calendarEntry);
-            checkMatriculationNumber(matrNr);
-            Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-            Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
-            CalendarEntry calendarEntryDelete = null;
-            for (CalendarEntry calendarEntry1 : calendarEntries) {
-                if (calendarEntry.getDescription().equals(calendarEntry1.getDescription())
-                        && calendarEntry.getName().equals(calendarEntry1.getName())) {
-                    calendarEntryDelete = calendarEntry1;
-                    calendarEntries.remove(calendarEntry1);
-                    student.setCalendarEntries(calendarEntries);
-                }
-                // calendarEntryRepository.deleteById(calendarEntryDelete.getId());
-                calendarEntryRepository.delete(calendarEntryDelete);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
-    }
-
-     */
 
     public ResponseEntity<?> deleteCalendarEntryFromStudent(String matrNr, int id) {
         try{
@@ -199,6 +182,24 @@ public class CalendarEntryService extends CheckMatrNrClass {
         return false;
     }
 
+//    /**
+//     * Method to check if a matrNr is used by a saved {@link Student}.
+//     * @param matrNr
+//     *                  The matrNr which should be checked.
+//     * @return
+//     *          Returns true if the matrNr is used by a saved {@link Student}.
+//     * @throws Exception
+//     *                      Is thrown if no saved {@link Student} uses this matrNr.
+//     */
+//    private boolean checkStudentWithNumberIsSaved(String matrNr) throws Exception{
+//        Student st = studentRepository.findByMatrNr(matrNr);
+//        if(st == null){
+//            logger.error("No Student with the given matriculation number "+ matrNr + " found");
+//            throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
+//        }
+//        return true;
+//    }
+
     /**
      * checks if a given Matriculation number is used by a saved student
      *
@@ -216,28 +217,30 @@ public class CalendarEntryService extends CheckMatrNrClass {
     }
 
     /*
-     * public CalendarEntry getCalendarEntryByDescription(String matrNr, String
-     * description){ CalendarEntry calendarEntry =
-     * calendarEntryRepository.findByDescription(matrNr, description); return
-     * calendarEntry; }
-     * 
-     * public List<CalendarEntry> getCalendarEntryByDate(String matrNr, Date
-     * entryDate){ List<CalendarEntry> calendarEntriesByDate =
-     * calendarEntryRepository.findByDate(matrNr, entryDate); return
-     * calendarEntriesByDate; }
-     * 
-     * // TODO: 24.04.2020 Monthly CalendarEntries.txt public List<CalendarEntry>
-     * getCalendarEntryByMonth(String matrNr, Date entryDate){ return null; }
-     * 
-     * public ResponseEntity<CalendarEntry> addCalendarEntryToStudent(String matrNr,
-     * CalendarEntry calendarEntry){ try { Student student =
-     * studentRepository.findByMatrNr(matrNr); CalendarEntry calendarEntry1 =
-     * calendarEntryRepository.findByDescription(matrNr,
-     * calendarEntry.getDescription()); calendarEntry1.setStudent(student);
-     * calendarEntryRepository.save(calendarEntry1);
-     * calendarEntryRepository.saveAndFlush(calendarEntry1); } catch (Exception e) {
-     * logger.error(e.getClass() + " " + e.getMessage()); } return new
-     * ResponseEntity<>(HttpStatus.OK); }
-     */
+    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
+        try {
+            checkStudentWithNumberIsSaved(matrNr);
+            checkCalendarObject(calendarEntry);
+            checkMatriculationNumber(matrNr);
+            Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+            Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
+            CalendarEntry calendarEntryDelete = null;
+            for (CalendarEntry calendarEntry1 : calendarEntries) {
+                if (calendarEntry.getDescription().equals(calendarEntry1.getDescription())
+                        && calendarEntry.getName().equals(calendarEntry1.getName())) {
+                    calendarEntryDelete = calendarEntry1;
+                    calendarEntries.remove(calendarEntry1);
+                    student.setCalendarEntries(calendarEntries);
+                }
+                // calendarEntryRepository.deleteById(calendarEntryDelete.getId());
+                calendarEntryRepository.delete(calendarEntryDelete);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+    }
 
+     */
 }

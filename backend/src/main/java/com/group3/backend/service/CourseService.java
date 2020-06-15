@@ -6,6 +6,7 @@ import com.group3.backend.exceptions.MatrNrWrongLengthException;
 import com.group3.backend.exceptions.NoDescriptionException;
 import com.group3.backend.exceptions.MatrNrException;
 import com.group3.backend.model.Course;
+import com.group3.backend.model.CourseList;
 import com.group3.backend.model.GradeCourseMapping;
 import com.group3.backend.model.Student;
 import com.group3.backend.repository.CourseRepository;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -70,7 +72,7 @@ public class CourseService extends CheckMatrNrClass {
             List<Course> courseList = courseRepository.findAll();
             if(courseList.isEmpty()){
                 logger.error("Error while reading all courses: There are no courses saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are not courses saved");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(courseList);
         }catch (Exception e){
@@ -125,7 +127,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             Course cs = courseRepository.findByNumber(number);
             if(cs == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no course with this numbe r" +number+" in the system");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(cs);
         }catch (Exception e){
@@ -216,7 +218,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             List<Course> courses = courseRepository.findAllByKindOfSubject(kindOfSubject);
             if (courses.isEmpty()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this kind of subject in the system.");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             else {
                 return ResponseEntity.status(HttpStatus.OK).body(courses);
@@ -244,7 +246,7 @@ public class CourseService extends CheckMatrNrClass {
             }
             List<Course> courses = courseRepository.findAllByKindOfSubject(studyFocus);
             if (courses.isEmpty()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no courses with this study focus in the system.");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Course"));
             }
             else {
                 return ResponseEntity.status(HttpStatus.OK).body(courses);
@@ -312,6 +314,82 @@ public class CourseService extends CheckMatrNrClass {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
                 }
             }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+    }
+
+    /**
+     * Is used to get the {@link CourseList} objects of a specific {@link Student} sorted by the kindOfSubject.
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link CourseList} objects for.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          list with the {@link CourseList} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
+    public ResponseEntity<?> getCourseListOfStudentByKindOfSubject(String matrNr){
+        try{
+            if (matrNr.trim().isEmpty()){
+                throw new MatrNrException("Error: No MatrNr is given!");
+            }
+            if (!checkMatriculationNumber(matrNr)){
+                throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
+            }
+            List<CourseList> courseListList = new LinkedList<>();
+            List<Course> studentCourseList = (List<Course>) getStudentsCourses(matrNr).getBody();
+            List<Course> pflichtList = new LinkedList<>();
+            List<Course> wahlList = new LinkedList<>();
+            for (Course c:studentCourseList){
+                if (c.getKindOfSubject().equals("Pflichtfach")){
+                    pflichtList.add(c);
+                }
+                else {
+                    wahlList.add(c);
+                }
+            }
+            courseListList.add(new CourseList("Pflichtfach", pflichtList));
+            courseListList.add(new CourseList("Wahlfach", wahlList));
+            return ResponseEntity.status(HttpStatus.OK).body(courseListList);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * Is used to get the {@link CourseList} objects of a specific {@link Student} sorted by the recommendetSemester.
+     * @param matrNr
+     *                  The matrNr of the {@link Student} you want the {@link CourseList} objects for.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          list with the {@link CourseList} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     */
+    public ResponseEntity<?> getCourseListOfStudentByRecommendetSemester(String matrNr){
+        try {
+            if (matrNr.trim().isEmpty()) {
+                throw new MatrNrException("Error: No MatrNr is given!");
+            }
+            if (!checkMatriculationNumber(matrNr)) {
+                throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
+            }
+            List<CourseList> courseListList = new LinkedList<>();
+            List<Course> studentCourseList = (List<Course>) getStudentsCourses(matrNr).getBody();
+            List<Course> grundList = new LinkedList<>();
+            List<Course> hauptList = new LinkedList<>();
+            for (Course c : studentCourseList) {
+                if (c.getRecommendedSemester() < 4) {
+                    grundList.add(c);
+                } else {
+                    hauptList.add(c);
+                }
+            }
+            courseListList.add(new CourseList("Grundstudium", grundList));
+            courseListList.add(new CourseList("Hauptstudium", hauptList));
+            return ResponseEntity.status(HttpStatus.OK).body(courseListList);
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
