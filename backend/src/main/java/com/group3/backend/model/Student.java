@@ -47,7 +47,7 @@ public class Student implements Serializable {
     private String username;
     private String password;
     @JsonIgnore
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -58,7 +58,7 @@ public class Student implements Serializable {
     private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<Link> links = new HashSet<>();
 
     public Student(String matrNr, String studentPrename, String studentFamilyname, String fieldOfStudy,

@@ -122,21 +122,25 @@ public class CalendarEntryService extends CheckMatrNrClass {
                 return studentService.getStudentByNumber(matrNr);
             } else {
                 try {
-                    Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+                    //Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
                     CalendarEntry calendarEntry = calendarEntryRepository.findById(id);
 
-                    Set<CalendarEntry> studentCalendarEntries = student.getCalendarEntries();
-                    if(studentCalendarEntries == null || studentCalendarEntries.isEmpty()){
+                    //Set<CalendarEntry> studentCalendarEntries = student.getCalendarEntries();
+                    /*if(studentCalendarEntries == null || studentCalendarEntries.isEmpty()){
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kalender Eintrag mit ID"+ id + "ist nicht im student "+ matrNr + "gespeichert");
                     }
                     for (CalendarEntry c : studentCalendarEntries) {
                         if (c.getId().equals(id)) {
                             studentCalendarEntries.remove(c);
                         }
+                    }*/
+                    //student.setCalendarEntries(studentCalendarEntries);
+                    //studentService.updateStudent(student);
+                    if(calendarEntry==null){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kalender Eintrag mit ID"+ id + "ist nicht im student "+ matrNr + "gespeichert");
                     }
-                    student.setCalendarEntries(studentCalendarEntries);
-                    studentService.updateStudent(student);
-                    return ResponseEntity.status(HttpStatus.OK).body(studentCalendarEntries);
+                    calendarEntryRepository.delete(calendarEntry);
+                    return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
                 }catch (Exception e){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
                 }
