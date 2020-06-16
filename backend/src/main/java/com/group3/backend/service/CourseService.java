@@ -338,7 +338,7 @@ public class CourseService extends CheckMatrNrClass {
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
             }
             List<CourseList> courseListList = new LinkedList<>();
-            List<Course> studentCourseList = (List<Course>) getStudentsCourses(matrNr).getBody();
+            List<Course> studentCourseList = changeSetToList((Set<Course>) getStudentsCourses(matrNr).getBody());
             List<Course> pflichtList = new LinkedList<>();
             List<Course> wahlList = new LinkedList<>();
             for (Course c:studentCourseList){
@@ -377,7 +377,7 @@ public class CourseService extends CheckMatrNrClass {
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
             }
             List<CourseList> courseListList = new LinkedList<>();
-            List<Course> studentCourseList = (List<Course>) getStudentsCourses(matrNr).getBody();
+            List<Course> studentCourseList = changeSetToList((Set<Course>) getStudentsCourses(matrNr).getBody());
             List<Course> grundList = new LinkedList<>();
             List<Course> hauptList = new LinkedList<>();
             for (Course c : studentCourseList) {
@@ -438,5 +438,20 @@ public class CourseService extends CheckMatrNrClass {
             logger.error(e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Method to convert a set of {@link Course} objects to a list.
+     * @param courseSet
+     *                  The set you want to convert.
+     * @return
+     *                  The list with the entrys of the set.
+     */
+    public List<Course> changeSetToList(Set<Course> courseSet){
+        List<Course> courseList = new LinkedList<>();
+        for(Course c: courseSet){
+            courseList.add(c);
+        }
+        return courseList;
     }
 }
