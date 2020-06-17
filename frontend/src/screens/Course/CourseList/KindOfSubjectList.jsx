@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, RefreshControl, Alert } from "react-native";
+import { Text, View, RefreshControl, Alert, SectionList } from "react-native";
 import { getCoursesByKindOfSubject } from "../../../api/services/CourseService";
 import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
@@ -67,36 +67,47 @@ const KindOfSubjectList = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={courses}
+      <SectionList
+        sections={[{ title: "", data: courses }]}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         renderItem={({ item }) => (
-          <Card
-            key={courses.length}
-            onLongPress={() =>
-              navigation.navigate("CourseMenu", { course: item })
-            }
-            onPress={() =>
-              navigation.navigate("CourseInformationModal", { course: item })
-            }
-          >
-            <View>
-              <Text style={styles.courseHeader}>Veranstaltung: </Text>
-              <Text style={styles.courseDescription}>{item.description}</Text>
-            </View>
-            <View style={styles.cardText}>
-              <Text style={styles.boldText}>ECTS: </Text>
-              <Text>{item.ects}</Text>
-            </View>
-            <View style={styles.cardText}>
-              <Text style={styles.boldText}>Empfohlenes Semester: </Text>
-              <Text>{item.recommendedSemester}</Text>
-            </View>
-          </Card>
+          <View>
+            <Text style={styles.sectionHeader}>{item.name}</Text>
+            {item.courseList.map((course) => {
+              return (
+                <Card
+                  key={courses.number}
+                  onLongPress={() =>
+                    navigation.navigate("CourseMenu", { course: course })
+                  }
+                  onPress={() =>
+                    navigation.navigate("CourseInformationModal", {
+                      course: course,
+                    })
+                  }
+                >
+                  <View>
+                    <Text style={styles.courseHeader}>Veranstaltung: </Text>
+                    <Text style={styles.courseDescription}>
+                      {course.description}
+                    </Text>
+                  </View>
+                  <View style={styles.cardText}>
+                    <Text style={styles.boldText}>ECTS: </Text>
+                    <Text>{course.ects}</Text>
+                  </View>
+                  <View style={styles.cardText}>
+                    <Text style={styles.boldText}>Empfohlenes Semester: </Text>
+                    <Text>{course.recommendedSemester}</Text>
+                  </View>
+                </Card>
+              );
+            })}
+          </View>
         )}
-        keyExtractor={(item) => item.description}
+        keyExtractor={(item, index) => item + index}
       />
     </View>
   );

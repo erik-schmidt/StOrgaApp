@@ -2,12 +2,18 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "white",
     width: "100%",
     height: "100%",
   },
   cardText: {
     flexDirection: "row",
     flex: 1,
+  },
+  sectionHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    margin: 10,
   },
   courseHeader: {
     fontWeight: "bold",
