@@ -66,7 +66,7 @@ const GradeList = () => {
   useEffect(() => {
     getGrades()
       .then((res) => {
-        if (res.status === HttpStatus.Ok) {
+        if (res.status === HttpStatus.OK) {
           setGrades(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
@@ -115,11 +115,7 @@ const GradeList = () => {
           );
         }}
         renderItem={({ item }) => (
-          <Card
-            onLongPress={() =>
-              navigation.navigate("CourseMenu", { grade: item })
-            }
-          >
+          <Card>
             <View>
               <Text style={styles.gradeHeader}>Kursnummer: </Text>
               <Text style={styles.gradeDescription}>{item.courseNumber}</Text>
