@@ -35,6 +35,11 @@ const CourseInformationModal = ({ navigation, route }) => {
       <Text style={styles.text}>
         Empfohlenes Semester: {course.recommendedSemester}
       </Text>
+      <Text style={styles.text}>
+        Kontaktstunden: {course.workingHoursInClass}
+      </Text>
+      <Text style={styles.text}>Selbststudium: {course.workingHoursSelf}</Text>
+      <Text style={styles.text}>Prüfungsart: {course.kindOfExam}</Text>
     </View>
   );
 };

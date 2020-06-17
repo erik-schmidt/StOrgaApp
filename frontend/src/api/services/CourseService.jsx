@@ -19,3 +19,13 @@ export const deleteCourse = async (courseNumber) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return del(`course/${matrNr}/delete/${courseNumber}`);
 };
+
+export const getCoursesByKindOfSubject = async () => {
+  const matrNr = await AsyncStorage.getItem("matrNr");
+  return fetch(`course/${matrNr}/get/kindOfSubject`);
+};
+
+export const getCoursesByRecommendedSemester = async () => {
+  const matrNr = await AsyncStorage.getItem("matrNr");
+  return fetch(`course/${matrNr}/get/recommendetSemester`);
+};

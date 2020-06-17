@@ -43,7 +43,7 @@ public class CalendarEntry implements Serializable {
     private String description;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student")
     private Student student = new Student();
 
