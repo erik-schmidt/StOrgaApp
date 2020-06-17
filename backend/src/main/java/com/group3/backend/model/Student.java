@@ -11,6 +11,18 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Model to represent the student the user uses to login.
+ *
+ * The matrNr is used to identify the {@link Student}.
+ * The studentPrename is the pre name of the {@link Student}.
+ * The studentFamilyname is the family name of the {@link Student}.
+ * The fieldOfStudy is the subject of the study of the {@link Student}.
+ * The currentSemester is the semester the {@link Student} is actual in.
+ * The username is the nickname of the {@link Student}.
+ * The password is used to login the {@link Student}.
+ */
+
 @Entity
 @Table(name = "student")
 public class Student implements Serializable {
@@ -28,28 +40,25 @@ public class Student implements Serializable {
     private String studentFamilyname;
     private String fieldOfStudy;
     @Min(1)
+
     @Max(15)
-    private int currentSemester;
+    // TODO: 01.06.2020 Was wenn man im Semester 0 ist weil man noch nicht eingeschrieben ist? @Chris
+    private int currentSemester = 1;
     private String username;
     private String password;
     @JsonIgnore
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
-    /*
-     * @JsonIgnore
-     * 
-     * @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
-     */
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<GradeCourseMapping> gradeCourseMappings = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<CalendarEntry> calendarEntries = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<Link> links = new HashSet<>();
 
     public Student(String matrNr, String studentPrename, String studentFamilyname, String fieldOfStudy,
@@ -62,6 +71,7 @@ public class Student implements Serializable {
     }
 
     public Student() {
+
     }
 
     public String getMatrNr() {

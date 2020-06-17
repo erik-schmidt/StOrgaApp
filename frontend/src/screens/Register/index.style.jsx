@@ -1,14 +1,12 @@
 import { StyleSheet } from "react-native";
-import styles from "../Login/index.style";
 
-const style = StyleSheet.create({
-  container: {
+const styles = StyleSheet.create({
+  viewContainer: {
+    justifyContent: "center",
     flex: 1,
-    marginTop: 100,
+    margin: 10,
   },
   button: {
-    position: "absolute",
-    bottom: 0,
     backgroundColor: "#2196F3",
     borderRadius: 20,
     padding: 10,

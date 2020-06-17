@@ -8,7 +8,7 @@ const HomeScreenNavigator = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen
-        name="Home"
+        name="Schreibtisch"
         component={HomeScreen}
         options={{
           headerLeft: () => <DrawerButton />,

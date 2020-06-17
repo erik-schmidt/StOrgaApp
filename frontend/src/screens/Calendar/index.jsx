@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import CalendarAgenda from "./CalendarAgenda/CalendarAgenda";
+import React from "react";
+import CalStrip from "./CalendarStrip/CalendarStrip";
+import styles from "./index.style";
 
 const CalendarScreen = () => {
-  return <CalendarAgenda />;
+  return <CalStrip />;
 };
 
 export default CalendarScreen;

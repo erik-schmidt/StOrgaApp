@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./index.style";
 import { View } from "react-native";
 import CourseList from "./CourseList/CourseList";

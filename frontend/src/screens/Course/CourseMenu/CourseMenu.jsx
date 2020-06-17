@@ -48,7 +48,12 @@ const CourseMenu = ({ navigation, route }) => {
     <View style={styles.container}>
       {editMode ? (
         <View>
-          <AppModal header="Note eintragen" description={course.description}>
+          <AppModal
+            header="Note eintragen"
+            description={course.description}
+            width={250}
+            height={300}
+          >
             <TextInput
               style={styles.textInput}
               keyboardType="number-pad"
@@ -56,16 +61,18 @@ const CourseMenu = ({ navigation, route }) => {
               onChangeText={(text) => setSelectedGrade(text)}
               value={selectedGrade}
             />
-            <AppButton
-              onPress={() => onChangeGrade()}
-              text="Speichern"
-            />
+            <AppButton onPress={() => onChangeGrade()} text="Speichern" />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
           </AppModal>
         </View>
       ) : (
         <View>
-          <AppModal header="Veranstaltung:" description={course.description}>
+          <AppModal
+            header="Veranstaltung:"
+            description={course.description}
+            width={250}
+            height={300}
+          >
             <AppButton onPress={() => setEditMode(true)} text="Note ändern" />
             <AppButton
               color="red"

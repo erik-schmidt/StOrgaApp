@@ -1,48 +1,30 @@
 package com.group3.backend.controller;
 
 import com.group3.backend.model.Student;
-import com.group3.backend.repository.StudentRepository;
-import com.group3.backend.security.JwtAuthenticatedProfile;
-import com.group3.backend.security.JwtTokenService;
 import com.group3.backend.service.StudentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * StudentController
- * implemetns the Rest Api
- * //assert != null
- * // Get => Daten holen
- * // POST => Daten erstellen/Eintragen
- * // PUT => Hinzufügen von relations
- * // PATCH => Updaten von einzelnen feldern
- */
 @RestController
 @RequestMapping("/student")
 @CrossOrigin()
 public class StudentController {
 
     private StudentService studentService;
-    private JwtTokenService jwtTokenService;
-    private StudentRepository studentRepository;
     private AccessChecker accessChecker;
 
     @Autowired
     public StudentController(StudentService studentService, AccessChecker accessChecker) {
-         this.studentService = studentService;
-         this.accessChecker = accessChecker;
+        this.studentService = studentService;
+        this.accessChecker = accessChecker;
     }
 
     /**
-     * ping()
-     * return a String with a successful message if backend reachable
-     * @return String "reachable"
+     * The ping-method of this controller. It is used to check if the frontend is able to access the methods of this
+     * controller.
+     * @return  Returns the String "reachable" if access to the methods is possible.
      */
     @GetMapping("/ping")
     public String ping(){
@@ -50,9 +32,13 @@ public class StudentController {
     }
 
     /**
-     * getAllStudnets
-     * return a List of all Students saved in the Database
-     * @return List<Student>
+     * The get-method to get all {@link Student} objects from the repository.
+     * @param token
+     *              The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          requested {@link Student} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @GetMapping("/get")
     public ResponseEntity<?> getAllStudents(@RequestHeader (name="Authorization") String token){
@@ -63,10 +49,15 @@ public class StudentController {
     }
 
     /**
-     * getStudentByNumber
-     * return a Student with the given number
+     * The get-method to get a specific {@link Student}.
      * @param matrNr
-     * @return Student
+     *                  The matrNr of the {@link Student} you want to get.
+     * @param token
+     *                  The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          requested {@link Student} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @GetMapping("/{matNr}/get")
     public ResponseEntity<?> getStudentByNumber(@PathVariable(value = "matNr") String matrNr, @RequestHeader (name="Authorization") String token){
@@ -88,10 +79,15 @@ public class StudentController {
     }*/
 
     /**
-     * deleteStudent
-     * delete a Student with the giben matriculation number out of the database
+     * The delete-method to delete a specific {@link Student}.
      * @param matrNr
-     * @return Student object
+     *                  The matrNr of the {@link Student} you want to delete.
+     * @param token
+     *                  The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          deleted {@link Student} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @DeleteMapping("/{matrNr}/delete")
     public ResponseEntity<?> deleteStudent(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token){
@@ -102,12 +98,15 @@ public class StudentController {
     }
 
     /**
-     * updateStudent
-     * update a student which is already saved in the database
-     * all attributes can be changed
-     * REturn a response entity at success of fault
-     * @param student object with the parameters for update
-     * @return ResoponesEntity return String if fault, return sutdent object if successfull
+     * The update-method to update a existing {@link Student}.
+     * @param student
+     *                  The {@link Student} you want the actual one to be replaced with.
+     * @param token
+     *                  The token to authorize your request.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          new {@link Student} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     @PutMapping("/update")
     public ResponseEntity<?> updateStudent(@RequestBody Student student, @RequestHeader (name="Authorization") String token){

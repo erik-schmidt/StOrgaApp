@@ -42,25 +42,29 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * reachabilityTest()
-     * return a String with a successful message if backend reachable
-     * @return String "reachable"
+     * Is used to test the reachability of the service.
+     * Called by "/ping".
+     * @return
+     *          "reachable" to represent that the service can be reached.
      */
     public String ping(){
         return "reachable";
     }
 
     /**
-     * getAllStudnets
-     * return a List of all Students saved in the Database
-     * @return List<Student>
+     * Is used to get all {@link Student} objects from the repository.
+     * Is called by "/get".
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
+     *          the {@link Student} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getAllStudents(){
         try{
             List<Student> studentList = studentRepository.findAll();
             if(studentList.isEmpty()){
                 logger.error("Error while reading all Students: There are no students saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There are no students saved");
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Student"));
             }
             logger.info("Students successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(studentList);
@@ -71,10 +75,14 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * getStudentByNumber
-     * return a Student with the given number
+     * Is used to get a specific {@link Student} from the repository.
+     * Is called by "/{matNr}/get".
      * @param matNr
-     * @return Student
+     *              The matrNr of the {@link Student} you want to get.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link Student} objects in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> getStudentByNumber(String matNr){
         try{
@@ -92,10 +100,14 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * createStudent
-     * create a student in the Database if it not exists already
+     * Is used to create a new {@link Student} and safe him in the repository.
+     * Is called by "/create".
      * @param student
-     * @return ResponseEntity<String> if successfully return id of student
+     *                  The {@link Student} you want to safe.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the
+     *          {@link Student} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> createStudent(Student student){
         Student st = new Student();
@@ -105,10 +117,16 @@ public class StudentService extends CheckMatrNrClass {
             }
             checkMatricularNumberIsFree(student.getMatrNr());
             st.setMatrNr(student.getMatrNr());
-            st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
-            st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
+            if (checkName(student.getStudentPrename(), "Prename")){
+                st.setStudentPrename(student.getStudentPrename());
+            }
+            if (checkName(student.getStudentFamilyname(), "Familyname")){
+                st.setStudentFamilyname(student.getStudentFamilyname());
+            }
+            if (checkCurrentSemester(student.getCurrentSemester())){
+                st.setCurrentSemester(student.getCurrentSemester());
+            }
             st.setFieldOfStudy(student.getFieldOfStudy());
-            st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             st.setUsername(student.getUsername());
             st.setPassword(passwordEncoder.encode(student.getPassword()));
             studentRepository.saveAndFlush(st);
@@ -121,10 +139,14 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * deleteStudent
-     * delete a Student with the giben matriculation number out of the database
+     * Is used to delete a {@link Student} from the repository.
+     * Is called by "/{matrNr}/delete".
      * @param matNr
-     * @return Student object
+     *              The matrNr of the {@link Student} you want to delete.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the deleted
+     *          {@link Student} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> deleteStudent(String matNr){
         try{
@@ -143,10 +165,14 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * updateStudent
-     * update the students attributes
-     * @param student Student
-     * @return ResponseEntity<?>
+     * Is used to update a safed {@link Student}.
+     * Is called by "/update".
+     * @param student
+     *                  The {@link Student} who should replace the old version.
+     * @return
+     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get the updated
+     *          {@link Student} in its body.
+     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
      */
     public ResponseEntity<?> updateStudent(Student student) {
         try {
@@ -154,12 +180,16 @@ public class StudentService extends CheckMatrNrClass {
                 throw new StudentDoesntMatchToMatrNrException("There is no student with matriculation number: " + student.getMatrNr());
             }
             Student st = studentRepository.findByMatrNr(student.getMatrNr());
-            //Matriculation number should not be changed form student -> only set
-            //st.setMatrNr(student.getMatrNr());
-            st.setStudentPrename(checkName(student.getStudentPrename(), "Prename"));
-            st.setStudentFamilyname(checkName(student.getStudentFamilyname(), "Familyname"));
+            if (checkName(student.getStudentPrename(), "Prename")){
+                st.setStudentPrename(student.getStudentPrename());
+            }
+            if (checkName(student.getStudentFamilyname(), "Familyname")){
+                st.setStudentFamilyname(student.getStudentFamilyname());
+            }
+            if (checkCurrentSemester(student.getCurrentSemester())){
+                st.setCurrentSemester(student.getCurrentSemester());
+            }
             st.setFieldOfStudy(student.getFieldOfStudy());
-            st.setCurrentSemester(checkCurrentSemester(student.getCurrentSemester()));
             studentRepository.save(st);
             logger.info("Student: " + student.getMatrNr() +" " + student.getStudentPrename() +" "+ student.getStudentFamilyname() + " successfully updated");
             return ResponseEntity.status(HttpStatus.OK).body(st);
@@ -170,11 +200,14 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * checkMatricularNumberIsFree
-     * checks if a given Matriculation number is free or already used by another student
-     * @param matrNr number to check
-     * @return String available matriculation number
-     * @throws Exception matriculation number Exception
+     * Is used to check if a matrNr is already used by a safed {@link Student}.
+     * @param matrNr
+     *                  The matrNr you want to check.
+     * @return
+     *          Returns true if the matrNr is not used by a saved {@link Student} yet.
+     *          Returns false if not.
+     * @throws Exception
+     *                      Is thrown if there are any problems with the matrNr.
      */
     private boolean checkMatricularNumberIsFree(String matrNr){
         try {
@@ -193,14 +226,19 @@ public class StudentService extends CheckMatrNrClass {
     }
 
     /**
-     * checkName
-     * checks if the name have the right size (2 to 50 letters) and has no numeric values inside
-     * @param name String
-     * @param kindOfname String
-     * @return string name
+     * Is used to check the syntax of a name.
+     * @param name
+     *              The name you want to check.
+     * @param kindOfname
+     *                      The type of name (Used for more detailed exceptions).
+     * @return
+     *          Returns true if the syntax of the name is valid.
      * @throws MatrNrWrongLengthException
+     *                                      Is thrown if the syntax of the name is not valid.
+     *                                      Happens if either the name is not between 2-50 letters and/or
+     *                                      the name contains a numeric.
      */
-    private String checkName(String name, String kindOfname) throws Exception {
+    private boolean checkName(String name, String kindOfname) throws Exception {
         if(name.length()<2||name.length()>50){
             throw new MatrNrWrongLengthException(kindOfname + " must be between 2 an 50 letters");
         }
@@ -213,29 +251,23 @@ public class StudentService extends CheckMatrNrClass {
                 throw new MatrNrWrongSyntaxException("Numbers are not allowed in " + kindOfname );
             }
         }
-        return name;
+        return true;
     }
 
     /**
-     * checkCurrentSemester
-     * checks if the semester value is between 1 and 15
+     * Is used to check the value of a currentSemester.
      * @param currentSemester
-     * @return int currentSemester value
+     *                          The value you want to check.
+     * @return
+     *          Returns true if the value is valid.
      * @throws CourseWithoutRecommendedSemesterException
+     *                                                      Is thrown if the value is not valid.
+     *                                                      Happens if the value isn't between 1-15.
      */
-    private int checkCurrentSemester(int currentSemester)throws Exception{
+    private boolean checkCurrentSemester(int currentSemester)throws Exception{
         if(currentSemester<1||currentSemester>15){
             throw new CourseWithoutRecommendedSemesterException("Semester can not be smaller then 1 and not be bigger than 15");
         }
-        return currentSemester;
+        return true;
     }
-
-
-    /*public ResponseEntity loginStudent(AuthenticationRequest authenticationRequest){
-        JwtResponse response = studentRepository.findOneByUsername(authenticationRequest.getUsername())
-                .filter(account ->  passwordEncoder.matches(authenticationRequest.getPassword(), account.getPassword()))
-                .map(account -> new JwtResponse(jwtService.generateJwt(authenticationRequest.getUsername())))
-                .orElseThrow(() ->  new EntityNotFoundException("Account not found"));
-        return new ResponseEntity(response, HttpStatus.OK);
-    }*/
 }
