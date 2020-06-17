@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
-import { Text, View, FlatList, Dimensions } from "react-native";
+import { Text, View, FlatList, Dimensions, RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { getWeeklyAppointments } from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
@@ -12,14 +12,35 @@ import "moment/locale/de";
 const CalStrip = () => {
   const navigation = useNavigation();
   const [weeklyAppointments, setWeeklyAppointments] = useState([]);
-
+  const [date, setDate] = useState(new Date());
+  const [refreshing, setRefreshing] = useState(false);
+  const startDate = moment(date).format("YYYY-MM-DD");
+  const endDate = moment(date).add(6, "days").format("YYYY-MM-DD");
   moment.locale("de");
 
-  const getWeekApps = (start) => {
-    const startDate = moment(start).format("YYYY-MM-DD");
-    const endDate = moment(start).add(6, "days").format("YYYY-MM-DD");
-
+  const onRefresh = () => {
+    setRefreshing(true);
     getWeeklyAppointments({ startDate: startDate, endDate: endDate })
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setWeeklyAppointments(res.data);
+          setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
+  const getWeekApps = (start) => {
+    setDate(start);
+    const sDate = moment(start).format("YYYY-MM-DD");
+    const eDate = moment(start).add(6, "days").format("YYYY-MM-DD");
+    getWeeklyAppointments({ startDate: sDate, endDate: eDate })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setWeeklyAppointments(res.data);
@@ -53,6 +74,9 @@ const CalStrip = () => {
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
           data={weeklyAppointments}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListEmptyComponent={
             <Text style={styles.emptyList}>Keine Termine in dieser Woche</Text>
           }
