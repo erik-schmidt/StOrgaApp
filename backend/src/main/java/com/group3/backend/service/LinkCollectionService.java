@@ -209,9 +209,11 @@ public class LinkCollectionService extends CheckMatrNrClass {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
         }
         try{
-            newLink.setId(link.getId());
-            linkRepository.delete(link);
-            linkRepository.save(newLink);
+            //newLink.setId(link.getId());
+            //linkRepository.delete(link);
+            link.setLink(newLink.getLink());
+            link.setLinkDescription(newLink.getLinkDescription());
+            linkRepository.save(link);
             return ResponseEntity.status(HttpStatus.OK).body(newLink);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());

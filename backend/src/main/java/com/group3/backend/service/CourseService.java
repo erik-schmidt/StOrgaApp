@@ -291,19 +291,31 @@ public class CourseService extends CheckMatrNrClass {
                     if(studentCourses == null || studentCourses.isEmpty()){
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
                     }
+                    Course courseToDelete = null;
                     for (Course c : studentCourses) {
                         if (c.getNumber().equals(number)) {
-                            studentCourses.remove(c);
+                            courseToDelete = c;
                         }
+                    }
+                    if(courseToDelete == null){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
+                    }else{
+                        studentCourses.remove(course);
                     }
                     Set<Student> courseStudents = course.getStudents();
                     if(courseStudents==null||courseStudents.isEmpty()){
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
                     }
+                    Student studentToDelete = null;
                     for (Student s : courseStudents) {
                         if (s.getMatrNr().equals(matrNr)) {
-                            courseStudents.remove(s);
+                            studentToDelete = s;
                         }
+                    }
+                    if(studentToDelete == null){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
+                    }else{
+                        courseStudents.remove(student);
                     }
                     student.setCourses(studentCourses);
                     course.setStudents(courseStudents);
