@@ -50,7 +50,7 @@ public class Course implements Serializable {
     private Double workingHoursSelf;
     private String kindOfExam;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "Courses_Students",
             joinColumns = {@JoinColumn(name = "course_id")},
