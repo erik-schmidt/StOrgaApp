@@ -1,4 +1,4 @@
-import { fetch, post } from "../apiService";
+import { fetch, post, del } from "../apiService";
 import { AsyncStorage } from "react-native";
 
 export const getAppointments = async () => {
@@ -15,7 +15,7 @@ export const getWeeklyAppointments = async (date) => {
 };
 export const deleteCalendar = async (id) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
-  return post(`calendarEntry/${matrNr}/delete/`, id);
+  return del(`calendarEntry/${matrNr}/delete/${id}/`);
 };
 export const getAllAppointments = () => {
   return fetch("calendarEntry/getAll");
