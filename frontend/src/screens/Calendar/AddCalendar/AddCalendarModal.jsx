@@ -23,6 +23,9 @@ const AddCalendarModal = ({ navigation, route }) => {
       entryFinishTime: timeEnd,
       entryDate: date,
       description: info,
+    }).then((res) => {
+      console.log(res);
+      console.log("speichern war erfolgreich");
     });
   };
 
@@ -38,6 +41,7 @@ const AddCalendarModal = ({ navigation, route }) => {
           confirmBtnText="OK"
           cancelBtnText="Abbrechen"
           onDateChange={(date) => {
+            console.log("date: " + date);
             setDate(date);
           }}
         />
@@ -52,6 +56,7 @@ const AddCalendarModal = ({ navigation, route }) => {
           cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
+            console.log("timeStart: " + time);
             setTimeStart(time);
           }}
         />
@@ -65,6 +70,7 @@ const AddCalendarModal = ({ navigation, route }) => {
           cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
+            console.log("timeEnd " + time);
             setTimeEnd(time);
           }}
         />
