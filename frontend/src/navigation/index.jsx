@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreenNavigator from "./HomeScreenNavigator";
 import CourseScreenNavigator from "./CourseScreenNavigator";
 import CalendarScreenNavigator from "./CalendarScreenNavigator";
+import LinkScreenNavigator from "./LinkScreenNavigator";
 import GradeScreenNavigator from "./GradeScreenNavigator";
 import NewsletterScreenNavigator from "./NewsletterScreenNavigator";
 import TimetableScreenNavigator from "./TimeTableScreenNavigator";
@@ -17,7 +18,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen name="Vorlesungen" component={CourseScreenNavigator} />
       <Drawer.Screen name="Noten" component={GradeScreenNavigator} />
       <Drawer.Screen name="Newsletter" component={NewsletterScreenNavigator} />
-      <Drawer.Screen name="Wichtige Links" component={HomeScreenNavigator} />
+      <Drawer.Screen name="Wichtige Links" component={LinkScreenNavigator} />
     </Drawer.Navigator>
   );
 };
