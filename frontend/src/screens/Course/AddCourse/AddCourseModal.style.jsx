@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: 200,
-    height: 100,
+    height: 200,
     alignSelf: "center",
     marginBottom: 25,
     justifyContent: "center",
