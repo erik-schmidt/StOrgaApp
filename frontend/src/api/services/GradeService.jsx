@@ -6,6 +6,11 @@ export const getGrades = async () => {
   return fetch(`grade/${matrNr}/get`);
 };
 
+export const getGradeOfCourse = async (number) => {
+  const matrNr = await AsyncStorage.getItem("matrNr");
+  return fetch(`grade/${matrNr}/${number}`);
+};
+
 export const addGrade = async (gradeCourse) => {
   const matrNr = await AsyncStorage.getItem("matrNr");
   return put(`grade/${matrNr}/add`, gradeCourse);

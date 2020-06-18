@@ -51,7 +51,7 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput
           placeholder="Studiengang"
           value={fieldOfStudy}
-          onChangeText={(text) => setFieldOfStudy(text)}
+          onChangeText={(text) => setFieldOfStudy(text.toUpperCase())}
           style={styles.textInput}
         />
         <TextInput

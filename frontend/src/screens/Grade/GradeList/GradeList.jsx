@@ -7,6 +7,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { View, Text, RefreshControl } from "react-native";
 import Card from "../../../components/Card/Card";
 import AuthContext from "../../../constants/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const GradeList = () => {
   const navigation = useNavigation();
@@ -16,6 +17,24 @@ const GradeList = () => {
   const [average, setAverage] = useState();
   const { signOut } = React.useContext(AuthContext);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      getGrades()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setGrades(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
+
   const onRefresh = () => {
     setRefreshing(false);
     getGrades()
@@ -23,6 +42,19 @@ const GradeList = () => {
         if (res.status === HttpStatus.OK) {
           setGrades(res.data);
           setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+    getAverage()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAverage(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -115,10 +147,18 @@ const GradeList = () => {
           );
         }}
         renderItem={({ item }) => (
-          <Card>
+          <Card
+            onLongPress={() =>
+              navigation.navigate("GradeMenu", { grade: item })
+            }
+          >
             <View>
-              <Text style={styles.gradeHeader}>Kursnummer: </Text>
-              <Text style={styles.gradeDescription}>{item.courseNumber}</Text>
+              <Text style={styles.gradeHeader}>
+                Kursname: {item.courseName}
+              </Text>
+              <Text style={styles.gradeHeader}>
+                Kursnummer: {item.courseNumber}
+              </Text>
             </View>
             <View style={styles.cardText}>
               <Text style={styles.boldText}>Note: </Text>
