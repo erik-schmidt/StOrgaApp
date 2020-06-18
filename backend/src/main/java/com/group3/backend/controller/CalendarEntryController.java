@@ -69,24 +69,25 @@ public class CalendarEntryController {
      *         HTTPStatus 'BAD-REQUEST'.
      */
     @GetMapping("/{matrNr}/get")
-    public ResponseEntity<?> getCalendarEntriesByStudent_Id(@PathVariable(value = "matrNr") String matrNr, @RequestHeader (name="Authorization") String token) {
-        if(accessChecker.checkAccess(matrNr, token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+    public ResponseEntity<?> getStudentCalendarEntries(@PathVariable(value = "matrNr") String matrNr,
+            @RequestHeader(name = "Authorization") String token) {
+        if (accessChecker.checkAccess(matrNr, token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
         return calendarEntryService.getCalendarEntriesByStudent_Id(matrNr);
     }
 
-    @GetMapping("/{matrNr}/getWeek")
+    @PostMapping("/{matrNr}/getWeek")
     public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(
-            @PathVariable(value = "matrNr") String matrNr,
-            @RequestBody LocalDate dateStart,
-            @RequestBody LocalDate dateEnd,
-            @RequestHeader (name="Authorization") String token){
-        if(accessChecker.checkAccess(matrNr, token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+            @PathVariable(value = "matrNr") String matrNr, @RequestBody CalendarEntryDateRequest calendarEntryDateRequest,
+            @RequestHeader(name = "Authorization") String token) {
+        if (accessChecker.checkAccess(matrNr, token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
         }
-        return calendarEntryService.getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(matrNr, dateStart, dateEnd);
-
+        return calendarEntryService.getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(matrNr,
+                calendarEntryDateRequest.getStartDate(), calendarEntryDateRequest.getEndDate());
     }
 
     /**
@@ -114,10 +115,27 @@ public class CalendarEntryController {
         return calendarEntryService.createCalendarEntry(matrNr, calendarEntry);
     }
 
+    /**
+     * The delete-method to delete a {@link CalendarEntry} from a specific
+     * {@link Student}.
+     *
+     * @param matrNr        The matrNr of the {@link Student} you want to delete the
+     *                      {@link CalendarEntry} of.
+     * @param id            The {@code CalendarEntry id} object you want to delete from
+     *                      the {@link Student}.
+     * @param token         The token to authorize your request for the specific
+     *                      {@link Student}.
+     * @return Returns a ResponseEntity. If the request was successful, the
+     *         HTTPStatus is 'OK'. If the request wasn't successful you get a
+     *         HTTPStatus 'BAD-REQUEST'.
+     */
     @DeleteMapping("/{matrNr}/delete/{id}")
-    public ResponseEntity<?> deleteCalendarEntryFromStudent(@PathVariable(value ="matrNr") String matrNr, @PathVariable(value = "id") int id, @RequestHeader (name="Authorization") String token){
-        if(accessChecker.checkAccess(matrNr, token)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+    public ResponseEntity<?> deleteCalendarEntryFromStudent(@PathVariable(value = "matrNr") String matrNr,
+            @PathVariable(value = "id") int id, @RequestHeader(name = "Authorization") String token) {
+        if (accessChecker.checkAccess(matrNr, token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Nicht authorisiert für diesen Zugriff. Bitte Einloggen. ");
+
         }
         return calendarEntryService.deleteCalendarEntryFromStudent(matrNr, id);
     }

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
-import { Text, RefreshControl, View, FlatList, Dimensions } from "react-native";
+import { Text, View, FlatList, Dimensions, RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  getAppointments,
-  getAllAppointments,
-} from "../../../api/services/CalendarService";
+import { getWeeklyAppointments } from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
@@ -14,15 +11,19 @@ import "moment/locale/de";
 
 const CalStrip = () => {
   const navigation = useNavigation();
-  const [appointments, setAppointments] = useState([]);
+  const [weeklyAppointments, setWeeklyAppointments] = useState([]);
+  const [date, setDate] = useState(new Date());
   const [refreshing, setRefreshing] = useState(false);
+  const startDate = moment(date).format("YYYY-MM-DD");
+  const endDate = moment(date).add(6, "days").format("YYYY-MM-DD");
+  moment.locale("de");
 
   const onRefresh = () => {
     setRefreshing(true);
-    getAppointments()
+    getWeeklyAppointments({ startDate: startDate, endDate: endDate })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          setAppointments(res.data);
+          setWeeklyAppointments(res.data);
           setRefreshing(false);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
@@ -34,13 +35,15 @@ const CalStrip = () => {
         alert(err);
       });
   };
-  useEffect(() => {
-    getAppointments()
+
+  const getWeekApps = (start) => {
+    setDate(start);
+    const sDate = moment(start).format("YYYY-MM-DD");
+    const eDate = moment(start).add(6, "days").format("YYYY-MM-DD");
+    getWeeklyAppointments({ startDate: sDate, endDate: eDate })
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
-          setAppointments(res.data);
-          console.log(res.data);
+          setWeeklyAppointments(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -50,10 +53,7 @@ const CalStrip = () => {
       .catch((err) => {
         alert(err);
       });
-  }, []);
-
-  useEffect(() => {}, [appointments]);
-  moment.locale("de");
+  };
 
   return (
     <View style={styles.container}>
@@ -68,17 +68,21 @@ const CalStrip = () => {
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
         highlightDateNumberStyle={{ color: "#66CDAA" }}
+        onWeekChanged={(start) => getWeekApps(start)}
       />
       <View style={styles.container}>
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
-          data={appointments}
+          data={weeklyAppointments}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          ListEmptyComponent={
+            <Text style={styles.emptyList}>Keine Termine in dieser Woche</Text>
+          }
           renderItem={({ item }) => (
             <Card
-              key={appointments.length}
+              key={weeklyAppointments.length}
               onPress={() =>
                 navigation.navigate("CalendarInformationModal", {
                   appointment: item,
@@ -92,7 +96,7 @@ const CalStrip = () => {
                 <View style={styles.eventDuration}>
                   <View style={styles.durationContainer}>
                     <Text style={styles.dateText}>
-                      {moment(item.entryStartDateAndTime).format("l")}
+                      {moment(item.entryDate).format("l")}
                     </Text>
                   </View>
                 </View>
@@ -100,14 +104,14 @@ const CalStrip = () => {
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {moment(item.entryStartDateAndTime).format("LT")}
+                      {item.entryStartTime}
                     </Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {moment(item.entryFinishDateAndTime).format("LT")}
+                      {item.entryFinishTime}
                     </Text>
                   </View>
                   <View style={styles.durationDotConnector} />

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./CalendarInformationModal.style";
 import { View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import moment from "moment";
+import "moment/locale/de";
 
 const CalendarInformationModal = ({ navigation, route }) => {
   navigation.setOptions({
@@ -21,16 +21,13 @@ const CalendarInformationModal = ({ navigation, route }) => {
     ),
   });
   const [appointment, setAppointments] = useState(route.params?.appointment);
-  const startTime = moment(appointment.entryStartDateAndTime).format("LT");
-  const endTime = moment(appointment.entryFinishDateAndTime).format("LT");
-  const date = moment(appointment.entryFinishDateAndTime).format("LL");
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Termin: {appointment.name}</Text>
-      <Text style={styles.text}>Datum : {date} </Text>
-      <Text style={styles.text}>Start : {startTime} Uhr</Text>
-      <Text style={styles.text}>Ende : {endTime} Uhr</Text>
+      <Text style={styles.text}>Datum : {appointment.entryDate} </Text>
+      <Text style={styles.text}>Start : {appointment.entryStartTime} Uhr</Text>
+      <Text style={styles.text}>Ende : {appointment.entryFinishTime} Uhr</Text>
       <Text style={styles.text}>Infos: {appointment.description}</Text>
     </View>
   );
