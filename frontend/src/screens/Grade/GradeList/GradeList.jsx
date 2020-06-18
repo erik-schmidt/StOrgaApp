@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { getCourseByNumber } from "../../../api/services/CourseService";
 import styles from "./GradeList.style";
 import { getGrades, getAverage } from "../../../api/services/GradeService";
 import * as HttpStatus from "http-status-codes";
@@ -16,7 +15,6 @@ const GradeList = () => {
   const [grades, setGrades] = useState([]);
   const [refreshing, setRefreshing] = useState();
   const [average, setAverage] = useState();
-  const [course, setCourse] = useState();
   const { signOut } = React.useContext(AuthContext);
 
   useFocusEffect(
@@ -155,8 +153,12 @@ const GradeList = () => {
             }
           >
             <View>
-              <Text style={styles.gradeHeader}>Kursnummer: </Text>
-              <Text style={styles.gradeDescription}>{item.courseNumber}</Text>
+              <Text style={styles.gradeHeader}>
+                Kursname: {item.courseName}
+              </Text>
+              <Text style={styles.gradeHeader}>
+                Kursnummer: {item.courseNumber}
+              </Text>
             </View>
             <View style={styles.cardText}>
               <Text style={styles.boldText}>Note: </Text>

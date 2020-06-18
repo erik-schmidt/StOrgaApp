@@ -35,7 +35,11 @@ const CourseMenu = ({ navigation, route }) => {
     if (selectedGrade.includes(",")) {
       changedGrade = selectedGrade.replace(",", ".");
     }
-    addGrade({ courseNumber: course.number, grade: changedGrade })
+    addGrade({
+      courseName: course.description,
+      courseNumber: course.number,
+      grade: changedGrade,
+    })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           navigation.navigate("Fächer", { courseEdit: true });
