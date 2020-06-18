@@ -6,6 +6,7 @@ import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -44,7 +45,7 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Kurs zur Liste hinzufügen" height={350} width={300}>
+      <AppModal header="Kurs beitreten" height={350} width={300}>
         <Picker
           selectedValue={selectedCourse}
           style={styles.picker}

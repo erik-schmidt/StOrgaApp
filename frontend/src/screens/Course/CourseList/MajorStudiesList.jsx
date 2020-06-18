@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, RefreshControl, SectionList } from "react-native";
-import { getCoursesByRecommendedSemester } from "../../../api/services/CourseService";
+import {
+  getCoursesByRecommendedSemester,
+  getAllCourses,
+} from "../../../api/services/CourseService";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
+import AppButton from "../../../components/AppButton/AppButton";
+import { useFocusEffect } from "@react-navigation/native";
 
 const MajorStudiesList = () => {
   const [courses, setCourses] = useState([]);
@@ -13,6 +18,24 @@ const MajorStudiesList = () => {
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
   const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getCoursesByRecommendedSemester()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setCourses(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -110,6 +133,10 @@ const MajorStudiesList = () => {
           </View>
         )}
         keyExtractor={(item) => item.description}
+      />
+      <AppButton
+        text="Kurs beitreten"
+        onPress={() => navigation.navigate("AddCourseModal")}
       />
     </View>
   );
