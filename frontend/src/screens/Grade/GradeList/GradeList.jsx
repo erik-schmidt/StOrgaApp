@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getCourseByNumber } from "../../../api/services/CourseService";
 import styles from "./GradeList.style";
 import { getGrades, getAverage } from "../../../api/services/GradeService";
 import * as HttpStatus from "http-status-codes";
@@ -15,6 +16,7 @@ const GradeList = () => {
   const [grades, setGrades] = useState([]);
   const [refreshing, setRefreshing] = useState();
   const [average, setAverage] = useState();
+  const [course, setCourse] = useState();
   const { signOut } = React.useContext(AuthContext);
 
   useFocusEffect(
@@ -42,6 +44,19 @@ const GradeList = () => {
         if (res.status === HttpStatus.OK) {
           setGrades(res.data);
           setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+    getAverage()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAverage(res.data);
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
