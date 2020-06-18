@@ -7,6 +7,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { View, Text, RefreshControl } from "react-native";
 import Card from "../../../components/Card/Card";
 import AuthContext from "../../../constants/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const GradeList = () => {
   const navigation = useNavigation();
@@ -15,6 +16,24 @@ const GradeList = () => {
   const [refreshing, setRefreshing] = useState();
   const [average, setAverage] = useState();
   const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getGrades()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setGrades(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   const onRefresh = () => {
     setRefreshing(false);
