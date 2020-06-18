@@ -25,6 +25,8 @@ public class GradeCourseMapping {
     @Min(0)
     @Max(6)
     private double grade;
+    @NotNull
+    private String courseName;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
@@ -32,9 +34,10 @@ public class GradeCourseMapping {
     public GradeCourseMapping() {
     }
 
-    public GradeCourseMapping(String courseNumber, double grade) {
+    public GradeCourseMapping(String courseNumber, double grade, String courseName) {
         this.courseNumber = courseNumber;
         this.grade = grade;
+        this.courseName = courseName;
     }
 
     public String getCourseNumber() {
@@ -61,10 +64,19 @@ public class GradeCourseMapping {
         this.student = student;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(courseNumber + " ");
-        sb.append(grade);
+        sb.append(grade + " ");
+        sb.append(courseName);
         return sb.toString();
     }
 }
