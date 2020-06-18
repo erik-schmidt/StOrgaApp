@@ -18,7 +18,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen name="Vorlesungen" component={CourseScreenNavigator} />
       <Drawer.Screen name="Noten" component={GradeScreenNavigator} />
       <Drawer.Screen name="Newsletter" component={NewsletterScreenNavigator} />
-      <Drawer.Screen name="Wichtige Links" component={HomeScreenNavigator} />
+      <Drawer.Screen name="Wichtige Links" component={LinkScreenNavigator} />
     </Drawer.Navigator>
   );
 };
