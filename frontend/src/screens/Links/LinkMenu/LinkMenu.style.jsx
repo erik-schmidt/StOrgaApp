@@ -4,12 +4,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    alignItems: "stretch",
     justifyContent: "center",
     alignSelf: "center",
   },
   modalView: {
     width: 300,
-    height: 250,
+    height: 300,
     backgroundColor: "white",
     justifyContent: "center",
     borderRadius: 20,
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    margin: 10,
+    margin: 5,
     width: 150,
     alignSelf: "center",
   },
@@ -28,18 +29,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  headerText: {
-    fontWeight: "bold",
-    alignSelf: "center",
-    fontSize: 18,
+  modalText: {
     marginBottom: 15,
+    textAlign: "center",
   },
-  picker: {
+  textInput: {
+    height: 40,
     width: 200,
-    height: 200,
+    marginBottom: 20,
     alignSelf: "center",
-    marginBottom: 25,
-    justifyContent: "center",
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
   },
 });
 

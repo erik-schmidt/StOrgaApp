@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
+    alignItems: "stretch",
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -34,12 +35,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15,
   },
-  picker: {
-    width: 200,
-    height: 200,
+  textInput: {
+    height: 40,
+    width: 220,
+    marginBottom: 20,
     alignSelf: "center",
-    marginBottom: 25,
-    justifyContent: "center",
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
   },
 });
 
