@@ -12,13 +12,12 @@ const DrawerNavigation = () => {
   return (
     <Drawer.Navigator initialRouteName="HomeViewScreen">
       <Drawer.Screen name="Schreibtisch" component={HomeScreenNavigator} />
-      <Drawer.Screen name="Kalender" component={CalendarScreenNavigator} />
       <Drawer.Screen name="Stundenplan" component={TimetableScreenNavigator} />
-      <Drawer.Screen name="Wichtige Links" component={HomeScreenNavigator} />
-      <Drawer.Screen name="Fächer" component={CourseScreenNavigator} />
+      <Drawer.Screen name="Kalender" component={CalendarScreenNavigator} />
+      <Drawer.Screen name="Vorlesungen" component={CourseScreenNavigator} />
       <Drawer.Screen name="Noten" component={GradeScreenNavigator} />
-      <Drawer.Screen name="Lernplan" component={HomeScreenNavigator} />
       <Drawer.Screen name="Newsletter" component={NewsletterScreenNavigator} />
+      <Drawer.Screen name="Wichtige Links" component={HomeScreenNavigator} />
     </Drawer.Navigator>
   );
 };
