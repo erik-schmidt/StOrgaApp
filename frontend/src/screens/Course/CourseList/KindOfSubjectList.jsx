@@ -7,6 +7,8 @@ import styles from "./CourseList.style";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
+import AppButton from "../../../components/AppButton/AppButton";
+import { useFocusEffect } from "@react-navigation/native";
 
 const KindOfSubjectList = () => {
   const [courses, setCourses] = useState([]);
@@ -14,6 +16,24 @@ const KindOfSubjectList = () => {
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
   const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getCoursesByKindOfSubject()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setCourses(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -108,6 +128,10 @@ const KindOfSubjectList = () => {
           </View>
         )}
         keyExtractor={(item, index) => item + index}
+      />
+      <AppButton
+        text="Kurs beitreten"
+        onPress={() => navigation.navigate("AddCourseModal")}
       />
     </View>
   );

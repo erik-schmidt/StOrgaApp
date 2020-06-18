@@ -22,13 +22,13 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   return (
-    <ScrollView>
-      <KeyboardAvoidingView
-        enabled={true}
-        behavior={Platform.OS === "ios" ? "height" : null}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-        style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-      >
+    <KeyboardAvoidingView
+      enabled={true}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+    >
+      <ScrollView>
         <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
         <TextInput
           placeholder="Matrikelnummer"
@@ -92,8 +92,8 @@ const RegisterScreen = ({ navigation }) => {
         >
           <Text style={styles.textStyle}>Registrieren</Text>
         </TouchableHighlight>
-      </KeyboardAvoidingView>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
