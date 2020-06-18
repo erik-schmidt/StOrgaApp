@@ -21,7 +21,6 @@ const CourseList = () => {
     React.useCallback(() => {
       getAllStudentCourses()
         .then((res) => {
-          console.log(res);
           if (res.status === HttpStatus.OK) {
             setCourses(res.data);
             setRefreshing(false);
