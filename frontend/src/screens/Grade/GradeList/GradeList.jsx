@@ -115,7 +115,11 @@ const GradeList = () => {
           );
         }}
         renderItem={({ item }) => (
-          <Card>
+          <Card
+            onLongPress={() =>
+              navigation.navigate("GradeMenu", { grade: item })
+            }
+          >
             <View>
               <Text style={styles.gradeHeader}>Kursnummer: </Text>
               <Text style={styles.gradeDescription}>{item.courseNumber}</Text>
