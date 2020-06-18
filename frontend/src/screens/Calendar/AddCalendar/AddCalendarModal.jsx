@@ -16,20 +16,13 @@ const AddCalendarModal = ({ navigation, route }) => {
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
 
-  const start = date + " " + timeStart;
-  const end = date + " " + timeEnd;
-
-  console.log("Start: " + start);
-  console.log("End: " + end);
   const saveContent = () => {
     createAppointment({
-      entryStartDateAndTime: start,
-      entryFinishDateAndTime: end,
       name: name,
+      entryStartTime: timeStart,
+      entryFinishTime: timeEnd,
+      entryDate: date,
       description: info,
-    }).then((res) => {
-      console.log(res);
-      console.log("speichern war erfolgreich");
     });
   };
 
@@ -45,7 +38,6 @@ const AddCalendarModal = ({ navigation, route }) => {
           confirmBtnText="OK"
           cancelBtnText="Abbrechen"
           onDateChange={(date) => {
-            console.log("date: " + date);
             setDate(date);
           }}
         />
@@ -60,7 +52,6 @@ const AddCalendarModal = ({ navigation, route }) => {
           cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
-            console.log("timeStart: " + time);
             setTimeStart(time);
           }}
         />
@@ -74,7 +65,6 @@ const AddCalendarModal = ({ navigation, route }) => {
           cancelBtnText="Abbrechen"
           minuteInterval={10}
           onDateChange={(time) => {
-            console.log("timeEnd " + time);
             setTimeEnd(time);
           }}
         />

@@ -9,7 +9,7 @@ import AuthContext from "../../../constants/AuthContext";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState();
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Kurs zur Liste hinzufügen" height={350} width={300}>
+      <AppModal header="Kurs beitreten" height={450} width={300}>
         <Picker
           selectedValue={selectedCourse}
           style={styles.picker}
