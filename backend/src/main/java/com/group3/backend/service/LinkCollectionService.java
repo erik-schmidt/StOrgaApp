@@ -98,7 +98,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
             if (link == null){
                 logger.error("There are no link for this student with that linkId");
-                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Link"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
             }
             return ResponseEntity.status(HttpStatus.OK).body(link);
         }catch (Exception e){
