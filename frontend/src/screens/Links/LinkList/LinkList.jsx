@@ -79,9 +79,10 @@ const LinkList = () => {
                   alignSelf: "center",
                   fontSize: 20,
                   fontWeight: "bold",
+                  color: "#66CDAA",
                 }}
               >
-                Keine Links bisher gespeichert.
+                Keine Links gespeichert.
               </Text>
             </View>
           );
