@@ -9,8 +9,8 @@ const NewsInformationModal = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>{news.title}</Text>
-      <Text style={styles.text}>Erschienen : {news.published} </Text>
-      <Text style={styles.text}>Author : {news.author}</Text>
+      <Text style={styles.text}>Erschienen: {news.published} </Text>
+      <Text style={styles.text}>Author: {news.author}</Text>
       <Text style={styles.text}>{news.message} </Text>
     </View>
   );
