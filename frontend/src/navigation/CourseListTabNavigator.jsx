@@ -10,7 +10,9 @@ const Tab = createMaterialTopTabNavigator();
 
 const CourseListTabNavigator = ({ navigation }) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{ indicatorStyle: { backgroundColor: "#66CDAA" } }}
+    >
       <Tab.Screen name="Alle" component={CourseScreen} />
       <Tab.Screen name="Grund-/Hauptstudium" component={MajorStudiesList} />
       <Tab.Screen name="Wahl-/Pflichtfächer" component={KindOfSubjectList} />

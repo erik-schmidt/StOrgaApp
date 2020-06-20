@@ -1,5 +1,5 @@
 import React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator, DrawerItem } from "@react-navigation/drawer";
 import HomeScreenNavigator from "./HomeScreenNavigator";
 import CourseScreenNavigator from "./CourseScreenNavigator";
 import CalendarScreenNavigator from "./CalendarScreenNavigator";
@@ -11,7 +11,10 @@ import TimetableScreenNavigator from "./TimeTableScreenNavigator";
 const DrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator initialRouteName="HomeViewScreen">
+    <Drawer.Navigator
+      initialRouteName="HomeViewScreen"
+      drawerContentOptions={{ activeTintColor: "#66CDAA" }}
+    >
       <Drawer.Screen name="Schreibtisch" component={HomeScreenNavigator} />
       <Drawer.Screen name="Stundenplan" component={TimetableScreenNavigator} />
       <Drawer.Screen name="Kalender" component={CalendarScreenNavigator} />
