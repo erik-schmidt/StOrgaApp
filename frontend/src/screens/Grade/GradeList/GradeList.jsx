@@ -139,6 +139,8 @@ const GradeList = () => {
                   fontSize: 20,
                   fontWeight: "bold",
                   textAlign: "center",
+                  marginTop: "80%",
+                  color: "#66CDAA",
                 }}
               >
                 Keine Noten gespeichert
@@ -156,7 +158,7 @@ const GradeList = () => {
               <Text style={styles.gradeHeader}>
                 Kursname: {item.courseName}
               </Text>
-              <Text style={styles.gradeHeader}>
+              <Text style={styles.cardText}>
                 Kursnummer: {item.courseNumber}
               </Text>
             </View>
@@ -168,7 +170,17 @@ const GradeList = () => {
         )}
         keyExtractor={(item) => item.courseNumber}
       />
-      <Text style={{ textAlign: "right" }}>Durchschnitt: {average}</Text>
+      <Text
+        style={{
+          textAlign: "right",
+          marginRight: 10,
+          marginBottom: 5,
+          fontSize: 18,
+          fontWeight: "bold",
+        }}
+      >
+        Durchschnitt: {average}
+      </Text>
     </View>
   );
 };

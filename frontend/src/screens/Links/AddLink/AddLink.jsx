@@ -14,7 +14,6 @@ const AddLink = ({ navigation }) => {
   const onSave = () => {
     addLink({ linkDescription, link })
       .then((res) => {
-        console.log(res);
         if (res.status === HttpStatus.OK) {
           navigation.navigate("LinkScreen", { linkAdded: true });
         } else {
@@ -28,7 +27,7 @@ const AddLink = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Link hinzufügen" height={320}>
+      <AppModal header="Link hinzufügen" height={380}>
         <TextInput
           style={styles.textInput}
           value={linkDescription}

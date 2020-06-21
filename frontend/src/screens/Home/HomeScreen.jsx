@@ -48,13 +48,13 @@ const HomeScreen = ({ navigation }) => {
 
   const screenNavigation = (title) => {
     if (title === "Beigetretene Kurse") {
-      navigation.navigate("Fächer");
+      navigation.navigate("Vorlesungen");
     } else if (title === "Kalendereintrag") {
       navigation.navigate("Kalender");
     } else if (title === "Noteneintrag") {
       navigation.navigate("Noten");
     } else if (title === "Links") {
-      navigation.navigate("");
+      navigation.navigate("Wichtige Links");
     } else if (title === "Nächste Unterrichtsstunde") {
       navigation.navigate("Stundenplan");
     }
@@ -70,18 +70,9 @@ const HomeScreen = ({ navigation }) => {
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => screenNavigation(item.title)}>
-            <View
-              style={{
-                borderTopWidth: 1,
-                borderTopColor: "lightgrey",
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "bold", margin: 10 }}>
-                {item.title}
-              </Text>
-              <Text style={{ textAlign: "center", margin: 15 }}>
-                {item.data}
-              </Text>
+            <View style={styles.areaContainer}>
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.data}>{item.data}</Text>
             </View>
           </TouchableOpacity>
         )}

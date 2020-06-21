@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
   },
   gradeHeader: {
     fontWeight: "bold",
+    color: "#66CDAA",
     fontSize: 20,
   },
   gradeDescription: {
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     elevation: 30,
   },
   modalButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#66CDAA",
     borderRadius: 20,
     padding: 10,
     elevation: 2,

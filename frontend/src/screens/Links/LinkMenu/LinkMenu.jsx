@@ -13,7 +13,6 @@ const LinkMenu = ({ navigation, route }) => {
   const [linkDescription, setLinkDescription] = useState("");
 
   const onChangeLink = () => {
-    console.log(linkObject.id);
     editLink(linkObject.id, {
       linkDescription,
       link,
@@ -31,7 +30,6 @@ const LinkMenu = ({ navigation, route }) => {
   };
 
   const onDeleteLink = () => {
-    console.log(linkObject.id);
     deleteLink(linkObject.id)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
