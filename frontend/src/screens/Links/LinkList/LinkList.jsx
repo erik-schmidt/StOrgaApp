@@ -39,15 +39,19 @@ const LinkList = () => {
   }, [route]);
 
   const OpenLinkCard = ({ id, link, linkDescription }) => {
+    let url = link;
     const handlePress = useCallback(async () => {
-      const supported = await Linking.canOpenURL(link);
+      if (!link.includes("http://") || !link.includes("https://")) {
+        url = "https://" + link;
+      }
+      const supported = await Linking.canOpenURL(url);
 
       if (supported) {
-        await Linking.openURL(link);
+        await Linking.openURL(url);
       } else {
-        alert(`Don't know how to open this URL: ${link}`);
+        alert(`Don't know how to open this URL: ${url}`);
       }
-    }, [link]);
+    }, [url]);
     return (
       <TouchableOpacity
         onPress={handlePress}
@@ -75,10 +79,10 @@ const LinkList = () => {
               <Text
                 style={{
                   textAlign: "center",
-                  justifyContent: "center",
-                  alignSelf: "center",
                   fontSize: 20,
                   fontWeight: "bold",
+                  marginTop: "80%",
+                  color: "#66CDAA",
                 }}
               >
                 Keine Links bisher gespeichert.

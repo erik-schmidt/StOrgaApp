@@ -134,10 +134,6 @@ const MajorStudiesList = () => {
         )}
         keyExtractor={(item) => item.description}
       />
-      <AppButton
-        text="Kurs beitreten"
-        onPress={() => navigation.navigate("AddCourseModal")}
-      />
     </View>
   );
 };

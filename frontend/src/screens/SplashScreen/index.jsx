@@ -12,7 +12,7 @@ const SplashScreen = () => {
           marginBottom: 10,
         }}
         size="large"
-        color="#2196F3"
+        color="#66CDAA"
       />
       <Text style={{ textAlign: "center", fontSize: 15 }}>Loading...</Text>
     </View>

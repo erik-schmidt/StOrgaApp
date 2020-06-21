@@ -1,17 +1,20 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import CourseScreen from "../screens/Course";
-import DrawerButton from "../components/DrawerButton/DrawerButton";
-import AddButton from "../components/AddButton/AddButton";
 import MajorStudiesList from "../screens/Course/CourseList/MajorStudiesList";
 import KindOfSubjectList from "../screens/Course/CourseList/KindOfSubjectList";
 
 const Tab = createMaterialTopTabNavigator();
 
-const CourseListTabNavigator = ({ navigation }) => {
+const CourseListTabNavigator = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{ indicatorStyle: { backgroundColor: "#66CDAA" } }}
+      tabBarOptions={{
+        indicatorStyle: { backgroundColor: "#66CDAA" },
+        pressColor: "#66CDAA",
+        labelStyle: { textAlign: "center" },
+      }}
+      tabBarPosition="bottom"
     >
       <Tab.Screen name="Alle" component={CourseScreen} />
       <Tab.Screen name="Grund-/Hauptstudium" component={MajorStudiesList} />

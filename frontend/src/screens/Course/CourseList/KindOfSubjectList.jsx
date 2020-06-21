@@ -129,10 +129,6 @@ const KindOfSubjectList = () => {
         )}
         keyExtractor={(item, index) => item + index}
       />
-      <AppButton
-        text="Kurs beitreten"
-        onPress={() => navigation.navigate("AddCourseModal")}
-      />
     </View>
   );
 };
