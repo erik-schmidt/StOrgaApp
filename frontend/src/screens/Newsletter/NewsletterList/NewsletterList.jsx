@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, RefreshControl } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { Text, View, RefreshControl, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { getAllNews } from "../../../api/services/NewsletterService";
 import { useNavigation } from "@react-navigation/native";
@@ -30,54 +30,59 @@ const NewsList = () => {
 
   useEffect(() => {}, [news]);
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    getAllNews()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setNews(res.data);
-          setRefreshing(false);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
+  const OpenLinkCard = ({ id, link, message }) => {
+    let url = link;
+    const handlePress = useCallback(async () => {
+      if (!link.includes("http://") || !link.includes("https://")) {
+        url = "https://" + link;
+      }
+      const supported = await Linking.canOpenURL(url);
+
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        alert(`Don't know how to open this URL: ${url}`);
+      }
+    }, [url]);
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("NewsInformationModal", {
+            news: item,
+          })
         }
-      })
-      .catch((err) => {
-        alert(err);
-      });
+      >
+        <View>
+          <Text style={styles.newsHeader}>{item.title}</Text>
+        </View>
+        <View style={styles.cardText}>
+          <Text style={styles.newsMessage}>{item.message} </Text>
+        </View>
+        <View style={styles.cardText}>
+          <Text style={styles.boldText}>
+            publiziert am {item.published}, von {item.author}
+          </Text>
+        </View>
+        <View style={styles.cardText}>
+          <Text style={styles.boldText}>{item.urlLink}</Text>
+        </View>
+      </TouchableOpacity>
+    );
   };
 
   return (
     <View style={styles.container}>
       <FlatList
         data={news}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
         renderItem={({ item }) => (
-          <Card
-            key={news.length}
-            onPress={() =>
-              navigation.navigate("NewsInformationModal", {
-                news: item,
-              })
-            }
-          >
-            <View>
-              <Text style={styles.newsHeader}>{item.title}</Text>
-            </View>
-            <View style={styles.cardText}>
-              <Text style={styles.newsMessage}>{item.message} </Text>
-            </View>
-            <View style={styles.cardText}>
-              <Text style={styles.boldText}>
-                publiziert am {item.published}, von {item.author}
-              </Text>
-            </View>
-          </Card>
+          <OpenLinkCard
+            id={item.id}
+            item={item}
+            link={item.urlLink}
+            message={item.message}
+          />
         )}
-        keyExtractor={(item) => item.title}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );
