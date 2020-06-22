@@ -13,8 +13,8 @@ import { ScrollView } from "react-native-gesture-handler";
 const RegisterScreen = ({ navigation }) => {
   const { signUp } = React.useContext(AuthContext);
   const [matrNr, setMatrNr] = useState("");
-  const [prename, setPrename] = useState("");
-  const [familyname, setFamilyname] = useState("");
+  const [studentPrename, setStudentPrename] = useState("");
+  const [studentFamilyname, setStudentFamilyname] = useState("");
   const [fieldOfStudy, setFieldOfStudy] = useState("");
   const [currentSemester, setCurrentSemester] = useState("");
   const [username, setUsername] = useState("");
@@ -42,14 +42,14 @@ const RegisterScreen = ({ navigation }) => {
         />
         <TextInput
           placeholder="Vorname"
-          value={prename}
-          onChangeText={(text) => setPrename(text)}
+          value={studentPrename}
+          onChangeText={(text) => setStudentPrename(text)}
           style={styles.textInput}
         />
         <TextInput
           placeholder="Nachname"
-          value={familyname}
-          onChangeText={(text) => setFamilyname(text)}
+          value={studentFamilyname}
+          onChangeText={(text) => setStudentFamilyname(text)}
           style={styles.textInput}
         />
         <TextInput
@@ -82,8 +82,8 @@ const RegisterScreen = ({ navigation }) => {
           onPress={() => {
             signUp({
               matrNr,
-              prename,
-              familyname,
+              prename: studentPrename,
+              familyname: studentFamilyname,
               fieldOfStudy,
               currentSemester,
               username,
