@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Student from "../../models/Student";
 import {
   Text,
   TextInput,
@@ -81,17 +80,15 @@ const RegisterScreen = ({ navigation }) => {
         />
         <TouchableHighlight
           onPress={() => {
-            signUp(
-              new Student(
-                matrNr,
-                prename,
-                familyname,
-                fieldOfStudy,
-                currentSemester,
-                username,
-                password
-              )
-            );
+            signUp({
+              matrNr,
+              prename,
+              familyname,
+              fieldOfStudy,
+              currentSemester,
+              username,
+              password,
+            });
             navigation.pop();
           }}
           style={styles.button}
