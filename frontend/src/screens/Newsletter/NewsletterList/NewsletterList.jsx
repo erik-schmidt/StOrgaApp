@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { getAllNews } from "../../../api/services/NewsletterService";
@@ -6,28 +6,31 @@ import { useNavigation } from "@react-navigation/native";
 import Card from "../../../components/Card/Card";
 import styles from "./NewsletterList.style";
 import * as HttpStatus from "http-status-codes";
+import AuthContext from "../../../constants/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
-const NewsList = (route) => {
+const NewsList = () => {
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
+  const { signOut } = React.useContext(AuthContext);
 
-  useEffect(() => {
-    getAllNews()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setNews(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, []);
-
-  useEffect(() => {}, [route]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllNews()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setNews(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
