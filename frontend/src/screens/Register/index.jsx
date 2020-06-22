@@ -26,7 +26,12 @@ const RegisterScreen = ({ navigation }) => {
       enabled={true}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+      style={{
+        marginTop: 35,
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
     >
       <ScrollView>
         <Text style={styles.headerText}>Registriere dich bei StOrga!</Text>
@@ -57,6 +62,7 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput
           placeholder="Aktuelles Semester"
           value={currentSemester}
+          keyboardType="number-pad"
           onChangeText={(text) => setCurrentSemester(text)}
           style={styles.textInput}
         />

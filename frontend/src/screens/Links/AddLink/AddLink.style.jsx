@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   modalButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#66CDAA",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: 220,
-    marginBottom: 20,
+    marginBottom: 35,
     alignSelf: "center",
     borderBottomColor: "grey",
     borderBottomWidth: 1,

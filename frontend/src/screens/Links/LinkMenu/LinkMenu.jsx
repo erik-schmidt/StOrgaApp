@@ -13,14 +13,13 @@ const LinkMenu = ({ navigation, route }) => {
   const [linkDescription, setLinkDescription] = useState("");
 
   const onChangeLink = () => {
-    console.log(linkObject.id);
     editLink(linkObject.id, {
       linkDescription,
       link,
     })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("LinkScreen", { linkEdited: true });
+          navigation.navigate("LinkScreen");
         } else {
           throw new Error(res.data);
         }
@@ -31,11 +30,10 @@ const LinkMenu = ({ navigation, route }) => {
   };
 
   const onDeleteLink = () => {
-    console.log(linkObject.id);
     deleteLink(linkObject.id)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("LinkScreen", { linkDeleted: true });
+          navigation.navigate("LinkScreen");
         } else {
           throw new Error(res.data);
         }

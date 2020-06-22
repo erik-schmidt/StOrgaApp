@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, RefreshControl, Alert, SectionList } from "react-native";
+import { Text, View, RefreshControl, SectionList } from "react-native";
 import { getCoursesByKindOfSubject } from "../../../api/services/CourseService";
-import { FlatList } from "react-native-gesture-handler";
 import Card from "../../../components/Card/Card";
 import styles from "./CourseList.style";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
-import AppButton from "../../../components/AppButton/AppButton";
 import { useFocusEffect } from "@react-navigation/native";
 
 const KindOfSubjectList = () => {
   const [courses, setCourses] = useState([]);
   const navigation = useNavigation();
-  const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
   const { signOut } = React.useContext(AuthContext);
 
@@ -69,22 +66,6 @@ const KindOfSubjectList = () => {
       });
   }, []);
 
-  useEffect(() => {
-    getCoursesByKindOfSubject()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setCourses(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, [route]);
-
   return (
     <View style={styles.container}>
       <SectionList
@@ -128,10 +109,6 @@ const KindOfSubjectList = () => {
           </View>
         )}
         keyExtractor={(item, index) => item + index}
-      />
-      <AppButton
-        text="Kurs beitreten"
-        onPress={() => navigation.navigate("AddCourseModal")}
       />
     </View>
   );

@@ -8,6 +8,7 @@ import AppButton from "../../../components/AppButton/AppButton";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
+import AuthContext from "../.././../constants/AuthContext";
 import "moment/locale/de";
 
 const CalStrip = () => {
@@ -17,6 +18,7 @@ const CalStrip = () => {
   const [refreshing, setRefreshing] = useState(false);
   const startDate = moment(date).format("YYYY-MM-DD");
   const endDate = moment(date).add(6, "days").format("YYYY-MM-DD");
+  const { signOut } = React.useContext(AuthContext);
   moment.locale("de");
 
   useFocusEffect(

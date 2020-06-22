@@ -9,10 +9,12 @@ import moment from "moment";
 import "moment/locale/de";
 import { getCoursesByStartDate } from "../../../api/services/TimetableService";
 import { AsyncStorage } from "react-native";
+import AuthContext from "../../../constants/AuthContext";
 
 const TimetableStrip = () => {
   const navigation = useNavigation();
   const [weeklyCourses, setWeeklyCourses] = useState([]);
+  const { signOut } = React.useContext(AuthContext);
 
   moment.locale("de");
 

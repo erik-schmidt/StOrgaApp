@@ -95,35 +95,6 @@ const GradeList = () => {
       });
   }, []);
 
-  useEffect(() => {
-    getGrades()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setGrades(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    getAverage()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setAverage(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, [route]);
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -139,6 +110,8 @@ const GradeList = () => {
                   fontSize: 20,
                   fontWeight: "bold",
                   textAlign: "center",
+                  marginTop: "80%",
+                  color: "#66CDAA",
                 }}
               >
                 Keine Noten gespeichert
@@ -156,7 +129,7 @@ const GradeList = () => {
               <Text style={styles.gradeHeader}>
                 Kursname: {item.courseName}
               </Text>
-              <Text style={styles.gradeHeader}>
+              <Text style={styles.cardText}>
                 Kursnummer: {item.courseNumber}
               </Text>
             </View>
@@ -168,7 +141,17 @@ const GradeList = () => {
         )}
         keyExtractor={(item) => item.courseNumber}
       />
-      <Text style={{ textAlign: "right" }}>Durchschnitt: {average}</Text>
+      <Text
+        style={{
+          textAlign: "right",
+          marginRight: 10,
+          marginBottom: 5,
+          fontSize: 18,
+          fontWeight: "bold",
+        }}
+      >
+        Durchschnitt: {average}
+      </Text>
     </View>
   );
 };

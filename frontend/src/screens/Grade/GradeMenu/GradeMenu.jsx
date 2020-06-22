@@ -15,7 +15,7 @@ const GradeMenu = ({ navigation, route }) => {
     deleteGrade(grade.courseNumber)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("Noten", { gradeDeleted: true });
+          navigation.navigate("Noten");
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
