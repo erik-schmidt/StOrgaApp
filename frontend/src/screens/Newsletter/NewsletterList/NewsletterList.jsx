@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, View, RefreshControl, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { getAllNews } from "../../../api/services/NewsletterService";
 import { useNavigation } from "@react-navigation/native";
@@ -9,7 +9,7 @@ import * as HttpStatus from "http-status-codes";
 import { useFocusEffect } from "@react-navigation/native";
 import AuthContext from "../../../constants/AuthContext";
 
-const NewsList = () => {
+const NewsList = (route) => {
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -33,7 +33,7 @@ const NewsList = () => {
     })
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     getAllNews()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
@@ -49,9 +49,9 @@ const NewsList = () => {
       });
   }, []);
 
-  useEffect(() => {}, [news]);
+  useEffect(() => {}, [route]);*/
 
-  const OpenLinkCard = ({ id, link, message }) => {
+  const OpenLinkCard = ({ id, title, item, link, message, published }) => {
     let url = link;
     const handlePress = useCallback(async () => {
       if (!link.includes("http://") || !link.includes("https://")) {
@@ -74,18 +74,18 @@ const NewsList = () => {
         }
       >
         <View>
-          <Text style={styles.newsHeader}>{item.title}</Text>
+          <Text style={styles.newsHeader}>{title}</Text>
         </View>
         <View style={styles.cardText}>
-          <Text style={styles.newsMessage}>{item.message} </Text>
+          <Text style={styles.newsMessage}>{message} </Text>
         </View>
         <View style={styles.cardText}>
           <Text style={styles.boldText}>
-            publiziert am {item.published}, von {item.author}
+            publiziert am {published}, von {author}
           </Text>
         </View>
         <View style={styles.cardText}>
-          <Text style={styles.boldText}>{item.urlLink}</Text>
+          <Text style={styles.boldText}>{urlLink}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -98,9 +98,12 @@ const NewsList = () => {
         renderItem={({ item }) => (
           <OpenLinkCard
             id={item.id}
+            title={item.title}
             item={item}
             link={item.urlLink}
+            author={item.author}
             message={item.message}
+            published={item.published}
           />
         )}
         keyExtractor={(item) => item.id}
