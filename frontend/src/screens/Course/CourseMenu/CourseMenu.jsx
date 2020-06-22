@@ -18,7 +18,7 @@ const CourseMenu = ({ navigation, route }) => {
     deleteCourse(course.number)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("Fächer", { courseDeleted: true });
+          navigation.navigate("Fächer");
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -42,7 +42,7 @@ const CourseMenu = ({ navigation, route }) => {
     })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("Fächer", { courseEdit: true });
+          navigation.navigate("Fächer");
         } else {
           throw new Error(res.data);
         }

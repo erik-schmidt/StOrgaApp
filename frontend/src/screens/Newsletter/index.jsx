@@ -3,7 +3,7 @@ import styles from "./index.style";
 import { View } from "react-native";
 import NewsList from "./NewsletterList/NewsletterList";
 
-const NewsletterScreen = ({ navigation }) => {
+const NewsletterScreen = () => {
   return (
     <View style={styles.container}>
       <NewsList />

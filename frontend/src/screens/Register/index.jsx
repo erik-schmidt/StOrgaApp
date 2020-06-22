@@ -62,6 +62,7 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput
           placeholder="Aktuelles Semester"
           value={currentSemester}
+          keyboardType="number-pad"
           onChangeText={(text) => setCurrentSemester(text)}
           style={styles.textInput}
         />
