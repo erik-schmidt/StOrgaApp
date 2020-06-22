@@ -121,7 +121,7 @@ public class NewsService {
             }
         }
         try{
-            News newNewsObject = new News(news.getTitle(), news.getMessage(), news.getAuthor(), news.getPublished());
+            News newNewsObject = new News(news.getTitle(), news.getMessage(), news.getUrlLink(), news.getAuthor(), news.getPublished());
             newsRepository.save(newNewsObject);
             return ResponseEntity.status(HttpStatus.OK).body(newNewsObject);
         } catch (Exception e){
