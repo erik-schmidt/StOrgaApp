@@ -9,6 +9,7 @@ const AddButton = (props) => {
       color="black"
       backgroundColor="#ffff"
       onPress={props.onPress}
+      size={25}
     />
   );
 };

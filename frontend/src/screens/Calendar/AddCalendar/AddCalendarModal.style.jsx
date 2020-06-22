@@ -1,12 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    width: Dimensions.get("window").width,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-  },
   textInput: {
     width: 200,
     height: 40,
@@ -22,7 +16,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: "white",
     fontSize: 20,
-    color: "steelblue",
+    color: "#66CDAA",
     alignSelf: "center",
   },
   picker: {

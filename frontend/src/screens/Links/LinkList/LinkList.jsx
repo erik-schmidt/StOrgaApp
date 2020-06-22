@@ -93,7 +93,7 @@ const LinkList = () => {
                   color: "#66CDAA",
                 }}
               >
-                Keine Links bisher gespeichert.
+                Keine Links gespeichert.
               </Text>
             </View>
           );

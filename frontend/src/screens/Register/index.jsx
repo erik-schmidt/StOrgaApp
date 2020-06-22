@@ -82,8 +82,8 @@ const RegisterScreen = ({ navigation }) => {
           onPress={() => {
             signUp({
               matrNr,
-              prename: studentPrename,
-              familyname: studentFamilyname,
+              studentPrename,
+              studentFamilyname,
               fieldOfStudy,
               currentSemester,
               username,

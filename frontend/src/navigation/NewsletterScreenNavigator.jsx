@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/stack";
 import index from "../screens/Newsletter/index";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
+import NewsInformationModal from "../screens/Newsletter/NewsInformationModal/NewsInformationModal";
 
 const NewsletterScreenNavigator = ({ navigation }) => {
   const NewsletterStack = createStackNavigator();
@@ -22,6 +23,16 @@ const NewsletterScreenNavigator = ({ navigation }) => {
         component={index}
         options={{
           headerLeft: () => <DrawerButton />,
+        }}
+      />
+      <NewsletterStack.Screen
+        name="NewsInformationModal"
+        component={NewsInformationModal}
+        options={{
+          headerTitle: "Newsinfo",
+          headerStatusBarHeight: 0,
+          cardStyle: { backgroundColor: "#ffff" },
+          gestureEnabled: true,
         }}
       />
     </NewsletterStack.Navigator>

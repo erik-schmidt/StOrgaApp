@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
 import { Text, View, FlatList, Dimensions, RefreshControl } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { getWeeklyAppointments } from "../../../api/services/CalendarService";
+import AppButton from "../../../components/AppButton/AppButton";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
@@ -19,6 +20,25 @@ const CalStrip = () => {
   const endDate = moment(date).add(6, "days").format("YYYY-MM-DD");
   const { signOut } = React.useContext(AuthContext);
   moment.locale("de");
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getWeeklyAppointments({ startDate: startDate, endDate: endDate })
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setWeeklyAppointments(res.data);
+            setRefreshing(false);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -61,15 +81,15 @@ const CalStrip = () => {
     <View style={styles.container}>
       <CalendarStrip
         style={styles.stripContainer}
-        daySelectionAnimation={{
+        /*daySelectionAnimation={{
           type: "border",
           duration: 200,
           borderWidth: 1,
           borderHighlightColor: "#66CDAA",
-        }}
+        }}*/
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
-        highlightDateNumberStyle={{ color: "#66CDAA" }}
+        //highlightDateNumberStyle={{ color: "#66CDAA" }}
         onWeekChanged={(start) => getWeekApps(start)}
       />
       <View style={styles.container}>
@@ -127,6 +147,10 @@ const CalStrip = () => {
           keyExtractor={(item) => item.name}
         />
       </View>
+      <AppButton
+        text="Termin anlegen"
+        onPress={() => navigation.navigate("AddCalendarModal")}
+      />
     </View>
   );
 };
