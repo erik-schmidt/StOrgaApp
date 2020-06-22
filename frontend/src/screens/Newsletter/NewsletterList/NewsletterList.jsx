@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Text, View } from "react-native";
+import { Text, View, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { getAllNews } from "../../../api/services/NewsletterService";
 import { useNavigation } from "@react-navigation/native";
@@ -13,6 +13,25 @@ const NewsList = () => {
   const navigation = useNavigation();
   const [news, setNews] = useState([]);
   const { signOut } = React.useContext(AuthContext);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getAllNews()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setNews(res.data);
+          setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -36,6 +55,9 @@ const NewsList = () => {
     <View style={styles.container}>
       <FlatList
         data={news}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={({ item }) => (
           <Card
             key={news.length}
