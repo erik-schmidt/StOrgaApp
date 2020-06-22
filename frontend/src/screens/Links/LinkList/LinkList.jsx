@@ -2,19 +2,41 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, FlatList, Linking, Text, TouchableOpacity } from "react-native";
 import { getAllLinks } from "../../../api/services/LinkService";
 import styles from "./LinkList.style";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
+import { useFocusEffect } from "@react-navigation/native";
+import AuthContext from "../../../constants/AuthContext";
 
 const LinkList = () => {
   const navigation = useNavigation();
-  const route = useRoute();
   const [links, setLinks] = useState([]);
+  const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllLinks()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setLinks(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    })
+  );
 
   useEffect(() => {
     getAllLinks()
       .then((res) => {
         if (res.status === HttpStatus.OK) {
           setLinks(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
         } else {
           throw new Error(res.data);
         }
@@ -23,20 +45,6 @@ const LinkList = () => {
         alert(err);
       });
   }, []);
-
-  useEffect(() => {
-    getAllLinks()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setLinks(res.data);
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, [route]);
 
   const OpenLinkCard = ({ id, link, linkDescription }) => {
     let url = link;

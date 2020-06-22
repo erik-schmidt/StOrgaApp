@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CalendarStrip from "react-native-calendar-strip";
 import styles from "./CalendarStrip.style";
 import { Text, View, FlatList, Dimensions, RefreshControl } from "react-native";
@@ -7,6 +7,7 @@ import { getWeeklyAppointments } from "../../../api/services/CalendarService";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
+import AuthContext from "../.././../constants/AuthContext";
 import "moment/locale/de";
 
 const CalStrip = () => {
@@ -16,6 +17,7 @@ const CalStrip = () => {
   const [refreshing, setRefreshing] = useState(false);
   const startDate = moment(date).format("YYYY-MM-DD");
   const endDate = moment(date).add(6, "days").format("YYYY-MM-DD");
+  const { signOut } = React.useContext(AuthContext);
   moment.locale("de");
 
   const onRefresh = () => {

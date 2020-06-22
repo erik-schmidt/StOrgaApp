@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, SectionList, RefreshControl } from "react-native";
 import styles from "./HomeScreen.style";
 import { getHomescreenItems } from "../../api/services/HomeService";

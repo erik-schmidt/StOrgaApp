@@ -19,7 +19,7 @@ const LinkMenu = ({ navigation, route }) => {
     })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("LinkScreen", { linkEdited: true });
+          navigation.navigate("LinkScreen");
         } else {
           throw new Error(res.data);
         }
@@ -33,7 +33,7 @@ const LinkMenu = ({ navigation, route }) => {
     deleteLink(linkObject.id)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("LinkScreen", { linkDeleted: true });
+          navigation.navigate("LinkScreen");
         } else {
           throw new Error(res.data);
         }

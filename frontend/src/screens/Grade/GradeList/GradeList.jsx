@@ -95,35 +95,6 @@ const GradeList = () => {
       });
   }, []);
 
-  useEffect(() => {
-    getGrades()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setGrades(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    getAverage()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setAverage(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, [route]);
-
   return (
     <View style={styles.container}>
       <FlatList

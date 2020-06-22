@@ -15,7 +15,7 @@ const AddLink = ({ navigation }) => {
     addLink({ linkDescription, link })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("LinkScreen", { linkAdded: true });
+          navigation.navigate("LinkScreen");
         } else {
           throw new Error(res.data);
         }
