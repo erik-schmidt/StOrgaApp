@@ -67,7 +67,6 @@ const AddCalendarModal = ({ navigation }) => {
             minuteInterval={10}
             onDateChange={(time) => {
               setTimeStart(time);
-              console.log(time);
             }}
           />
           <Text style={styles.description}>Ende:</Text>
@@ -101,8 +100,12 @@ const AddCalendarModal = ({ navigation }) => {
 
           <AppButton
             onPress={() => {
-              saveContent();
-              navigation.navigate("Kalender");
+              if (timeStart < timeEnd) {
+                saveContent();
+                navigation.navigate("Kalender");
+              } else {
+                alert("Bitte alle Felder ausfüllen");
+              }
             }}
             text="Speichern"
           />
