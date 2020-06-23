@@ -15,6 +15,7 @@ const AddCalendarModal = ({ navigation }) => {
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
+  moment.locale("de");
 
   const saveContent = () => {
     createAppointment({
@@ -44,6 +45,7 @@ const AddCalendarModal = ({ navigation }) => {
           <Text style={styles.description}>Datum:</Text>
           <DatePicker
             style={styles.picker}
+            locale={"de"}
             date={date}
             mode="date"
             format="YYYY-MM-DD"
@@ -57,22 +59,23 @@ const AddCalendarModal = ({ navigation }) => {
           <Text style={styles.description}>Start:</Text>
           <DatePicker
             style={styles.picker}
+            locale={"de"}
             date={timeStart}
             mode="time"
-            format="hh:mm"
             confirmBtnText="OK"
             cancelBtnText="Abbrechen"
             minuteInterval={10}
             onDateChange={(time) => {
               setTimeStart(time);
+              console.log(time);
             }}
           />
           <Text style={styles.description}>Ende:</Text>
           <DatePicker
             style={styles.picker}
+            locale={"de"}
             date={timeEnd}
             mode="time"
-            format="hh:mm"
             confirmBtnText="OK"
             cancelBtnText="Abbrechen"
             minuteInterval={10}
