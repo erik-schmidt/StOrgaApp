@@ -9,7 +9,6 @@ import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
 import AuthContext from "../.././../constants/AuthContext";
-import "moment/locale/de";
 
 const CalStrip = () => {
   const navigation = useNavigation();
@@ -81,15 +80,8 @@ const CalStrip = () => {
     <View style={styles.container}>
       <CalendarStrip
         style={styles.stripContainer}
-        /*daySelectionAnimation={{
-          type: "border",
-          duration: 200,
-          borderWidth: 1,
-          borderHighlightColor: "#66CDAA",
-        }}*/
         calendarColor={"white"}
         calendarHeaderStyle={{ color: "#66CDAA" }}
-        //highlightDateNumberStyle={{ color: "#66CDAA" }}
         onWeekChanged={(start) => getWeekApps(start)}
       />
       <View style={styles.container}>
@@ -126,14 +118,18 @@ const CalStrip = () => {
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {item.entryStartTime}
+                      {moment(
+                        item.entryDate + " " + item.entryStartTime
+                      ).format("LT")}
                     </Text>
                   </View>
                   <View style={{ paddingTop: 10 }} />
                   <View style={styles.durationContainer}>
                     <View style={styles.durationDot} />
                     <Text style={styles.durationText}>
-                      {item.entryFinishTime}
+                      {moment(
+                        item.entryDate + " " + item.entryFinishTime
+                      ).format("LT")}
                     </Text>
                   </View>
                   <View style={styles.durationDotConnector} />

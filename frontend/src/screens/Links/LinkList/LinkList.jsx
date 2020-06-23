@@ -27,7 +27,7 @@ const LinkList = () => {
         .catch((err) => {
           alert(err);
         });
-    })
+    }, [])
   );
 
   useEffect(() => {
