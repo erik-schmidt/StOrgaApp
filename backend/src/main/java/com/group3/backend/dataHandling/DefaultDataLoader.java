@@ -77,7 +77,7 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             // calendarEntryRepository.save(calendarEntries);
         }*/
         // load and save timetable
-        /*
+
         if (timeTableObjectRepository.count() == 0) {
             List<TimeTableObject> timeTableObjectSet = dataHandler.loadTimeTable();
             for (TimeTableObject timeTableObject : timeTableObjectSet) {
@@ -85,6 +85,6 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
             }
         }
 
-         */
+         
     }
 }
