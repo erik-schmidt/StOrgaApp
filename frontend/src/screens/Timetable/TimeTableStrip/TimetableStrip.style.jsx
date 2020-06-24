@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
+  eventText: { width: 130 },
   eventDuration: {
     width: "30%",
     justifyContent: "center",
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     color: "#66CDAA",
     fontSize: 14,
   },
-  eventNote: {},
   lineSeparator: {
     width: "100%",
     borderBottomColor: "lightgrey",

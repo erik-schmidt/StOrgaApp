@@ -5,11 +5,30 @@ import { getHomescreenItems } from "../../api/services/HomeService";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../constants/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }) => {
   const [latestItems, setLatestItems] = useState([]);
   const [refreshing, setRefreshing] = useState();
   const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getHomescreenItems()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setLatestItems(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   const onRefresh = () => {
     setRefreshing(true);

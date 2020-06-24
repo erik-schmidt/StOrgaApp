@@ -28,7 +28,7 @@ const AddCourseModal = ({ navigation }) => {
         .catch((err) => {
           alert(err);
         });
-    })
+    }, [])
   );
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Kurs beitreten" height={450} width={300}>
+      <AppModal header="Kurs beitreten" height={350} width={300}>
         <Picker
           selectedValue={selectedCourse}
           style={styles.picker}

@@ -30,7 +30,12 @@ const CalendarMenu = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View>
-        <AppModal header="Termin löschen?" description={appointment.name}>
+        <AppModal
+          height={250}
+          width={250}
+          header="Termin löschen?"
+          description={appointment.name}
+        >
           <AppButton
             color="red"
             onPress={() => onDeleteCalendar()}
