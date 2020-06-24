@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, ScrollView, View, KeyboardAvoidingView } from "react-native";
+import { Text, ScrollView, KeyboardAvoidingView } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import styles from "./AddCalendarModal.style";
 import { createAppointment } from "../../../api/services/CalendarService";
@@ -34,82 +34,77 @@ const AddCalendarModal = ({ navigation }) => {
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
       style={{
         flex: 1,
+        marginTop: 25,
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
       }}
     >
       <ScrollView>
-        <AppModal>
-          <Text style={styles.description}>Datum:</Text>
-          <DatePicker
-            style={styles.picker}
-            locale={"de"}
-            date={date}
-            mode="date"
-            format="YYYY-MM-DD"
-            confirmBtnText="OK"
-            cancelBtnText="Abbrechen"
-            onDateChange={(date) => {
-              setDate(date);
-            }}
-          />
+        <Text style={styles.description}>Datum:</Text>
+        <DatePicker
+          style={styles.picker}
+          locale={"de"}
+          date={date}
+          mode="date"
+          format="YYYY-MM-DD"
+          confirmBtnText="OK"
+          cancelBtnText="Abbrechen"
+          onDateChange={(date) => {
+            setDate(date);
+          }}
+        />
 
-          <Text style={styles.description}>Start:</Text>
-          <DatePicker
-            style={styles.picker}
-            locale={"de"}
-            date={timeStart}
-            mode="time"
-            confirmBtnText="OK"
-            cancelBtnText="Abbrechen"
-            minuteInterval={10}
-            onDateChange={(time) => {
-              setTimeStart(time);
-            }}
-          />
-          <Text style={styles.description}>Ende:</Text>
-          <DatePicker
-            style={styles.picker}
-            locale={"de"}
-            date={timeEnd}
-            mode="time"
-            confirmBtnText="OK"
-            cancelBtnText="Abbrechen"
-            minuteInterval={10}
-            onDateChange={(time) => {
-              setTimeEnd(time);
-            }}
-          />
+        <Text style={styles.description}>Start:</Text>
+        <DatePicker
+          style={styles.picker}
+          locale={"de"}
+          date={timeStart}
+          mode="time"
+          confirmBtnText="OK"
+          cancelBtnText="Abbrechen"
+          minuteInterval={10}
+          onDateChange={(time) => {
+            setTimeStart(time);
+          }}
+        />
+        <Text style={styles.description}>Ende:</Text>
+        <DatePicker
+          style={styles.picker}
+          locale={"de"}
+          date={timeEnd}
+          mode="time"
+          confirmBtnText="OK"
+          cancelBtnText="Abbrechen"
+          minuteInterval={10}
+          onDateChange={(time) => {
+            setTimeEnd(time);
+          }}
+        />
 
-          <Text style={styles.description}>Bezeichnung:</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Bezeichnung "
-            onChangeText={(name) => setName(name)}
-            defaultValue={name}
-          />
-          <Text style={styles.description}>Notizen:</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Notizen "
-            onChangeText={(info) => setInfo(info)}
-            defaultValue={info}
-          />
-
-          <AppButton
-            onPress={() => {
-              if (timeStart < timeEnd) {
-                saveContent();
-                navigation.navigate("Kalender");
-              } else {
-                alert("Bitte alle Felder ausfüllen");
-              }
-            }}
-            text="Speichern"
-          />
-        </AppModal>
+        <Text style={styles.description}>Bezeichnung:</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Bezeichnung "
+          onChangeText={(name) => setName(name)}
+          defaultValue={name}
+        />
+        <Text style={styles.description}>Notizen:</Text>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Notizen "
+          onChangeText={(info) => setInfo(info)}
+          defaultValue={info}
+        />
+        <AppButton
+          onPress={() => {
+            if (timeStart < timeEnd) {
+              saveContent();
+              navigation.navigate("Kalender");
+            } else {
+              alert("Bitte alle Felder ausfüllen");
+            }
+          }}
+          text="Speichern"
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

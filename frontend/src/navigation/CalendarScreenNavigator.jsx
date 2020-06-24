@@ -37,6 +37,7 @@ const CalendarScreenNavigator = ({ navigation }) => {
         name="AddCalendarModal"
         component={AddCalendarModal}
         options={{
+          headerStatusBarHeight: 0,
           headerTitle: "Termin hinzufügen",
           cardStyle: { backgroundColor: "#ffff" },
         }}
