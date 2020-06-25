@@ -85,7 +85,7 @@ const CourseMenu = ({ navigation, route }) => {
             <AppButton
               color="red"
               onPress={() => onDeleteCourse()}
-              text="Kurs löschen"
+              text="Vom Kurs austreten"
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
           </AppModal>

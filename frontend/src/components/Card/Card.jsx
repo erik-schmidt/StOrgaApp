@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import styles from "./Card.style";
 

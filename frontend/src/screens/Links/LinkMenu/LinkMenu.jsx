@@ -47,7 +47,7 @@ const LinkMenu = ({ navigation, route }) => {
     <View style={styles.container}>
       {editMode ? (
         <View>
-          <AppModal header="Link bearbeiten" height={320}>
+          <AppModal header="Link bearbeiten" height={350} width={250}>
             <TextInput
               style={styles.textInput}
               onChangeText={(text) => setLink(text)}
@@ -66,7 +66,12 @@ const LinkMenu = ({ navigation, route }) => {
         </View>
       ) : (
         <View>
-          <AppModal header="Link: " description={linkObject.link}>
+          <AppModal
+            header="Link: "
+            description={linkObject.link}
+            height={350}
+            width={250}
+          >
             <AppButton
               onPress={() => setEditMode(!editMode)}
               text="Link bearbeiten"

@@ -127,7 +127,7 @@ const GradeList = () => {
           >
             <View>
               <Text style={styles.gradeHeader}>
-                Kursname: {item.courseName}
+                Veranstaltung: {item.courseName}
               </Text>
               <Text style={styles.cardText}>
                 Kursnummer: {item.courseNumber}
