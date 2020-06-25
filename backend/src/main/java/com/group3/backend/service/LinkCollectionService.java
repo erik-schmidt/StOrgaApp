@@ -66,7 +66,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             List<Link> linkList = linkRepository.findAllByStudentMatrNr(matrNr);
             if (linkList.isEmpty()) {
                 logger.error("There are no links for this student.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList("Link"));
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Link"));
             }
             return ResponseEntity.status(HttpStatus.OK).body(linkList);
         }catch (Exception e){
@@ -98,7 +98,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             Link link = linkRepository.findByStudentMatrNrAndId(matrNr, linkId);
             if (link == null){
                 logger.error("There are no link for this student with that linkId");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList("Link"));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
             }
             return ResponseEntity.status(HttpStatus.OK).body(link);
         }catch (Exception e){
@@ -209,9 +209,11 @@ public class LinkCollectionService extends CheckMatrNrClass {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: There is no link for that student with this number");
         }
         try{
-            newLink.setId(link.getId());
-            linkRepository.delete(link);
-            linkRepository.save(newLink);
+            //newLink.setId(link.getId());
+            //linkRepository.delete(link);
+            link.setLink(newLink.getLink());
+            link.setLinkDescription(newLink.getLinkDescription());
+            linkRepository.save(link);
             return ResponseEntity.status(HttpStatus.OK).body(newLink);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
@@ -254,7 +256,7 @@ public class LinkCollectionService extends CheckMatrNrClass {
             List<Link> linkList = linkRepository.findAll();
             if(linkList.isEmpty()){
                 logger.error("Error while reading all Links: There are no links saved");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getEmptyList("Link"));
+                return ResponseEntity.status(HttpStatus.OK).body(getEmptyList("Link"));
             }
             logger.info("Links successfully read");
             return ResponseEntity.status(HttpStatus.OK).body(linkList);

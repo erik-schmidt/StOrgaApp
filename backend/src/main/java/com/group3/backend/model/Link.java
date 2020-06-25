@@ -26,7 +26,7 @@ public class Link implements Serializable {
     private String linkDescription;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Student student = new Student();
 
     public Link(){

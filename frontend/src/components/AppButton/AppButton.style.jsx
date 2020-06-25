@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   modalButton: {
-    backgroundColor: "#2196F3",
+    marginBottom: 10,
+    backgroundColor: "#66CDAA",
     borderRadius: 20,
     padding: 10,
     elevation: 2,

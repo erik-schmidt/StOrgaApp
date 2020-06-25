@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -58,12 +59,13 @@ public class CalendarEntryService extends CheckMatrNrClass {
     /**
      * Is used to get all {@link CalendarEntry} from a specific {@link Student}.
      * Called by "/{matrNr}/get".
-     * @param matrNr
-     *                  The matrNr of the {@link Student} you want the {@link CalendarEntry} objects for.
-     * @return
-     *          Returns a ResponseEntity. If the request was successful, the HTTPStatus is 'OK' and you get a list of
-     *          {@link CalendarEntry} in its body.
-     *          If the request wasn't successful you get a HTTPStatus 'BAD-REQUEST'.
+     * 
+     * @param matrNr The matrNr of the {@link Student} you want the
+     *               {@link CalendarEntry} objects for.
+     * @return Returns a ResponseEntity. If the request was successful, the
+     *         HTTPStatus is 'OK' and you get a list of {@link CalendarEntry} in its
+     *         body. If the request wasn't successful you get a HTTPStatus
+     *         'BAD-REQUEST'.
      */
     public ResponseEntity<?> getCalendarEntriesByStudent_Id(String matrNr) {
         try {
@@ -77,7 +79,8 @@ public class CalendarEntryService extends CheckMatrNrClass {
         return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
     }
 
-    public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(String matrNr, LocalDate dateStart, LocalDate dateEnd) {
+    public ResponseEntity<?> getCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(String matrNr, LocalDate dateStart,
+            LocalDate dateEnd) {
         try {
             checkStudentWithNumberIsSaved(matrNr);
             checkMatriculationNumber(matrNr);
@@ -85,8 +88,9 @@ public class CalendarEntryService extends CheckMatrNrClass {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
         Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-        List<CalendarEntry> calendarEntries = calendarEntryRepository.findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(student.getId(), dateStart, dateEnd);
-        return ResponseEntity.status(HttpStatus.OK).body(calendarEntries);
+        List<CalendarEntry> calendarEntries = calendarEntryRepository
+                .findCalendarEntriesByStudent_IdAndEntryDateAndEntryDate(student.getMatrNr(), dateStart, dateEnd);
+        return ResponseEntity.status(HttpStatus.OK).body(sortCalendarEntryObjects(calendarEntries));
     }
 
     public ResponseEntity<?> createCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
@@ -111,42 +115,46 @@ public class CalendarEntryService extends CheckMatrNrClass {
     }
 
     public ResponseEntity<?> deleteCalendarEntryFromStudent(String matrNr, int id) {
-        try{
-            if (matrNr.trim().isEmpty()){
+        try {
+            if (matrNr.trim().isEmpty()) {
                 throw new MatrNrException("Error: No MatrNr is given!");
             }
-            if (!checkMatriculationNumber(matrNr)){
+            if (!checkMatriculationNumber(matrNr)) {
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
             }
             if ((studentService.getStudentByNumber(matrNr).getBody().getClass() == String.class)) {
                 return studentService.getStudentByNumber(matrNr);
             } else {
                 try {
-                    Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+                    // Student student = (Student)
+                    // studentService.getStudentByNumber(matrNr).getBody();
                     CalendarEntry calendarEntry = calendarEntryRepository.findById(id);
 
-                    Set<CalendarEntry> studentCalendarEntries = student.getCalendarEntries();
-                    if(studentCalendarEntries == null || studentCalendarEntries.isEmpty()){
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kalender Eintrag mit ID"+ id + "ist nicht im student "+ matrNr + "gespeichert");
+                    // Set<CalendarEntry> studentCalendarEntries = student.getCalendarEntries();
+                    /*
+                     * if(studentCalendarEntries == null || studentCalendarEntries.isEmpty()){
+                     * return
+                     * ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kalender Eintrag mit ID"+
+                     * id + "ist nicht im student "+ matrNr + "gespeichert"); } for (CalendarEntry c
+                     * : studentCalendarEntries) { if (c.getId().equals(id)) {
+                     * studentCalendarEntries.remove(c); } }
+                     */
+                    // student.setCalendarEntries(studentCalendarEntries);
+                    // studentService.updateStudent(student);
+                    if (calendarEntry == null) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                "Kalender Eintrag mit ID" + id + "ist nicht im student " + matrNr + "gespeichert");
                     }
-                    for (CalendarEntry c : studentCalendarEntries) {
-                        if (c.getId().equals(id)) {
-                            studentCalendarEntries.remove(c);
-                        }
-                    }
-                    student.setCalendarEntries(studentCalendarEntries);
-                    studentService.updateStudent(student);
-                    return ResponseEntity.status(HttpStatus.OK).body(studentCalendarEntries);
-                }catch (Exception e){
+                    calendarEntryRepository.delete(calendarEntry);
+                    return ResponseEntity.status(HttpStatus.OK).body(calendarEntry);
+                } catch (Exception e) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
                 }
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
     }
-
 
     private boolean checkCalendarObject(CalendarEntry calendarEntry) {
         try {
@@ -158,23 +166,6 @@ public class CalendarEntryService extends CheckMatrNrClass {
                 logger.error("Calender has no description");
                 throw new NoDescriptionException("Kalendereintrag hat keine beschreibung!");
             }
-            // DATE AND TIME ARE NOW STRINGS
-            /*
-             * if (calendarEntry.getEntryStartTime() == null) {
-             * logger.error("Calender has no start date"); throw new
-             * CalendarWithoutStartTimeException("Kalendereintrag hat kein Startdatum!"); }
-             * if (calendarEntry.getEntryFinishTime() == null) {
-             * logger.error("Calender has no finish date"); throw new
-             * CalendarWithoutFinishTimeException("Kalendereintrag hat kein Enddatum!"); }
-             * 
-             */
-            // OBJECT IS NOW TIMESTAMP NOT LOCAL DATE
-            /*
-             * if(calendarEntry.getEntryStartTime().isAfter(calendarEntry.getEntryFinishTime
-             * ())){ logger.error("calender entry Startdate after Enddate! "); throw new
-             * CalenderDateException("Kalendereintrag Startzeit ist nach Endzeit"); }
-             */
-
             return true;
         } catch (Exception e) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
@@ -182,23 +173,25 @@ public class CalendarEntryService extends CheckMatrNrClass {
         return false;
     }
 
-//    /**
-//     * Method to check if a matrNr is used by a saved {@link Student}.
-//     * @param matrNr
-//     *                  The matrNr which should be checked.
-//     * @return
-//     *          Returns true if the matrNr is used by a saved {@link Student}.
-//     * @throws Exception
-//     *                      Is thrown if no saved {@link Student} uses this matrNr.
-//     */
-//    private boolean checkStudentWithNumberIsSaved(String matrNr) throws Exception{
-//        Student st = studentRepository.findByMatrNr(matrNr);
-//        if(st == null){
-//            logger.error("No Student with the given matriculation number "+ matrNr + " found");
-//            throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
-//        }
-//        return true;
-//    }
+    // /**
+    // * Method to check if a matrNr is used by a saved {@link Student}.
+    // * @param matrNr
+    // * The matrNr which should be checked.
+    // * @return
+    // * Returns true if the matrNr is used by a saved {@link Student}.
+    // * @throws Exception
+    // * Is thrown if no saved {@link Student} uses this matrNr.
+    // */
+    // private boolean checkStudentWithNumberIsSaved(String matrNr) throws
+    // Exception{
+    // Student st = studentRepository.findByMatrNr(matrNr);
+    // if(st == null){
+    // logger.error("No Student with the given matriculation number "+ matrNr + "
+    // found");
+    // throw new MatrNrException("Kein Student mit dieser Matrikelnummer gefunden");
+    // }
+    // return true;
+    // }
 
     /**
      * checks if a given Matriculation number is used by a saved student
@@ -216,31 +209,46 @@ public class CalendarEntryService extends CheckMatrNrClass {
 
     }
 
-    /*
-    public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr, CalendarEntry calendarEntry) {
-        try {
-            checkStudentWithNumberIsSaved(matrNr);
-            checkCalendarObject(calendarEntry);
-            checkMatriculationNumber(matrNr);
-            Student student = (Student) studentService.getStudentByNumber(matrNr).getBody();
-            Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
-            CalendarEntry calendarEntryDelete = null;
-            for (CalendarEntry calendarEntry1 : calendarEntries) {
-                if (calendarEntry.getDescription().equals(calendarEntry1.getDescription())
-                        && calendarEntry.getName().equals(calendarEntry1.getName())) {
-                    calendarEntryDelete = calendarEntry1;
-                    calendarEntries.remove(calendarEntry1);
-                    student.setCalendarEntries(calendarEntries);
+    /**
+     * sort the calendar Objects beginning with the first date in the week at list
+     * index 0 Also sort by time. Start with the earlies one in the list Bubble sort
+     * we don't want to transform a List in an Array and Back
+     * 
+     * @param calendarEntries
+     * @return
+     */
+    private List<CalendarEntry> sortCalendarEntryObjects(List<CalendarEntry> calendarEntries) {
+        for (int i = calendarEntries.size(); i > 1; i--) {
+            for (int j = 0; j < i - 1; j++) {
+                if (calendarEntries.get(j).getEntryDate().isAfter(calendarEntries.get(j + 1).getEntryDate())) {
+                    Collections.swap(calendarEntries, j, j + 1);
                 }
-                // calendarEntryRepository.deleteById(calendarEntryDelete.getId());
-                calendarEntryRepository.delete(calendarEntryDelete);
-                return new ResponseEntity<>(HttpStatus.OK);
+                if (calendarEntries.get(j).getEntryStartTime().isAfter(calendarEntries.get(j + 1).getEntryStartTime())
+                        && calendarEntries.get(j).getEntryDate().equals(calendarEntries.get(j + 1).getEntryDate())) {
+                    Collections.swap(calendarEntries, j, j + 1);
+                }
             }
-        } catch (Exception e) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " + e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry());
+        return calendarEntries;
     }
-
+    /*
+     * public ResponseEntity<CalendarEntry> deleteCalendarEntry(String matrNr,
+     * CalendarEntry calendarEntry) { try { checkStudentWithNumberIsSaved(matrNr);
+     * checkCalendarObject(calendarEntry); checkMatriculationNumber(matrNr); Student
+     * student = (Student) studentService.getStudentByNumber(matrNr).getBody();
+     * Set<CalendarEntry> calendarEntries = student.getCalendarEntries();
+     * CalendarEntry calendarEntryDelete = null; for (CalendarEntry calendarEntry1 :
+     * calendarEntries) { if
+     * (calendarEntry.getDescription().equals(calendarEntry1.getDescription()) &&
+     * calendarEntry.getName().equals(calendarEntry1.getName())) {
+     * calendarEntryDelete = calendarEntry1; calendarEntries.remove(calendarEntry1);
+     * student.setCalendarEntries(calendarEntries); } //
+     * calendarEntryRepository.deleteById(calendarEntryDelete.getId());
+     * calendarEntryRepository.delete(calendarEntryDelete); return new
+     * ResponseEntity<>(HttpStatus.OK); } } catch (Exception e) {
+     * ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getClass() + " " +
+     * e.getMessage()); } return
+     * ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CalendarEntry()); }
+     * 
      */
 }

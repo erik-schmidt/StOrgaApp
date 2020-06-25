@@ -15,7 +15,7 @@ const GradeMenu = ({ navigation, route }) => {
     deleteGrade(grade.courseNumber)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("GradeScreen", { gradeDeleted: true });
+          navigation.navigate("Noten");
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -29,7 +29,12 @@ const GradeMenu = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Note löschen?" description={grade.courseNumber}>
+      <AppModal
+        header="Note löschen?"
+        description={grade.courseNumber}
+        width={250}
+        height={250}
+      >
         <Text style={styles.textStyle}>Note: {grade.grade}</Text>
         <AppButton text="Löschen" onPress={() => onDeleteGrade()} color="red" />
         <AppButton text="Abbrechen" onPress={() => navigation.pop()} />

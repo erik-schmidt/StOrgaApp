@@ -43,7 +43,7 @@ public class CalendarEntry implements Serializable {
     private String description;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student")
     private Student student = new Student();
 
@@ -51,7 +51,8 @@ public class CalendarEntry implements Serializable {
 
     }
 
-    public CalendarEntry(String name, LocalTime entryStartTime, LocalTime entryFinishTime, LocalDate entryDate, String description){
+    public CalendarEntry(String name, LocalTime entryStartTime, LocalTime entryFinishTime, LocalDate entryDate,
+            String description) {
         this.name = name;
         this.entryStartTime = entryStartTime;
         this.entryFinishTime = entryFinishTime;

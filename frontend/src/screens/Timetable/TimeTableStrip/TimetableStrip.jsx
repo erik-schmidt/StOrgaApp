@@ -1,22 +1,60 @@
 import React, { useState } from "react";
 import CalendarStrip from "react-native-calendar-strip";
 import styles from "./TimetableStrip.style";
-import { Text, View, FlatList, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Text, View, FlatList, Dimensions, RefreshControl } from "react-native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import * as HttpStatus from "http-status-codes";
 import Card from "../../../components/Card/Card";
 import moment from "moment";
 import "moment/locale/de";
 import { getCoursesByStartDate } from "../../../api/services/TimetableService";
 import { AsyncStorage } from "react-native";
+import AuthContext from "../../../constants/AuthContext";
 
 const TimetableStrip = () => {
   const navigation = useNavigation();
   const [weeklyCourses, setWeeklyCourses] = useState([]);
-
+  const { signOut } = React.useContext(AuthContext);
+  const [date, setDate] = useState(new Date());
+  const [refreshing, setRefreshing] = useState(false);
+  const startDate = moment(date).format("YYYY-MM-DD");
+  const endDate = moment(date).add(6, "days").format("YYYY-MM-DD");
   moment.locale("de");
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    const matrNr = await AsyncStorage.getItem("matrNr");
+    getCoursesByStartDate({
+      startDate: startDate,
+      endDate: endDate,
+      matrNr: matrNr,
+      currentWeek: false,
+      timePeriod: null,
+      onlyJoinedCourses: false,
+    })
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setWeeklyCourses(res.data);
+          setRefreshing(false);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getWeeklyCourses(date);
+    }, [])
+  );
+
   const getWeeklyCourses = async (start) => {
+    setDate(start);
     const startDate = moment(start).format("YYYY-MM-DD");
     const endDate = moment(start).add(6, "days").format("YYYY-MM-DD");
     const matrNr = await AsyncStorage.getItem("matrNr");
@@ -62,6 +100,9 @@ const TimetableStrip = () => {
         <FlatList
           syle={{ hight: Dimensions.get("window").height }}
           data={weeklyCourses}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListEmptyComponent={
             <Text style={styles.emptyList}>Keine Kurse in dieser Woche</Text>
           }

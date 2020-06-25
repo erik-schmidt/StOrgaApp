@@ -67,24 +67,24 @@ public class DefaultDataLoader implements ApplicationListener<ApplicationReadyEv
                 newsRepository.save(news);
             }
         }
-        if (calendarEntryRepository.count() <= 0) {
+ /*       if (calendarEntryRepository.count() <= 0) {
             Set<CalendarEntry> calendarEntries = dataHandler.loadCalendarEntries();
 
             student.setCalendarEntries(calendarEntries);
-
             for (CalendarEntry calendarEntry : calendarEntries) {
                 calendarEntryRepository.save(calendarEntry);
             }
-
             // calendarEntryRepository.save(calendarEntries);
-
-        }
+        }*/
         // load and save timetable
+
         if (timeTableObjectRepository.count() == 0) {
             List<TimeTableObject> timeTableObjectSet = dataHandler.loadTimeTable();
             for (TimeTableObject timeTableObject : timeTableObjectSet) {
                 timeTableObjectRepository.save(timeTableObject);
             }
         }
+
+         
     }
 }

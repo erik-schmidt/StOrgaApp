@@ -6,11 +6,30 @@ import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
 import * as HttpStatus from "http-status-codes";
 import AuthContext from "../../../constants/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AddCourseModal = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState();
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllCourses()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setCourses(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   useEffect(() => {
     getAllCourses()
@@ -32,7 +51,7 @@ const AddCourseModal = ({ navigation }) => {
     addCourse(selectedCourse)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("Fächer", { courseAdded: true });
+          navigation.navigate("Fächer");
         } else {
           throw new Error(res.data);
         }
@@ -44,7 +63,7 @@ const AddCourseModal = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <AppModal header="Kurs zur Liste hinzufügen" height={350} width={300}>
+      <AppModal header="Kurs beitreten" height={350} width={300}>
         <Picker
           selectedValue={selectedCourse}
           style={styles.picker}

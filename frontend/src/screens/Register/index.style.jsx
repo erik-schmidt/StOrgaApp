@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   button: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#66CDAA",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -24,12 +24,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-  },
-  signUpText: {
-    marginLeft: 5,
-    color: "#006EFF",
-    fontWeight: "bold",
-    fontSize: 16,
   },
   newToText: {
     fontSize: 16,

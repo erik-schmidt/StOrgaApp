@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { Text, ScrollView, KeyboardAvoidingView } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import styles from "./AddCalendarModal.style";
 import { createAppointment } from "../../../api/services/CalendarService";
@@ -14,25 +14,34 @@ const AddCalendarModal = ({ navigation }) => {
   const [name, setName] = useState("");
   const [info, setInfo] = useState("");
   const [date, setDate] = useState(new Date());
-
-  const start = date + " " + timeStart;
-  const end = date + " " + timeEnd;
+  moment.locale("de");
 
   const saveContent = () => {
     createAppointment({
-      entryStartDateAndTime: start,
-      entryFinishDateAndTime: end,
       name: name,
+      entryStartTime: timeStart,
+      entryFinishTime: timeEnd,
+      entryDate: date,
       description: info,
     });
   };
 
   return (
-    <View style={styles.container}>
-      <AppModal>
+    <KeyboardAvoidingView
+      enabled={true}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      style={{
+        flex: 1,
+        marginTop: 25,
+        flexDirection: "column",
+      }}
+    >
+      <ScrollView>
         <Text style={styles.description}>Datum:</Text>
         <DatePicker
           style={styles.picker}
+          locale={"de"}
           date={date}
           mode="date"
           format="YYYY-MM-DD"
@@ -46,9 +55,9 @@ const AddCalendarModal = ({ navigation }) => {
         <Text style={styles.description}>Start:</Text>
         <DatePicker
           style={styles.picker}
+          locale={"de"}
           date={timeStart}
           mode="time"
-          format="hh:mm"
           confirmBtnText="OK"
           cancelBtnText="Abbrechen"
           minuteInterval={10}
@@ -59,9 +68,9 @@ const AddCalendarModal = ({ navigation }) => {
         <Text style={styles.description}>Ende:</Text>
         <DatePicker
           style={styles.picker}
+          locale={"de"}
           date={timeEnd}
           mode="time"
-          format="hh:mm"
           confirmBtnText="OK"
           cancelBtnText="Abbrechen"
           minuteInterval={10}
@@ -84,16 +93,19 @@ const AddCalendarModal = ({ navigation }) => {
           onChangeText={(info) => setInfo(info)}
           defaultValue={info}
         />
-
         <AppButton
           onPress={() => {
-            saveContent();
-            navigation.navigate("Kalender");
+            if (timeStart < timeEnd) {
+              saveContent();
+              navigation.navigate("Kalender");
+            } else {
+              alert("Bitte alle Felder ausfüllen");
+            }
           }}
           text="Speichern"
         />
-      </AppModal>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

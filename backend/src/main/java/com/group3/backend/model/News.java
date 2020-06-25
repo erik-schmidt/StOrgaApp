@@ -23,15 +23,27 @@ public class News implements Serializable {
     @NotNull
     private LocalDate published;
 
+    @NotNull
+    private String urlLink;
+
     public News() {
 
     }
 
-    public News(String title, String message, String author, LocalDate published){
+    public News(String title, String message,String urlLink, String author, LocalDate published){
         this.title = title;
         this.message = message;
+        this.urlLink = urlLink;
         this.author = author;
         this.published = published;
+    }
+
+    public String getUrlLink() {
+        return urlLink;
+    }
+
+    public void setUrlLink(String urlLink) {
+        this.urlLink = urlLink;
     }
 
     public String getTitle() {

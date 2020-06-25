@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   modalButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#66CDAA",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   picker: {
-    width: 200,
+    width: "90%",
     height: 100,
     alignSelf: "center",
     marginBottom: 25,

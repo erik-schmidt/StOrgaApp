@@ -17,7 +17,7 @@ import java.util.*;
 public class DataHandler {
 
     // private final String PATH =
-    // "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
+    //private final String PATH =  "C:\\Users\\chris\\Documents\\00_Karriere\\00_Studium_HHN_AI\\#47_SWLab2\\AIB_LABSWP_2020_SS_HHN_UniApp\\backend\\";
     private final String PATH = "";
     // private final String AIBCOURSES_FILE = "AIBCoursesSPO.txt";
     private final String AIBCOURSES_FILE = "AIBCoursesSPOEnlarged.txt";
@@ -38,7 +38,7 @@ public class DataHandler {
      */
     public Set<Course> loadCourses() {
         Set<Course> courseSet = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(AIBCOURSES_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH+AIBCOURSES_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
@@ -95,7 +95,7 @@ public class DataHandler {
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {
                     String[] k = line.split("#");
-                    News news = new News(k[0], k[1], k[2], LocalDate.parse(k[3]));
+                    News news = new News(k[0], k[1], k[2], k[3], LocalDate.parse(k[4]));
                     newsSet.add(news);
                 }
                 line = reader.readLine();
@@ -117,7 +117,7 @@ public class DataHandler {
      */
     public List<TimeTableObject> loadTimeTable(){
         List<TimeTableObject> timeTableObjectArrayList = new ArrayList<>(2000);
-        try (BufferedReader reader = new BufferedReader(new FileReader(TIMETABLE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH+TIMETABLE))) {
             String line = reader.readLine();
             TimeTableObject timeTableObject = null;
             boolean wordStart = false;
@@ -148,7 +148,7 @@ public class DataHandler {
 
     public Set<CalendarEntry> loadCalendarEntries() {
         Set<CalendarEntry> calendarEntries = new HashSet();
-        try (BufferedReader reader = new BufferedReader(new FileReader(CALENDAR_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PATH+CALENDAR_FILE))) {
             String line = reader.readLine();
             while (!(line.equals("###"))) {
                 if (!(line.equals(""))) {

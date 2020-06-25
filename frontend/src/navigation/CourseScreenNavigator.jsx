@@ -4,8 +4,8 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import DrawerButton from "../components/DrawerButton/DrawerButton";
-import CourseScreen from "../screens/Course";
 import AddCourseModal from "../screens/Course/AddCourse/AddCourseModal";
+import CourseListTabNavigator from "./CourseListTabNavigator";
 import AddButton from "../components/AddButton/AddButton";
 import CourseInformationModal from "../screens/Course/CourseInformationModal/CourseInformationModal";
 import CourseMenu from "../screens/Course/CourseMenu/CourseMenu";
@@ -23,8 +23,9 @@ const CourseScreenNavigator = ({ navigation }) => {
     >
       <CourseStack.Screen
         name="Fächer"
-        component={CourseScreen}
+        component={CourseListTabNavigator}
         options={{
+          headerTitle: "Kurse",
           headerLeft: () => <DrawerButton />,
           headerRight: () => (
             <AddButton onPress={() => navigation.navigate("AddCourseModal")} />
@@ -44,7 +45,7 @@ const CourseScreenNavigator = ({ navigation }) => {
         name="CourseInformationModal"
         component={CourseInformationModal}
         options={{
-          headerTitle: "Kursinfo",
+          headerTitle: "Kursinformationen",
           headerStatusBarHeight: 0,
           cardStyle: { backgroundColor: "#ffff" },
           gestureEnabled: true,

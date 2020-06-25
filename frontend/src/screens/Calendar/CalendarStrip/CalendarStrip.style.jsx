@@ -63,5 +63,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: "10%",
   },
+  emptyList: {
+    alignSelf: "center",
+    color: "#66CDAA",
+    fontSize: 24,
+  },
 });
 export default styles;

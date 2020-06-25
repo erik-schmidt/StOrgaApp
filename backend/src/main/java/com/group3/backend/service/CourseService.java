@@ -291,19 +291,31 @@ public class CourseService extends CheckMatrNrClass {
                     if(studentCourses == null || studentCourses.isEmpty()){
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
                     }
+                    Course courseToDelete = null;
                     for (Course c : studentCourses) {
                         if (c.getNumber().equals(number)) {
-                            studentCourses.remove(c);
+                            courseToDelete = c;
                         }
+                    }
+                    if(courseToDelete == null){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
+                    }else{
+                        studentCourses.remove(course);
                     }
                     Set<Student> courseStudents = course.getStudents();
                     if(courseStudents==null||courseStudents.isEmpty()){
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
                     }
+                    Student studentToDelete = null;
                     for (Student s : courseStudents) {
                         if (s.getMatrNr().equals(matrNr)) {
-                            courseStudents.remove(s);
+                            studentToDelete = s;
                         }
+                    }
+                    if(studentToDelete == null){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Kurse mit Nummer"+ number + "ist nicht im student "+ number + "gespeichert");
+                    }else{
+                        courseStudents.remove(student);
                     }
                     student.setCourses(studentCourses);
                     course.setStudents(courseStudents);
@@ -338,7 +350,7 @@ public class CourseService extends CheckMatrNrClass {
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
             }
             List<CourseList> courseListList = new LinkedList<>();
-            List<Course> studentCourseList = (List<Course>) getStudentsCourses(matrNr).getBody();
+            List<Course> studentCourseList = changeSetToList((Set<Course>) getStudentsCourses(matrNr).getBody());
             List<Course> pflichtList = new LinkedList<>();
             List<Course> wahlList = new LinkedList<>();
             for (Course c:studentCourseList){
@@ -377,7 +389,7 @@ public class CourseService extends CheckMatrNrClass {
                 throw new MatrNrWrongLengthException("Error: MatrNr not matches the format!");
             }
             List<CourseList> courseListList = new LinkedList<>();
-            List<Course> studentCourseList = (List<Course>) getStudentsCourses(matrNr).getBody();
+            List<Course> studentCourseList = changeSetToList((Set<Course>) getStudentsCourses(matrNr).getBody());
             List<Course> grundList = new LinkedList<>();
             List<Course> hauptList = new LinkedList<>();
             for (Course c : studentCourseList) {
@@ -438,5 +450,20 @@ public class CourseService extends CheckMatrNrClass {
             logger.error(e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Method to convert a set of {@link Course} objects to a list.
+     * @param courseSet
+     *                  The set you want to convert.
+     * @return
+     *                  The list with the entrys of the set.
+     */
+    public List<Course> changeSetToList(Set<Course> courseSet){
+        List<Course> courseList = new LinkedList<>();
+        for(Course c: courseSet){
+            courseList.add(c);
+        }
+        return courseList;
     }
 }

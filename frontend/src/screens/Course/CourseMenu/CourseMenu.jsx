@@ -18,7 +18,7 @@ const CourseMenu = ({ navigation, route }) => {
     deleteCourse(course.number)
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("Fächer", { courseDeleted: true });
+          navigation.navigate("Fächer");
         } else if (res.status === HttpStatus.UNAUTHORIZED) {
           signOut();
         } else {
@@ -31,10 +31,18 @@ const CourseMenu = ({ navigation, route }) => {
   };
 
   const onChangeGrade = () => {
-    addGrade({ courseNumber: course.number, grade: selectedGrade })
+    let changedGrade = selectedGrade;
+    if (selectedGrade.includes(",")) {
+      changedGrade = selectedGrade.replace(",", ".");
+    }
+    addGrade({
+      courseName: course.description,
+      courseNumber: course.number,
+      grade: changedGrade,
+    })
       .then((res) => {
         if (res.status === HttpStatus.OK) {
-          navigation.navigate("Fächer", { courseEdit: true });
+          navigation.navigate("Fächer");
         } else {
           throw new Error(res.data);
         }
@@ -77,7 +85,7 @@ const CourseMenu = ({ navigation, route }) => {
             <AppButton
               color="red"
               onPress={() => onDeleteCourse()}
-              text="Kurs löschen"
+              text="Vom Kurs austreten"
             />
             <AppButton onPress={() => navigation.pop()} text="Abbrechen" />
           </AppModal>

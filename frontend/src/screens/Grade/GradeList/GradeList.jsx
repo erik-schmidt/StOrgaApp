@@ -7,6 +7,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { View, Text, RefreshControl } from "react-native";
 import Card from "../../../components/Card/Card";
 import AuthContext from "../../../constants/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const GradeList = () => {
   const navigation = useNavigation();
@@ -15,6 +16,24 @@ const GradeList = () => {
   const [refreshing, setRefreshing] = useState();
   const [average, setAverage] = useState();
   const { signOut } = React.useContext(AuthContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getGrades()
+        .then((res) => {
+          if (res.status === HttpStatus.OK) {
+            setGrades(res.data);
+          } else if (res.status === HttpStatus.UNAUTHORIZED) {
+            signOut();
+          } else {
+            throw new Error(res.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }, [])
+  );
 
   const onRefresh = () => {
     setRefreshing(false);
@@ -32,6 +51,22 @@ const GradeList = () => {
       .catch((err) => {
         alert(err);
       });
+    getAverage()
+      .then((res) => {
+        if (res.status === HttpStatus.OK) {
+          setAverage(res.data);
+        } else if (res.status === HttpStatus.UNAUTHORIZED) {
+          signOut();
+        } else {
+          throw new Error(res.data);
+        }
+      })
+      .catch((err) => {
+        if (err === "Error") {
+          return;
+        }
+        alert(err);
+      });
   };
 
   useEffect(() => {
@@ -46,9 +81,6 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
-        if (err === "Error") {
-          return;
-        }
         alert(err);
       });
     getAverage()
@@ -62,41 +94,9 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
-        if (err === "Error") {
-          return;
-        }
         alert(err);
       });
   }, []);
-
-  useEffect(() => {
-    getGrades()
-      .then((res) => {
-        if (res.status === HttpStatus.Ok) {
-          setGrades(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    getAverage()
-      .then((res) => {
-        if (res.status === HttpStatus.OK) {
-          setAverage(res.data);
-        } else if (res.status === HttpStatus.UNAUTHORIZED) {
-          signOut();
-        } else {
-          throw new Error(res.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }, [route]);
 
   return (
     <View style={styles.container}>
@@ -113,6 +113,8 @@ const GradeList = () => {
                   fontSize: 20,
                   fontWeight: "bold",
                   textAlign: "center",
+                  marginTop: "80%",
+                  color: "#66CDAA",
                 }}
               >
                 Keine Noten gespeichert
@@ -123,12 +125,16 @@ const GradeList = () => {
         renderItem={({ item }) => (
           <Card
             onLongPress={() =>
-              navigation.navigate("CourseMenu", { grade: item })
+              navigation.navigate("GradeMenu", { grade: item })
             }
           >
             <View>
-              <Text style={styles.gradeHeader}>Kursnummer: </Text>
-              <Text style={styles.gradeDescription}>{item.courseNumber}</Text>
+              <Text style={styles.gradeHeader}>
+                Veranstaltung: {item.courseName}
+              </Text>
+              <Text style={styles.cardText}>
+                Kursnummer: {item.courseNumber}
+              </Text>
             </View>
             <View style={styles.cardText}>
               <Text style={styles.boldText}>Note: </Text>
@@ -138,7 +144,17 @@ const GradeList = () => {
         )}
         keyExtractor={(item) => item.courseNumber}
       />
-      <Text style={{ textAlign: "right" }}>Durchschnitt: {average}</Text>
+      <Text
+        style={{
+          textAlign: "right",
+          marginRight: 10,
+          marginBottom: 5,
+          fontSize: 18,
+          fontWeight: "bold",
+        }}
+      >
+        Durchschnitt: {average}
+      </Text>
     </View>
   );
 };
