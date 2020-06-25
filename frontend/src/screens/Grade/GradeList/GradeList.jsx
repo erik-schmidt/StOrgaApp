@@ -62,6 +62,9 @@ const GradeList = () => {
         }
       })
       .catch((err) => {
+        if (err === "Error") {
+          return;
+        }
         alert(err);
       });
   };
@@ -127,7 +130,7 @@ const GradeList = () => {
           >
             <View>
               <Text style={styles.gradeHeader}>
-                Kursname: {item.courseName}
+                Veranstaltung: {item.courseName}
               </Text>
               <Text style={styles.cardText}>
                 Kursnummer: {item.courseNumber}

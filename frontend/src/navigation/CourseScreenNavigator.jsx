@@ -25,7 +25,7 @@ const CourseScreenNavigator = ({ navigation }) => {
         name="Fächer"
         component={CourseListTabNavigator}
         options={{
-          headerTitle: "Vorlesungen",
+          headerTitle: "Kurse",
           headerLeft: () => <DrawerButton />,
           headerRight: () => (
             <AddButton onPress={() => navigation.navigate("AddCourseModal")} />
@@ -45,7 +45,7 @@ const CourseScreenNavigator = ({ navigation }) => {
         name="CourseInformationModal"
         component={CourseInformationModal}
         options={{
-          headerTitle: "Vorlesungsinformation",
+          headerTitle: "Kursinformationen",
           headerStatusBarHeight: 0,
           cardStyle: { backgroundColor: "#ffff" },
           gestureEnabled: true,

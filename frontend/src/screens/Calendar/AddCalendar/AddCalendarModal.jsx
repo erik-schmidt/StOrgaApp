@@ -6,7 +6,6 @@ import { createAppointment } from "../../../api/services/CalendarService";
 import DatePicker from "react-native-datepicker";
 import AppModal from "../../../components/AppModal/AppModal";
 import AppButton from "../../../components/AppButton/AppButton";
-import moment from "moment";
 import "moment/locale/de";
 
 const AddCalendarModal = ({ navigation }) => {

@@ -75,6 +75,23 @@ const CourseList = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        ListEmptyComponent={() => {
+          return (
+            <View style={styles.container}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginTop: "80%",
+                  color: "#66CDAA",
+                }}
+              >
+                Keine Kurse beigetreten.
+              </Text>
+            </View>
+          );
+        }}
         renderItem={({ item }) => (
           <Card
             key={courses.length}

@@ -7,7 +7,7 @@ import AuthContext from "../../constants/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useFocusEffect } from "@react-navigation/native";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
   const [latestItems, setLatestItems] = useState([]);
   const [refreshing, setRefreshing] = useState();
   const { signOut } = React.useContext(AuthContext);
