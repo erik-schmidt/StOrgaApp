@@ -1,7 +1,6 @@
 import Axios from "axios";
-import * as HttpStatus from "http-status-codes";
 const axios = Axios.create({
-  baseURL: "http://192.168.0.213:8888/auth/",
+  baseURL: "http://storga.it-stud.hs-heilbronn.de:8888/auth/",
   responseType: "application/json",
 });
 
